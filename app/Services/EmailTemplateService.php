@@ -25,17 +25,22 @@ class EmailTemplateService{
                 ->paginate($perPage);
         }
 
-        // // Normal Eloquent Query
         return $this->model->query()
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
     }
-    public function find($id):EmailTemplate
+    public function find($id, $column = 'id'):EmailTemplate
     {
 
-        return $this->model->find($id);
+        return $this->model->where($column, $id)->first();
 
+    }
+
+    public function update(int $id, $data){
+
+        $this->model->updateOrCreate(['id'=>$id],$data);
+        
     }
 }
 

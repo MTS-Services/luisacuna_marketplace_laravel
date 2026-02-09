@@ -2,47 +2,58 @@
 
 namespace App\Livewire\Backend\Admin\EmailTemplate;
 
-use App\Livewire\Forms\Backend\Admin\TamplateUpdateForm\TamplateUpdateForm;
+
 use Livewire\Component;
 use App\Services\EmailTemplateService;
+use App\Livewire\Forms\Backend\Admin\EmailManagement\TemplateUpdateForm;
+use App\Traits\Livewire\WithNotification;
 
 class Edit extends Component
 {
 
-    public $id;
-    public $content; 
-    public $variables = [];
+    use WithNotification;
 
-    public TamplateUpdateForm $form;
+    public TemplateUpdateForm $form;
+
+    public $variables = [];
 
     protected EmailTemplateService $emailTemplate;
 
-    public function boot(EmailTemplateService $emailTemplate){
-
-        $this->emailTemplate = $emailTemplate;
-
-    }
-
-    public function mount($id){
-
-        $this->id = decrypt($id);
-
-    }
-    public function render()
+    public function boot(EmailTemplateService $emailTemplate)
     {
-       $template = $this->emailTemplate->find($this->id);
+        $this->emailTemplate = $emailTemplate;
+    }
 
-       $this->variables = $template->variables;
+    public function mount($id)
+    {
+        $templateId = decrypt($id);
 
-       $this->form->setData($template);
+        $template = $this->emailTemplate->find($templateId);
 
-        return view('livewire.backend.admin.email-template.edit',[
-            'template' => $template,
-        ]);
+        $this->variables = $template->variables;
+        // Initialize form manually
+        // $this->form = new TemplateUpdateForm($this, 'form');
+
+        $this->form->setData($template);
+
     }
 
     public function save(){
+        $data = $this->form->validate();
+        try {
+           $this->emailTemplate->update($data['id'], $data);
+            $this->success('Template updated successfully');
+        } catch (\Exception $e) {
+            $this->error('Failed to update template');
+        }
+    }
 
-        dd($this->content);
+    public function resetForm(){
+        $this->form->reset();
+    }
+
+    public function render()
+    {
+        return view('livewire.backend.admin.email-template.edit');
     }
 }

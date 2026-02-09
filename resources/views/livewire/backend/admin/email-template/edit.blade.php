@@ -20,6 +20,11 @@
             <!-- Add other form fields here -->
             <div class="mt-6 space-y-4 grid grid-cols-1 gap-5">
                 <div>
+                    <x-ui.label for="name" :value="__('Template Name')" required />
+                  
+                    <p class="text-xs lg:text-sm text-text-white mt-2">{{ $form->name}}</p>
+                </div>
+                <div>
                     <x-ui.label for="name" :value="__('Variable')" required />
 
                     <div class="flex gap-2 mt-2">
@@ -31,11 +36,19 @@
                        
                     </div>
                 </div>
+                <div>
+                    <x-ui.label for="name" :value="__('Subject')" required />
+                    
+                    <x-ui.input id="name" type="text" class="block w-full mt-2" wire:model="form.subject"
+                        placeholder="Subject" />
+                    <x-ui.input-error :messages="$errors->get('form.subject')" class="mt-2" />
+                </div>
 
                 <div>
-                    <x-ui.text-editor model="form.content" id="text-editor-main-content"
+                    <x-ui.text-editor model="form.template" id="text-editor-main-content"
                         placeholder="Enter your main content here..." :height="350" >
                     </x-ui.text-editor>
+                    <x-ui.input-error :messages="$errors->get('form.template')" />
                 </div>
                 
             </div>
