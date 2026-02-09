@@ -110,7 +110,8 @@
                             @default
                                 {{-- For dynamic fields --}}
                                 <x-ui.input type="{{ $field['input_type'] }}"
-                                    wire:model="account_data.{{ Str::slug($field['name'], '_') }}" />
+                                    wire:model="account_data.{{ Str::slug($field['name'], '_') }}" 
+                                    placeholder="{{ $field['placeholder'] ?? '' }} "/>
                                 <x-ui.input-error :messages="$errors->get('account_data.' . Str::slug($field['name'], '_'))" />
                         @endswitch
 
