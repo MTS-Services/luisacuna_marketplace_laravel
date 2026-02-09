@@ -2,7 +2,10 @@
 
 namespace App\Mail;
 
+use App\Enums\EmailTemplateEnum;
+use App\Models\EmailTemplate;
 use App\Models\Order;
+use App\Services\EmailTemplateService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -17,9 +20,19 @@ class DisputeResolutionEmail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public Order $order, public string $userName)
+    public EmailTemplate $emailTemplate;
+    public function __construct(public Order $order, public string $userName ,EmailTemplate $emailTemplate)
     {
         //
+
+        $this->emailTemplate = $emailTemplate;
+
+        $template =  str_replace('{{user_name}}', $this->userName, $this->emailTemplate->template);
+        $template =  str_replace('{{order_id}}', $this->order?->order_id, $template);
+        $template =  str_replace('{{dispute_reason}}', $this->order?->disputes?->reason, $template);
+        $template =  str_replace('{{price}}', $this->order?->grand_total, $template);
+        $template =  str_replace('{{dispute_url}}', route('user.order.detail', $this->order?->order_id), $template);
+        $this->emailTemplate->template = $template;
     }
 
     /**
@@ -28,7 +41,7 @@ class DisputeResolutionEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'You have a dispute resolution !! ',
+            subject: $this->emailTemplate->subject,
         );
     }
 
@@ -37,15 +50,10 @@ class DisputeResolutionEmail extends Mailable
      */
     public function content(): Content
     {
-        return new Content(
+          return new Content(
             view: 'emails.dispute-resolution',
             with: [
-                'order' => $this->order,
-                'userName' => $this->userName,
-                'disputeReason' => $this->order?->disputes?->reason,
-                'price'=> $this->order?->grand_total,
-                'orderId' => $this->order?->order_id,
-                'disputeUrl'=> route('user.order.detail', $this->order?->order_id),
+                'template' => $this->emailTemplate->template , 
             ],
         );
     }

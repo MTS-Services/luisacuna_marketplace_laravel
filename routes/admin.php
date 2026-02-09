@@ -33,12 +33,14 @@ use App\Http\Controllers\Backend\Admin\RewardManagement\AchievementTypeControlle
 use App\Http\Controllers\Backend\Admin\WithdrawalManagement\UserMethoadController;
 use App\Http\Controllers\Backend\Admin\FeeSettingsManagement\FeeSettingsController;
 use App\Http\Controllers\Backend\Admin\ConversationManagement\ConversationController;
+use App\Http\Controllers\Backend\Admin\EmailTemplate\EmailTemplateController;
 use App\Http\Controllers\Backend\Admin\NotificationManagement\AnnouncementController;
 use App\Http\Controllers\Backend\Admin\NotificationManagement\NotificationController;
 use App\Http\Controllers\Backend\Admin\WithdrawalManagement\WithdrawalMethodController;
 use App\Http\Controllers\Backend\Admin\WithdrawalManagement\WithdrawalRequestController;
 use App\Http\Controllers\Backend\Admin\GatewayAndIntegration\GatewayAndIntegrationController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\CurrencyController as ProductCurrencyController;
+use App\Models\EmailTemplate;
 
 Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
@@ -347,5 +349,10 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
         Route::get('/top-ups', 'topUps')->name('top-ups');
         Route::get('/purchased', 'purchased')->name('purchased');
         Route::get('/withdrawals', 'withdrawals')->name('withdrawals');
+    });
+
+    Route::controller(EmailTemplateController::class)->name('email-template.')->prefix('email-template')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/edit/{id}', 'edit')->name('edit');
     });
 });

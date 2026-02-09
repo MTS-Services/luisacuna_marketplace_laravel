@@ -3,6 +3,7 @@
 namespace App\Jobs\Order;
 
 use App\Mail\DisputeResolutionEmail;
+use App\Models\EmailTemplate;
 use App\Models\Order;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -20,7 +21,7 @@ class DisputeResolutionEmailJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(public int $orderId, public string $recipientEmail, public string $userName)
+    public function __construct(public int $orderId, public string $recipientEmail, public string $userName, public string $email_template_key)
     {
         $this->onQueue('emails');
     }
@@ -30,11 +31,15 @@ class DisputeResolutionEmailJob implements ShouldQueue
      */
     public function handle(): void
     {
+        
+
         try {
             $order = Order::with(['user', 'source.user', 'disputes'])->findOrFail($this->orderId);
-
+            
+             $emailTemplate = EmailTemplate::where('key', $this->email_template_key)->first();
+            // Pass all three arguments including $emailTemplate
             Mail::to($this->recipientEmail)
-                ->send(new DisputeResolutionEmail($order, $this->userName));
+                ->send(new DisputeResolutionEmail($order, $this->userName, $emailTemplate));
 
             Log::info('Dispute notification email sent', [
                 'order_id' => $order->order_id,
@@ -42,11 +47,10 @@ class DisputeResolutionEmailJob implements ShouldQueue
             ]);
         } catch (\Exception $e) {
             Log::error('Dispute notification email', [
-                'order_id' => $order->order_id,
+                'order_id' => $this->orderId ?? 'unknown',
                 'recipient' => $this->recipientEmail,
                 'error' => $e->getMessage(),
             ]);
-
             throw $e;
         }
     }
