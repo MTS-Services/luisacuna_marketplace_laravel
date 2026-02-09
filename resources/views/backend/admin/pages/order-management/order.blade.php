@@ -21,6 +21,7 @@
             <x-slot name="breadcrumb">{{ __('Order Management / Cancelled Orders List') }}</x-slot>
             <livewire:backend.admin.order-management.cancelled-orders />
         @break
+
         @case('admin.orders.dispute-orders')
             <x-slot name="pageSlug">{{ __('dispute-orders') }}</x-slot>
             <x-slot name="title">{{ __('Dispute Orders') }}</x-slot>
@@ -41,6 +42,15 @@
             <livewire:backend.admin.order-management.all-orders />
     @endswitch
 
+
+    <livewire:backend.admin.finance-management.details />
+
+
+    <script>
+        window.addEventListener('transactions-detail-modal-open', () => {
+            console.log('WINDOW EVENT RECEIVED');
+        });
+    </script>
 
     {{-- <livewire:backend.admin.order-management.detail /> --}}
 

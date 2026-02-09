@@ -18,7 +18,8 @@
                 </x-ui.button>
             </div>
 
-            <div class="glass-card rounded-2xl p-2 sm:p-6 md:p-8 bg-white/5 border border-primary-200 dark:border-zinc-800">
+            <div
+                class="glass-card rounded-2xl p-2 sm:p-6 md:p-8 bg-white/5 border border-primary-200 dark:border-zinc-800">
                 <div class="flex flex-col lg:flex-row gap-8">
 
                     <div class="flex-1 flex flex-col md:flex-row gap-4 sm:gap-6">
@@ -33,20 +34,24 @@
                                 {{ __('Order Info') }}
                             </h3>
                             <div class="grid grid-cols-1 gap-y-3">
-                                <div class="flex justify-between items-start border-b border-primary-200 dark:border-zinc-800 pb-2">
+                                <div
+                                    class="flex justify-between items-start border-b border-primary-200 dark:border-zinc-800 pb-2">
                                     <span class="text-text-muted text-sm">{{ __('Order ID: ') }}</span>
                                     <span
                                         class="text-text-white font-medium text-right break-all ml-4 text-sm uppercase">{{ $data->order_id }}</span>
                                 </div>
-                                <div class="flex justify-between items-center border-b border-primary-200 dark:border-zinc-800 pb-2">
+                                <div
+                                    class="flex justify-between items-center border-b border-primary-200 dark:border-zinc-800 pb-2">
                                     <span class="text-text-muted text-sm">{{ __('Product: ') }}</span>
                                     <span class="text-text-white font-medium">{{ $data?->source?->name }}</span>
                                 </div>
-                                <div class="flex justify-between items-center border-b border-primary-200 dark:border-zinc-800 pb-2">
+                                <div
+                                    class="flex justify-between items-center border-b border-primary-200 dark:border-zinc-800 pb-2">
                                     <span class="text-text-muted text-sm">{{ __('Purchased at: ') }}</span>
                                     <span class="text-text-white font-medium">{{ $data->created_at_formatted }}</span>
                                 </div>
-                                <div class="flex justify-between items-center border-b border-primary-200 dark:border-zinc-800 pb-2">
+                                <div
+                                    class="flex justify-between items-center border-b border-primary-200 dark:border-zinc-800 pb-2">
                                     <span class="text-text-muted text-sm">{{ __('Status: ') }}</span>
                                     <span
                                         class="text-text-white font-medium badge badge-soft {{ $data->status->color() }}">{{ $data->status->label() }}</span>
@@ -55,18 +60,25 @@
                                     <span class="text-text-muted text-sm">{{ __('Currency: ') }}</span>
                                     <span class="text-text-white font-medium">{{ $data->currency }}</span>
                                 </div> --}}
-                                <div class="flex justify-between items-center border-b border-primary-200 dark:border-zinc-800 pb-2">
+                                <div
+                                    class="flex justify-between items-center border-b border-primary-200 dark:border-zinc-800 pb-2">
                                     <span class="text-text-muted text-sm">{{ __('Default Price: ') }} </span>
-                                    <span class="text-text-white font-medium">{{ ($data->default_currency ) }}</span>
+                                    <span class="text-text-white font-medium">{{ $data->default_grand_total }}
+                                        {{ $data->default_currency }}</span>
+                                </div>
+                                <div
+                                    class="flex justify-between items-center border-b border-primary-200 dark:border-zinc-800 pb-2">
+                                    <span class="text-text-muted text-sm">{{ __('Display Price: ') }}</span>
+                                    <span class="text-text-white font-medium">{{ $data->grand_total }}
+                                        {{ $data->display_currency }}</span>
                                 </div>
 
-                                <div class="flex justify-between items-center border-b border-primary-200 dark:border-zinc-800 pb-2">
-                                    <span class="text-text-muted text-sm">{{ __('Display Currency: ') }}</span>
-                                    <span class="text-text-white font-medium">{{ $data->display_currency }}</span>
-                                </div>
                                 <div class="flex justify-between items-center">
-                                    <span class="text-text-muted text-sm">{{ __('Total Amount: ') }}</span>
-                                    <span class="text-zinc-500 font-bold text-lg">{{ $data->grand_total }}</span>
+                                    <span class="text-text-muted text-sm">{{ __('Total Amount') }} <span class="text-xs text-text-muted">{{ __('(as payment): ') }}</span></span>
+                                    <span
+                                        class="text-zinc-500 font-bold text-lg">{{ $data->transactions->first()?->amount }}
+                                        {{ $data->transactions->first()?->currency }}</span>
+
                                 </div>
                             </div>
                         </div>
@@ -84,7 +96,8 @@
                                         <th class="px-4 py-3 font-semibold">{{ __('Transactions ID') }}</th>
                                         <th class="px-4 py-3 font-semibold">{{ __('Amount') }}</th>
                                         <th class="px-4 py-3 font-semibold">{{ __('Method') }}</th>
-                                        <th class="px-4 py-3 font-semibold text-right">{{ __('Date') }}</th>
+                                        <th class="px-4 py-3 font-semibold">{{ __('Date') }}</th>
+                                        <th class="px-4 py-3 font-semibold">{{ __('Action') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-white/5">
@@ -93,12 +106,26 @@
                                             <td class="px-1 sm:px-4 py-1 sm:py-3 text-text-muted">
                                                 {{ $transaction->transaction_id }}</td>
                                             <td class="px-1 sm:px-4 py-1 sm:py-3 text-text-white font-medium">
-                                                {{ $transaction->amount }}</td>
+                                                {{ $transaction->amount }} {{ $transaction->currency }}</td>
                                             <td class="px-1 sm:px-4 py-1 sm:py-3 text-text-white font-medium">
                                                 {{ $transaction->payment_gateway }}</td>
-                                            <td
-                                                class="px-1 sm:px-4 py-1 sm:py-3 text-text-muted text-right italic text-xs">
+                                            <td class="px-1 sm:px-4 py-1 sm:py-3 text-text-muted text-right text-xs">
                                                 {{ $transaction->created_at_formatted }}</td>
+                                            {{-- <td class="px-1 sm:px-4 py-1 sm:py-3 text-right text-xs">
+                                                <a href="#"
+                                                    class="inline-block px-3 py-1.5 text-xs font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition">
+                                                    {{ __('Details') }}
+                                                </a>
+                                            </td> --}}
+
+                                            <td class="px-1 sm:px-4 py-1 sm:py-3 text-right text-xs">
+                                                <button type="button"
+                                                    @click="$dispatch('transaction-detail-modal-open', { transactionId: '{{ $transaction->transaction_id }}' })"
+                                                    class="inline-block px-3 py-1.5 text-xs font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition">
+                                                    {{ __('Details') }}
+                                                </button>
+                                            </td>
+
                                         </tr>
                                     @empty
                                         <tr>
@@ -259,7 +286,8 @@
             </div>
             {{-- @dd($data->is_disputed); --}}
             @if ($data->is_disputed)
-                <div class="glass-card rounded-2xl p-6 sm:p-8 bg-white/5 border border-primary-200 dark:border-zinc-800 mt-8">
+                <div
+                    class="glass-card rounded-2xl p-6 sm:p-8 bg-white/5 border border-primary-200 dark:border-zinc-800 mt-8">
                     <div
                         class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 border-b border-zinc-800 pb-6 gap-4">
                         <div class="flex items-center gap-4">
