@@ -303,4 +303,12 @@ class Game extends AuditBaseModel implements Auditable
             //
         ]);
     }
+    public function hasRelatedData(): bool
+    {
+        return $this->gameCategories()->exists()
+            || $this->platforms()->exists()
+            || $this->tags()->exists()
+            || $this->gameConfig()->exists()
+            || $this->products()->exists();
+    }
 }
