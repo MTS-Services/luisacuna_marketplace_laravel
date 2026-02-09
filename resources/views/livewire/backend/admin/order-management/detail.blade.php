@@ -111,12 +111,6 @@
                                                 {{ $transaction->payment_gateway }}</td>
                                             <td class="px-1 sm:px-4 py-1 sm:py-3 text-text-muted text-right text-xs">
                                                 {{ $transaction->created_at_formatted }}</td>
-                                            {{-- <td class="px-1 sm:px-4 py-1 sm:py-3 text-right text-xs">
-                                                <a href="#"
-                                                    class="inline-block px-3 py-1.5 text-xs font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition">
-                                                    {{ __('Details') }}
-                                                </a>
-                                            </td> --}}
 
                                             <td class="px-1 sm:px-4 py-1 sm:py-3 text-right text-xs">
                                                 <button type="button"
