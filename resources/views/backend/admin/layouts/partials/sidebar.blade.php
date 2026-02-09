@@ -311,6 +311,16 @@
                             'active' => 'star',
                         ],
                     ]" />
+
+                    <x-backend.navlink type="dropdown" icon="radiation" name="Template Management" :page_slug="$active"
+                    :items="[
+                        [
+                            'name' => 'Templates',
+                            'route' => route('admin.email-template.index'),
+                            'icon' => 'pen-line',
+                            'active' => 'email-template',
+                        ],
+                    ]" />
                 <x-sidebar-separator title="Content" />
                 <x-backend.navlink type="dropdown" icon="headset" name="Content Management" :page_slug="$active"
                     :items="[
