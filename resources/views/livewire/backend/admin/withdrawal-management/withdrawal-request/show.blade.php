@@ -64,9 +64,10 @@
         </div>
 
         <div class="w-full col-span-1 lg:col-span-2 mt-5">
-            <div class="bg-bg-primary rounded-2xl shadow-lg overflow-hidden border border-gray-500/20 p-5">
-                <div class="flex justify-end items-end gap-2 mt-5">
-                    @if ($data->current_status === 'pending')
+            @if ($data->current_status === 'pending')
+                <div class="bg-bg-primary rounded-2xl shadow-lg overflow-hidden border border-gray-500/20 p-5">
+                    <div class="flex justify-end items-end gap-2 mt-5">
+
                         <div>
                             <x-ui.button wire:click.prevent="accept('{{ encrypt($data->id) }}')" class="w-auto! py-2!"
                                 type="button">
@@ -80,38 +81,39 @@
                                 {{ __('Reject') }}
                             </x-ui.button>
                         </div>
-                    @endif
-                </div>
 
-                @if ($showModal)
-                    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50">
-                        <div class="bg-white dark:bg-zinc-700 p-6 rounded-lg shadow-xl w-full max-w-md">
-                            <h2 class="text-xl font-semibold mb-4 text-text-white">{{ __('Reject Reason') }}</h2>
+                    </div>
+            @endif
 
-                            <div class="mb-5">
-                                <label for="note"
-                                    class="block text-sm font-medium text-text-white mb-1">{{ __('Note') }}</label>
-                                <textarea type="text" wire:model="note" id="note"
-                                    class="w-full border border-zinc-50 rounded-md px-3 py-2 focus:outline-none" placeholder="Type something here..."></textarea>
-                            </div>
-                            <div class="flex justify-end space-x-3">
-                                <div>
-                                    <x-ui.button wire:click="closeModal" variant="tertiary" type="button"
-                                        class="w-auto! py-2!">
-                                        {{ __('Cancel') }}
-                                    </x-ui.button>
-                                </div>
-                                <x-ui.button wire:click="reject('{{ encrypt($data->id) }}')" class="w-auto! py-2!"
-                                    type="button">
-                                    <span class="text-text-btn-primary group-hover:text-text-btn-secondary">
-                                        {{ __('Submit') }}
-                                    </span>
+            @if ($showModal)
+                <div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50">
+                    <div class="bg-white dark:bg-zinc-700 p-6 rounded-lg shadow-xl w-full max-w-md">
+                        <h2 class="text-xl font-semibold mb-4 text-text-white">{{ __('Reject Reason') }}</h2>
+
+                        <div class="mb-5">
+                            <label for="note"
+                                class="block text-sm font-medium text-text-white mb-1">{{ __('Note') }}</label>
+                            <textarea type="text" wire:model="note" id="note"
+                                class="w-full border border-zinc-50 rounded-md px-3 py-2 focus:outline-none" placeholder="Type something here..."></textarea>
+                        </div>
+                        <div class="flex justify-end space-x-3">
+                            <div>
+                                <x-ui.button wire:click="closeModal" variant="tertiary" type="button"
+                                    class="w-auto! py-2!">
+                                    {{ __('Cancel') }}
                                 </x-ui.button>
                             </div>
+                            <x-ui.button wire:click="reject('{{ encrypt($data->id) }}')" class="w-auto! py-2!"
+                                type="button">
+                                <span class="text-text-btn-primary group-hover:text-text-btn-secondary">
+                                    {{ __('Submit') }}
+                                </span>
+                            </x-ui.button>
                         </div>
                     </div>
-                @endif
-            </div>
+                </div>
+            @endif
         </div>
     </div>
+</div>
 </div>

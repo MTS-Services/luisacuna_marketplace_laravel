@@ -35,9 +35,19 @@ class TransactionService
         if ($search) {
             // Scout Search
 
+            // return $this->model::search($search)
+            //     ->valided()
+            //     ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+            //     ->paginate($perPage);
+
+
+
             return $this->model::search($search)
-                ->valided()
-                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->query(function ($query) use ($filters, $sortField, $sortDirection) {
+                    $query->valided();
+                    $query->filter($filters)
+                        ->orderBy($sortField, $sortDirection);
+                })
                 ->paginate($perPage);
         }
 

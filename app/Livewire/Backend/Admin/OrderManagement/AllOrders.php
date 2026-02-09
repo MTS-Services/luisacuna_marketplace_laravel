@@ -119,6 +119,7 @@ class AllOrders extends Component
     protected function getFilters(): array
     {
         return [
+            'search' => $this->search,
             'exclude_status' => OrderStatus::INITIALIZED,
             'sort_field'     => $this->sortField,
             'sort_direction' => $this->sortDirection,

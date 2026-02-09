@@ -40,6 +40,11 @@ class CategoryService
         return $this->interface->getPaginatedData($perPage, $filters, $sortField, $order, $status, $layout, $trashed);
     }
 
+    public function getTrashedPaginateDatas(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    {
+        return $this->interface->trashPaginate($perPage, $filters);
+    }
+
     public function searchData(string $query, $sortField = 'created_at', $order = 'desc', $status = false, $layout = false, $trashed = false): Collection
     {
         return $this->interface->searchData($query, $sortField, $order, $status, $layout, $trashed);

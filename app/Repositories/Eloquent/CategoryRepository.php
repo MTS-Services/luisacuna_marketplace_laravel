@@ -68,7 +68,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         $this->commonQuery($query, $status, $layout, $trashed);
         if ($search) {
             return $query->search($search)
-                ->filter($filters)
+                // ->filter($filters)
                 ->orderBy($sortField, $sortDirection)
                 ->paginate($perPage);
         }
@@ -77,6 +77,25 @@ class CategoryRepository implements CategoryRepositoryInterface
         return $query->filter($filters)
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
+    }
+
+    public function trashPaginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    {
+        $query = $this->model->query();
+
+        $query = $this->model->onlyTrashed();
+
+        // Apply filters
+        if (!empty($filters)) {
+            $query->filter($filters);
+        }
+
+        // Apply sorting
+        $sortField = $filters['sort_field'] ?? 'created_at';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
+        $query->orderBy($sortField, $sortDirection);
+
+        return $query->paginate($perPage);
     }
 
     public function searchData(string $query, string $sortField, $order, $status, $layout, $trashed): Collection

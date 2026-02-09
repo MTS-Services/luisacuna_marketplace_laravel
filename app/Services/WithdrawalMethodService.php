@@ -162,8 +162,9 @@ use FileManagementTrait;
             if (!$model) {
                 return false;
             }
-            $deleted = $model->delete();
+            $deleted = $model->forceDelete();
             return $deleted;
         });
     }
+
 }

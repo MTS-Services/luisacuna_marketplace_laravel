@@ -95,6 +95,7 @@ class AllTransactions extends Component
     {
         return [
             // 'status'         => $this->statusFilter,
+            'search' => $this->search,
             'sort_field'     => $this->sortField,
             'sort_direction' => $this->sortDirection,
         ];

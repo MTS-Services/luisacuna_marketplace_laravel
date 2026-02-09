@@ -3,6 +3,7 @@
     <div class="flex flex-col sm:flex-row gap-4">
         <div class="py-0.5! w-full sm:w-70">
             <x-ui.custom-select wire-model="status" :wire-live="true" class="rounded!" label="{{ __('All Statuses') }}">
+                <x-ui.custom-option label="{{ __('All Statuses') }}" value="" />
                 @foreach ($statuses as $status)
                     <x-ui.custom-option label="{{ $status['label'] }}" value="{{ $status['value'] }}" />
                 @endforeach
@@ -13,6 +14,7 @@
         <div class="py-0.5! w-full sm:w-70">
             <x-ui.custom-select wire-model="order_date" :wire-live="true" class="rounded!" label="Recent">
 
+                  <x-ui.custom-option value="" label="{{ __('Recent') }}" />
                 <x-ui.custom-option value="today" label="{{ __('Today') }}" />
                 <x-ui.custom-option value="week" label="{{ __('This Week') }}" />
                 <x-ui.custom-option value="month" label="{{ __('This Month') }}" />

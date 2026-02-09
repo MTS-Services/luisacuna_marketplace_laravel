@@ -10,8 +10,7 @@ class DeleteAction
 {
     public function __construct(
         protected CategoryRepositoryInterface $interface
-    ) {
-    }
+    ) {}
 
     public function execute($id, $forceDelete = false, ?int $actionerId = null)
     {
@@ -27,11 +26,14 @@ class DeleteAction
             if (!$findData) {
                 throw new \Exception('Data not found');
             }
+            // Simple check - if any related data exists, prevent deletion
+            if ($findData->hasRelatedData()) {
+                throw new \Exception('Cannot delete this category. It has associated data in the system.');
+            }
             if ($forceDelete) {
                 if ($findData->icon && Storage::disk('public')->exists($findData->icon)) {
 
                     Storage::disk('public')->delete($findData->icon);
-
                 }
 
                 return $this->interface->forceDelete($id);

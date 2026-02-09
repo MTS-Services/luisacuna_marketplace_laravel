@@ -1,19 +1,19 @@
-<?php 
+<?php
 
 namespace App\Services;
 
+use App\Enums\UserType;
 use App\Models\SellerProfile;
-use App\Services\Cloudinary\CloudinaryService;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Collection;
+use App\Services\Cloudinary\CloudinaryService;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class SellerProfileService{
+class SellerProfileService
+{
 
-    public function __construct(protected SellerProfile $model, protected CloudinaryService $cloudinaryService) {
-        
-    }
+    public function __construct(protected SellerProfile $model, protected CloudinaryService $cloudinaryService) {}
 
 
     public function all(string $sortField = 'created_at', $order = 'desc'): Collection
@@ -34,7 +34,7 @@ class SellerProfileService{
     }
 
 
-      public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
+    public function getPaginatedData(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         return $this->model->query()
             ->filter($filters)
@@ -48,16 +48,15 @@ class SellerProfileService{
 
     public function createData(array $data): SellerProfile
     {
-       return DB::transaction(function () use ($data) {
+        return DB::transaction(function () use ($data) {
             $categories = [];
 
-        
+
             if (isset($data['selfie_image'])) {
 
                 $uploadedFile = $this->cloudinaryService->upload($data['selfie_image'], ['folder' => 'seller_profiles']);
 
                 $data['selfie_image'] = $uploadedFile->publicId;
-
             }
             if (isset($data['company_documents'])) {
 
@@ -84,7 +83,7 @@ class SellerProfileService{
 
     //Verify Data
 
-    public function verifyData($id) : bool
+    public function verifyData($id): bool
     {
         return DB::transaction(function () use ($id) {
             $sellerProfile = $this->findData($id);
@@ -93,17 +92,29 @@ class SellerProfileService{
                 throw new \Exception('Seller profile not found.');
             }
 
-            return $sellerProfile->update([
+            // return $sellerProfile->update([
+            //     'seller_verified' => 1,
+            //     'seller_verified_at' => now(),
+            // ]);
+
+            $sellerProfile->update([
                 'seller_verified' => 1,
                 'seller_verified_at' => now(),
             ]);
+
+            // 2️⃣ user type update
+            $sellerProfile->user()->update([
+                'user_type' => UserType::SELLER,
+            ]);
+
+            return true;
         });
     }
-        public function unverifyData($id) : bool
+    public function unverifyData($id): bool
     {
         return DB::transaction(function () use ($id) {
 
-           
+
             $sellerProfile = $this->findData($id);
 
             if (!$sellerProfile) {
@@ -111,11 +122,22 @@ class SellerProfileService{
             }
 
             return $sellerProfile->update([
-                'seller_verified' => 0, 
+                'seller_verified' => 0,
             ]);
-
-            
         });
     }
 
+
+    public function deleteData($id): bool
+    {
+        return DB::transaction(function () use ($id) {
+            $sellerProfile = $this->findData($id);
+
+            if (!$sellerProfile) {
+                throw new \Exception('Seller profile not found.');
+            }
+
+            return $sellerProfile->delete();
+        });
+    }
 }
