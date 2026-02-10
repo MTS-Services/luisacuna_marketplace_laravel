@@ -1,120 +1,123 @@
 <div x-data="{
-    UserNotificationShow: @entangle('UserNotificationShow').live
-}" @user-notification-show.window="UserNotificationShow = true" x-show="UserNotificationShow"
-    x-cloak @click.outside="UserNotificationShow = false" x-transition:enter="transition ease-out duration-100"
-    x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100"
-    x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100"
-    x-transition:leave-end="transform opacity-0 scale-95" wire:init="fetchNotifications"
-    class="absolute top-18 right-3 w-[90%] xs:w-3/4 md:max-w-[750px] dark:bg-bg-secondary bg-bg-primary rounded-2xl backdrop:blur-md z-10 shadow-lg overflow-hidden flex flex-col max-h-[75vh] p-10">
+    show: @entangle('UserNotificationShow'),
+    loading: false
+}" x-show="show" x-cloak {{-- Instant Alpine Response --}}
+    @user-notification-show.window="
+        show = true; 
+        loading = true; 
+        $wire.openSidebar().then(() => { loading = false });
+    "
+    @click.outside="show = false; $wire.closeSidebar();" x-transition:enter="transition ease-out duration-200"
+    x-transition:enter-start="opacity-0 scale-95 translate-y-[-10px]"
+    x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-150"
+    x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+    class="absolute top-18 right-3 w-[90%] xs:w-3/4 md:max-w-[550px] dark:bg-zinc-900 bg-white rounded-2xl z-50 shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden flex flex-col max-h-[80vh]">
 
     {{-- Fixed Header --}}
-    <div class="shrink-0 border-b border-zinc-600 mb-5">
-        <div class="flex justify-between items-center mb-1">
-            <h2 class="text-lg font-semibold text-text-white">{{ __('Notifications') }}</h2>
-            <button @click="UserNotificationShow = false"
-                class="text-text-secondary hover:text-gray-600 transition-colors">
-                <flux:icon name="x-mark" class="w-5 h-5 stroke-current hover:stroke-pink-600" />
-            </button>
-        </div>
-        @if (!$isLoading && $this->unreadCount() > 0)
-            <div>
-                <button wire:click="markAllAsRead" wire:loading.attr="disabled">
-                    <span wire:loading.remove wire:target="markAllAsRead"
-                        class="text-sm text-pink-500 hover:text-text-hover">
-                        {{ __('Mark all as read') }}
-                    </span>
+    <div
+        class="p-6 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center bg-zinc-50/50 dark:bg-zinc-900/50">
+        <div>
+            <h2 class="text-xl font-bold text-zinc-900 dark:text-white">{{ __('Notifications') }}</h2>
 
-                    <span wire:loading wire:target="markAllAsRead" class="text-sm text-pink-500">
-                        {{ __('Marking...') }}
-                    </span>
-                </button>
+            <div x-show="!loading">
+                @if ($this->unreadCount > 0)
+                    <button wire:click="markAllAsRead" class="mt-1 group">
+                        <span wire:loading.remove wire:target="markAllAsRead"
+                            class="text-xs text-pink-500 hover:text-pink-600 transition-colors">
+                            {{ __('Mark all as read') }}
+                        </span>
+                        <span wire:loading wire:target="markAllAsRead" class="text-xs text-zinc-500 animate-pulse">
+                            {{ __('Marking...') }}
+                        </span>
+                    </button>
+                @endif
             </div>
-        @endif
+        </div>
+
+        <button @click.prevent="show = false; $wire.closeSidebar();"
+            class="p-2 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors">
+            <flux:icon name="x-mark" class="w-5 h-5 text-zinc-500" />
+        </button>
     </div>
 
-    {{-- Scrollable Content --}}
-    <div class="flex-1 overflow-y-auto">
-        <div wire:loading.flex wire:target="fetchNotifications"
-            class="flex-col items-center justify-center h-full gap-3 py-12">
-            <div class="relative">
-                <div class="animate-spin rounded-full h-12 w-12 border-4 border-zinc-700 border-t-pink-500"></div>
-            </div>
-            <p class="text-text-secondary text-sm">{{ __('Loading notifications...') }}</p>
+    {{-- Content --}}
+    <div class="flex-1 overflow-y-auto custom-scrollbar">
+
+        {{-- SKELETON LOADING (Alpine Triggered) --}}
+        <div x-show="loading" class="p-6 space-y-4">
+            @foreach (range(1, 4) as $i)
+                <div class="flex gap-4 animate-pulse">
+                    <div class="w-10 h-10 bg-zinc-200 dark:bg-zinc-800 rounded-full"></div>
+                    <div class="flex-1 space-y-2 py-1">
+                        <div class="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-1/4"></div>
+                        <div class="h-3 bg-zinc-200 dark:bg-zinc-800 rounded w-3/4"></div>
+                    </div>
+                </div>
+            @endforeach
         </div>
 
-        <div wire:loading.remove wire:target="fetchNotifications">
-            @if (!$isLoading)
-                <div class="space-y-4">
-                    @forelse ($notifications as $notification)
-                        @php
-                            $isUnread = !$notification->isRead(encrypt(user()->id), get_class(user()));
-                        @endphp
-                        <div wire:key="user-notification-{{ encrypt($notification->id) }}"
-                            wire:click="markAsRead('{{ encrypt($notification->id) }}')"
-                            class="flex gap-3 hover:bg-bg-hover rounded-xl p-3 transition-colors cursor-pointer {{ $isUnread ? 'bg-bg-hover/80' : '' }}">
-                            <div class="shrink-0">
-                                <div
-                                    class="relative w-10 h-10 bg-zinc-200 dark:bg-zinc-300/10 rounded-full flex items-center justify-center">
-                                    <flux:icon name="{{ $notification->data['icon'] ?? 'bell' }}"
-                                        class="w-5 h-5 stroke-zinc-500" />
-                                    @if ($isUnread)
-                                        <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-pink-500 rounded-full">
-                                            <span
-                                                class="absolute inset-0 w-2.5 h-2.5 bg-pink-500 rounded-full animate-ping"></span>
-                                        </span>
-                                    @endif
-                                </div>
+        {{-- NOTIFICATION LIST --}}
+        <div x-show="!loading">
+            <div class="divide-y divide-zinc-50 dark:divide-zinc-800/50">
+                @forelse ($this->notifications as $notification)
+                    @php
+                        $isUnread = !$notification->isRead(encrypt(user()->id), get_class(user()));
+                    @endphp
+                    <div wire:key="user-notif-{{ $notification->id }}"
+                        wire:click="markAsRead('{{ encrypt($notification->id) }}')"
+                        class="flex gap-4 p-4 hover:bg-zinc-50 dark:hover:bg-white/5 transition-all cursor-pointer {{ $isUnread ? 'bg-pink-50/30 dark:bg-pink-500/5' : '' }}">
+
+                        <div class="shrink-0">
+                            <div
+                                class="relative w-10 h-10 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center">
+                                <flux:icon name="{{ $notification->data['icon'] ?? 'bell' }}"
+                                    class="w-5 h-5 text-zinc-500" />
+                                @if ($isUnread)
+                                    <span
+                                        class="absolute top-0 right-0 w-2.5 h-2.5 bg-pink-500 border-2 border-white dark:border-zinc-900 rounded-full"></span>
+                                @endif
                             </div>
-                            <div class="flex-1 min-w-0">
-                                <h3 class="font-semibold text-sm text-text-white line-clamp-1">
+                        </div>
+
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between items-baseline mb-0.5">
+                                <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate">
                                     {{ $notification->data['title'] ?? __('Notification') }}
                                 </h3>
-                                <p class="text-sm text-text-secondary/80 mt-1 line-clamp-3">
-                                    {{ $notification->data['message'] ?? '' }}
-                                </p>
-                            </div>
-                            <div class="shrink-0">
-                                <span class="text-xs text-pink-500">
-                                    {{ $notification->created_at->diffForHumans() }}
+                                <span class="text-[10px] text-zinc-400 font-medium shrink-0">
+                                    {{ $notification->created_at->diffForHumans(short: true) }}
                                 </span>
                             </div>
-                        </div>
-                    @empty
-                        <div class="flex flex-col items-center justify-center py-16 text-center">
-                            <div
-                                class="w-16 h-16 bg-zinc-200 dark:bg-zinc-300/10 rounded-full flex items-center justify-center mb-4">
-                                <flux:icon name="bell-slash" class="w-8 h-8 stroke-zinc-500" />
-                            </div>
-                            <h4 class="text-base font-semibold text-text-white mb-1">
-                                {{ __('No notifications') }}
-                            </h4>
-                            <p class="text-sm text-text-secondary">
-                                {{ __("You're all caught up!") }}
+                            <p class="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
+                                {{ $notification->data['message'] ?? '' }}
                             </p>
                         </div>
-                    @endforelse
-                </div>
-            @endif
+                    </div>
+                @empty
+                    <div x-show="!loading && $wire.initialized"
+                        class="flex flex-col items-center justify-center py-20 px-6 text-center">
+                        <div
+                            class="w-16 h-16 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center mb-4">
+                            <flux:icon name="bell-slash" class="w-8 h-8 text-zinc-400" />
+                        </div>
+                        <h4 class="text-zinc-900 dark:text-white font-medium">{{ __('No notifications') }}</h4>
+                        <p class="text-sm text-zinc-500 mt-1">{{ __("You're all caught up!") }}</p>
+                    </div>
+                @endforelse
+            </div>
         </div>
     </div>
 
     {{-- Fixed Footer --}}
-    <div wire:loading.remove wire:target="fetchNotifications">
-        @if (!$isLoading && $notifications->count() > 0)
-            <div class="shrink-0 pt-4 flex items-center justify-center">
-                <x-ui.button href="{{ route('user.notifications') }}" wire:navigate class="py-2! max-w-80">
-                    {{ __('View all') }}
-                </x-ui.button>
+    <div x-show="!loading && $wire.initialized">
+        @if ($this->notifications->isNotEmpty())
+            <div
+                class="p-4 border-t border-zinc-100 dark:border-zinc-800 bg-zinc-50/30 dark:bg-zinc-900/30 text-center">
+                <a href="{{ route('user.notifications') }}" wire:navigate
+                    class="text-sm font-semibold text-pink-500 hover:text-pink-600 transition-colors">
+                    {{ __('View All Notifications') }}
+                </a>
             </div>
         @endif
     </div>
 </div>
-
-@push('scripts')
-    <script>
-        // Listen for real-time notifications
-        window.addEventListener('notification-received', () => {
-            Livewire.dispatch('notification-received');
-        });
-    </script>
-@endpush
