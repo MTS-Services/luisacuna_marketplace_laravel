@@ -76,7 +76,56 @@ class ConversationService
     }
 
     /**
-     * Find existing conversation between two users
+     * Start a new conversation for a specific order
+     * This creates a unique conversation per order
+     */
+    public function startConversationForOrder(
+        User $buyer,
+        User $seller,
+        Order $order,
+        ?string $subject = null,
+        ?string $note = null
+    ): ?Conversation {
+        try {
+            return DB::transaction(function () use ($buyer, $seller, $order, $subject, $note) {
+                // Create conversation with order reference
+                $conversation = $this->conversation->create([
+                    'conversation_uuid' => Str::uuid(),
+                    'subject' => $subject ?? "Order #{$order->order_id}",
+                    'note' => $note,
+                    'status' => ConversationStatus::ACTIVE,
+                    'creater_id' => $buyer->id,
+                    'creater_type' => User::class,
+                ]);
+
+                // Add participants
+                $this->addParticipantToConversation($conversation, $buyer, ParticipantRole::BUYER);
+                $this->addParticipantToConversation($conversation, $seller, ParticipantRole::SELLER);
+
+                Log::info('Conversation created for order', [
+                    'conversation_id' => $conversation->id,
+                    'conversation_uuid' => $conversation->conversation_uuid,
+                    'order_id' => $order->id,
+                    'order_uid' => $order->order_id,
+                    'buyer_id' => $buyer->id,
+                    'seller_id' => $seller->id,
+                ]);
+
+                return $conversation->load('participants.participant');
+            });
+        } catch (Exception $e) {
+            Log::error('Failed to start conversation for order', [
+                'buyer_id' => $buyer->id,
+                'seller_id' => $seller->id,
+                'order_id' => $order->id,
+                'error' => $e->getMessage()
+            ]);
+            return null;
+        }
+    }
+
+    /**
+     * Find existing conversation between two users (without order context)
      */
     public function findExistingConversation(int $userOneId, int $userTwoId): ?Conversation
     {
@@ -94,6 +143,20 @@ class ConversationService
             ->whereDoesntHave('participants', function ($query) {
                 $query->where('participant_role', ParticipantRole::ADMIN);
             })
+            ->first();
+    }
+
+    /**
+     * Find conversation by order_id
+     * This ensures each order has its own unique conversation
+     */
+    public function findConversationByOrder(int $orderId): ?Conversation
+    {
+        return $this->conversation
+            ->whereHas('messages', function ($query) use ($orderId) {
+                $query->where('order_id', $orderId);
+            })
+            ->where('status', ConversationStatus::ACTIVE)
             ->first();
     }
 
@@ -407,6 +470,7 @@ class ConversationService
 
     /**
      * Send message in conversation as order information by system
+     * Creates a unique conversation per order
      */
     public function sendOrderMessage(Order $order): ?Conversation
     {
@@ -414,13 +478,25 @@ class ConversationService
         $buyer = $order?->user ?? Auth::guard('web')->user();
         $seller = $order?->source?->user;
 
-        $conversation = $this->startConversation($buyer, $seller);
+        // Check if conversation already exists for this specific order
+        $conversation = $this->findConversationByOrder($order->id);
 
         if (!$conversation) {
+            // Create new conversation for this order
+            $conversation = $this->startConversationForOrder($buyer, $seller, $order);
+        }
+
+        if (!$conversation) {
+            Log::error('Failed to create or find conversation for order', [
+                'order_id' => $order->id,
+                'order_uid' => $order->order_id,
+                'buyer_id' => $buyer->id,
+                'seller_id' => $seller->id,
+            ]);
             return null;
         }
-        // dd($conversation, $order, $buyer, $seller);
 
+        // Send order initialization message
         $this->sendMessage(
             conversation: $conversation,
             messageBody: 'New order Initiated. Order ID: ' . $order->order_id,
@@ -438,6 +514,7 @@ class ConversationService
 
         return $conversation;
     }
+
     /**
      * Edit message
      */
@@ -719,18 +796,6 @@ class ConversationService
     /**
      * Search messages within conversation
      */
-    // public function searchMessages(Conversation $conversation, string $search, int $perPage = 20)
-    // {
-    //     if (!$this->isUserParticipant($conversation, Auth::id())) {
-    //         return null;
-    //     }
-
-    //     return $conversation->messages()
-    //         ->where('message_body', 'like', "%{$search}%")
-    //         ->with(['sender:id,first_name,last_name', 'attachments'])
-    //         ->orderByDesc('created_at')
-    //         ->paginate($perPage);
-    // }
     public function searchMessages(Conversation $conversation, string $search)
     {
         if (!$this->thisUserParticipant($conversation, Auth::id())) {
