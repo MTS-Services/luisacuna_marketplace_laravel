@@ -222,7 +222,7 @@ class ListLayout extends Component
             // STEP 4: Store in Redis for Checkout
             // Lock price in DEFAULT currency for accurate calculations
             // =================================================================
-            Session::driver('redis')->put("checkout_{$token}", [
+            Session::driver('database')->put("checkout_{$token}", [
                 'order_id' => $order->id,
                 'price_locked' => $grandTotalDefault, // Store in default currency
                 'display_price' => $grandTotalDisplay, // For reference

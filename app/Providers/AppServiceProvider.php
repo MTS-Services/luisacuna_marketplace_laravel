@@ -10,6 +10,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use App\Services\DeepLTranslationService;
 use App\Services\EnvEditorService;
+use App\Services\SessionManager;
 use App\Services\SettingsService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -40,6 +41,10 @@ class AppServiceProvider extends ServiceProvider
             return new SettingsService(
                 $app->make(EnvEditorService::class)
             );
+        });
+
+        $this->app->singleton(SessionManager::class, function ($app) {
+            return new SessionManager();
         });
     }
 

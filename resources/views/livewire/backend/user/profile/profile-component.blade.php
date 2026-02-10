@@ -55,14 +55,16 @@
 
                     </div>
                 </div>
-                @if (user()->id === $user->id)
-                    <div class="icon">
-                        <a href="{{ route('user.account-settings') }}" wire:navigate>
-                            <x-flux::icon name="pencil-square" class="w-6 h-6 inline-block stroke-text-text-white"
-                                stroke="currentColor" />
-                        </a>
-                    </div>
-                @endif
+                @auth('web')
+                    @if (user()->id === $user->id)
+                        <div class="icon">
+                            <a href="{{ route('user.account-settings') }}" wire:navigate>
+                                <x-flux::icon name="pencil-square" class="w-6 h-6 inline-block stroke-text-text-white"
+                                    stroke="currentColor" />
+                            </a>
+                        </div>
+                    @endif
+                @endauth
 
 
             </div>

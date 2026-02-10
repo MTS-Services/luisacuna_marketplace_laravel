@@ -125,6 +125,13 @@ if (!function_exists('storage_url')) {
 
             foreach ($urlOrArray as $index => $url) {
 
+                if (filter_var($url, FILTER_VALIDATE_URL)) {
+                    $result .= $url;
+                    $result .= ($count === $itemCount - 1) ? '' : ', ';
+                    $count++;
+                    continue;
+                }
+
                 $result .= ($url && ($url != '' || $url != null))
                     ? $cloudinaryService->getTransformedUrl($url, $transform)
                     : $cloudinaryService->getTransformedUrl($image, $transform);
@@ -135,6 +142,9 @@ if (!function_exists('storage_url')) {
 
             return $result;
         } else {
+            if (filter_var($urlOrArray, FILTER_VALIDATE_URL)) {
+                return $urlOrArray;
+            }
 
             return ($urlOrArray && ($urlOrArray != '' || $urlOrArray != null))
                 ? $cloudinaryService->getTransformedUrl($urlOrArray, $transform)
@@ -147,6 +157,11 @@ if (!function_exists('storage_url')) {
 if (!function_exists('auth_storage_url')) {
     function auth_storage_url($url, ?array $transform = [])
     {
+
+        if (filter_var($url, FILTER_VALIDATE_URL)) {
+            return $url;
+        }
+
         $image = 'default_avatar';
 
         $transform = array_merge(

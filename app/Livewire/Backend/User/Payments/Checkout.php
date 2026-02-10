@@ -74,14 +74,14 @@ class Checkout extends Component
 
     {
         $key = "checkout_{$token}";
-        $sessionKey = Session::driver('redis')->get($key);
+        $sessionKey = Session::driver('database')->get($key);
 
         if (!$sessionKey) {
             abort(404, 'Checkout link is invalid or has expired');
         }
 
         if (now()->timestamp > $sessionKey['expires_at']) {
-            Session::driver('redis')->forget($key);
+            Session::driver('database')->forget($key);
             abort(403, 'Sorry, the checkout link has expired');
         }
 
