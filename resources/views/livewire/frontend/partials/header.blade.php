@@ -76,7 +76,7 @@
                     </button>
                 </div>
 
-                <livewire:backend.user.messages.message-notificaiton-sidebar />
+                <livewire:backend.user.messages.message-notification-sidebar />
 
                 <livewire:backend.user.notifications.notification-sidebar />
             @endauth
