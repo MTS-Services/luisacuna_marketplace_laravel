@@ -38,23 +38,16 @@ return Application::configure(basePath: dirname(__DIR__))
             'guest' => RedirectIfAuthenticated::class, //RedirectIfAuthenticated::class
             'seller' => SellerMiddleware::class,
         ]);
-        $middleware->web(MultiLangSet::class);
-        $middleware->api(MultiLangSet::class);
-
-        // $middleware->append(ValidateDeviceSession::class);
-        // $middleware->group('web', [
-        //     ValidateDeviceSession::class . ':web',
-        // ]);
-    
-        // $middleware->group('admin', [
-        //     ValidateDeviceSession::class . ':admin',
-        // ]);
-        //  $middleware->web(append: [
-        //     ValidateDeviceSession::class . ':web',
-        // ]);
-        $middleware->appendToGroup('web', [
-            ValidateDeviceSession::class,
+        $middleware->web(append: [
+            MultiLangSet::class,
+            \App\Http\Middleware\ValidateSessionExists::class,
         ]);
+        $middleware->api(append: [MultiLangSet::class]);
+
+
+        // $middleware->appendToGroup('web', [
+        //     ValidateDeviceSession::class,
+        // ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
