@@ -3,7 +3,8 @@
         "cursor",
         "copilot",
         "claude_code",
-        "gemini"
+        "gemini",
+        "codex"
     ],
     "guidelines": true,
     "herd_mcp": false,
