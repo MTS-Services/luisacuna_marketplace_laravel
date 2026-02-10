@@ -5,11 +5,10 @@ namespace App\Livewire\Backend\User\Chat;
 use App\Enums\AttachmentType;
 use App\Enums\MessageType;
 use App\Models\Conversation;
+use App\Models\Message as MessageModel;
 use App\Services\Cloudinary\CloudinaryService;
 use App\Services\ConversationService;
-use Cloudinary\Cloudinary;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -18,35 +17,51 @@ class Message extends Component
 {
     use WithFileUploads;
 
-    public ?int $conversationId = null;
+    public ?int $conversationId       = null;
     public ?Conversation $conversation = null;
-    public $messages = [];
-    public string $message = '';
-    public $media = null;
-    public bool $isLoading = false;
-    public ?int $beforeMessageId = null;
-    public bool $isUserAtBottom = true;
-    public ?int $lastPolledMessageId = null; // Track last polled message
+    public array $messages            = [];
+    public string $message            = '';
+    public $media                     = null;
+    public bool $isLoading            = false;
+    public bool $isLoadingConversation = false;
+    public ?int $beforeMessageId      = null;
+    public bool $isUserAtBottom       = true;
+    public ?int $lastPolledMessageId  = null;
+    public bool $hasMoreMessages      = false;
+
+    // Image overlay state
+    public bool $showImageOverlay    = false;
+    public ?string $selectedImageUrl = null;
 
     protected ConversationService $service;
-
     protected CloudinaryService $cloudinaryService;
 
     public function boot(ConversationService $service, CloudinaryService $cloudinaryService)
     {
-        $this->service = $service;
+        $this->service          = $service;
         $this->cloudinaryService = $cloudinaryService;
     }
 
     #[On('conversation-selected')]
     public function loadConversation(int $conversationId)
     {
+        // Skip if same conversation already loaded
         if ($this->conversationId === $conversationId && $this->conversation) {
             return;
         }
 
-        $this->conversationId = $conversationId;
+        // ✅ Reset state instantly - clears old messages so UI feels snappy
+        $this->conversationId      = $conversationId;
+        $this->messages            = [];
+        $this->lastPolledMessageId = null;
+        $this->beforeMessageId     = null;
+        $this->isUserAtBottom      = true;
+        $this->isLoadingConversation = true;
 
+        // Dispatch immediately so JS can show skeleton
+        $this->dispatch('conversation-loading');
+
+        // Load conversation with minimal eager loading for speed
         $this->conversation = Conversation::select('id', 'conversation_uuid', 'subject', 'status')
             ->with(['participants' => function ($query) {
                 $query->select('id', 'conversation_id', 'participant_id', 'participant_type')
@@ -58,10 +73,16 @@ class Message extends Component
             }])
             ->find($conversationId);
 
-        $this->loadMessages();
-        $this->isUserAtBottom = true;
+        if (!$this->conversation) {
+            $this->isLoadingConversation = false;
+            return;
+        }
 
-        // Set the last polled message ID
+        $this->loadMessages();
+
+        $this->isLoadingConversation = false;
+
+        // Track last message id for polling
         if (!empty($this->messages)) {
             $this->lastPolledMessageId = collect($this->messages)->last()->id ?? null;
         }
@@ -83,13 +104,15 @@ class Message extends Component
         );
 
         if ($result) {
-            $this->messages = $result['messages']->reverse()->values()->all();
+            $paginator     = $result['messages'];
+            $loaded        = $paginator->reverse()->values()->all();
+            $this->messages       = $loaded;
+            $this->hasMoreMessages = $paginator->hasMorePages();
         }
     }
 
     /**
-     * ✅ POLLING METHOD - Check for new messages without broadcasting
-     * This method is called by JavaScript setInterval
+     * Polling: returns only new messages since last poll (lightweight)
      */
     public function pollForNewMessages()
     {
@@ -97,45 +120,66 @@ class Message extends Component
             return ['hasNewMessages' => false];
         }
 
-        // Get the ID of the last message we have
-        $lastMessageId = $this->lastPolledMessageId;
+        $lastId = $this->lastPolledMessageId ?? 0;
 
-        if (empty($this->messages)) {
-            $lastMessageId = 0;
-        } elseif (!$lastMessageId) {
-            $lastMessageId = collect($this->messages)->last()->id ?? 0;
+        if (empty($this->messages) && $lastId === 0) {
+            return ['hasNewMessages' => false];
         }
 
-        // Query for new messages after the last polled message
+        // ✅ Optimized: only fetch id + sender_id + timestamps first
         $newMessages = $this->conversation->messages()
-            ->with(['sender', 'attachments', 'readReceipts'])
-            ->where('id', '>', $lastMessageId)
-            ->orderBy('created_at', 'asc')
+            ->with(['sender:id,first_name,last_name,username,avatar', 'attachments', 'readReceipts'])
+            ->where('id', '>', $lastId)
+            ->orderBy('id', 'asc')
             ->get();
 
         if ($newMessages->isNotEmpty()) {
-            // Add new messages to the array
-            foreach ($newMessages as $newMessage) {
-                $this->messages[] = $newMessage;
+            foreach ($newMessages as $newMsg) {
+                $this->messages[] = $newMsg;
             }
 
-            // Update last polled message ID
             $this->lastPolledMessageId = $newMessages->last()->id;
-
-            // Dispatch event to check scroll position
             $this->dispatch('check-scroll-position');
             $this->dispatch('messages-updated');
 
-            // Return info about new messages
-            $lastNewMessage = $newMessages->last();
             return [
-                'hasNewMessages' => true,
+                'hasNewMessages'  => true,
                 'newMessageCount' => $newMessages->count(),
-                'senderId' => $lastNewMessage->sender_id,
+                'senderId'        => $newMessages->last()->sender_id,
             ];
         }
 
         return ['hasNewMessages' => false];
+    }
+
+    /**
+     * Load older messages (infinite scroll upward)
+     */
+    public function loadMoreMessages()
+    {
+        if (empty($this->messages) || !$this->hasMoreMessages) {
+            return;
+        }
+
+        $oldestMessage     = collect($this->messages)->first();
+        $this->beforeMessageId = $oldestMessage->id ?? null;
+
+        if (!$this->beforeMessageId) {
+            return;
+        }
+
+        $result = $this->service->fetchConversationMessages(
+            $this->conversation,
+            perPage: 50,
+            beforeMessageId: $this->beforeMessageId
+        );
+
+        if ($result && $result['messages']->isNotEmpty()) {
+            $olderMessages        = $result['messages']->reverse()->values()->all();
+            $this->messages       = array_merge($olderMessages, $this->messages);
+            $this->hasMoreMessages = $result['messages']->hasMorePages();
+            $this->dispatch('maintain-scroll-position');
+        }
     }
 
     public function sendMessage()
@@ -145,7 +189,9 @@ class Message extends Component
             return;
         }
 
-        if (empty(trim($this->message)) && !$this->media) {
+        $trimmed = trim($this->message);
+
+        if (empty($trimmed) && !$this->media) {
             return;
         }
 
@@ -155,12 +201,9 @@ class Message extends Component
             $attachments = [];
 
             if ($this->media) {
-                if (is_array($this->media)) {
-                    foreach ($this->media as $file) {
-                        $attachments[] = $this->uploadFile($file);
-                    }
-                } else {
-                    $attachments[] = $this->uploadFile($this->media);
+                $files = is_array($this->media) ? $this->media : [$this->media];
+                foreach ($files as $file) {
+                    $attachments[] = $this->uploadFile($file);
                 }
             }
 
@@ -168,20 +211,20 @@ class Message extends Component
 
             $sentMessage = $this->service->sendMessage(
                 conversation: $this->conversation,
-                messageBody: trim($this->message) ?: 'Sent an attachment',
+                messageBody: $trimmed ?: 'Sent an attachment',
                 messageType: $messageType,
                 attachments: $attachments
             );
 
             if ($sentMessage) {
-                $this->messages[] = $sentMessage;
+                // Load with relationships for display
+                $sentMessage->load(['sender:id,first_name,last_name,username,avatar', 'attachments', 'readReceipts']);
 
-                // Update last polled message ID
+                $this->messages[]          = $sentMessage;
                 $this->lastPolledMessageId = $sentMessage->id;
-
-                $this->message = '';
-                $this->media = null;
-                $this->isUserAtBottom = true;
+                $this->message             = '';
+                $this->media               = null;
+                $this->isUserAtBottom      = true;
 
                 $this->dispatch('refresh-conversations');
                 $this->dispatch('scroll-to-bottom');
@@ -198,23 +241,16 @@ class Message extends Component
 
     protected function uploadFile($file): array
     {
-        
-        
-        $uploadedFile = $this->cloudinaryService->upload($file, ['folder'=> "chats"]);
-        $path = $uploadedFile->publicId;
-    
-        
+        $uploaded  = $this->cloudinaryService->upload($file, ['folder' => 'chats']);
+        $path      = $uploaded->publicId;
+        $mimeType  = $file->getMimeType();
 
-
-
-
-        $mimeType = $file->getMimeType();
         $attachmentType = AttachmentType::FILE;
-        $thumbnailPath = null;
+        $thumbnailPath  = null;
 
         if (str_starts_with($mimeType, 'image/')) {
             $attachmentType = AttachmentType::IMAGE;
-            $thumbnailPath = $this->createThumbnail($file);
+            $thumbnailPath  = $this->createThumbnail($file);
         } elseif (str_starts_with($mimeType, 'video/')) {
             $attachmentType = AttachmentType::VIDEO;
         } elseif (str_starts_with($mimeType, 'audio/')) {
@@ -222,8 +258,8 @@ class Message extends Component
         }
 
         return [
-            'type' => $attachmentType,
-            'path' => $path,
+            'type'      => $attachmentType,
+            'path'      => $path,
             'thumbnail' => $thumbnailPath,
         ];
     }
@@ -231,19 +267,13 @@ class Message extends Component
     protected function createThumbnail($file): ?string
     {
         try {
-          
-            $uploadedFile = $this->cloudinaryService->upload($file, ['folder'=> "chats/thumbnails"]);
-            $thumbnailPath = $uploadedFile->publicId;
-            return $thumbnailPath;
+            $uploaded = $this->cloudinaryService->upload($file, ['folder' => 'chats/thumbnails']);
+            return $uploaded->publicId;
         } catch (\Exception $e) {
             return null;
         }
     }
 
-    /**
-     * ✅ BROADCASTING METHOD - Handle new message from WebSocket event
-     * This is called when using Pusher/Reverb broadcasting
-     */
     #[On('new-message-received')]
     public function handleNewMessageReceived($messageData)
     {
@@ -251,15 +281,12 @@ class Message extends Component
             return;
         }
 
-        $newMessage = \App\Models\Message::with(['sender', 'attachments', 'readReceipts'])
+        $newMessage = MessageModel::with(['sender:id,first_name,last_name,username,avatar', 'attachments', 'readReceipts'])
             ->find($messageData['id']);
 
         if ($newMessage) {
-            $this->messages[] = $newMessage;
-
-            // Update last polled message ID (in case user switches to polling)
+            $this->messages[]          = $newMessage;
             $this->lastPolledMessageId = $newMessage->id;
-
             $this->dispatch('check-scroll-position');
         }
     }
@@ -272,15 +299,14 @@ class Message extends Component
 
         $unreadMessages = $this->conversation->messages()
             ->whereIn('id', $visibleMessageIds)
-            ->whereDoesntHave('readReceipts', function ($query) {
-                $query->where('reader_id', Auth::id())
-                    ->where('reader_type', \App\Models\User::class);
-            })
+            ->whereDoesntHave('readReceipts', fn($q) => $q
+                ->where('reader_id', Auth::id())
+                ->where('reader_type', \App\Models\User::class))
             ->where('sender_id', '!=', Auth::id())
             ->get();
 
-        foreach ($unreadMessages as $message) {
-            $this->service->markMessageAsRead($message);
+        foreach ($unreadMessages as $msg) {
+            $this->service->markMessageAsRead($msg);
         }
 
         if ($unreadMessages->isNotEmpty()) {
@@ -288,47 +314,52 @@ class Message extends Component
         }
     }
 
-    public function loadMoreMessages()
-    {
-        if (empty($this->messages)) {
-            return;
-        }
-
-        $oldestMessage = collect($this->messages)->first();
-        $this->beforeMessageId = $oldestMessage->id ?? null;
-
-        if ($this->beforeMessageId) {
-            $result = $this->service->fetchConversationMessages(
-                $this->conversation,
-                perPage: 50,
-                beforeMessageId: $this->beforeMessageId
-            );
-
-            if ($result && $result['messages']->isNotEmpty()) {
-                $olderMessages = $result['messages']->reverse()->values()->all();
-                $this->messages = array_merge($olderMessages, $this->messages);
-                $this->dispatch('maintain-scroll-position');
-            }
-        }
-    }
-
     public function deleteMessage(int $messageId)
     {
         try {
-            $message = \App\Models\Message::find($messageId);
+            $msg = MessageModel::find($messageId);
 
-            if ($message && $this->service->deleteMessage($message)) {
+            if ($msg && $this->service->deleteMessage($msg)) {
                 $this->messages = collect($this->messages)
-                    ->reject(fn($msg) => $msg->id === $messageId)
+                    ->reject(fn($m) => $m->id === $messageId)
                     ->values()
                     ->all();
-
                 $this->dispatch('success', message: 'Message deleted');
             } else {
                 $this->dispatch('error', message: 'Failed to delete message');
             }
         } catch (\Exception $e) {
             $this->dispatch('error', message: 'Error deleting message');
+        }
+    }
+
+    public function showAttachmentImage(string $url)
+    {
+        $this->showImageOverlay  = true;
+        $this->selectedImageUrl = $url;
+    }
+
+    // Keep old name for backward compat with blade
+    public function ShowAttachemntImage(string $url)
+    {
+        $this->showAttachmentImage($url);
+    }
+
+    public function closeImageOverlay()
+    {
+        $this->showImageOverlay  = false;
+        $this->selectedImageUrl = null;
+        $this->dispatch('image-overlay-closed');
+    }
+
+    public function removeMedia(int $index)
+    {
+        if (is_array($this->media)) {
+            $mediaArray = $this->media;
+            array_splice($mediaArray, $index, 1);
+            $this->media = empty($mediaArray) ? null : $mediaArray;
+        } else {
+            $this->media = null;
         }
     }
 
@@ -342,25 +373,6 @@ class Message extends Component
             ->where('participant_id', '!=', Auth::id())
             ->first()?->participant;
     }
-
-// Add these properties
-public $showImageOverlay = false;
-public $selectedImageUrl = null;
-
-// Add these methods
-public function ShowAttachemntImage($encryptedUrl)
-{
-    $this->showImageOverlay = true;
-    $this->selectedImageUrl = $encryptedUrl;
-}
-
-public function closeImageOverlay()
-{
-    $this->showImageOverlay = false;
-    $this->selectedImageUrl = null;
-    $this->dispatch('image-overlay-closed');
-}
-
 
     public function render()
     {

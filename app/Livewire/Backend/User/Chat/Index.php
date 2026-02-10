@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\User\Chat;
 
+use App\Models\Conversation;
 use App\Services\ConversationService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
@@ -14,8 +15,12 @@ class Index extends Component
     #[Url(as: 'search')]
     public ?string $searchTerm = null;
 
-    #[Url(as: 'conversation')]
-    public ?string $selectedConversationId = null;
+    // ✅ Use conversation_uuid in URL (hides real DB id)
+    #[Url(as: 'c')]
+    public ?string $selectedConversationUuid = null;
+
+    // Internal resolved id (never exposed in URL)
+    public ?int $selectedConversationId = null;
 
     public bool $unreadOnly = false;
 
@@ -28,6 +33,27 @@ class Index extends Component
     public function boot(ConversationService $service)
     {
         $this->service = $service;
+    }
+
+    public function mount()
+    {
+        // If UUID provided in URL, resolve to internal id on load
+        if ($this->selectedConversationUuid) {
+            $conversation = Conversation::where('conversation_uuid', $this->selectedConversationUuid)
+                ->whereHas('participants', fn($q) => $q
+                    ->where('participant_id', Auth::id())
+                    ->where('is_active', true))
+                ->select('id', 'conversation_uuid')
+                ->first();
+
+            if ($conversation) {
+                $this->selectedConversationId = $conversation->id;
+            }
+        }
+
+        if ($this->conversations->isNotEmpty()) {
+            $this->lastConversationHash = $this->generateConversationHash($this->conversations);
+        }
     }
 
     #[Computed]
@@ -49,12 +75,29 @@ class Index extends Component
         );
     }
 
-    public function selectConversation(int $conversationId)
+    /**
+     * Select conversation by UUID (safe, hides DB id)
+     */
+    public function selectConversation(string $conversationUuid)
     {
-        $this->selectedConversationId = $conversationId;
-        $this->dispatch('conversation-selected', conversationId: $conversationId);
-    }
+        // Look up the real id server-side only
+        $conversation = Conversation::where('conversation_uuid', $conversationUuid)
+            ->whereHas('participants', fn($q) => $q
+                ->where('participant_id', Auth::id())
+                ->where('is_active', true))
+            ->select('id', 'conversation_uuid')
+            ->first();
 
+        if (!$conversation) {
+            return;
+        }
+
+        $this->selectedConversationUuid = $conversationUuid;
+        $this->selectedConversationId   = $conversation->id;
+
+        // Dispatch with internal id (internal only, not in URL)
+        $this->dispatch('conversation-selected', conversationId: $conversation->id);
+    }
 
     public function pollForConversationUpdates()
     {
@@ -68,39 +111,29 @@ class Index extends Component
         if ($this->lastConversationHash !== null && $this->lastConversationHash !== $currentHash) {
             unset($this->conversations);
             $this->lastConversationHash = $currentHash;
-
             return ['hasUpdates' => true];
         }
 
         $this->lastConversationHash = $currentHash;
-
         return ['hasUpdates' => false];
     }
 
-    /**
-     * Generate a hash representing the current state of conversations
-     */
     protected function generateConversationHash($conversations): string
     {
         if ($conversations->isEmpty()) {
             return '';
         }
 
-        $data = $conversations->map(function ($conversation) {
-            return implode('|', [
-                $conversation->id,
-                $conversation->messages->first()?->id ?? 0,
-                $conversation->messages->first()?->created_at?->timestamp ?? 0,
-                $conversation->unread_count ?? 0,
-            ]);
-        })->implode('-');
+        $data = $conversations->map(fn($c) => implode('|', [
+            $c->id,
+            $c->messages->first()?->id ?? 0,
+            $c->messages->first()?->created_at?->timestamp ?? 0,
+            $c->unread_count ?? 0,
+        ]))->implode('-');
 
         return md5($data);
     }
 
-    /**
-     * Get filters as array
-     */
     protected function getFiltersArray(): array
     {
         $filters = [];
@@ -115,7 +148,6 @@ class Index extends Component
 
         return $filters;
     }
-
 
     #[On('new-message')]
     public function handleNewMessage()
@@ -136,11 +168,9 @@ class Index extends Component
     {
         try {
             $conversations = $this->service->fetchConversationList();
-
             foreach ($conversations as $conversation) {
                 $this->service->markMessagesAsRead($conversation, Auth::id());
             }
-
             $this->dispatch('success', message: 'All messages marked as read');
             $this->refreshConversations();
         } catch (\Exception $e) {
@@ -168,13 +198,6 @@ class Index extends Component
     public function getUnreadCountProperty()
     {
         return $this->service->getUnreadCount();
-    }
-
-    public function mount()
-    {
-        if ($this->conversations->isNotEmpty()) {
-            $this->lastConversationHash = $this->generateConversationHash($this->conversations);
-        }
     }
 
     public function render()
