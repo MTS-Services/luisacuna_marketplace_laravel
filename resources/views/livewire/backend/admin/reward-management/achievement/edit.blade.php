@@ -41,6 +41,7 @@
                         wire:model="form.achievement_type_id">
                         <option value="">{{ __('Select Achievement Type') }}</option>
                         @foreach ($achievementTypes as $achievementType)
+                        @if($achievementType->id != 1 ) @continue @endif
                             <option value="{{ $achievementType->id }}">{{ $achievementType->name }}</option>
                         @endforeach
                     </x-ui.select>

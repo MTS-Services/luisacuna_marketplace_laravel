@@ -26,8 +26,8 @@
                 <h2 class="text-2xl lg:text-5xl md:text-4xl font-medium p-4 text-text-white">
                     {{ __('Confirm your Gmail') }}</h2>
                 <p class="text-text-white lg:text-xl text-base">
-                    {{ __(' We have sent a code in an Email message to ex**@gmaol.co To confirm your account, please enter the
-                                        code.') }}
+                    {{ __(' We have sent a code in an Email message to') }} {{ $this->getMaskedEmail() }}
+                    {{ 'To confirm your account, please enter the code.' }}
                 </p>
             </div>
 
@@ -68,6 +68,11 @@
                     {{ __('Verify') }}
                 </x-ui.button>
             </div>
+            <div class=" flex justify-center mt-3 sm:mt-7">
+                <x-ui.button type="submit" href="{{ route('home') }}" variant="secondary" class="w-auto py-2!">
+                    {{ __('Back') }}
+                </x-ui.button>
+            </div>
 
             <!-- Divider -->
             <div class="flex items-center justify-center space-x-2">
@@ -77,7 +82,7 @@
             </div>
 
             <!-- Social login -->
-            <div class="flex justify-center gap-4">
+            {{-- <div class="flex justify-center gap-4">
                 <button type="button" class="w-12 h-12 flex items-center justify-center bg-white rounded-md">
                     <img src="{{ asset('assets/icons/icons8-google.svg') }}" class="w-6 h-6" alt="Google" />
                 </button>
@@ -87,14 +92,14 @@
                 <button type="button" class="w-12 h-12 flex items-center justify-center bg-white rounded-md">
                     <img src="{{ asset('assets/icons/icons8-facebook.svg') }}" class="w-6 h-6" alt="Facebook" />
                 </button>
-            </div>
+            </div> --}}
 
             <!-- Footer -->
 
 
             <div class="text-center text-text-white text-sm">
                 {{ __('Don\'t have an account?') }}
-                <a href="{{ route('register.signUp') }}" class="text-zinc-400 hover:underline">{{__('Sign up')}}</a>
+                <a href="{{ route('register.signUp') }}" class="text-zinc-400 hover:underline">{{ __('Sign up') }}</a>
             </div>
         </form>
     </div>

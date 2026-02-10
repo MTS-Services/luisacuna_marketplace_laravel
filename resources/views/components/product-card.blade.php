@@ -11,7 +11,7 @@
                     class="w-full h-full object-cover rounded-lg">
             </div>
             <div class="absolute top-2 right-1.5 bg-bg-hover font-normal text-white px-4 py-1 rounded-full text-sm ">
-                <p class="text-text-primary mb-0">{{ $data->products_count }} {{ __('offers') }}</p>
+                <p class="text-text-primary mb-0">{{ count($data->products) }} {{ __('offers') }}</p>
             </div>
         </div>
     </a>
@@ -29,7 +29,7 @@
                     {{ $data->translatedName(app()->getLocale()) ?? $data->name }}
                 </h3>
                 @if ($categorySlug == 'currency' || $categorySlug == 'gift-card')
-                    <p class="text-pink-500 mb-0">{{ $data->products_count }} {{ __('offers') }}</p>
+                    <p class="text-pink-500 mb-0">{{ count($data->products) }} {{ __('offers') }}</p>
                 @endif
             </div>
         </div>

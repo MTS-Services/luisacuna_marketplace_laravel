@@ -222,6 +222,17 @@ class Game extends AuditBaseModel implements Auditable
             });
         });
 
+        //Only get game who has prouducts
+
+        $query->when($filters['hasProduct'] ?? null, function (Builder $query) {
+            $query->whereHas('products');
+        });
+        // Get Only Active 
+
+        $query->when($filters['stats'] ?? null, function (Builder $query, $status) {
+            $query->where('status', $status);
+        });
+
         return $query;
     }
 
@@ -291,5 +302,13 @@ class Game extends AuditBaseModel implements Auditable
         $this->appends = array_merge(parent::getAppends(), [
             //
         ]);
+    }
+    public function hasRelatedData(): bool
+    {
+        return $this->gameCategories()->exists()
+            || $this->platforms()->exists()
+            || $this->tags()->exists()
+            || $this->gameConfig()->exists()
+            || $this->products()->exists();
     }
 }

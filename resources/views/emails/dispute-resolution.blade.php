@@ -46,7 +46,7 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    {{-- <div class="container">
         <p>Hello {{ $userName ?? 'User' }},</p>
 
         <div class="title">
@@ -86,6 +86,9 @@
                 © {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
             </p>
         </div>
-    </div>
+    </div> --}} 
+    {!! 
+        $template ?? ''
+    !!}
 </body>
 </html>

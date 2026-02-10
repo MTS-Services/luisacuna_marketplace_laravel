@@ -83,7 +83,7 @@ class GameService
         // // Normal Eloquent Query
         return $this->model->query()
             ->filter($filters)
-            ->with(['categories', 'gameTranslations' => function ($query) {
+            ->with(['categories', 'products',  'gameTranslations' => function ($query) {
                 $query->where('language_id', get_language_id());
             }])
             ->orderBy($sortField, $sortDirection)
@@ -242,6 +242,10 @@ class GameService
     {
         $game = $this->findData(value: $id, column: 'id', withTrashed: true);
         if (!$game) return false;
+
+        if ($game->hasRelatedData()) {
+            return false;
+        }
 
         if ($force) {
             return $game->forceDelete();

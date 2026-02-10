@@ -2,16 +2,16 @@
     <div class="container">
         <div class="flex gap-4 items-center pt-10">
             <x-phosphor name="less-than" variant="regular" class="w-4 h-4 text-zinc-400" />
-            <h2 class="text-text-white text-base">
+            <a wire:navigate  href="{{ url()->previous() }}" class="text-text-white text-base">
                 {{ __('Back') }}
-            </h2>
+            </a>
         </div>
         <div class="bg-bg-secondary p-4 sm:p-10 md:p-20 rounded-lg mt-10">
             <div class="flex mt-7">
                 <div class="flex gap-2">
                     <div>
                         <div class="w-10 h-10 md:w-16 md:h-16">
-                            <img src="{{ $data?->source?->game?->logo }}" alt="{{ $data?->source?->game?->translatedName(app()->getLocale()) }}"
+                            <img src="{{ storage_url($data?->source?->game?->logo) }}" alt="{{ $data?->source?->game?->translatedName(app()->getLocale()) }}"
                                 class="rounded" />
                         </div>
                     </div>
@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     <div>
-                        <h2 class="text-text-white text-base sm:text-2xl font-semibold line-clamp-1">
+                        <h2 class="text-text-white text-base sm:text-2xl font-semibold line-clamp-1 ">
                             {{ $data?->source?->translatedName(app()->getLocale()) }}
                         </h2>
                     </div>

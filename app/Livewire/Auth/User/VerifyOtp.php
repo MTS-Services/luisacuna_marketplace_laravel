@@ -25,6 +25,7 @@ class VerifyOtp extends Component
     public ?int $resendCooldown = null;
     public int $resendAttempts = 0;
     public bool $resendLimitReached = false;
+    public $email;
 
     public function mount()
     {
@@ -37,6 +38,9 @@ class VerifyOtp extends Component
         if (is_email_verified(user())) {
             return redirect()->route('user.order.purchased-orders');
         }
+
+
+         $this->email = user()->email;
 
         // Load resend attempts from cache
         $this->loadResendAttempts();
@@ -260,6 +264,26 @@ class VerifyOtp extends Component
     protected function resendThrottleKey(): string
     {
         return 'otp-resend:' . user()->id . ':' . request()->ip();
+    }
+
+    public function getMaskedEmail(): string
+    {
+        if (!$this->email) {
+            return '';
+        }
+
+        $parts = explode('@', $this->email);
+        $name = $parts[0];
+        $domain = $parts[1] ?? '';
+
+        $nameLength = strlen($name);
+        if ($nameLength <= 3) {
+            $maskedName = str_repeat('*', $nameLength);
+        } else {
+            $maskedName = substr($name, 0, 3) . str_repeat('*', $nameLength - 3);
+        }
+
+        return $maskedName . '@' . $domain;
     }
 
     public function render()

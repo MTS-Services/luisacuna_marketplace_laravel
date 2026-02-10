@@ -66,7 +66,7 @@ class EmailTemplate extends AuditBaseModel implements Auditable
                 ->orWhere('subject', 'like', "%{$search}%");
         });
     }
-    public function scopeFilder($query, array $filters)
+    public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? null, fn($q, $search) => $q->search($search));
         $query->when($filters['key'] ?? null, fn($q, $key) => $q->where('key', $key));

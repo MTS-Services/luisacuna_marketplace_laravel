@@ -25,6 +25,8 @@ class GridLayout extends Component
 
     protected $datas;
 
+    public $onlineOnly = false;
+
     // This Serach
     #[Url('q')]
     public $search = '';
@@ -40,7 +42,7 @@ class GridLayout extends Component
     public $min_price = 0;
     #[Url()]
     public $max_price = 0;
-    
+
     #[Url('filter')]
     public $filter_by_tag = '';
 
@@ -111,6 +113,10 @@ class GridLayout extends Component
         $this->tags = $shuffledTags;
     }
 
+    public function toggleOnlineFilter()
+    {
+        $this->onlineOnly = !$this->onlineOnly;
+    }
 
 
     public function render()
@@ -129,7 +135,11 @@ class GridLayout extends Component
             'max_price' => $this->max_price,
             'filter_by_tag' => $this->filter_by_tag,
             'sort_direction' => $this->sortDirection,
+            'online_only' => $this->onlineOnly,
         ]);
+
+
+
         $this->datas->load('user');
 
         $this->paginationData($this->datas);
@@ -149,7 +159,8 @@ class GridLayout extends Component
             'category_id',
             'min_price',
             'max_price',
-            'filter_by_tag'
+            'filter_by_tag',
+            'onlineOnly',
         ]);
     }
 

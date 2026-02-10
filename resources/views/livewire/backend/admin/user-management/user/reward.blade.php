@@ -38,12 +38,6 @@
                 <div>
                     <h2
                         class="text-text-text-white text-2xl md:text-3xl font-bold tracking-tight flex items-center gap-3">
-                        <span class="w-10 h-10 rounded-xl flex items-center justify-center">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                        </span>
                         {{ __('Add Points') }}
                     </h2>
                 </div>
@@ -59,44 +53,31 @@
             <!-- Form -->
             <form wire:submit.prevent="submitPoints" class="space-y-6">
 
-                <!-- User Selection -->
-                <div class="glass-card rounded-xl p-6">
-                    <label class="block text-text-white text-sm font-medium mb-3">
-                        {{ __('Select Type') }}
-                    </label>
-                    <select wire:model="type"
-                        class="w-full bg-zinc-800/50 border border-zinc-700 rounded-lg px-4 py-3 text-text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option class="bg-zinc-800" value="">{{ __('Choose a type') }}</option>
+
+                <div class="w-full">
+                    <x-ui.label value="Type Select" class="mb-1" />
+                    <x-ui.select wire:model="type">
+                        <option value="">{{ __('Choose a type') }}</option>
                         @foreach ($types as $type)
-                            <option class="bg-zinc-800" value="{{ $type['value'] }}">{{ $type['label'] }}</option>
+                            <option value="{{ $type['value'] }}">{{ $type['label'] }}</option>
                         @endforeach
-                    </select>
-                    @error('type')
-                        <p class="text-pink-500 text-xs mt-2">{{ $message }}</p>
-                    @enderror
+                    </x-ui.select>
+                    <x-ui.input-error :messages="$errors->get('type')" />
                 </div>
 
-
-                <!-- Points Amount -->
-                <div class="glass-card rounded-xl p-6">
-                    <label class="block text-text-white text-sm font-medium mb-3">
-                        {{ __('Points Amount') }}
-                    </label>
-                    <input type="number" wire:model="points" min="1" step="1"
-                        class="w-full bg-zinc-800/50 border border-zinc-700 rounded-lg px-4 py-3 text-text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="{{ __('Enter points amount') }}">
-                    @error('points')
-                        <p class="text-pink-500 text-xs mt-2">{{ $message }}</p>
-                    @enderror
+                <div class="w-full">
+                    <x-ui.label value="Points Amount" class="mb-1" />
+                    <x-ui.input type="text" placeholder="Enter points amount" wire:model="points" />
+                    <x-ui.input-error :messages="$errors->get('points')" />
                 </div>
 
                 <!-- Notes -->
-                <div class="glass-card rounded-xl p-6">
+                <div class="w-full">
                     <label class="block text-text-white text-sm font-medium mb-3">
                         {{ __('Notes') }}
                     </label>
                     <textarea wire:model="notes" rows="4"
-                        class="w-full bg-zinc-800/50 border border-zinc-700 rounded-lg px-4 py-3 text-text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                        class="w-full shadow-sm px-3 py-2 bg-transparent dark:bg-transparent dark:text-zinc-100 text-zinc-900 rounded-md border border-zinc-300 focus:border-accent focus:ring-accent focus:ring-1 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 bg-white text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-offset-0'"
                         placeholder="{{ __('Enter reason for adding/deducting points') }}"></textarea>
                     @error('notes')
                         <p class="text-pink-500 text-xs mt-2">{{ $message }}</p>
@@ -113,8 +94,7 @@
                     </x-ui.button>
 
                     <x-ui.button class="w-auto! py-2!" type="submit">
-                        <span
-                            class="text-text-btn-primary group-hover:text-text-btn-secondary">
+                        <span class="text-text-btn-primary group-hover:text-text-btn-secondary">
                             {{ __('Submit') }}
                         </span>
                     </x-ui.button>

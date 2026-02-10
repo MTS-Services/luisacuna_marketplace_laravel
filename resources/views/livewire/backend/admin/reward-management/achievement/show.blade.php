@@ -50,10 +50,10 @@
                                 <p class="text-slate-400 text-lg font-bold">{{ $data->title }}</p>
                             </div>
 
-                            <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
+                            {{-- <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('Rank') }}</p>
                                 <p class="text-slate-400 text-lg font-bold">{{ $data->rank->name }}</p>
-                            </div>
+                            </div> --}}
 
                             <div class="bg-slate-50 dark:bg-gray-700 rounded-lg p-4 border border-slate-200">
                                 <p class="text-text-white text-xs font-semibold mb-2">{{ __('Achievement Type') }}</p>

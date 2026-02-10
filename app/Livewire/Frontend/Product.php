@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Frontend;
 
+use App\Enums\GameStatus;
+use App\Models\Game;
 use App\Services\CategoryService;
 use Livewire\Component;
 use App\Services\GameService;
@@ -37,7 +39,6 @@ class Product extends Component
 
         $games = $this->getGames();
 
-       
         $category = $this->categoryService->findData($this->categorySlug, 'slug');
 
         $this->paginationData($games);
@@ -48,7 +49,8 @@ class Product extends Component
             'relations' => ['tags', 'categories'],
             'sort_field' => 'name',
             'sort_direction' => 'asc',
-            'withProductCount' => true
+            'withProductCount' => true,
+            'status' => GameStatus::ACTIVE,
         ]);
 
         if ($this->categorySlug == 'boosting' || $this->categorySlug == 'coaching' || $this->categorySlug == 'top-up') {
@@ -80,7 +82,9 @@ class Product extends Component
                 'category' => $this->categorySlug,
                 'relations' => ['tags', 'categories'],
                 'withProductCount' => true,
+                'hasProduct' => true,
                 'search' => $this->search,
+                'status' => GameStatus::ACTIVE,
             ];
             if($this->sortOrder){
                 $params['sort_field'] = 'name';

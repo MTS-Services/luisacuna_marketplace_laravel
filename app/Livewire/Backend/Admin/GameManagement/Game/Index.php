@@ -142,7 +142,11 @@ class Index extends Component
                 $this->warning('No data selected');
                 return;
             }
-            $this->service->delete(decrypt($this->deleteId));
+          $resposne =   $this->service->delete(decrypt($this->deleteId));
+          if(!$resposne)  {
+              $this->error('Cannot delete this category. It has associated data in the system.');
+              return;
+          }
             $this->reset(['deleteId', 'showDeleteModal']);
 
             $this->success('Data deleted successfully');

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\CustomNotificationType;
+use App\Enums\EmailTemplateEnum;
 use App\Enums\MessageType;
 use App\Models\Order;
 use App\Models\UserPoint;
@@ -11,6 +12,7 @@ use App\Jobs\Order\DisputeResolutionEmailJob;
 use App\Models\Achievement;
 use App\Models\Admin;
 use App\Models\DisputeOrder;
+use App\Models\EmailTemplate;
 use App\Models\User;
 
 use App\Models\UserAchievementProgress;
@@ -256,10 +258,14 @@ class OrderService
         //     $order->user->email,
         //     $order->user->full_name
         // );
+
+        
+
         DisputeResolutionEmailJob::dispatch(
             $order->id,
             $order->source?->user->email,
-            $order->source?->user->full_name
+            $order->source?->user->full_name,
+            EmailTemplateEnum::ORDER_DISPUTE_UPDATE->value, 
         );
     }
 

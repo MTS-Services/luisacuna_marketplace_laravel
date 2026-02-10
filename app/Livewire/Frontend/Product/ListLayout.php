@@ -29,6 +29,7 @@ class ListLayout extends Component
     public $gameTags;
 
     public $displayCurrency;
+    public $onlineOnly = false;
 
 
     #[Url(as: 'asc')]
@@ -66,13 +67,13 @@ class ListLayout extends Component
     protected $productService, $feeSettingsService, $orderService, $gameService, $platformService, $currencyService;
 
     public function boot(
-    ProductService $productService, 
-    OrderService $orderService,
-    GameService $gameService,
-    PlatformService $platformService,
-    CurrencyService $currencyService,
-    FeeSettingsService $feeSettingsService)
-    {
+        ProductService $productService,
+        OrderService $orderService,
+        GameService $gameService,
+        PlatformService $platformService,
+        CurrencyService $currencyService,
+        FeeSettingsService $feeSettingsService
+    ) {
         $this->productService = $productService;
         $this->orderService = $orderService;
         $this->gameService = $gameService;
@@ -81,10 +82,15 @@ class ListLayout extends Component
         $this->feeSettingsService = $feeSettingsService;
     }
 
+
+    public function toggleOnlineFilter()
+    {
+        $this->onlineOnly = !$this->onlineOnly;
+    }
     public function mount($gameSlug, $categorySlug)
     {
 
-         // Get user's selected currency or default
+        // Get user's selected currency or default
         $currentCurrency = $this->currencyService->getCurrentCurrency();
         $this->displayCurrency = $currentCurrency->code;
         $this->displaySymbol = $currentCurrency->symbol;
@@ -291,6 +297,11 @@ class ListLayout extends Component
         }
         if ($this->sellerFilter === 'top_sold') {
             $filters['top_sold'] = true;
+        }
+
+        // Add online filter
+        if ($this->onlineOnly) {
+            $filters['online_only'] = true;
         }
 
         $otherSellers = $this->productService->getSellers(11, $filters);
