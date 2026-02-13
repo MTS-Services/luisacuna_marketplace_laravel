@@ -14,7 +14,7 @@ class Logout
     {
         // Auth::guard('web')->user()->logoutCurrentDevice();
         Auth::guard('web')->logout();
-        Session::invalidate();
+        // Session::invalidate();
         Session::regenerateToken();
 
         return redirect('/');

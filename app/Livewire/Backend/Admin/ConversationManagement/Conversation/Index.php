@@ -19,14 +19,14 @@ class Index extends Component
     #[Url(as: 'conversation')]
     public ?int $selectedConversationId = null;
 
-    public ?string $statusFilter = null;
-    public bool $adminInvolvedOnly = false;
-    public ?string $dateFrom = null;
-    public ?string $dateTo = null;
+    public ?string $statusFilter      = null;
+    public bool    $adminInvolvedOnly = false;
+    public ?string $dateFrom          = null;
+    public ?string $dateTo            = null;
 
     protected ConversationService $conversationService;
 
-    public function boot(ConversationService $service)
+    public function boot(ConversationService $service): void
     {
         $this->conversationService = $service;
     }
@@ -60,43 +60,43 @@ class Index extends Component
     }
 
     #[Computed]
-    public function dashboardStats()
+    public function dashboardStats(): array
     {
         return $this->conversationService->getAdminDashboardStats();
     }
 
-    public function selectConversation(int $conversationId)
+    public function selectConversation(int $conversationId): void
     {
         $this->selectedConversationId = $conversationId;
         $this->dispatch('admin-conversation-selected', conversationId: $conversationId);
     }
 
     #[On('refresh-admin-conversations')]
-    public function refreshConversations()
+    public function refreshConversations(): void
     {
         unset($this->conversations);
         $this->resetPage();
     }
 
-    public function updatedSearchTerm()
+    public function updatedSearchTerm(): void
     {
         unset($this->conversations);
         $this->resetPage();
     }
 
-    public function updatedStatusFilter()
+    public function updatedStatusFilter(): void
     {
         unset($this->conversations);
         $this->resetPage();
     }
 
-    public function updatedAdminInvolvedOnly()
+    public function updatedAdminInvolvedOnly(): void
     {
         unset($this->conversations);
         $this->resetPage();
     }
 
-    public function clearFilters()
+    public function clearFilters(): void
     {
         $this->reset(['searchTerm', 'statusFilter', 'adminInvolvedOnly', 'dateFrom', 'dateTo']);
         unset($this->conversations);

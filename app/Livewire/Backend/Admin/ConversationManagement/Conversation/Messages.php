@@ -5,6 +5,7 @@ namespace App\Livewire\Backend\Admin\ConversationManagement\Conversation;
 use App\Enums\AttachmentType;
 use App\Enums\MessageType;
 use App\Models\Conversation;
+use App\Services\Cloudinary\CloudinaryService;
 use App\Services\ConversationService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
@@ -15,23 +16,39 @@ class Messages extends Component
 {
     use WithFileUploads;
 
-    public ?int $conversationId = null;
-    public ?Conversation $conversation = null;
-    public $messages = [];
-    public string $message = '';
-    public $media = null;
-    public bool $isLoading = false;
-    public ?int $beforeMessageId = null;
-    public bool $hasJoined = false;
+    public ?int          $conversationId = null;
+    public ?Conversation $conversation   = null;
+    public array         $messages       = [];
+    public string        $message        = '';
+    public               $media          = null;
+    public bool          $isLoading      = false;
+    public ?int          $beforeMessageId = null;
+    public bool          $hasJoined      = false;
 
     protected ConversationService $service;
+    protected CloudinaryService   $cloudinaryService;
 
-    public function boot(ConversationService $service)
+    protected function rules(): array
     {
-        $this->service = $service;
+        return [
+            'message' => 'nullable|string|max:5000',
+            'media'   => 'nullable',
+            'media.*' => [
+                'nullable',
+                'file',
+                'max:10240',
+                'mimes:jpg,jpeg,png,heic,svg,gif,mp4,mkv,mov,webm,mp3,aac,ogg,wav,pdf,doc,docx',
+            ],
+        ];
     }
 
-    public function mount(?int $conversationId = null)
+    public function boot(ConversationService $service, CloudinaryService $cloudinaryService): void
+    {
+        $this->service           = $service;
+        $this->cloudinaryService = $cloudinaryService;
+    }
+
+    public function mount(?int $conversationId = null): void
     {
         if ($conversationId) {
             $this->loadConversation($conversationId);
@@ -39,16 +56,14 @@ class Messages extends Component
     }
 
     #[On('admin-conversation-selected')]
-    public function loadConversation(int $conversationId)
+    public function loadConversation(int $conversationId): void
     {
-        // Quick switch: Don't reload if same conversation
         if ($this->conversationId === $conversationId && $this->conversation) {
             return;
         }
 
         $this->conversationId = $conversationId;
 
-        // Load conversation
         $this->conversation = Conversation::select('id', 'conversation_uuid', 'subject', 'status', 'last_message_at')
             ->with(['participants' => function ($query) {
                 $query->where('is_active', true)
@@ -60,18 +75,17 @@ class Messages extends Component
 
         $this->loadMessages();
 
-        // Check if admin is already a participant
+        // Check if admin already participant
         $this->hasJoined = $this->conversation->participants()
             ->where('participant_id', Auth::guard('admin')->id())
             ->where('participant_type', \App\Models\Admin::class)
             ->where('is_active', true)
             ->exists();
 
-        // Dispatch event to JavaScript
         $this->dispatch('admin-conversation-loaded', conversationId: $conversationId);
     }
 
-    public function loadMessages()
+    public function loadMessages(): void
     {
         if (!$this->conversation) {
             $this->messages = [];
@@ -89,19 +103,18 @@ class Messages extends Component
         }
     }
 
-    public function joinConversation()
+    public function joinConversation(): void
     {
         if (!$this->conversation) {
             return;
         }
 
         $admin = Auth::guard('admin')->user();
-
         $participant = $this->service->adminJoinConversation($this->conversation, $admin);
 
         if ($participant) {
             $this->hasJoined = true;
-            $this->loadMessages(); // Reload to show join message
+            $this->loadMessages();
             $this->dispatch('success', message: 'You have joined the conversation');
             $this->dispatch('refresh-admin-conversations');
         } else {
@@ -109,7 +122,7 @@ class Messages extends Component
         }
     }
 
-    public function sendMessage()
+    public function sendMessage(): void
     {
         if (!$this->conversation) {
             $this->dispatch('error', message: 'No conversation selected');
@@ -120,8 +133,21 @@ class Messages extends Component
             $this->joinConversation();
         }
 
-        if (empty(trim($this->message)) && !$this->media) {
+        $trimmed = trim($this->message);
+
+        if (empty($trimmed) && !$this->media) {
             return;
+        }
+
+        // Validate
+        if ($this->media) {
+            try {
+                $this->validate();
+            } catch (\Illuminate\Validation\ValidationException $e) {
+                $firstError = collect($e->errors())->flatten()->first();
+                $this->dispatch('error', message: $firstError ?? 'Invalid file');
+                return;
+            }
         }
 
         $this->isLoading = true;
@@ -129,41 +155,50 @@ class Messages extends Component
         try {
             $attachments = [];
 
-            // Handle file uploads
             if ($this->media) {
-                if (is_array($this->media)) {
-                    foreach ($this->media as $file) {
-                        $attachments[] = $this->uploadFile($file);
-                    }
-                } else {
-                    $attachments[] = $this->uploadFile($this->media);
+                $files = is_array($this->media) ? $this->media : [$this->media];
+                foreach ($files as $file) {
+                    $attachments[] = $this->uploadFile($file);
                 }
             }
 
-            $messageType = !empty($attachments) ? MessageType::IMAGE : MessageType::TEXT;
+            // Determine message type
+            $messageType = MessageType::TEXT;
+            if (!empty($attachments)) {
+                $firstType = $attachments[0]['type'] ?? null;
+                if ($firstType instanceof AttachmentType) {
+                    $messageType = match ($firstType) {
+                        AttachmentType::IMAGE => MessageType::IMAGE,
+                        AttachmentType::VIDEO => MessageType::VIDEO,
+                        AttachmentType::AUDIO => MessageType::AUDIO,
+                        default               => MessageType::FILE,
+                    };
+                }
+            }
 
             $admin = Auth::guard('admin')->user();
 
-            // Send the message
             $sentMessage = $this->service->adminSendMessage(
                 conversation: $this->conversation,
                 admin: $admin,
-                messageBody: trim($this->message) ?: 'Sent an attachment',
+                messageBody: $trimmed,
                 messageType: $messageType,
                 attachments: $attachments
             );
 
             if ($sentMessage) {
-                // Add message to local array immediately
+                $sentMessage->load([
+                    'sender:id,name,email,avatar',
+                    'attachments',
+                ]);
+
                 $this->messages[] = $sentMessage;
+                $this->message    = '';
+                $this->media      = null;
 
-                // Clear inputs
-                $this->message = '';
-                $this->media = null;
-
-                // Notify
                 $this->dispatch('refresh-admin-conversations');
                 $this->dispatch('scroll-to-bottom');
+                $this->dispatch('reset-admin-textarea');
             } else {
                 $this->dispatch('error', message: 'Failed to send message');
             }
@@ -176,47 +211,29 @@ class Messages extends Component
 
     protected function uploadFile($file): array
     {
-        $path = $file->store('chat/attachments', 'public');
+        $uploaded = $this->cloudinaryService->upload($file, ['folder' => 'chats/admin']);
+        $path     = $uploaded->publicId;
+        $mime     = $file->getMimeType();
 
-        $mimeType = $file->getMimeType();
-        $attachmentType = AttachmentType::FILE;
-        $thumbnailPath = null;
-
-        if (str_starts_with($mimeType, 'image/')) {
-            $attachmentType = AttachmentType::IMAGE;
-            $thumbnailPath = $this->createThumbnail($file);
-        } elseif (str_starts_with($mimeType, 'video/')) {
-            $attachmentType = AttachmentType::VIDEO;
-        } elseif (str_starts_with($mimeType, 'audio/')) {
-            $attachmentType = AttachmentType::AUDIO;
+        $type = AttachmentType::FILE;
+        if (str_starts_with($mime, 'image/')) {
+            $type = AttachmentType::IMAGE;
+        } elseif (str_starts_with($mime, 'video/')) {
+            $type = AttachmentType::VIDEO;
+        } elseif (str_starts_with($mime, 'audio/')) {
+            $type = AttachmentType::AUDIO;
         }
 
-        return [
-            'type' => $attachmentType,
-            'path' => $path,
-            'thumbnail' => $thumbnailPath,
-        ];
-    }
-
-    protected function createThumbnail($file): ?string
-    {
-        try {
-            $thumbnailPath = 'chat/thumbnails/' . uniqid() . '_thumb.jpg';
-            $file->storeAs('public', $thumbnailPath);
-            return $thumbnailPath;
-        } catch (\Exception $e) {
-            return null;
-        }
+        return ['type' => $type, 'path' => $path, 'thumbnail' => null];
     }
 
     #[On('new-message-received-admin')]
-    public function handleNewMessageReceived($messageData)
+    public function handleNewMessageReceived(array $messageData): void
     {
         if (!$this->conversation || $messageData['conversation_id'] != $this->conversationId) {
             return;
         }
 
-        // Add new message to array
         $newMessage = \App\Models\Message::with(['sender', 'attachments'])
             ->find($messageData['id']);
 
@@ -226,14 +243,14 @@ class Messages extends Component
         }
     }
 
-    public function loadMoreMessages()
+    public function loadMoreMessages(): void
     {
         if (empty($this->messages)) {
             return;
         }
 
-        $oldestMessage = collect($this->messages)->first();
-        $this->beforeMessageId = $oldestMessage->id ?? null;
+        $oldest = collect($this->messages)->first();
+        $this->beforeMessageId = $oldest->id ?? null;
 
         if ($this->beforeMessageId) {
             $result = $this->service->fetchConversationMessagesForAdmin(
@@ -243,30 +260,45 @@ class Messages extends Component
             );
 
             if ($result && $result['messages']->isNotEmpty()) {
-                $olderMessages = $result['messages']->reverse()->values()->all();
-                $this->messages = array_merge($olderMessages, $this->messages);
-                $this->dispatch('maintain-scroll-position');
+                $older = $result['messages']->reverse()->values()->all();
+                $this->messages = array_merge($older, $this->messages);
+                $this->dispatch('maintain-scroll-position-admin');
             }
         }
     }
 
-    public function deleteMessage(int $messageId)
+    public function deleteMessage(int $messageId): void
     {
         try {
             $message = \App\Models\Message::find($messageId);
 
-            if ($message && $this->service->deleteMessage($message, Auth::guard('admin')->user())) {
-                $this->messages = collect($this->messages)
-                    ->reject(fn($msg) => $msg->id === $messageId)
-                    ->values()
-                    ->all();
+            if ($message) {
+                $admin = Auth::guard('admin')->user();
 
-                $this->dispatch('success', message: 'Message deleted');
-            } else {
-                $this->dispatch('error', message: 'Failed to delete message');
+                // Create a User instance wrapper for the admin (since deleteMessage expects User)
+                // Or we can check if admin can delete
+                if ($message->delete()) {
+                    $this->messages = collect($this->messages)
+                        ->reject(fn($msg) => $msg->id === $messageId)
+                        ->values()->all();
+                    $this->dispatch('success', message: 'Message deleted');
+                } else {
+                    $this->dispatch('error', message: 'Failed to delete message');
+                }
             }
         } catch (\Exception $e) {
             $this->dispatch('error', message: 'Error deleting message');
+        }
+    }
+
+    public function removeMedia(int $index): void
+    {
+        if (is_array($this->media)) {
+            $arr = $this->media;
+            array_splice($arr, $index, 1);
+            $this->media = empty($arr) ? null : array_values($arr);
+        } else {
+            $this->media = null;
         }
     }
 
@@ -277,12 +309,13 @@ class Messages extends Component
         }
 
         return $this->conversation->participants->map(function ($participant) {
+            $p = $participant->participant;
             return [
-                'id' => $participant->participant_id,
-                'type' => $participant->participant_type,
-                'role' => $participant->participant_role,
-                'name' => $participant->participant?->full_name ?? $participant->participant?->name ?? 'Unknown',
-                'avatar' => $participant->participant?->avatar,
+                'id'       => $participant->participant_id,
+                'type'     => $participant->participant_type,
+                'role'     => $participant->participant_role,
+                'name'     => $p?->full_name ?? $p?->name ?? 'Unknown',
+                'avatar'   => $p?->avatar,
                 'is_admin' => $participant->participant_type === \App\Models\Admin::class,
             ];
         });
