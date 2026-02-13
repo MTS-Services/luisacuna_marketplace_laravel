@@ -143,8 +143,8 @@
 
                 <div class="flex-1 overflow-y-auto">
                     @forelse($this->conversations as $conversation)
-                        <div wire:click="selectConversation({{ $conversation->id }})"
-                            class="p-4 border-b border-gray-200 dark:border-gray-700 hover:bg-bg-optional cursor-pointer transition-colors {{ $selectedConversationId == $conversation->id ? 'bg-primary-50 dark:bg-primary-700' : '' }}">
+                        <div wire:click="selectConversation('{{ $conversation->conversation_uuid }}')"
+                            class="p-4 border-b border-gray-200 dark:border-gray-700 hover:bg-bg-optional cursor-pointer transition-colors {{ $selectedConversationUuid === $conversation->conversation_uuid ? 'bg-primary-50 dark:bg-primary-700' : '' }}">
 
                             <div class="flex items-start gap-3">
                                 {{-- Participants Avatars --}}
@@ -180,10 +180,12 @@
                                             {{ \Illuminate\Support\Str::limit($conversation->messages->first()->message_body, 50) }}
                                         </p>
                                     @endif --}}
-                                    {{-- Order Id  --}}
-                                    <p class="text-xs text-text-secondary truncate">
-                                        {{ $conversation->order_id }}
-                                    </p>
+                                    {{-- Order Reference --}}
+                                    @if ($conversation->order)
+                                        <p class="text-xs text-text-secondary truncate">
+                                            Order #{{ $conversation->order->order_id }}
+                                        </p>
+                                    @endif
 
 
                                     {{-- Stats --}}

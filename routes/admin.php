@@ -77,7 +77,7 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
     Route::group(['prefix' => 'game-management', 'as' => 'gm.'], function () {
 
         Route::controller(CategoryController::class)->name('category.')->prefix('category')->group(function () {
-           
+
             Route::get('/', 'index')->name('index');
             // Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
@@ -124,7 +124,6 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
             Route::get('/view/{id}', 'show')->name('view');
-
         });
         Route::controller(UserMethoadController::class)->name('user-method.')->prefix('user-method')->group(function () {
             Route::get('/', 'index')->name('index');
@@ -193,7 +192,6 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
 
             // Banned User
             Route::get('banned-user', 'bannedUser')->name('banned-user');
-            
         });
     });
 
@@ -324,7 +322,7 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
 
     Route::controller(ConversationController::class)->name('conversation.')->prefix('conversations')->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/show/{id}', 'show')->name('show');
+        Route::get('/show/{conversationUuid}', 'show')->name('show');
     });
 
     Route::controller(NotificationController::class)->name('notification.')->prefix('notification')->group(function () {

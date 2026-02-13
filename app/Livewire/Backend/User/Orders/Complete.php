@@ -44,17 +44,18 @@ class Complete extends Component
     {
 
         $this->order = $this->orderService->findData($orderId, 'order_id');
+
         $this->order->load([
             'user',
             'source.user',
             'source.game',
             'source.platform',
             'transactions',
-            'messages.conversation',
             'disputes',
+            'conversation'
         ]);
         $this->isVisitSeller = $this->order->user_id !== user()->id;
-        $this->conversationId = $this->order->messages?->first()?->conversation->id ?? null;
+        $this->conversationId = $this->order->conversation->id ?? null;
         $this->dispatch('conversation-selected', conversationId: $this->conversationId);
         $this->hasDispute = $this->order->is_disputed;
     }
@@ -105,12 +106,12 @@ class Complete extends Component
     {
 
 
-       $this->validate([
+        $this->validate([
             'type' => 'required|in:' . FeedbackType::POSITIVE->value . ',' . FeedbackType::NEGATIVE->value,
             'commentText' => 'required|string|min:5|max:1000',
         ]);
 
-       $feedback = $this->feedbackService->createData([
+        $feedback = $this->feedbackService->createData([
             'author_id'      => user()->id,
             'target_user_id' => $this->isVisitSeller ? $this->order->user_id : $this->order->source->user_id,
             'order_id'       => $this->order->id,

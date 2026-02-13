@@ -99,9 +99,10 @@ class Order extends AuditBaseModel implements Auditable
         return $this->morphTo('source');
     }
 
-    public function messages(): HasMany
+
+    public function conversation(): HasOne
     {
-        return $this->hasMany(Message::class, 'order_id', 'id');
+        return $this->hasOne(Conversation::class, 'order_id');
     }
 
     public function payments(): HasMany

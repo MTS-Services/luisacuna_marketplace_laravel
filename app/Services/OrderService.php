@@ -42,7 +42,6 @@ class OrderService
     public function findData($column_value, string $column_name = 'id'): ?Order
     {
         $model = $this->model;
-
         return $model->with(['source', 'user'])
             ->where($column_name, $column_value)
             ->first();

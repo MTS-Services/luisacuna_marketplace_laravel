@@ -68,7 +68,7 @@ class Message extends Component
                     ->where('participant_id', '!=', Auth::id())
                     ->where('is_active', true)
                     ->with(['participant' => function ($q) {
-                        $q->select('id', 'first_name', 'last_name', 'username', 'avatar');
+                        $q->select('id', 'first_name', 'last_name', 'avatar');
                     }]);
             }])
             ->find($conversationId);
@@ -128,7 +128,7 @@ class Message extends Component
 
         // ✅ Optimized: only fetch id + sender_id + timestamps first
         $newMessages = $this->conversation->messages()
-            ->with(['sender:id,first_name,last_name,username,avatar', 'attachments', 'readReceipts'])
+            ->with(['sender:id,first_name,last_name,avatar', 'attachments', 'readReceipts'])
             ->where('id', '>', $lastId)
             ->orderBy('id', 'asc')
             ->get();
@@ -213,12 +213,13 @@ class Message extends Component
                 conversation: $this->conversation,
                 messageBody: $trimmed ?: 'Sent an attachment',
                 messageType: $messageType,
-                attachments: $attachments
+                attachments: $attachments,
+                sender: Auth::user()
             );
 
             if ($sentMessage) {
                 // Load with relationships for display
-                $sentMessage->load(['sender:id,first_name,last_name,username,avatar', 'attachments', 'readReceipts']);
+                $sentMessage->load(['sender:id,first_name,last_name,avatar', 'attachments', 'readReceipts']);
 
                 $this->messages[]          = $sentMessage;
                 $this->lastPolledMessageId = $sentMessage->id;
@@ -281,7 +282,7 @@ class Message extends Component
             return;
         }
 
-        $newMessage = MessageModel::with(['sender:id,first_name,last_name,username,avatar', 'attachments', 'readReceipts'])
+        $newMessage = MessageModel::with(['sender:id,first_name,last_name,avatar', 'attachments', 'readReceipts'])
             ->find($messageData['id']);
 
         if ($newMessage) {

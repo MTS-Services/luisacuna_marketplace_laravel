@@ -17,6 +17,8 @@ class Index extends Component
     public ?string $searchTerm = null;
 
     #[Url(as: 'conversation')]
+    public ?string $selectedConversationUuid = null;
+
     public ?int $selectedConversationId = null;
 
     public ?string $statusFilter      = null;
@@ -29,6 +31,19 @@ class Index extends Component
     public function boot(ConversationService $service): void
     {
         $this->conversationService = $service;
+    }
+
+    public function mount(): void
+    {
+        if ($this->selectedConversationUuid) {
+            $conversation = \App\Models\Conversation::where('conversation_uuid', $this->selectedConversationUuid)
+                ->select('id', 'conversation_uuid')
+                ->first();
+
+            if ($conversation) {
+                $this->selectedConversationId = $conversation->id;
+            }
+        }
     }
 
     #[Computed]
@@ -65,10 +80,19 @@ class Index extends Component
         return $this->conversationService->getAdminDashboardStats();
     }
 
-    public function selectConversation(int $conversationId): void
+    public function selectConversation(string $conversationUuid): void
     {
-        $this->selectedConversationId = $conversationId;
-        $this->dispatch('admin-conversation-selected', conversationId: $conversationId);
+        $conversation = \App\Models\Conversation::where('conversation_uuid', $conversationUuid)
+            ->select('id', 'conversation_uuid')
+            ->first();
+
+        if (!$conversation) {
+            return;
+        }
+
+        $this->selectedConversationUuid = $conversationUuid;
+        $this->selectedConversationId = $conversation->id;
+        $this->dispatch('admin-conversation-selected', conversationId: $conversation->id);
     }
 
     #[On('refresh-admin-conversations')]

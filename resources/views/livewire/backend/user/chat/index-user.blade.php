@@ -82,7 +82,8 @@
 
                         <div
                             class="flex items-center gap-3 dark:bg-zinc-50/10 bg-zinc-100 sm:gap-5 px-6 py-3 w-full sm:w-auto justify-between rounded-md">
-                            <span class="text-xs sm:text-base text-text-secondary">{{ __('Browser notification') }}</span>
+                            <span
+                                class="text-xs sm:text-base text-text-secondary">{{ __('Browser notification') }}</span>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" wire:model.live="unreadOnly" class="sr-only peer">
                                 <div
@@ -121,9 +122,10 @@
                             @endphp
 
                             @if ($otherParticipant)
-                                <div wire:click="selectConversation({{ $conversation->id }})" onclick="selectMessage()"
+                                <div wire:click="selectConversation('{{ $conversation->conversation_uuid }}')"
+                                    onclick="selectMessage()"
                                     class="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 hover:bg-bg-hover cursor-pointer border-b border-zinc-800 
-                                        {{ $selectedConversationId == $conversation->id ? 'dark:bg-zinc-800 bg-zinc-200' : '' }} transition-colors">
+                                        {{ $selectedConversationUuid === $conversation->conversation_uuid ? 'dark:bg-zinc-800 bg-zinc-200' : '' }} transition-colors">
 
                                     {{-- Avatar --}}
                                     @if ($otherParticipant->avatar)

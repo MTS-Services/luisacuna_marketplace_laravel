@@ -87,10 +87,17 @@ class ConversationService
         ?string $note = null
     ): ?Conversation {
         try {
+            // Check if conversation already exists for this order
+            $existing = $this->findConversationByOrder($order->id);
+            if ($existing) {
+                return $existing;
+            }
+
             return DB::transaction(function () use ($buyer, $seller, $order, $subject, $note) {
                 // Create conversation with order reference
                 $conversation = $this->conversation->create([
                     'conversation_uuid' => Str::uuid(),
+                    'order_id' => $order->id,
                     'subject' => $subject ?? "Order #{$order->order_id}",
                     'note' => $note,
                     'status' => ConversationStatus::ACTIVE,
@@ -153,10 +160,7 @@ class ConversationService
     public function findConversationByOrder(int $orderId): ?Conversation
     {
         return $this->conversation
-            ->whereHas('messages', function ($query) use ($orderId) {
-                $query->where('order_id', $orderId);
-            })
-            ->where('status', ConversationStatus::ACTIVE)
+            ->where('order_id', $orderId)
             ->first();
     }
 
@@ -383,10 +387,13 @@ class ConversationService
         ?array $metadata = null,
         ?int $parentMessageId = null,
         ?array $attachments = [],
-        ?int $orderId = null,
     ): ?Message {
-        if ($orderId && !$sender) {
-            // System sender for order messages
+        Log::info('sender', [
+            'sender_id' => $sender ? $sender->id : null,
+            'conversation_id' => $conversation->id,
+        ]);
+        if (!$sender) {
+            // System sender for order/system messages
             $sender = null;
         } else {
             $sender = $sender ?? Auth::user();
@@ -409,7 +416,6 @@ class ConversationService
                 $metadata,
                 $parentMessageId,
                 $attachments,
-                $orderId
             ) {
                 // Create message
                 $message = $this->message->create([
@@ -418,7 +424,6 @@ class ConversationService
                     'sender_type' => $sender ? User::class : null,
                     'message_type' => $messageType,
                     'message_body' => $messageBody,
-                    'order_id' => $orderId ? $orderId : null,
                     'metadata' => $metadata,
                     'parent_message_id' => $parentMessageId,
                     'creater_id' => $sender ? $sender->id : null,
@@ -478,13 +483,8 @@ class ConversationService
         $buyer = $order?->user ?? Auth::guard('web')->user();
         $seller = $order?->source?->user;
 
-        // Check if conversation already exists for this specific order
-        $conversation = $this->findConversationByOrder($order->id);
-
-        if (!$conversation) {
-            // Create new conversation for this order
-            $conversation = $this->startConversationForOrder($buyer, $seller, $order);
-        }
+        // Get or create conversation for this order (startConversationForOrder handles dedup)
+        $conversation = $this->startConversationForOrder($buyer, $seller, $order);
 
         if (!$conversation) {
             Log::error('Failed to create or find conversation for order', [
@@ -509,7 +509,6 @@ class ConversationService
                 'seller_id' => $seller->id,
                 'order_status' => $order->status->value
             ],
-            orderId: $order->id,
         );
 
         return $conversation;
@@ -849,6 +848,7 @@ class ConversationService
     ) {
         $query = $this->conversation
             ->with([
+                'order:id,order_id',
                 'participants' => function ($query) {
                     $query->where('is_active', true)
                         ->with(['participant' => function ($q) {
