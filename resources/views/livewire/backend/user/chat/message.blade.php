@@ -59,7 +59,8 @@
                             {{ $otherParticipant->full_name }}
                         </h3>
                         @if ($conversation->subject)
-                            <p class="text-gray-100 text-[10px] sm:text-xs leading-tight">{{ $conversation->subject }}</p>
+                            <p class="text-gray-100 text-[10px] sm:text-xs leading-tight">{{ $conversation->subject }}
+                            </p>
                         @else
                             <p class="text-gray-100 text-xs sm:text-sm">{{ __('Available') }}</p>
                         @endif
@@ -83,8 +84,8 @@
             @forelse($messages as $msg)
                 @php
                     $cloudinaryService = app(\App\Services\Cloudinary\CloudinaryService::class);
-                    $isMine = $msg->sender_id == auth()->id();
-                    $sender = $msg->sender;
+                    $isMine = $msg->sender_id == auth()->user()->id && $msg->sender_type == App\Models\User::class;
+                    $sender = $msg->sender && !$msg->sender_type == App\Models\Admin::class;
                 @endphp
 
                 <div class="message-item" data-message-id="{{ $msg->id }}">
@@ -120,7 +121,7 @@
                                 @if ($msg->message_body)
                                     <div
                                         class="bg-gradient-to-r from-accent to-accent-foreground text-white px-3 sm:px-4 py-2 sm:py-3 rounded-2xl rounded-tr-none relative group">
-                                        <p class="text-xs sm:text-sm break-words whitespace-pre-wrap">
+                                        <p class="text-xs sm:text-sm break-words">
                                             {{ $msg->message_body }}</p>
 
                                         {{-- Delete button --}}
@@ -189,7 +190,7 @@
                                     @if ($msg->message_body)
                                         <div
                                             class="bg-bg-hover text-text-primary px-3 sm:px-4 py-2 sm:py-3 rounded-2xl rounded-tl-none">
-                                            <p class="text-xs sm:text-sm break-words whitespace-pre-wrap">
+                                            <p class="text-xs sm:text-sm break-words">
                                                 {{ $msg->message_body }}</p>
                                         </div>
                                     @endif

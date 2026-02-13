@@ -24,10 +24,15 @@
                     <x-ui.file-input wire:model="form.avatars" label="Profile Pictures" accept="image/*"
                         :error="$errors->first('form.avatars')" hint="Upload a profile picture (Max: 2MB)" multiple />
                 </div> --}}
-                <div class="w-full col-span-2">
-                    <x-ui.label value="Name" class="mb-1" />
-                    <x-ui.input type="text" placeholder="Name" wire:model="form.name" />
-                    <x-ui.input-error :messages="$errors->get('form.name')" />
+                <div class="w-full">
+                    <x-ui.label value="First Name" class="mb-1" />
+                    <x-ui.input type="text" placeholder="First Name" wire:model="form.first_name" />
+                    <x-ui.input-error :messages="$errors->get('form.first_name')" />
+                </div>
+                <div class="w-full">
+                    <x-ui.label value="Last Name" class="mb-1" />
+                    <x-ui.input type="text" placeholder="Last Name" wire:model="form.last_name" />
+                    <x-ui.input-error :messages="$errors->get('form.last_name')" />
                 </div>
                 <div class="w-full">
                     <x-ui.label value="Email" class="mb-1" />

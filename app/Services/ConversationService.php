@@ -87,10 +87,17 @@ class ConversationService
         ?string $note = null
     ): ?Conversation {
         try {
+            // Check if conversation already exists for this order
+            $existing = $this->findConversationByOrder($order->id);
+            if ($existing) {
+                return $existing;
+            }
+
             return DB::transaction(function () use ($buyer, $seller, $order, $subject, $note) {
                 // Create conversation with order reference
                 $conversation = $this->conversation->create([
                     'conversation_uuid' => Str::uuid(),
+                    'order_id' => $order->id,
                     'subject' => $subject ?? "Order #{$order->order_id}",
                     'note' => $note,
                     'status' => ConversationStatus::ACTIVE,
@@ -153,10 +160,7 @@ class ConversationService
     public function findConversationByOrder(int $orderId): ?Conversation
     {
         return $this->conversation
-            ->whereHas('messages', function ($query) use ($orderId) {
-                $query->where('order_id', $orderId);
-            })
-            ->where('status', ConversationStatus::ACTIVE)
+            ->where('order_id', $orderId)
             ->first();
     }
 
@@ -383,10 +387,13 @@ class ConversationService
         ?array $metadata = null,
         ?int $parentMessageId = null,
         ?array $attachments = [],
-        ?int $orderId = null,
     ): ?Message {
-        if ($orderId && !$sender) {
-            // System sender for order messages
+        Log::info('sender', [
+            'sender_id' => $sender ? $sender->id : null,
+            'conversation_id' => $conversation->id,
+        ]);
+        if (!$sender) {
+            // System sender for order/system messages
             $sender = null;
         } else {
             $sender = $sender ?? Auth::user();
@@ -409,7 +416,6 @@ class ConversationService
                 $metadata,
                 $parentMessageId,
                 $attachments,
-                $orderId
             ) {
                 // Create message
                 $message = $this->message->create([
@@ -418,7 +424,6 @@ class ConversationService
                     'sender_type' => $sender ? User::class : null,
                     'message_type' => $messageType,
                     'message_body' => $messageBody,
-                    'order_id' => $orderId ? $orderId : null,
                     'metadata' => $metadata,
                     'parent_message_id' => $parentMessageId,
                     'creater_id' => $sender ? $sender->id : null,
@@ -478,13 +483,8 @@ class ConversationService
         $buyer = $order?->user ?? Auth::guard('web')->user();
         $seller = $order?->source?->user;
 
-        // Check if conversation already exists for this specific order
-        $conversation = $this->findConversationByOrder($order->id);
-
-        if (!$conversation) {
-            // Create new conversation for this order
-            $conversation = $this->startConversationForOrder($buyer, $seller, $order);
-        }
+        // Get or create conversation for this order (startConversationForOrder handles dedup)
+        $conversation = $this->startConversationForOrder($buyer, $seller, $order);
 
         if (!$conversation) {
             Log::error('Failed to create or find conversation for order', [
@@ -509,7 +509,6 @@ class ConversationService
                 'seller_id' => $seller->id,
                 'order_status' => $order->status->value
             ],
-            orderId: $order->id,
         );
 
         return $conversation;
@@ -849,12 +848,21 @@ class ConversationService
     ) {
         $query = $this->conversation
             ->with([
+                'order:id,order_id',
                 'participants' => function ($query) {
                     $query->where('is_active', true)
-                        ->with('participant:id,first_name,last_name,username,email,avatar');
+                        ->with(['participant' => function ($q) {
+                            // ✅ Polymorphic - only select common fields
+                            // Admin has: id, first_name, last_name, email, avatar (NO username)
+                            // User has: id, first_name, last_name, username, email, avatar
+                            $q->select('id', 'first_name', 'last_name', 'email', 'avatar');
+                        }]);
                 },
                 'messages' => function ($query) {
-                    $query->latest()->limit(1)->with('sender:id,first_name,last_name,username,avatar');
+                    $query->latest()->limit(1)
+                        ->with(['sender' => function ($q) {
+                            $q->select('id', 'first_name', 'last_name', 'email', 'avatar');
+                        }]);
                 }
             ])
             ->withCount([
@@ -873,14 +881,18 @@ class ConversationService
                         $participantQuery->where('is_active', true)
                             ->whereHasMorph(
                                 'participant',
-                                [User::class],
-                                function ($userQuery) use ($search) {
-                                    $userQuery->where(function ($nameQuery) use ($search) {
+                                [\App\Models\User::class, \App\Models\Admin::class],
+                                function ($morphQuery, $type) use ($search) {
+                                    $morphQuery->where(function ($nameQuery) use ($search, $type) {
                                         $nameQuery->where('first_name', 'like', "%{$search}%")
                                             ->orWhere('last_name', 'like', "%{$search}%")
-                                            ->orWhere('username', 'like', "%{$search}%")
                                             ->orWhere('email', 'like', "%{$search}%")
                                             ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$search}%"]);
+
+                                        // Only search username if it's a User
+                                        if ($type === \App\Models\User::class) {
+                                            $nameQuery->orWhere('username', 'like', "%{$search}%");
+                                        }
                                     });
                                 }
                             );
@@ -929,9 +941,16 @@ class ConversationService
     ) {
         $messagesQuery = $conversation->messages()
             ->with([
-                'sender:id,first_name,last_name,username,avatar',
+                // ✅ Only select common fields for polymorphic sender
+                'sender' => function ($q) {
+                    $q->select('id', 'first_name', 'last_name', 'email', 'avatar');
+                },
                 'attachments',
-                'readReceipts.reader:id,first_name,last_name,username'
+                'readReceipts' => function ($q) {
+                    $q->with(['reader' => function ($r) {
+                        $r->select('id', 'first_name', 'last_name', 'email');
+                    }]);
+                }
             ])
             ->orderByDesc('created_at');
 
@@ -943,7 +962,11 @@ class ConversationService
         $messages = $messagesQuery->paginate($perPage);
 
         return [
-            'conversation' => $conversation->load('participants.participant'),
+            'conversation' => $conversation->load(['participants' => function ($q) {
+                $q->with(['participant' => function ($p) {
+                    $p->select('id', 'first_name', 'last_name', 'email', 'avatar');
+                }]);
+            }]),
             'messages' => $messages,
         ];
     }

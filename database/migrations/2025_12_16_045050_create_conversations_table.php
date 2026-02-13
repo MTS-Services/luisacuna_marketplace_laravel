@@ -8,7 +8,7 @@ use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
-     use AuditColumnsTrait;
+    use AuditColumnsTrait;
     /**
      * Run the migrations.
      */
@@ -22,11 +22,17 @@ return new class extends Migration
             $table->longText('note')->nullable();
             $table->string('status')->default(ConversationStatus::ACTIVE)->index();
             $table->timestamp('last_message_at')->nullable();
+            $table->unsignedBigInteger('order_id')->nullable()->after('conversation_uuid');
+
+            $table->foreign('order_id')
+                ->references('id')
+                ->on('orders')
+                ->onDelete('set null');
 
             $table->softDeletes();
             $table->timestamps();
 
-           $this->addMorphedAuditColumns($table);
+            $this->addMorphedAuditColumns($table);
         });
     }
 

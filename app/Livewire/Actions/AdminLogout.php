@@ -13,7 +13,7 @@ class AdminLogout
         // Log::info('Admin logged out');
         // Auth::guard('admin')->user()->logoutCurrentDevice();
         Auth::guard('admin')->logout();
-        Session::invalidate();
+        // Session::invalidate();
         Session::regenerateToken();
         return redirect('/');
     }

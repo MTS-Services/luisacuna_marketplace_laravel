@@ -18,7 +18,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('sort_order')->index()->default(0);
 
-            $table->string('name');
+            $table->string('first_name');
+            $table->string('last_name')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('phone')->index();

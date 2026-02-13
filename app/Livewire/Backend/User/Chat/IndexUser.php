@@ -16,8 +16,10 @@ class IndexUser extends Component
     #[Url(as: 'search')]
     public ?string $searchTerm = null;
 
-    #[Url(as: 'conversation')]
-    public ?string $selectedConversationId = null;
+    #[Url(as: 'c')]
+    public ?string $selectedConversationUuid = null;
+
+    public ?int $selectedConversationId = null;
 
     public bool $unreadOnly = false;
 
@@ -52,10 +54,22 @@ class IndexUser extends Component
         );
     }
 
-    public function selectConversation(int $conversationId)
+    public function selectConversation(string $conversationUuid)
     {
-        $this->selectedConversationId = $conversationId;
-        $this->dispatch('conversation-selected', conversationId: $conversationId);
+        $conversation = \App\Models\Conversation::where('conversation_uuid', $conversationUuid)
+            ->whereHas('participants', fn($q) => $q
+                ->where('participant_id', Auth::id())
+                ->where('is_active', true))
+            ->select('id', 'conversation_uuid')
+            ->first();
+
+        if (!$conversation) {
+            return;
+        }
+
+        $this->selectedConversationUuid = $conversationUuid;
+        $this->selectedConversationId = $conversation->id;
+        $this->dispatch('conversation-selected', conversationId: $conversation->id);
     }
 
     /**
@@ -186,6 +200,20 @@ class IndexUser extends Component
 
     public function mount()
     {
+        // If UUID provided in URL, resolve to internal id on load
+        if ($this->selectedConversationUuid) {
+            $conversation = \App\Models\Conversation::where('conversation_uuid', $this->selectedConversationUuid)
+                ->whereHas('participants', fn($q) => $q
+                    ->where('participant_id', Auth::id())
+                    ->where('is_active', true))
+                ->select('id', 'conversation_uuid')
+                ->first();
+
+            if ($conversation) {
+                $this->selectedConversationId = $conversation->id;
+            }
+        }
+
         // Initialize hash on mount
         if ($this->conversations->isNotEmpty()) {
             $this->lastConversationHash = $this->generateConversationHash($this->conversations);

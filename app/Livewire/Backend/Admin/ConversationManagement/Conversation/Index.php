@@ -17,18 +17,33 @@ class Index extends Component
     public ?string $searchTerm = null;
 
     #[Url(as: 'conversation')]
+    public ?string $selectedConversationUuid = null;
+
     public ?int $selectedConversationId = null;
 
-    public ?string $statusFilter = null;
-    public bool $adminInvolvedOnly = false;
-    public ?string $dateFrom = null;
-    public ?string $dateTo = null;
+    public ?string $statusFilter      = null;
+    public bool    $adminInvolvedOnly = false;
+    public ?string $dateFrom          = null;
+    public ?string $dateTo            = null;
 
     protected ConversationService $conversationService;
 
-    public function boot(ConversationService $service)
+    public function boot(ConversationService $service): void
     {
         $this->conversationService = $service;
+    }
+
+    public function mount(): void
+    {
+        if ($this->selectedConversationUuid) {
+            $conversation = \App\Models\Conversation::where('conversation_uuid', $this->selectedConversationUuid)
+                ->select('id', 'conversation_uuid')
+                ->first();
+
+            if ($conversation) {
+                $this->selectedConversationId = $conversation->id;
+            }
+        }
     }
 
     #[Computed]
@@ -60,43 +75,52 @@ class Index extends Component
     }
 
     #[Computed]
-    public function dashboardStats()
+    public function dashboardStats(): array
     {
         return $this->conversationService->getAdminDashboardStats();
     }
 
-    public function selectConversation(int $conversationId)
+    public function selectConversation(string $conversationUuid): void
     {
-        $this->selectedConversationId = $conversationId;
-        $this->dispatch('admin-conversation-selected', conversationId: $conversationId);
+        $conversation = \App\Models\Conversation::where('conversation_uuid', $conversationUuid)
+            ->select('id', 'conversation_uuid')
+            ->first();
+
+        if (!$conversation) {
+            return;
+        }
+
+        $this->selectedConversationUuid = $conversationUuid;
+        $this->selectedConversationId = $conversation->id;
+        $this->dispatch('admin-conversation-selected', conversationId: $conversation->id);
     }
 
     #[On('refresh-admin-conversations')]
-    public function refreshConversations()
+    public function refreshConversations(): void
     {
         unset($this->conversations);
         $this->resetPage();
     }
 
-    public function updatedSearchTerm()
+    public function updatedSearchTerm(): void
     {
         unset($this->conversations);
         $this->resetPage();
     }
 
-    public function updatedStatusFilter()
+    public function updatedStatusFilter(): void
     {
         unset($this->conversations);
         $this->resetPage();
     }
 
-    public function updatedAdminInvolvedOnly()
+    public function updatedAdminInvolvedOnly(): void
     {
         unset($this->conversations);
         $this->resetPage();
     }
 
-    public function clearFilters()
+    public function clearFilters(): void
     {
         $this->reset(['searchTerm', 'statusFilter', 'adminInvolvedOnly', 'dateFrom', 'dateTo']);
         unset($this->conversations);

@@ -9,35 +9,45 @@ use Livewire\Form;
 
 class AdminForm extends Form
 {
-
-
     #[Locked]
     public ?int $id = null;
+
     public ?int $role_id = null;
-    public string $name = '';
+
+    public string $first_name = '';
+
+    public string $last_name = '';
+
     public string $email = '';
+
     public string $password = '';
+
     public ?string $password_confirmation = '';
+
     public ?string $phone = '';
+
     public string $status = AdminStatus::ACTIVE->value;
+
     public ?UploadedFile $avatar = null;
+
     public $avatars = null;
 
     // Track removed files
     public bool $remove_file = false;
-    public array $removed_files = [];
 
+    public array $removed_files = [];
 
     public function rules(): array
     {
         $rules = [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:admins,email,' . $this->id,
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:admins,email,'.$this->id,
             'role_id' => 'required|integer|exists:roles,id',
             'password' => $this->isUpdating() ? 'nullable|string|min:8' : 'required|string|min:8',
             'password_confirmation' => 'nullable|string|min:8|same:password',
             'phone' => 'nullable|string|max:20',
-            'status' => 'required|string|in:' . implode(',', array_column(AdminStatus::cases(), 'value')),
+            'status' => 'required|string|in:'.implode(',', array_column(AdminStatus::cases(), 'value')),
             'avatar' => 'nullable|image',
             'avatars' => 'nullable|array',
             'avatars.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -55,7 +65,8 @@ class AdminForm extends Form
     {
         $this->id = $data->id;
         $this->role_id = $data->role_id;
-        $this->name = $data->name;
+        $this->first_name = $data->first_name;
+        $this->last_name = $data->last_name;
         $this->email = $data->email;
         $this->phone = $data->phone;
         $this->status = $data->status->value;
@@ -65,7 +76,8 @@ class AdminForm extends Form
     {
         $this->id = null;
         $this->role_id = null;
-        $this->name = '';
+        $this->first_name = '';
+        $this->last_name = '';
         $this->email = '';
         $this->password = '';
         $this->password_confirmation = '';
@@ -79,6 +91,6 @@ class AdminForm extends Form
 
     protected function isUpdating(): bool
     {
-        return !empty($this->id);
+        return ! empty($this->id);
     }
 }

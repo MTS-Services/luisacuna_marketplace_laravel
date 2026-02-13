@@ -17,9 +17,9 @@ class ConversationController extends Controller
         return view($this->masterView);
     }
 
-    public function show($conversationId)
+    public function show(string $conversationUuid)
     {
-        $conversation = $this->conversationService->findConversation($conversationId);
+        $conversation = $this->conversationService->findConversation($conversationUuid);
 
         if (!$conversation) {
             abort(404, 'Conversation not found');

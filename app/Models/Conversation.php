@@ -4,8 +4,10 @@ namespace App\Models;
 
 use App\Enums\ConversationStatus;
 use App\Models\Message;
+use App\Models\Order;
 use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Conversation extends AuditBaseModel implements Auditable
@@ -16,6 +18,7 @@ class Conversation extends AuditBaseModel implements Auditable
         'id',
         'sort_order',
         'conversation_uuid',
+        'order_id',
         'subject',
         'note',
         'status',
@@ -37,7 +40,6 @@ class Conversation extends AuditBaseModel implements Auditable
     protected $casts = [
         'status' => ConversationStatus::class,
         'last_message_at' => 'datetime',
-        ''
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
@@ -51,6 +53,11 @@ class Conversation extends AuditBaseModel implements Auditable
     public function messages()
     {
         return $this->hasMany(Message::class, 'conversation_id', 'id');
+    }
+
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class, 'order_id', 'id');
     }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=

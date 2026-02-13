@@ -27,9 +27,6 @@ return new class extends Migration
             $table->boolean('is_edited')->default(false);
             $table->timestamp('edited_at')->nullable();
 
-            $table->unsignedBigInteger('order_id')->nullable()->index();
-
-            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->foreign('conversation_id')->references('id')->on('conversations')->onDelete('cascade');
             $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
             $table->softDeletes();
