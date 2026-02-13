@@ -16,7 +16,8 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         $superadmin = Admin::create([
-            'name' => 'Super Admin',
+            'first_name' => 'Super',
+            'last_name' => 'Admin',
             'email' => 'superadmin@dev.com',
             'email_verified_at' => Carbon::now(),
             'phone' => '0000000000',
@@ -26,7 +27,7 @@ class AdminSeeder extends Seeder
         ]);
         $superadmin->assignRole('Super Admin');
         $admin = Admin::create([
-            'name' => 'Admin',
+            'first_name' => 'Admin',
             'email' => 'admin@dev.com',
             'email_verified_at' => Carbon::now(),
             'phone' => '0000000000',

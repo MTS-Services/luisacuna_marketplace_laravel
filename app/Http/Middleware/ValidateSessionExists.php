@@ -57,10 +57,10 @@ class ValidateSessionExists
 
             // Check if this is a newly created session (within grace period)
             if ($this->isWithinGracePeriod($guard)) {
-                Log::debug('Session within grace period', [
-                    'guard' => $guard,
-                    'session_id' => $sessionId
-                ]);
+                // Log::debug('Session within grace period', [
+                //     'guard' => $guard,
+                //     'session_id' => $sessionId
+                // ]);
                 return $next($request);
             }
 

@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+<div class="bg-card rounded-lg">
     <div class="p-4 sm:p-6">
         {{-- Header --}}
         <div class="mb-6">
@@ -10,10 +10,10 @@
 
         {{-- Dashboard Stats --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+            <div class="bg-main rounded-lg shadow p-4">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Total Conversations</p>
+                        <p class="text-sm text-text-primary">Total Conversations</p>
                         <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $stats['total_conversations'] }}
                         </p>
                     </div>
@@ -28,10 +28,10 @@
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+            <div class="bg-main rounded-lg shadow p-4">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Active Conversations</p>
+                        <p class="text-sm text-text-primary">Active Conversations</p>
                         <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $stats['active_conversations'] }}
                         </p>
                     </div>
@@ -45,10 +45,10 @@
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+            <div class="bg-main rounded-lg shadow p-4">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Admin Involved</p>
+                        <p class="text-sm text-text-primary">Admin Involved</p>
                         <p class="text-2xl font-bold text-gray-900 dark:text-white">
                             {{ $stats['conversations_with_admin'] }}</p>
                     </div>
@@ -63,10 +63,10 @@
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+            <div class="bg-main rounded-lg shadow p-4">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Messages Today</p>
+                        <p class="text-sm text-text-primary">Messages Today</p>
                         <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $stats['total_messages_today'] }}
                         </p>
                     </div>
@@ -83,43 +83,41 @@
         </div>
 
         {{-- Filters --}}
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 mb-6">
+        <div class="bg-main rounded-lg shadow p-4 mb-6">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                 {{-- Search --}}
                 <div class="lg:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Search</label>
-                    <input type="text" wire:model.live.debounce.300ms="searchTerm"
-                        placeholder="Search conversations, users..."
-                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm">
+                    <x-ui.input type="text" wire:model.live="searchTerm"
+                        placeholder="Search conversations, users...">
                 </div>
 
                 {{-- Status Filter --}}
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
-                    <select wire:model.live="statusFilter"
-                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm">
+                    <x-ui.select wire:model.live="statusFilter">
                         <option value="">All Status</option>
                         <option value="active">Active</option>
                         <option value="archived">Archived</option>
                         <option value="closed">Closed</option>
-                    </select>
+                    </x-ui.select>
                 </div>
 
                 {{-- Admin Involved Filter --}}
                 <div class="flex items-end">
                     <label class="flex items-center cursor-pointer">
                         <input type="checkbox" wire:model.live="adminInvolvedOnly"
-                            class="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                            class="checkbox checkbox-xs checkbox-secondary">
                         <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Admin Involved Only</span>
                     </label>
                 </div>
 
                 {{-- Clear Filters --}}
                 <div class="flex items-end">
-                    <button wire:click="clearFilters"
+                    <x-ui.button wire:click="clearFilters"
                         class="w-full px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-sm">
                         Clear Filters
-                    </button>
+                    </x-ui.button>
                 </div>
             </div>
         </div>
@@ -127,7 +125,7 @@
         {{-- Main Content --}}
         <div class="flex flex-col lg:flex-row gap-6 h-[70vh]">
             {{-- Conversations List --}}
-            <div class="lg:w-1/3 bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden flex flex-col">
+            <div class="lg:w-1/3 bg-main rounded-lg shadow overflow-hidden flex flex-col">
                 <div class="p-4 border-b border-gray-200 dark:border-gray-700">
                     <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Conversations</h2>
                 </div>
@@ -142,7 +140,7 @@
                                 <div class="flex -space-x-2">
                                     @foreach ($conversation->participants->take(2) as $participant)
                                         @if ($participant->participant?->avatar)
-                                            <img src="{{auth_storage_url($participant?->participant?->avatar) }}"
+                                            <img src="{{ auth_storage_url($participant?->participant?->avatar) }}"
                                                 alt="{{ $participant->participant->full_name ?? 'User' }}"
                                                 class="w-10 h-10 rounded-full border-2 border-white dark:border-gray-800">
                                         @else

@@ -4,27 +4,27 @@ namespace App\Models;
 
 use App\Enums\AdminStatus;
 use App\Enums\OtpType;
-use App\Models\AuthBaseModel;
 use App\Traits\AuditableTrait;
 use App\Traits\HasDeviceManagement;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Notifications\Notifiable;
 
 class Admin extends AuthBaseModel implements Auditable
 {
-    use TwoFactorAuthenticatable, AuditableTrait, Searchable, HasRoles, Notifiable, HasDeviceManagement;
+    use AuditableTrait, HasDeviceManagement, HasRoles, Notifiable, Searchable, TwoFactorAuthenticatable;
 
     protected $guard_name = 'admin';
 
     protected $fillable = [
         'sort_order',
         'role_id',
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'email_verified_at',
         'two_factor_confirmed_at',
@@ -47,11 +47,7 @@ class Admin extends AuthBaseModel implements Auditable
         'deleted_by',
         'restored_by',
         'restored_at',
-
-
-
     ];
-
 
     protected $hidden = [
         'id',
@@ -60,7 +56,6 @@ class Admin extends AuthBaseModel implements Auditable
         'two_factor_recovery_codes',
         'two_factor_secret',
     ];
-
 
     protected function casts(): array
     {
@@ -93,6 +88,7 @@ class Admin extends AuthBaseModel implements Auditable
     {
         return $this->morphMany(ConversationParticipant::class, 'participant_id');
     }
+
     public function userMethod()
     {
         return $this->hasMany(UserWithdrawalAccount::class);
@@ -102,14 +98,11 @@ class Admin extends AuthBaseModel implements Auditable
                 End of RELATIONSHIPS
      =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
 
-
-    /* 
+    /*
     =#=#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
     |           Query Scopes                                       |
     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=#=
  */
-
-
 
     public function scopeActive($query)
     {
@@ -127,28 +120,26 @@ class Admin extends AuthBaseModel implements Auditable
             $query->where('status', $status);
         });
 
-
-
         return $query;
     }
-    /* 
+    /*
     =#=#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
     |          End of Query Scopes                                       |
     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=#=
  */
 
-
-    /* 
+    /*
     =#=#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
     |          Scout Search Configuration                                    |
     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=#=
  */
 
-    #[SearchUsingPrefix(['name', 'email', 'phone', 'status'])]
+    #[SearchUsingPrefix(['first_name', 'last_name', 'email', 'phone', 'status'])]
     public function toSearchableArray(): array
     {
         return [
-            'name' => $this->name,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
             'email' => $this->email,
             'phone' => $this->phone,
             'status' => $this->status,
@@ -169,8 +160,6 @@ class Admin extends AuthBaseModel implements Auditable
     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=#=
  */
 
-
-
     /*
     =#=#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
     |        Attribute Accessors                                    |
@@ -190,8 +179,13 @@ class Admin extends AuthBaseModel implements Auditable
     public function getAvatarUrlAttribute(): string
     {
         return $this->avatar
-            ? asset('storage/' . $this->avatar)
+            ? asset('storage/'.$this->avatar)
             : 'default_avatar';
+    }
+
+    public function getNameAttribute(): string
+    {
+        return trim("{$this->first_name} {$this->last_name}");
     }
 
     /*
@@ -223,11 +217,9 @@ class Admin extends AuthBaseModel implements Auditable
     {
         parent::__construct($attributes);
         $this->appends = array_merge(parent::getAppends(), [
-            //
+            'name',
         ]);
     }
-
-
 
     public function otpVerifications()
     {
