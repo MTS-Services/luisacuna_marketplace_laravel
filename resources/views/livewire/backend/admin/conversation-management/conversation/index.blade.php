@@ -183,7 +183,6 @@
                                     {{-- Order Id  --}}
                                     <p class="text-xs text-text-secondary truncate">
                                         {{ $conversation->order_id }}
-                                        @dd($conversation)
                                     </p>
 
 
