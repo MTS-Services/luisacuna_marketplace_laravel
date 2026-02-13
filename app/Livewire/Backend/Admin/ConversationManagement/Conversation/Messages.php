@@ -64,11 +64,13 @@ class Messages extends Component
 
         $this->conversationId = $conversationId;
 
+        // ✅ Load conversation without username reference
         $this->conversation = Conversation::select('id', 'conversation_uuid', 'subject', 'status', 'last_message_at')
             ->with(['participants' => function ($query) {
                 $query->where('is_active', true)
                     ->with(['participant' => function ($q) {
-                        $q->select('id', 'first_name', 'last_name', 'username', 'email', 'avatar');
+                        // Only select common fields between User and Admin
+                        $q->select('id', 'first_name', 'last_name', 'email', 'avatar');
                     }]);
             }])
             ->find($conversationId);
@@ -187,8 +189,11 @@ class Messages extends Component
             );
 
             if ($sentMessage) {
+                // ✅ Load with only common fields
                 $sentMessage->load([
-                    'sender:id,name,email,avatar',
+                    'sender' => function ($q) {
+                        $q->select('id', 'first_name', 'last_name', 'email', 'avatar');
+                    },
                     'attachments',
                 ]);
 
@@ -234,8 +239,13 @@ class Messages extends Component
             return;
         }
 
-        $newMessage = \App\Models\Message::with(['sender', 'attachments'])
-            ->find($messageData['id']);
+        // ✅ Load with only common fields
+        $newMessage = \App\Models\Message::with([
+            'sender' => function ($q) {
+                $q->select('id', 'first_name', 'last_name', 'email', 'avatar');
+            },
+            'attachments'
+        ])->find($messageData['id']);
 
         if ($newMessage) {
             $this->messages[] = $newMessage;
@@ -272,19 +282,13 @@ class Messages extends Component
         try {
             $message = \App\Models\Message::find($messageId);
 
-            if ($message) {
-                $admin = Auth::guard('admin')->user();
-
-                // Create a User instance wrapper for the admin (since deleteMessage expects User)
-                // Or we can check if admin can delete
-                if ($message->delete()) {
-                    $this->messages = collect($this->messages)
-                        ->reject(fn($msg) => $msg->id === $messageId)
-                        ->values()->all();
-                    $this->dispatch('success', message: 'Message deleted');
-                } else {
-                    $this->dispatch('error', message: 'Failed to delete message');
-                }
+            if ($message && $message->delete()) {
+                $this->messages = collect($this->messages)
+                    ->reject(fn($msg) => $msg->id === $messageId)
+                    ->values()->all();
+                $this->dispatch('success', message: 'Message deleted');
+            } else {
+                $this->dispatch('error', message: 'Failed to delete message');
             }
         } catch (\Exception $e) {
             $this->dispatch('error', message: 'Error deleting message');
@@ -302,6 +306,10 @@ class Messages extends Component
         }
     }
 
+    /**
+     * ✅ Build participant display names from loaded data
+     * Handles both User and Admin models gracefully
+     */
     public function getParticipantsProperty()
     {
         if (!$this->conversation) {
@@ -310,11 +318,18 @@ class Messages extends Component
 
         return $this->conversation->participants->map(function ($participant) {
             $p = $participant->participant;
+
+            // Build full name from first_name + last_name
+            $fullName = trim(($p?->first_name ?? '') . ' ' . ($p?->last_name ?? ''));
+            if (empty($fullName)) {
+                $fullName = $p?->email ?? 'Unknown';
+            }
+
             return [
                 'id'       => $participant->participant_id,
                 'type'     => $participant->participant_type,
                 'role'     => $participant->participant_role,
-                'name'     => $p?->full_name ?? $p?->name ?? 'Unknown',
+                'name'     => $fullName,
                 'avatar'   => $p?->avatar,
                 'is_admin' => $participant->participant_type === \App\Models\Admin::class,
             ];

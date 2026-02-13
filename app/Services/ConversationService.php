@@ -851,10 +851,18 @@ class ConversationService
             ->with([
                 'participants' => function ($query) {
                     $query->where('is_active', true)
-                        ->with('participant:id,first_name,last_name,username,email,avatar');
+                        ->with(['participant' => function ($q) {
+                            // ✅ Polymorphic - only select common fields
+                            // Admin has: id, first_name, last_name, email, avatar (NO username)
+                            // User has: id, first_name, last_name, username, email, avatar
+                            $q->select('id', 'first_name', 'last_name', 'email', 'avatar');
+                        }]);
                 },
                 'messages' => function ($query) {
-                    $query->latest()->limit(1)->with('sender:id,first_name,last_name,username,avatar');
+                    $query->latest()->limit(1)
+                        ->with(['sender' => function ($q) {
+                            $q->select('id', 'first_name', 'last_name', 'email', 'avatar');
+                        }]);
                 }
             ])
             ->withCount([
@@ -873,14 +881,18 @@ class ConversationService
                         $participantQuery->where('is_active', true)
                             ->whereHasMorph(
                                 'participant',
-                                [User::class],
-                                function ($userQuery) use ($search) {
-                                    $userQuery->where(function ($nameQuery) use ($search) {
+                                [\App\Models\User::class, \App\Models\Admin::class],
+                                function ($morphQuery, $type) use ($search) {
+                                    $morphQuery->where(function ($nameQuery) use ($search, $type) {
                                         $nameQuery->where('first_name', 'like', "%{$search}%")
                                             ->orWhere('last_name', 'like', "%{$search}%")
-                                            ->orWhere('username', 'like', "%{$search}%")
                                             ->orWhere('email', 'like', "%{$search}%")
                                             ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$search}%"]);
+
+                                        // Only search username if it's a User
+                                        if ($type === \App\Models\User::class) {
+                                            $nameQuery->orWhere('username', 'like', "%{$search}%");
+                                        }
                                     });
                                 }
                             );
@@ -929,9 +941,16 @@ class ConversationService
     ) {
         $messagesQuery = $conversation->messages()
             ->with([
-                'sender:id,first_name,last_name,username,avatar',
+                // ✅ Only select common fields for polymorphic sender
+                'sender' => function ($q) {
+                    $q->select('id', 'first_name', 'last_name', 'email', 'avatar');
+                },
                 'attachments',
-                'readReceipts.reader:id,first_name,last_name,username'
+                'readReceipts' => function ($q) {
+                    $q->with(['reader' => function ($r) {
+                        $r->select('id', 'first_name', 'last_name', 'email');
+                    }]);
+                }
             ])
             ->orderByDesc('created_at');
 
@@ -943,7 +962,11 @@ class ConversationService
         $messages = $messagesQuery->paginate($perPage);
 
         return [
-            'conversation' => $conversation->load('participants.participant'),
+            'conversation' => $conversation->load(['participants' => function ($q) {
+                $q->with(['participant' => function ($p) {
+                    $p->select('id', 'first_name', 'last_name', 'email', 'avatar');
+                }]);
+            }]),
             'messages' => $messages,
         ];
     }

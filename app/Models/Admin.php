@@ -166,6 +166,11 @@ class Admin extends AuthBaseModel implements Auditable
     =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=#=
  */
 
+    public function getFullNameAttribute(): string
+    {
+        return trim($this->first_name . ' ' . $this->last_name) ?: $this->email;
+    }
+
     public function getStatusLabelAttribute(): string
     {
         return $this->status->label();
@@ -179,7 +184,7 @@ class Admin extends AuthBaseModel implements Auditable
     public function getAvatarUrlAttribute(): string
     {
         return $this->avatar
-            ? asset('storage/'.$this->avatar)
+            ? asset('storage/' . $this->avatar)
             : 'default_avatar';
     }
 

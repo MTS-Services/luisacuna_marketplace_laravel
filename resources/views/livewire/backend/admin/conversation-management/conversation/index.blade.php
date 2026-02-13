@@ -175,11 +175,17 @@
                                     </div>
 
                                     {{-- Last Message --}}
-                                    @if ($conversation->messages->isNotEmpty())
+                                    {{-- @if ($conversation->messages->isNotEmpty())
                                         <p class="text-xs text-text-secondary truncate">
                                             {{ \Illuminate\Support\Str::limit($conversation->messages->first()->message_body, 50) }}
                                         </p>
-                                    @endif
+                                    @endif --}}
+                                    {{-- Order Id  --}}
+                                    <p class="text-xs text-text-secondary truncate">
+                                        {{ $conversation->order_id }}
+                                        @dd($conversation)
+                                    </p>
+
 
                                     {{-- Stats --}}
                                     <div class="flex items-center gap-3 mt-2">
