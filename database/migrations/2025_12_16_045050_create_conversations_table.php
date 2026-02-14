@@ -17,12 +17,12 @@ return new class extends Migration
         Schema::create('conversations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
-            $table->uuid('conversation_uuid')->unique();
+            $table->string('conversation_uuid')->unique();
+            $table->unsignedBigInteger('order_id')->nullable();
             $table->string('subject')->nullable();
             $table->longText('note')->nullable();
             $table->string('status')->default(ConversationStatus::ACTIVE)->index();
             $table->timestamp('last_message_at')->nullable();
-            $table->unsignedBigInteger('order_id')->nullable()->after('conversation_uuid');
 
             $table->foreign('order_id')
                 ->references('id')
