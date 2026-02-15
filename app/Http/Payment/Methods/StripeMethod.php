@@ -5,37 +5,36 @@ namespace App\Http\Payment\Methods;
 use App\Enums\CalculationType;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentStatus;
-use App\Enums\PointType;
 use App\Enums\TransactionStatus;
 use App\Enums\TransactionType;
 use App\Http\Payment\PaymentMethod;
-use App\Models\Achievement;
 use App\Models\Order;
 use App\Models\Payment;
-use App\Models\PointLog;
 use App\Models\Transaction;
-use App\Models\UserPoint;
 use App\Models\Wallet;
 use App\Services\AchievementService;
 use App\Services\ConversationService;
 use App\Services\CurrencyService;
-use Illuminate\Support\Facades\Log;
+use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
-use Stripe\Stripe;
+use Illuminate\Support\Str;
 use Stripe\Checkout\Session as StripeSession;
 use Stripe\PaymentIntent;
-use Exception;
-use Illuminate\Support\Str;
+use Stripe\Stripe;
 
 class StripeMethod extends PaymentMethod
 {
     protected $id = 'stripe';
+
     protected $name = 'Stripe';
+
     protected $requiresFrontendJs = false;
+
     protected CurrencyService $currencyService;
 
-    public function __construct($gateway = null, ConversationService $conversationService,AchievementService $achievementService )
+    public function __construct($gateway, ConversationService $conversationService, AchievementService $achievementService)
     {
         parent::__construct($gateway, $conversationService, $achievementService);
         $this->currencyService = app(CurrencyService::class);
@@ -60,7 +59,7 @@ class StripeMethod extends PaymentMethod
                 $exchangeRate = $paymentData['exchange_rate'] ?? 1;
 
                 // Determine the payment amount IN DISPLAY CURRENCY
-                $paymentAmount = $isTopUp ? $topUpAmount : $order->grand_total;
+                $paymentAmount = $isTopUp ? $topUpAmount : ($paymentData['grand_total'] ?? $order->grand_total);
 
                 // Convert to default currency for internal storage
                 $paymentAmountDefault = $this->currencyService->convertToDefault(
@@ -92,15 +91,15 @@ class StripeMethod extends PaymentMethod
 
                 // Determine success and cancel URLs
                 if ($isTopUp) {
-                    $successUrl = route('user.payment.topup.success') . '?session_id={CHECKOUT_SESSION_ID}&order_id=' . $order->order_id;
-                    $cancelUrl = route('user.payment.failed') . '?order_id=' . $order->order_id;
+                    $successUrl = route('user.payment.topup.success').'?session_id={CHECKOUT_SESSION_ID}&order_id='.$order->order_id;
+                    $cancelUrl = route('user.payment.failed').'?order_id='.$order->order_id;
                     $description = "Wallet Top-up for Order #{$order->order_id}";
                     $productName = 'Wallet Top-Up';
                 } else {
-                    $successUrl = route('user.payment.success') . '?session_id={CHECKOUT_SESSION_ID}&order_id=' . $order->order_id;
-                    $cancelUrl = route('user.payment.failed') . '?order_id=' . $order->order_id;
-                    $description = 'Order ID: ' . $order->order_id;
-                    $productName = $order->source?->name ?? 'Order #' . $order->order_id;
+                    $successUrl = route('user.payment.success').'?session_id={CHECKOUT_SESSION_ID}&order_id='.$order->order_id;
+                    $cancelUrl = route('user.payment.failed').'?order_id='.$order->order_id;
+                    $description = 'Order ID: '.$order->order_id;
+                    $productName = $order->source?->name ?? 'Order #'.$order->order_id;
                 }
 
                 // Create Stripe Checkout Session IN DISPLAY CURRENCY
@@ -171,7 +170,7 @@ class StripeMethod extends PaymentMethod
                 'trace' => $e->getTraceAsString(),
             ]);
 
-            return ['success' => false, 'message' => 'Failed to initialize Stripe payment: ' . $e->getMessage()];
+            return ['success' => false, 'message' => 'Failed to initialize Stripe payment: '.$e->getMessage()];
         }
     }
 
@@ -183,7 +182,7 @@ class StripeMethod extends PaymentMethod
         try {
             $session = StripeSession::retrieve($sessionId);
 
-            if (!$session) {
+            if (! $session) {
                 throw new Exception('Stripe session not found');
             }
 
@@ -191,7 +190,7 @@ class StripeMethod extends PaymentMethod
                 ->where('payment_intent_id', $sessionId)
                 ->first();
 
-            if (!$payment) {
+            if (! $payment) {
                 throw new Exception('Payment record not found.');
             }
 
@@ -212,7 +211,7 @@ class StripeMethod extends PaymentMethod
 
             return [
                 'success' => false,
-                'message' => 'Payment not completed. Status: ' . $session->payment_status,
+                'message' => 'Payment not completed. Status: '.$session->payment_status,
             ];
         } catch (Exception $e) {
             Log::error('Payment confirmation failed', [
@@ -223,7 +222,7 @@ class StripeMethod extends PaymentMethod
 
             return [
                 'success' => false,
-                'message' => 'Payment confirmation failed: ' . $e->getMessage(),
+                'message' => 'Payment confirmation failed: '.$e->getMessage(),
             ];
         }
     }
@@ -240,7 +239,7 @@ class StripeMethod extends PaymentMethod
 
             $topUpData = Session::get("topup_order_{$order->order_id}");
 
-            if (!$topUpData) {
+            if (! $topUpData) {
                 throw new Exception('Top-up session data not found');
             }
 
@@ -583,13 +582,19 @@ class StripeMethod extends PaymentMethod
     {
         try {
             $orderId = $session['metadata']['order_id'] ?? null;
-            if (!$orderId) return;
+            if (! $orderId) {
+                return;
+            }
 
             $order = Order::with(['latestPayment'])->where('order_id', $orderId)->first();
-            if (!$order) return;
+            if (! $order) {
+                return;
+            }
 
             $payment = $order->latestPayment;
-            if ($payment && $payment->status === PaymentStatus::COMPLETED->value) return;
+            if ($payment && $payment->status === PaymentStatus::COMPLETED->value) {
+                return;
+            }
 
             if ($payment && $session['payment_status'] === 'paid') {
                 $this->confirmPayment($session['id']);
@@ -600,6 +605,8 @@ class StripeMethod extends PaymentMethod
     }
 
     protected function handlePaymentSuccess(array $paymentIntent): void {}
+
     protected function handlePaymentFailed(array $paymentIntent): void {}
+
     protected function handlePaymentCanceled(array $paymentIntent): void {}
 }

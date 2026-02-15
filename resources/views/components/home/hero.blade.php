@@ -1,10 +1,7 @@
 @props([
     'data' => null,
 ])
-@php
-    $service = new \App\Services\Cloudinary\CloudinaryService();
 
-@endphp
 <div class="relative hidden md:flex overflow-hidden  bg-center h-[532px] bg-no-repeat bg-[length:100%_100%]  justify-center items-center"
     style="background-image: url('{{ storage_url($data->image, ['width' => 1920, 'height' => 532, 'crop' => 'fill', 'gravity' => 'auto', 'quality' => 'auto:best', 'fetch_format' => 'auto', 'flags' => 'progressive']) }}')">
     <div
@@ -16,7 +13,8 @@
 
         <div class="container py-30 relative z-10 align-left  w-100vw">
 
-            <h2 class="text-5xl md:text-6xl font-semibold mb-6 text-text-white align-left">{{ $data->translatedTitle(app()->getLocale()) }}</h2>
+            <h2 class="text-5xl md:text-6xl font-semibold mb-6 text-text-white align-left">
+                {{ $data->translatedTitle(app()->getLocale()) }}</h2>
             <p class="text-2xl font-normal text-text-white mb-15 max-w-2xl align-left">
                 {{ $data->translatedContent(app()->getLocale()) }}
             </p>
@@ -25,7 +23,7 @@
                 <div>
                     <x-ui.button class="py-2! px-3!" href="{{ $data->action_url }}" :wire="false" :target="$data->target">
 
-                        {{  $data->translatedActionTitle(app()->getLocale()) }}
+                        {{ $data->translatedActionTitle(app()->getLocale()) }}
                     </x-ui.button>
                 </div>
             </div>
@@ -34,7 +32,7 @@
 </div>
 <section
     class=" relative flex md:hidden overflow-hidden  bg-center h-[532px] bg-no-repeat bg-[length:100%_100%]  justify-center items-center"
-  style="background-image: url('{{  storage_url($data->mobile_image, ['width' => 'auto', 'height' => 'auto', 'crop' => 'fill', 'gravity' => 'auto', 'quality' => 'auto:best', 'fetch_format' => 'auto', 'flags' => 'progressive']) }}')">
+    style="background-image: url('{{ storage_url($data->mobile_image, ['width' => 'auto', 'height' => 'auto', 'crop' => 'fill', 'gravity' => 'auto', 'quality' => 'auto:best', 'fetch_format' => 'auto', 'flags' => 'progressive']) }}')">
 
     <div class="bg-[#0f002978] py-30 bg-opacity-0 relative z-10 w-full">
         <div class="container py-30 relative z-10 align-left  w-100vw">

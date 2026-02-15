@@ -6,10 +6,9 @@ use App\Enums\OrderStatus;
 use App\Http\Payment\PaymentManager;
 use App\Models\Order;
 use App\Models\PaymentGateway;
-use Illuminate\Support\Facades\DB;
+use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
-use Exception;
 
 class PaymentService
 {
@@ -23,7 +22,7 @@ class PaymentService
     public function processPayment(Order $order, string $gateway, array $paymentData = []): array
     {
         try {
-            if (!$this->canProcessPayment($order)) {
+            if (! $this->canProcessPayment($order)) {
                 return [
                     'success' => false,
                     'message' => 'Order cannot accept payment at this time.',
@@ -35,7 +34,7 @@ class PaymentService
                 ->where('is_active', true)
                 ->first();
 
-            if (!$paymentGateway || !$paymentGateway->isSupported()) {
+            if (! $paymentGateway || ! $paymentGateway->isSupported()) {
                 return [
                     'success' => false,
                     'message' => 'Payment gateway not available.',
@@ -44,7 +43,7 @@ class PaymentService
             }
 
             $paymentMethod = $paymentGateway->paymentMethod();
-            
+
             return $paymentMethod->startPayment($order, $paymentData);
         } catch (Exception $e) {
             Log::error('Payment processing failed', [
@@ -56,7 +55,7 @@ class PaymentService
 
             return [
                 'success' => false,
-                'message' => 'Payment processing failed: ' . $e->getMessage(),
+                'message' => 'Payment processing failed: '.$e->getMessage(),
                 'reason' => 'exception',
             ];
         }
@@ -69,7 +68,7 @@ class PaymentService
     public function processTopUpAndPayment(Order $order, string $topUpGateway, float $topUpAmount, array $paymentData = []): array
     {
         try {
-            if (!$this->canProcessPayment($order)) {
+            if (! $this->canProcessPayment($order)) {
                 return [
                     'success' => false,
                     'message' => 'Order cannot accept payment at this time.',
@@ -80,7 +79,7 @@ class PaymentService
                 ->where('is_active', true)
                 ->first();
 
-            if (!$paymentGateway || !$paymentGateway->isSupported()) {
+            if (! $paymentGateway || ! $paymentGateway->isSupported()) {
                 return [
                     'success' => false,
                     'message' => 'Selected payment gateway is not available.',
@@ -94,7 +93,8 @@ class PaymentService
                 'order_id' => $order->id,
                 'order_number' => $order->order_id,
                 'top_up_amount' => $topUpAmount,
-                'order_total' => $order->grand_total,
+                'order_total' => $paymentData['grand_total'] ?? $order->grand_total,
+                'order_total_default' => $paymentData['grand_total_default'] ?? $order->default_grand_total,
                 'top_up_gateway' => $topUpGateway,
                 'created_at' => now()->timestamp,
                 'expires_at' => now()->addMinutes(30)->timestamp,
@@ -136,22 +136,23 @@ class PaymentService
 
             return [
                 'success' => false,
-                'message' => 'Top-up payment failed: ' . $e->getMessage(),
+                'message' => 'Top-up payment failed: '.$e->getMessage(),
             ];
         }
     }
 
     protected function canProcessPayment(Order $order): bool
     {
-        if (!in_array($order->status, [
+        if (! in_array($order->status, [
             OrderStatus::INITIALIZED,
             OrderStatus::PENDING,
-            OrderStatus::PARTIALLY_PAID
+            OrderStatus::PARTIALLY_PAID,
         ])) {
             Log::warning('Order cannot accept payment', [
                 'order_id' => $order->order_id,
                 'status' => $order->status->value,
             ]);
+
             return false;
         }
 
@@ -159,6 +160,7 @@ class PaymentService
             Log::warning('Order already fully paid', [
                 'order_id' => $order->order_id,
             ]);
+
             return false;
         }
 

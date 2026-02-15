@@ -209,7 +209,7 @@
                                         </button>
                                     </div>
                                     <p class="text-text-white font-semibold text-base">
-                                        {{ $displaySymbol }}{{ number_format($order->tax_amount, 2) }}
+                                        {{ $displaySymbol }}{{ number_format($calculatedTaxAmount, 2) }}
                                     </p>
                                 </div>
 
@@ -257,7 +257,7 @@
                                 </x-ui.button>
                                 <x-ui.button type="submit" wire:loading.remove wire:target="processPayment"
                                     class="px-4! py-2! sm:px-6! sm:py-3!">
-                                    {{ $displayCurrency }} {{ number_format($order->grand_total, 2) }}
+                                    {{ $displayCurrency }} {{ number_format($calculatedGrandTotal, 2) }}
                                     {{ __('| Pay Now') }}
                                 </x-ui.button>
                             </div>
@@ -349,7 +349,7 @@
                     <div class="p-4 bg-bg-primary rounded-xl border border-zinc-800">
                         <p class="text-zinc-500 text-xs font-semibold uppercase mb-1">{{ __('Order Total') }}</p>
                         <p class="text-text-white font-bold text-lg">
-                            {{ $displaySymbol }}{{ number_format($order->grand_total, 2) }}
+                            {{ $displaySymbol }}{{ number_format($calculatedGrandTotal, 2) }}
                         </p>
                     </div>
                 </div>

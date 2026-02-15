@@ -2,51 +2,57 @@
 
 namespace App\Livewire\Backend\User\Payments;
 
-use App\Models\User;
-use App\Models\Product;
-use App\Services\FeedbackService;
-use App\Services\FeeSettingsService;
-use App\Services\CurrencyService;
-use Livewire\Component;
 use App\Enums\FeedbackType;
+use App\Models\Product;
+use App\Models\User;
+use App\Services\CurrencyService;
+use App\Services\FeedbackService;
 use App\Services\OrderService;
 use App\Services\ProductService;
-use Illuminate\Support\Facades\Session;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
+use Livewire\Component;
 
 class InitializeOrder extends Component
 {
     use WithNotification;
 
     public ?Product $product = null;
+
     public int $quantity = 1;
+
     public $feedbacks;
+
     public $product_id;
+
     public $positiveFeedbacksCount;
+
     public $negativeFeedbacksCount;
 
     // Display currency properties
     public string $displayCurrency;
+
     public string $displaySymbol;
+
     public float $exchangeRate;
 
     protected OrderService $orderService;
+
     protected ProductService $productService;
-    protected FeeSettingsService $feeSettingsService;
+
     protected FeedbackService $feedbackService;
+
     protected CurrencyService $currencyService;
 
     public function boot(
         OrderService $orderService,
         ProductService $productService,
-        FeeSettingsService $feeSettingsService,
         FeedbackService $feedbackService,
         CurrencyService $currencyService
     ) {
         $this->orderService = $orderService;
         $this->productService = $productService;
-        $this->feeSettingsService = $feeSettingsService;
         $this->feedbackService = $feedbackService;
         $this->currencyService = $currencyService;
         $this->feedbacks = collect([]);
@@ -82,20 +88,20 @@ class InitializeOrder extends Component
     public function submit()
     {
         try {
-            $fee = $this->feeSettingsService->getActiveFee();
             $defaultCurrency = $this->currencyService->getDefaultCurrency();
 
             // =================================================================
             // STEP 1: Calculate in DEFAULT CURRENCY (USD)
             // Product prices are stored in default currency
+            // Tax will be calculated during checkout based on payment method
             // =================================================================
             $unitPriceDefault = (float) $this->product->price;
             $quantity = (int) $this->quantity;
             $totalAmountDefault = $unitPriceDefault * $quantity;
 
-            $buyerTaxPercent = (float) $fee->buyer_fee ?? 0;
-            $taxAmountDefault = ($totalAmountDefault * $buyerTaxPercent) / 100;
-            $grandTotalDefault = $totalAmountDefault + $taxAmountDefault;
+            // Tax amounts will be calculated later during checkout
+            $taxAmountDefault = 0;
+            $grandTotalDefault = $totalAmountDefault;
 
             // =================================================================
             // STEP 2: Convert to DISPLAY CURRENCY (for user-facing amounts)
@@ -151,7 +157,7 @@ class InitializeOrder extends Component
                 'exchange_rate' => $this->exchangeRate,
                 'quantity' => $quantity,
 
-                'notes' => "Order initiated by " . user()->username . ", Order ID: " . $orderId,
+                'notes' => 'Order initiated by ' . user()->username . ', Order ID: ' . $orderId,
                 'display_symbol' => $this->displaySymbol, // Legacy field
 
                 'points' => $totalAmountDefault * env('ORDER_POINTS_MULTIPLAYER', 100),
@@ -162,27 +168,29 @@ class InitializeOrder extends Component
 
             // =================================================================
             // STEP 4: Store in Redis for Checkout
-            // Lock price in DEFAULT currency for accurate calculations
+            // Lock subtotal in DEFAULT currency for accurate calculations
+            // Tax will be added during checkout based on payment method
             // =================================================================
             Session::driver('database')->put("checkout_{$token}", [
                 'order_id' => $order->id,
-                'price_locked' => $grandTotalDefault, // Store in default currency
-                'display_price' => $grandTotalDisplay, // For reference
+                'subtotal_locked' => $totalAmountDefault, // Subtotal without tax
+                'price_locked' => $totalAmountDefault, // For backward compatibility
+                'display_subtotal' => $totalAmountDisplay, // For reference
                 'display_currency' => $this->displayCurrency,
                 'exchange_rate' => $this->exchangeRate,
                 'expires_at' => now()->addMinutes((int) env('ORDER_CHECKOUT_TIMEOUT_MINUTES', 10))->timestamp,
             ]);
 
             // Log order creation with currency details
-            Log::info('Order initialized with currency conversion', [
+            Log::info('Order initialized without tax - will be calculated at checkout', [
                 'order_id' => $orderId,
                 'user_id' => user()->id,
                 'product_id' => $this->product->id,
                 'quantity' => $quantity,
                 'default_currency' => $defaultCurrency->code,
-                'default_grand_total' => $grandTotalDefault,
+                'default_total_amount' => $totalAmountDefault,
                 'display_currency' => $this->displayCurrency,
-                'display_grand_total' => $grandTotalDisplay,
+                'display_total_amount' => $totalAmountDisplay,
                 'exchange_rate' => $this->exchangeRate,
             ]);
 
@@ -199,6 +207,7 @@ class InitializeOrder extends Component
             ]);
 
             $this->addError('order', 'Failed to initialize order. Please try again.');
+
             return null;
         }
     }
@@ -221,6 +230,7 @@ class InitializeOrder extends Component
     public function getFormattedTotal(): string
     {
         $total = $this->getDisplayPrice();
+
         return $this->displaySymbol . number_format($total, 2);
     }
 

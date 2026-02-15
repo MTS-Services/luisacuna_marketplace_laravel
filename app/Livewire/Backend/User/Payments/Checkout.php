@@ -2,81 +2,112 @@
 
 namespace App\Livewire\Backend\User\Payments;
 
-use App\Models\Order;
-use App\Models\Wallet;
-use Livewire\Component;
-use App\Enums\OrderStatus;
 use App\Enums\FeedbackType;
+use App\Enums\OrderStatus;
+use App\Models\Order;
 use App\Models\PaymentGateway;
-use App\Services\OrderService;
-use Livewire\Attributes\Layout;
-use App\Services\PaymentService;
+use App\Models\Wallet;
 use App\Services\CurrencyService;
 use App\Services\FeedbackService;
+use App\Services\FeeSettingsService;
 use App\Services\NowPaymentService;
+use App\Services\OrderService;
+use App\Services\PaymentService;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Database\Eloquent\Collection;
+use Livewire\Attributes\Layout;
+use Livewire\Component;
 
 #[Layout('frontend.layouts.app', ['title' => 'Checkout'])]
 class Checkout extends Component
 {
     public ?Order $order;
+
     public ?Collection $gateways;
+
     public ?string $gateway = null;
+
     public ?float $walletBalance = null;
+
     public ?float $walletBalanceDefault = null; // Add this for default currency balance
+
     public bool $showWalletWarning = false;
+
     public bool $processing = false;
+
     public $positiveFeedbacksCount;
+
     public $negativeFeedbacksCount;
 
     // Top-up modal properties
     public bool $showTopUpModal = false;
+
     public ?string $topUpGateway = null;
+
     public ?float $requiredTopUpAmount = null;
+
     public ?Collection $topUpGateways;
 
     // Currency properties
     public string $displayCurrency;
+
     public string $displaySymbol;
+
     public float $exchangeRate;
 
+    // Dynamic tax properties
+    public float $calculatedTaxAmount = 0; // Display currency
 
+    public float $calculatedTaxAmountDefault = 0; // Default currency
+
+    public float $calculatedGrandTotal = 0; // Display currency
+
+    public float $calculatedGrandTotalDefault = 0; // Default currency
 
     // =========================================================
 
     public $priceAmount = 2000000000000000;
+
     public $priceCurrency = 'usd';
+
     public $payCurrency = 'btc';
+
     public $orderDescription = '';
+
     public $availableCurrencies = [];
+
     public $estimatedAmount = null;
+
     public $minimumAmount = 20;
+
     public $paymentDetails = null;
 
     protected OrderService $orderService;
+
     protected PaymentService $paymentService;
+
     protected CurrencyService $currencyService;
+
     protected FeedbackService $feedbackService;
 
+    protected FeeSettingsService $feeSettingsService;
 
-
-    public function boot(OrderService $orderService, PaymentService $paymentService, FeedbackService $feedbackService, CurrencyService $currencyService)
+    public function boot(OrderService $orderService, PaymentService $paymentService, FeedbackService $feedbackService, CurrencyService $currencyService, FeeSettingsService $feeSettingsService)
     {
         $this->orderService = $orderService;
         $this->paymentService = $paymentService;
         $this->currencyService = $currencyService;
         $this->feedbackService = $feedbackService;
+        $this->feeSettingsService = $feeSettingsService;
     }
 
     public function mount($slug, $token)
-
     {
         $key = "checkout_{$token}";
         $sessionKey = Session::driver('database')->get($key);
 
-        if (!$sessionKey) {
+        if (! $sessionKey) {
             abort(404, 'Checkout link is invalid or has expired');
         }
 
@@ -88,7 +119,7 @@ class Checkout extends Component
         $this->order = $this->orderService->findData($sessionKey['order_id']);
         $this->order->load(['user', 'source.platform',  'user.feedbacksReceived', 'source.product_configs.game_configs', 'source.user', 'source.game', 'source.user.wallet']);
 
-        if (!$this->order || $this->order->status !== OrderStatus::INITIALIZED) {
+        if (! $this->order || $this->order->status !== OrderStatus::INITIALIZED) {
             abort(404, 'Checkout link is invalid or has expired');
         }
 
@@ -115,6 +146,9 @@ class Checkout extends Component
         $allFeedbacks = $this->order?->user?->feedbacksReceived()->get();
         $this->positiveFeedbacksCount = $this->order?->user?->feedbacksReceived()->where('type', FeedbackType::POSITIVE->value)->count();
         $this->negativeFeedbacksCount = $this->order?->user?->feedbacksReceived()->where('type', FeedbackType::NEGATIVE->value)->count();
+
+        // Initialize calculated amounts based on default gateway
+        $this->recalculateTax();
     }
 
     protected function loadWalletBalance()
@@ -139,7 +173,7 @@ class Checkout extends Component
         } catch (\Exception $e) {
             Log::error('Failed to load wallet balance', [
                 'user_id' => $this->order->user_id,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
             $this->walletBalance = 0;
             $this->walletBalanceDefault = 0;
@@ -148,11 +182,71 @@ class Checkout extends Component
 
     public function updatedGateway()
     {
+        // Recalculate tax based on selected payment method
+        $this->recalculateTax();
+
         if ($this->gateway === 'wallet' && $this->walletBalance !== null) {
-            // Compare in DISPLAY currency (both are in same currency now)
-            $this->showWalletWarning = $this->walletBalance < $this->order->grand_total;
+            // Compare in DISPLAY currency with calculated grand total
+            $this->showWalletWarning = $this->walletBalance < $this->calculatedGrandTotal;
         } else {
             $this->showWalletWarning = false;
+        }
+    }
+
+    /**
+     * Recalculate tax based on the selected payment method
+     * - Wallet: No tax (tax = 0)
+     * - Stripe/Crypto: Apply buyer fee as tax
+     */
+    protected function recalculateTax(): void
+    {
+        try {
+            // If wallet is selected, don't apply tax
+            if ($this->gateway === 'wallet') {
+                $this->calculatedTaxAmountDefault = 0;
+                $this->calculatedGrandTotalDefault = $this->order->default_total_amount;
+            } else {
+                // For stripe and crypto, apply buyer fee as tax
+                $fee = $this->feeSettingsService->getActiveFee();
+                $buyerTaxPercent = (float) ($fee->buyer_fee ?? 0);
+
+                // Calculate tax in default currency
+                $this->calculatedTaxAmountDefault = ($this->order->default_total_amount * $buyerTaxPercent) / 100;
+                $this->calculatedGrandTotalDefault = $this->order->default_total_amount + $this->calculatedTaxAmountDefault;
+            }
+
+            // Convert to display currency
+            $this->calculatedTaxAmount = $this->currencyService->convertFromDefault(
+                $this->calculatedTaxAmountDefault,
+                $this->displayCurrency
+            );
+
+            $this->calculatedGrandTotal = $this->currencyService->convertFromDefault(
+                $this->calculatedGrandTotalDefault,
+                $this->displayCurrency
+            );
+
+            Log::info('Tax recalculated at checkout', [
+                'order_id' => $this->order->order_id,
+                'gateway' => $this->gateway,
+                'tax_amount_default' => $this->calculatedTaxAmountDefault,
+                'grand_total_default' => $this->calculatedGrandTotalDefault,
+                'tax_amount_display' => $this->calculatedTaxAmount,
+                'grand_total_display' => $this->calculatedGrandTotal,
+                'currency' => $this->displayCurrency,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error calculating tax at checkout', [
+                'order_id' => $this->order->order_id,
+                'gateway' => $this->gateway,
+                'error' => $e->getMessage(),
+            ]);
+
+            // Fallback: no tax if error
+            $this->calculatedTaxAmountDefault = 0;
+            $this->calculatedGrandTotalDefault = $this->order->default_total_amount;
+            $this->calculatedTaxAmount = 0;
+            $this->calculatedGrandTotal = $this->order->total_amount;
         }
     }
 
@@ -166,7 +260,6 @@ class Checkout extends Component
      */
     public function processPayment()
     {
-
 
         if ($this->processing) {
             return;
@@ -186,13 +279,14 @@ class Checkout extends Component
                     'requesting_user_id' => user()->id,
                 ]);
                 session()->flash('error', 'Unauthorized access to this order.');
+
                 return;
             }
 
             // Check if wallet is selected and balance is insufficient
-            if ($this->gateway === 'wallet' && $this->walletBalance < $this->order->grand_total) {
+            if ($this->gateway === 'wallet' && $this->walletBalance < $this->calculatedGrandTotal) {
                 // Calculate shortage in DISPLAY currency
-                $this->requiredTopUpAmount = $this->order->grand_total - $this->walletBalance;
+                $this->requiredTopUpAmount = $this->calculatedGrandTotal - $this->walletBalance;
                 $this->showTopUpModal = true;
                 $this->topUpGateway = $this->topUpGateways->first()?->slug;
                 $this->processing = false;
@@ -200,14 +294,13 @@ class Checkout extends Component
                 Log::info('Insufficient wallet balance - showing top-up modal', [
                     'order_id' => $this->order->order_id,
                     'wallet_balance_display' => $this->walletBalance,
-                    'order_total_display' => $this->order->grand_total,
+                    'order_total_display' => $this->calculatedGrandTotal,
                     'shortage_display' => $this->requiredTopUpAmount,
                     'currency' => $this->displayCurrency,
                 ]);
 
                 return;
             }
-
 
             // Process normal payment
             $result = $this->paymentService->processPayment(
@@ -216,6 +309,10 @@ class Checkout extends Component
                 paymentData: [
                     'display_currency' => $this->displayCurrency,
                     'exchange_rate' => $this->exchangeRate,
+                    'tax_amount' => $this->calculatedTaxAmount,
+                    'tax_amount_default' => $this->calculatedTaxAmountDefault,
+                    'grand_total' => $this->calculatedGrandTotal,
+                    'grand_total_default' => $this->calculatedGrandTotalDefault,
                 ]
             );
 
@@ -237,13 +334,15 @@ class Checkout extends Component
                 //     return redirect()->route('user.order.complete', ['orderId' => $this->order->order_id]);
                 // }
 
-                if (isset($result['checkout_url']) && !empty($result['checkout_url'])) {
+                if (isset($result['checkout_url']) && ! empty($result['checkout_url'])) {
                     return redirect()->to($result['checkout_url']);
                 } elseif ($this->gateway === 'wallet' && isset($result['redirect_url'])) {
                     session()->flash('success', $result['message']);
+
                     return redirect()->to($result['redirect_url']);
                 } else {
                     session()->flash('success', $result['message']);
+
                     return redirect()->route('user.order.complete', ['orderId' => $this->order->order_id]);
                 }
             } else {
@@ -262,7 +361,6 @@ class Checkout extends Component
             $this->processing = false;
         }
     }
-
 
     /**
      * Process top-up and then payment
@@ -288,6 +386,10 @@ class Checkout extends Component
                 paymentData: [
                     'display_currency' => $this->displayCurrency,
                     'exchange_rate' => $this->exchangeRate,
+                    'tax_amount' => $this->calculatedTaxAmount,
+                    'tax_amount_default' => $this->calculatedTaxAmountDefault,
+                    'grand_total' => $this->calculatedGrandTotal,
+                    'grand_total_default' => $this->calculatedGrandTotalDefault,
                 ]
             );
 
@@ -305,6 +407,7 @@ class Checkout extends Component
                     return redirect()->to($result['checkout_url']);
                 } else {
                     session()->flash('success', $result['message']);
+
                     return redirect()->route('user.order.complete', ['orderId' => $this->order->order_id]);
                 }
             } else {
@@ -325,16 +428,11 @@ class Checkout extends Component
         }
     }
 
-
-
     public function closeTopUpModal()
     {
         $this->showTopUpModal = false;
         $this->topUpGateway = null;
     }
-
-
-
 
     public function createPayment(NowPaymentService $nowPaymentService)
     {
@@ -353,7 +451,10 @@ class Checkout extends Component
 
             return redirect()->away($invoice['invoice_url']);
         } catch (\Exception $e) {
-            $this->errorMessage = $e->getMessage();
+            Log::error('Error creating NowPayments invoice', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
             session()->flash('error', $e->getMessage());
         }
     }

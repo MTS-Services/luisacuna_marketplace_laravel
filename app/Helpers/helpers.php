@@ -99,90 +99,84 @@ if (!function_exists('admin')) {
 // }
 
 if (!function_exists('storage_url')) {
-    function storage_url($urlOrArray, ?array $transform = [])
+
+    function storage_url(array|string|null $urlOrArray = null, array $transform = [])
     {
-        $image = 'no_image';
+        $defaultImage = 'no_image';
 
-        $transform = array_merge(
-            array(
-                'width' => 300,
-                'height' => 300,
-                'crop' => 'auto',
-                'quality' => 'auto',
-                'fetch_format' => 'auto',
-                'dpr' => 'auto',
-            ),
-            $transform
-        );
-
+        // Default Cloudinary transformations
+        $params = array_merge([
+            'width' => 300,
+            'height' => 300,
+            'crop' => 'auto',
+            'quality' => 'auto',
+            'fetch_format' => 'auto',
+            'dpr' => 'auto',
+        ], $transform);
 
         $cloudinaryService = app(CloudinaryService::class);
 
-        if (is_array($urlOrArray) || is_object($urlOrArray)) {
-            $result = '';
-            $count = 0;
-            $itemCount = count($urlOrArray);
+        // Normalize input to an array for consistent processing
+        $inputs = is_array($urlOrArray) ? $urlOrArray : [$urlOrArray];
+        $urls = [];
 
-            foreach ($urlOrArray as $index => $url) {
-
-                if (filter_var($url, FILTER_VALIDATE_URL)) {
-                    $result .= $url;
-                    $result .= ($count === $itemCount - 1) ? '' : ', ';
-                    $count++;
-                    continue;
-                }
-
-                $result .= ($url && ($url != '' || $url != null))
-                    ? $cloudinaryService->getTransformedUrl($url, $transform)
-                    : $cloudinaryService->getTransformedUrl($image, $transform);
-
-                $result .= ($count === $itemCount - 1) ? '' : ', ';
-                $count++;
+        foreach ($inputs as $input) {
+            if (empty($input)) {
+                $urls[] = $defaultImage;
+                continue;
             }
 
-            return $result;
-        } else {
-            if (filter_var($urlOrArray, FILTER_VALIDATE_URL)) {
-                return $urlOrArray;
+            // If it's already a full URL, don't transform it
+            if (filter_var($input, FILTER_VALIDATE_URL)) {
+                $urls[] = $input;
+                continue;
             }
 
-            return ($urlOrArray && ($urlOrArray != '' || $urlOrArray != null))
-                ? $cloudinaryService->getTransformedUrl($urlOrArray, $transform)
-                : $cloudinaryService->getTransformedUrl($image, $transform);
+            // Get transformed URL from Cloudinary service
+            $urls[] = $cloudinaryService->getTransformedUrl($input, $params);
         }
+
+        // Return a single string if input was a string, otherwise a comma-separated list
+        return is_array($urlOrArray) ? implode(', ', $urls) : $urls[0];
     }
 }
 
-
 if (!function_exists('auth_storage_url')) {
-    function auth_storage_url($url, ?array $transform = [])
+    /**
+     * Generate a transformed Cloudinary URL for user avatars.
+     *
+     * @param string|null $url The public ID or full URL of the image.
+     * @param array $transform Optional transformation overrides.
+     * @return string
+     */
+    function auth_storage_url(?string $url = null, array $transform = []): string
     {
-
-        if (filter_var($url, FILTER_VALIDATE_URL)) {
+        // 1. Immediate return for external URLs (Social logins, etc.)
+        if ($url && filter_var($url, FILTER_VALIDATE_URL)) {
             return $url;
         }
 
-        $image = 'default_avatar';
+        // 2. Default avatar fallback
+        $fallback = 'default_avatar';
 
-        $transform = array_merge(
-            array(
-                'width' => 200,
-                'height' => 200,
-                'quality' => 'auto',
-                'fetch_format' => 'auto',
-                'dpr' => 'auto',
-                'crop' => 'fill',
-                'gravity' => 'face',
-                'radius' => 'max',
-            ),
-            $transform
-        );
+        // 3. Merge avatar-specific defaults
+        $params = array_merge([
+            'width'        => 200,
+            'height'       => 200,
+            'quality'      => 'auto',
+            'fetch_format' => 'auto',
+            'dpr'          => 'auto',
+            'crop'         => 'fill',
+            'gravity'      => 'face', // Focus on the face
+            'radius'       => 'max',  // Circular crop
+        ], $transform);
+
         $cloudinaryService = app(CloudinaryService::class);
 
+        // 4. Use the provided $url if present and not empty; otherwise, use fallback
+        $target = (!empty($url)) ? $url : $fallback;
 
-        return ($url && ($url != '' || $url != null))
-            ? $cloudinaryService->getTransformedUrl($url, $transform)
-            : $cloudinaryService->getTransformedUrl($image, $transform);
+        return $cloudinaryService->getTransformedUrl($target, $params);
     }
 }
 // if (!function_exists('auth_storage_url')) {
