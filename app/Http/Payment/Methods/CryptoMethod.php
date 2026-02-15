@@ -177,8 +177,6 @@ class CryptoMethod extends PaymentMethod
                     'invoice_id' => $invoice['id'],
                     'payment_id' => $payment->payment_id,
                 ];
-
-                dd($response);
             });
         } catch (Exception $e) {
             $order->update([

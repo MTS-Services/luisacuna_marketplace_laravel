@@ -13,6 +13,7 @@ use App\Services\FeeSettingsService;
 use App\Services\NowPaymentService;
 use App\Services\OrderService;
 use App\Services\PaymentService;
+use App\Services\TaxService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
@@ -93,13 +94,22 @@ class Checkout extends Component
 
     protected FeeSettingsService $feeSettingsService;
 
-    public function boot(OrderService $orderService, PaymentService $paymentService, FeedbackService $feedbackService, CurrencyService $currencyService, FeeSettingsService $feeSettingsService)
-    {
+    protected TaxService $taxService;
+
+    public function boot(
+        OrderService $orderService,
+        PaymentService $paymentService,
+        FeedbackService $feedbackService,
+        CurrencyService $currencyService,
+        FeeSettingsService $feeSettingsService,
+        TaxService $taxService
+    ) {
         $this->orderService = $orderService;
         $this->paymentService = $paymentService;
         $this->currencyService = $currencyService;
         $this->feedbackService = $feedbackService;
         $this->feeSettingsService = $feeSettingsService;
+        $this->taxService = $taxService;
     }
 
     public function mount($slug, $token)
@@ -133,12 +143,12 @@ class Checkout extends Component
             ->orderBy('sort_order', 'asc')
             ->select(['id', 'slug', 'name'])
             ->get()
-            ->filter(fn($gateway) => $gateway->isSupported());
+            ->filter(fn ($gateway) => $gateway->isSupported());
 
         $this->gateway = $this->gateways->first()?->slug;
 
         // Load top-up gateways (exclude wallet)
-        $this->topUpGateways = $this->gateways->filter(fn($g) => $g->slug !== 'wallet');
+        $this->topUpGateways = $this->gateways->filter(fn ($g) => $g->slug !== 'wallet');
 
         if ($this->gateways->where('slug', 'wallet')->isNotEmpty()) {
             $this->loadWalletBalance();
@@ -195,25 +205,31 @@ class Checkout extends Component
 
     /**
      * Recalculate tax based on the selected payment method
-     * - Wallet: No tax (tax = 0)
-     * - Stripe/Crypto: Apply buyer fee as tax
+     *
+     * Tax Rules:
+     * 1. Wallet selected with sufficient balance: NO TAX - display original amount
+     * 2. Wallet insufficient OR Stripe/Crypto selected: TAX applied on entire order amount
+     * 3. Top-up scenario: Tax is recalculated only on the remaining balance to be topped up
      */
     protected function recalculateTax(): void
     {
         try {
-            // If wallet is selected, don't apply tax
-            if ($this->gateway === 'wallet') {
-                $this->calculatedTaxAmountDefault = 0;
-                $this->calculatedGrandTotalDefault = $this->order->default_total_amount;
-            } else {
-                // For stripe and crypto, apply buyer fee as tax
-                $fee = $this->feeSettingsService->getActiveFee();
-                $buyerTaxPercent = (float) ($fee->buyer_fee ?? 0);
+            // Determine if it's a top-up scenario (wallet insufficient)
+            $isTopUp = $this->gateway === 'wallet' &&
+                       $this->walletBalanceDefault !== null &&
+                       $this->walletBalanceDefault < $this->order->default_total_amount;
 
-                // Calculate tax in default currency
-                $this->calculatedTaxAmountDefault = ($this->order->default_total_amount * $buyerTaxPercent) / 100;
-                $this->calculatedGrandTotalDefault = $this->order->default_total_amount + $this->calculatedTaxAmountDefault;
-            }
+            // Use TaxService to calculate tax
+            $taxCalc = $this->taxService->calculateTax(
+                paymentMethod: $this->gateway ?? 'unknown',
+                amountDefault: $this->order->default_total_amount,
+                walletBalanceDefault: $this->walletBalanceDefault,
+                isTopUp: $isTopUp
+            );
+
+            // Set calculated tax in default currency
+            $this->calculatedTaxAmountDefault = $taxCalc['tax_amount_default'] ?? 0;
+            $this->calculatedGrandTotalDefault = $taxCalc['grand_total_default'] ?? $this->order->default_total_amount;
 
             // Convert to display currency
             $this->calculatedTaxAmount = $this->currencyService->convertFromDefault(
@@ -229,6 +245,10 @@ class Checkout extends Component
             Log::info('Tax recalculated at checkout', [
                 'order_id' => $this->order->order_id,
                 'gateway' => $this->gateway,
+                'is_topup' => $isTopUp,
+                'scenario' => $taxCalc['scenario'] ?? 'unknown',
+                'wallet_balance_default' => $this->walletBalanceDefault,
+                'order_amount_default' => $this->order->default_total_amount,
                 'tax_amount_default' => $this->calculatedTaxAmountDefault,
                 'grand_total_default' => $this->calculatedGrandTotalDefault,
                 'tax_amount_display' => $this->calculatedTaxAmount,
@@ -268,7 +288,7 @@ class Checkout extends Component
         $this->processing = true;
 
         $this->validate([
-            'gateway' => 'required|in:' . $this->gateways->pluck('slug')->join(','),
+            'gateway' => 'required|in:'.$this->gateways->pluck('slug')->join(','),
         ]);
 
         try {
@@ -285,6 +305,35 @@ class Checkout extends Component
 
             // Check if wallet is selected and balance is insufficient
             if ($this->gateway === 'wallet' && $this->walletBalance < $this->calculatedGrandTotal) {
+                // For top-up scenario: calculate tax only on remaining balance
+                $remainingBalanceDefault = $this->order->default_total_amount - $this->walletBalanceDefault;
+
+                // Calculate tax only on the remaining amount (for top-up)
+                $topUpTaxCalc = $this->taxService->calculateTax(
+                    paymentMethod: 'stripe', // Use stripe rate for top-up calculation
+                    amountDefault: $remainingBalanceDefault,
+                    walletBalanceDefault: 0, // No wallet balance for top-up
+                    isTopUp: false
+                );
+
+                $topUpTaxAmountDefault = $topUpTaxCalc['tax_amount_default'] ?? 0;
+                $topUpGrandTotalDefault = $remainingBalanceDefault + $topUpTaxAmountDefault;
+
+                // Set calculated tax for display
+                $this->calculatedTaxAmountDefault = $topUpTaxAmountDefault;
+                $this->calculatedGrandTotalDefault = $topUpGrandTotalDefault;
+
+                // Convert to display currency
+                $this->calculatedTaxAmount = $this->currencyService->convertFromDefault(
+                    $this->calculatedTaxAmountDefault,
+                    $this->displayCurrency
+                );
+
+                $this->calculatedGrandTotal = $this->currencyService->convertFromDefault(
+                    $this->calculatedGrandTotalDefault,
+                    $this->displayCurrency
+                );
+
                 // Calculate shortage in DISPLAY currency
                 $this->requiredTopUpAmount = $this->calculatedGrandTotal - $this->walletBalance;
                 $this->showTopUpModal = true;
@@ -293,14 +342,37 @@ class Checkout extends Component
 
                 Log::info('Insufficient wallet balance - showing top-up modal', [
                     'order_id' => $this->order->order_id,
+                    'wallet_balance_default' => $this->walletBalanceDefault,
                     'wallet_balance_display' => $this->walletBalance,
-                    'order_total_display' => $this->calculatedGrandTotal,
+                    'order_total_default' => $this->order->default_total_amount,
+                    'order_total_display' => $this->order->total_amount,
+                    'remaining_balance_default' => $remainingBalanceDefault,
+                    'top_up_tax_default' => $this->calculatedTaxAmountDefault,
+                    'top_up_grand_total_default' => $this->calculatedGrandTotalDefault,
+                    'calculated_tax_display' => $this->calculatedTaxAmount,
+                    'calculated_grand_total_display' => $this->calculatedGrandTotal,
                     'shortage_display' => $this->requiredTopUpAmount,
                     'currency' => $this->displayCurrency,
                 ]);
 
                 return;
             }
+
+            // ========================================================
+            // UPDATE ORDER WITH CALCULATED TAX BEFORE PAYMENT
+            // This ensures the order has the correct tax amounts
+            // based on the payment method
+            // ========================================================
+            $this->taxService->updateOrderWithTax(
+                $this->order,
+                $this->calculatedTaxAmountDefault,
+                $this->calculatedTaxAmount,
+                $this->calculatedGrandTotalDefault,
+                $this->calculatedGrandTotal
+            );
+
+            // Re-load order to ensure it has updated values
+            $this->order->refresh();
 
             // Process normal payment
             $result = $this->paymentService->processPayment(
@@ -374,10 +446,31 @@ class Checkout extends Component
         $this->processing = true;
 
         $this->validate([
-            'topUpGateway' => 'required|in:' . $this->topUpGateways->pluck('slug')->join(','),
+            'topUpGateway' => 'required|in:'.$this->topUpGateways->pluck('slug')->join(','),
         ]);
 
         try {
+            // For top-up scenario: tax is already calculated on remaining balance only
+            // Prepare the final amounts for order update
+            $remainingBalanceDefault = $this->order->default_total_amount - $this->walletBalanceDefault;
+            $topUpTaxAmountDefault = $this->calculatedTaxAmountDefault;
+            $topUpGrandTotalDefault = $remainingBalanceDefault + $topUpTaxAmountDefault;
+
+            // ========================================================
+            // UPDATE ORDER WITH CALCULATED TAX BEFORE TOP-UP PAYMENT
+            // For top-up scenarios, tax is only on remaining balance
+            // ========================================================
+            $this->taxService->updateOrderWithTax(
+                $this->order,
+                $topUpTaxAmountDefault,
+                $this->calculatedTaxAmount,
+                $topUpGrandTotalDefault,
+                $this->calculatedGrandTotal
+            );
+
+            // Re-load order to ensure it has updated values
+            $this->order->refresh();
+
             // Process top-up payment through selected gateway
             $result = $this->paymentService->processTopUpAndPayment(
                 order: $this->order,
@@ -387,9 +480,9 @@ class Checkout extends Component
                     'display_currency' => $this->displayCurrency,
                     'exchange_rate' => $this->exchangeRate,
                     'tax_amount' => $this->calculatedTaxAmount,
-                    'tax_amount_default' => $this->calculatedTaxAmountDefault,
+                    'tax_amount_default' => $topUpTaxAmountDefault,
                     'grand_total' => $this->calculatedGrandTotal,
-                    'grand_total_default' => $this->calculatedGrandTotalDefault,
+                    'grand_total_default' => $topUpGrandTotalDefault,
                 ]
             );
 
@@ -400,6 +493,9 @@ class Checkout extends Component
                     'top_up_amount' => $this->requiredTopUpAmount,
                     'user_id' => user()->id,
                     'currency' => $this->displayCurrency,
+                    'remaining_balance_default' => $remainingBalanceDefault,
+                    'tax_amount_default' => $topUpTaxAmountDefault,
+                    'grand_total_default' => $topUpGrandTotalDefault,
                 ]);
 
                 // Redirect to payment gateway
@@ -442,7 +538,7 @@ class Checkout extends Component
             $invoice = $nowPaymentService->createInvoice([
                 'price_amount' => $this->priceAmount,
                 'price_currency' => $this->priceCurrency,
-                'order_id' => 'Order Payment #' . $this->order->order_id,
+                'order_id' => 'Order Payment #'.$this->order->order_id,
                 'order_description' => $this->orderDescription ?: 'Cryptocurrency Payment',
                 'ipn_callback_url' => url('/nowpayments/ipn'),
                 'success_url' => route('user.payment.success'),

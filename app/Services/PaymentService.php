@@ -147,6 +147,7 @@ class PaymentService
             OrderStatus::INITIALIZED,
             OrderStatus::PENDING,
             OrderStatus::PARTIALLY_PAID,
+            OrderStatus::FAILED,
         ])) {
             Log::warning('Order cannot accept payment', [
                 'order_id' => $order->order_id,
