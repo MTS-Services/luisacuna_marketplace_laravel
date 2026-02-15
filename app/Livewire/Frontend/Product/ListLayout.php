@@ -2,35 +2,43 @@
 
 namespace App\Livewire\Frontend\Product;
 
-use App\Models\Product;
-use Livewire\Component;
 use App\Enums\FeedbackType;
 use App\Models\Currency;
+use App\Models\Product;
 use App\Models\User;
 use App\Services\CurrencyService;
 use App\Services\FeeSettingsService;
-use Livewire\Attributes\Url;
 use App\Services\GameService;
 use App\Services\OrderService;
-use App\Services\ProductService;
 use App\Services\PlatformService;
+use App\Services\ProductService;
 use App\Traits\WithPaginationData;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use Livewire\Attributes\Url;
+use Livewire\Component;
 
 class ListLayout extends Component
 {
     use WithPaginationData;
 
-    public $gameSlug, $categorySlug, $game;
+    public $gameSlug;
+
+    public $categorySlug;
+
+    public $game;
+
     public $product; // Holds the selected product
+
     public $data;
+
     public $platforms;
+
     public $gameTags;
 
     public $displayCurrency;
-    public $onlineOnly = false;
 
+    public $onlineOnly = false;
 
     #[Url(as: 'asc')]
     public $sortByPrice = 'asc';
@@ -56,15 +64,25 @@ class ListLayout extends Component
 
     #[Url('config')]
     public $filter_by_config;
+
     public $exchangeRate;
+
     public $displaySymbol;
-
-
 
     protected $datas;
 
     // Services
-    protected $productService, $feeSettingsService, $orderService, $gameService, $platformService, $currencyService;
+    protected $productService;
+
+    protected $feeSettingsService;
+
+    protected $orderService;
+
+    protected $gameService;
+
+    protected $platformService;
+
+    protected $currencyService;
 
     public function boot(
         ProductService $productService,
@@ -82,11 +100,11 @@ class ListLayout extends Component
         $this->feeSettingsService = $feeSettingsService;
     }
 
-
     public function toggleOnlineFilter()
     {
-        $this->onlineOnly = !$this->onlineOnly;
+        $this->onlineOnly = ! $this->onlineOnly;
     }
+
     public function mount($gameSlug, $categorySlug)
     {
 
@@ -125,39 +143,38 @@ class ListLayout extends Component
             ->toArray();
     }
 
-
     public function selectItem($id)
     {
         // Use findWithSelectedData to get exactly what's needed for the sidebar
         $this->product = Product::with([
-            'user' => fn($q) => $q->withCount([
-                'feedbacksReceived as pos_count' => fn($f) => $f->where('type', FeedbackType::POSITIVE->value),
-                'feedbacksReceived as neg_count' => fn($f) => $f->where('type', FeedbackType::NEGATIVE->value)
-            ])
+            'user' => fn ($q) => $q->withCount([
+                'feedbacksReceived as pos_count' => fn ($f) => $f->where('type', FeedbackType::POSITIVE->value),
+                'feedbacksReceived as neg_count' => fn ($f) => $f->where('type', FeedbackType::NEGATIVE->value),
+            ]),
         ])->findOrFail($id);
     }
 
     public function submit()
     {
-        if (!$this->product) return;
+        if (! $this->product) {
+            return;
+        }
 
         try {
-
-
-            $fee = $this->feeSettingsService->getActiveFee();
             $defaultCurrency = $this->currencyService->getDefaultCurrency();
 
             // =================================================================
             // STEP 1: Calculate in DEFAULT CURRENCY (USD)
             // Product prices are stored in default currency
+            // Tax will be calculated during checkout based on payment method
             // =================================================================
             $unitPriceDefault = (float) $this->product->price;
             $quantity = (int) 1;
             $totalAmountDefault = $unitPriceDefault * $quantity;
 
-            $buyerTaxPercent = (float) $fee->buyer_fee ?? 0;
-            $taxAmountDefault = ($totalAmountDefault * $buyerTaxPercent) / 100;
-            $grandTotalDefault = $totalAmountDefault + $taxAmountDefault;
+            // No tax during initialization - will be calculated at checkout
+            $taxAmountDefault = 0;
+            $grandTotalDefault = $totalAmountDefault;
 
             // =================================================================
             // STEP 2: Convert to DISPLAY CURRENCY (for user-facing amounts)
@@ -180,15 +197,13 @@ class ListLayout extends Component
                 $this->displayCurrency
             );
 
-
             $token = bin2hex(random_bytes(32)); // Standardized token length
             $orderId = generate_order_id_hybrid();
             $order = $this->orderService->createData([
-                'order_id'    => $orderId,
-                'user_id'     => user()->id,
-                'source_id'   => $this->product->id,
+                'order_id' => $orderId,
+                'user_id' => user()->id,
+                'source_id' => $this->product->id,
                 'source_type' => Product::class,
-
 
                 // Display amounts (in user's selected currency)
                 'unit_price' => $unitPriceDisplay,
@@ -209,7 +224,7 @@ class ListLayout extends Component
                 'exchange_rate' => $this->exchangeRate,
                 'quantity' => $quantity,
 
-                'notes' => "Order initiated by " . user()->username . ", Order ID: " . $orderId,
+                'notes' => 'Order initiated by '.user()->username.', Order ID: '.$orderId,
                 'display_symbol' => $this->displaySymbol, // Legacy field
 
                 'points' => $totalAmountDefault * env('ORDER_POINTS_MULTIPLAYER', 100),
@@ -243,7 +258,6 @@ class ListLayout extends Component
                 'exchange_rate' => $this->exchangeRate,
             ]);
 
-
             return $this->redirect(
                 route('user.checkout', ['slug' => encrypt($this->product->id), 'token' => $token]),
                 navigate: true
@@ -257,10 +271,10 @@ class ListLayout extends Component
             ]);
 
             $this->addError('order', 'Failed to initialize order. Please try again.');
+
             return null;
         }
     }
-
 
     public function render()
     {
@@ -274,7 +288,7 @@ class ListLayout extends Component
             'sort_field' => $this->sortBy,
             'sort_direction' => $this->sortDirection,
             'platform_id' => $this->platform_id != null ? decrypt($this->platform_id) : '',
-            'game_tag' => $this->game_tag
+            'game_tag' => $this->game_tag,
 
         ]);
         $this->datas->load('user.feedbacksReceived', 'game', 'category', 'platform', 'user.wallet');
@@ -312,7 +326,7 @@ class ListLayout extends Component
             'categorySlug' => $this->categorySlug,
             'game' => $this->game,
             'datas' => $this->datas,
-            'otherSellers' => $otherSellers
+            'otherSellers' => $otherSellers,
         ]);
     }
 }
