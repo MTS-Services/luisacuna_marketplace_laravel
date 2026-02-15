@@ -118,19 +118,20 @@ class Checkout extends Component
         $sessionKey = Session::driver('database')->get($key);
 
         if (! $sessionKey) {
-            abort(404, 'Checkout link is invalid or has expired');
+            return redirect()->route('checkout.invalid');
         }
 
         if (now()->timestamp > $sessionKey['expires_at']) {
             Session::driver('database')->forget($key);
-            abort(403, 'Sorry, the checkout link has expired');
+
+            return redirect()->route('checkout.expired');
         }
 
         $this->order = $this->orderService->findData($sessionKey['order_id']);
         $this->order->load(['user', 'source.platform',  'user.feedbacksReceived', 'source.product_configs.game_configs', 'source.user', 'source.game', 'source.user.wallet']);
 
         if (! $this->order || $this->order->status !== OrderStatus::INITIALIZED) {
-            abort(404, 'Checkout link is invalid or has expired');
+            return redirect()->route('checkout.invalid');
         }
 
         // Get currency information
