@@ -2,36 +2,37 @@
 
 namespace App\Http\Payment\Methods;
 
+use App\Enums\CalculationType;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentStatus;
 use App\Enums\TransactionStatus;
 use App\Enums\TransactionType;
-use App\Enums\CalculationType;
-use App\Enums\PointType;
 use App\Http\Payment\PaymentMethod;
 use App\Models\Order;
 use App\Models\Payment;
-use App\Models\PointLog;
-use App\Models\Wallet;
 use App\Models\Transaction;
-use App\Models\UserPoint;
+use App\Models\Wallet;
 use App\Services\AchievementService;
 use App\Services\ConversationService;
 use App\Services\CurrencyService;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Exception;
 use Illuminate\Support\Str;
 
 class WalletMethod extends PaymentMethod
 {
     protected $id = 'wallet';
+
     protected $name = 'Wallet';
+
     protected $requiresFrontendJs = false;
+
     protected CurrencyService $currencyService;
+
     protected AchievementService $achievementService;
 
-    public function __construct($gateway = null, ConversationService $conversationService,  AchievementService $achievementService)
+    public function __construct($gateway, ConversationService $conversationService, AchievementService $achievementService)
     {
         parent::__construct($gateway, $conversationService, $achievementService);
         $this->currencyService = app(CurrencyService::class);
@@ -61,11 +62,12 @@ class WalletMethod extends PaymentMethod
             );
 
             // Get order amount in DEFAULT currency (for wallet calculation)
-            $orderAmountDefault = $order->default_grand_total ?? $order->grand_total;
+            // Use dynamically calculated amount from checkout if available
+            $orderAmountDefault = $paymentData['grand_total_default'] ?? $order->default_grand_total ?? $order->grand_total;
 
             // Get display currency info (for logging and display)
             $displayCurrency = $paymentData['display_currency'] ?? $order->display_currency ?? $order->currency;
-            $orderAmountDisplay = $order->grand_total;
+            $orderAmountDisplay = $paymentData['grand_total'] ?? $order->grand_total;
 
             // Validate sufficient balance (in default currency)
             if ($wallet->balance < $orderAmountDefault) {
@@ -83,7 +85,7 @@ class WalletMethod extends PaymentMethod
 
                 return [
                     'success' => false,
-                    'message' => "Insufficient wallet balance. Your balance: {$displaySymbol}" . number_format($walletBalanceDisplay, 2) . " {$displayCurrency}",
+                    'message' => "Insufficient wallet balance. Your balance: {$displaySymbol}".number_format($walletBalanceDisplay, 2)." {$displayCurrency}",
                     'current_balance' => $wallet->balance,
                     'current_balance_display' => $walletBalanceDisplay,
                     'required_amount' => $orderAmountDefault,
@@ -215,7 +217,7 @@ class WalletMethod extends PaymentMethod
 
                 return [
                     'success' => true,
-                    'message' => "Payment successful! Amount deducted from your wallet. New balance: {$displaySymbol}" . number_format($balanceAfterDisplay, 2) . " {$displayCurrency}",
+                    'message' => "Payment successful! Amount deducted from your wallet. New balance: {$displaySymbol}".number_format($balanceAfterDisplay, 2)." {$displayCurrency}",
                     'payment_id' => $payment->payment_id,
                     'transaction_id' => $paymentTransaction->transaction_id,
                     'correlation_id' => $correlationId,
@@ -240,7 +242,7 @@ class WalletMethod extends PaymentMethod
 
             return [
                 'success' => false,
-                'message' => 'Wallet payment failed: ' . $e->getMessage(),
+                'message' => 'Wallet payment failed: '.$e->getMessage(),
             ];
         }
     }
@@ -265,7 +267,7 @@ class WalletMethod extends PaymentMethod
         $wallet = Wallet::where('user_id', $userId)->first();
         $defaultCurrency = $this->currencyService->getDefaultCurrency();
 
-        if (!$wallet) {
+        if (! $wallet) {
             $balanceDefault = 0;
             $currencyCode = $defaultCurrency->code;
         } else {
@@ -290,13 +292,13 @@ class WalletMethod extends PaymentMethod
             // Default currency info (for calculations)
             'balance' => $balanceDefault,
             'currency_code' => $currencyCode,
-            'formatted_balance' => number_format($balanceDefault, 2) . ' ' . $currencyCode,
+            'formatted_balance' => number_format($balanceDefault, 2).' '.$currencyCode,
 
             // Display currency info (for UI)
             'balance_display' => $balanceDisplay,
             'display_currency' => $displayCurrency,
             'display_symbol' => $displaySymbol,
-            'formatted_balance_display' => $displaySymbol . number_format($balanceDisplay, 2) . ' ' . $displayCurrency,
+            'formatted_balance_display' => $displaySymbol.number_format($balanceDisplay, 2).' '.$displayCurrency,
 
             // Additional wallet info
             'locked_balance' => $wallet->locked_balance ?? 0,
@@ -314,7 +316,7 @@ class WalletMethod extends PaymentMethod
     {
         $wallet = Wallet::where('user_id', $userId)->first();
 
-        if (!$wallet) {
+        if (! $wallet) {
             return false;
         }
 
@@ -365,9 +367,9 @@ class WalletMethod extends PaymentMethod
             'display_symbol' => $displaySymbol,
 
             // Formatted strings
-            'formatted_balance' => $displaySymbol . number_format($walletBalanceDisplay, 2),
-            'formatted_required' => $displaySymbol . number_format($amountDisplay, 2),
-            'formatted_shortage' => $displaySymbol . number_format($shortageDisplay, 2),
+            'formatted_balance' => $displaySymbol.number_format($walletBalanceDisplay, 2),
+            'formatted_required' => $displaySymbol.number_format($amountDisplay, 2),
+            'formatted_shortage' => $displaySymbol.number_format($shortageDisplay, 2),
         ];
     }
 
@@ -379,7 +381,7 @@ class WalletMethod extends PaymentMethod
     {
         $wallet = Wallet::where('user_id', $userId)->first();
 
-        if (!$wallet) {
+        if (! $wallet) {
             return 0;
         }
 
@@ -394,7 +396,7 @@ class WalletMethod extends PaymentMethod
         $wallet = Wallet::where('user_id', $userId)->first();
         $defaultCurrency = $this->currencyService->getDefaultCurrency();
 
-        if (!$wallet) {
+        if (! $wallet) {
             $availableBalance = 0;
         } else {
             $availableBalance = $wallet->balance - $wallet->locked_balance;
@@ -419,7 +421,7 @@ class WalletMethod extends PaymentMethod
             'currency' => $defaultCurrency->code,
             'display_currency' => $displayCurrency,
             'display_symbol' => $displaySymbol,
-            'formatted' => $displaySymbol . number_format($availableBalanceDisplay, 2),
+            'formatted' => $displaySymbol.number_format($availableBalanceDisplay, 2),
         ];
     }
 
@@ -503,7 +505,7 @@ class WalletMethod extends PaymentMethod
 
             return [
                 'success' => false,
-                'message' => 'Failed to add funds: ' . $e->getMessage(),
+                'message' => 'Failed to add funds: '.$e->getMessage(),
             ];
         }
     }

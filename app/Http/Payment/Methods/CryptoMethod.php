@@ -2,37 +2,43 @@
 
 namespace App\Http\Payment\Methods;
 
-use App\Models\Order;
-use App\Models\Wallet;
-use App\Models\Payment;
-use App\Enums\OrderStatus;
-use App\Models\Transaction;
-use Illuminate\Support\Str;
-use App\Enums\PaymentStatus;
 use App\Enums\CalculationType;
-use App\Enums\TransactionType;
+use App\Enums\OrderStatus;
+use App\Enums\PaymentStatus;
 use App\Enums\TransactionStatus;
-use App\Services\CurrencyService;
-use Illuminate\Support\Facades\DB;
+use App\Enums\TransactionType;
 use App\Http\Payment\PaymentMethod;
-use Illuminate\Support\Facades\Log;
+use App\Models\Order;
+use App\Models\Payment;
+use App\Models\Transaction;
+use App\Models\Wallet;
 use App\Services\AchievementService;
-use Illuminate\Support\Facades\Http;
 use App\Services\ConversationService;
-use Illuminate\Support\Facades\Session;
+use App\Services\CurrencyService;
 use Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class CryptoMethod extends PaymentMethod
 {
     protected $id = 'crypto';
+
     protected $name = 'Crypto';
+
     protected $requiresFrontendJs = false;
+
     protected $currencyService;
+
     protected $NOW_PUBLIC_API_KEY;
+
     protected $NOW_PRIVATE_API_KEY;
+
     protected string $baseUrl;
 
-    public function __construct($gateway = null, ConversationService $conversationService, AchievementService $achievementService)
+    public function __construct($gateway, ConversationService $conversationService, AchievementService $achievementService)
     {
         parent::__construct($gateway, $conversationService, $achievementService);
         $this->currencyService = app(CurrencyService::class);
@@ -65,13 +71,11 @@ class CryptoMethod extends PaymentMethod
                 $topUpAmount = $paymentData['top_up_amount'] ?? null;
                 $defultCurrency = $paymentData['default_currency'] ?? $order->currency ?? currency_code();
                 $exchangeRate = $paymentData['exchange_rate'] ?? 1;
-                $paymentAmount = $isTopUp ? $topUpAmount : $order->grand_total;
+                $paymentAmount = $isTopUp ? $topUpAmount : ($paymentData['grand_total'] ?? $order->grand_total);
                 $paymentAmountDefault = $this->currencyService->convertToDefault($paymentAmount, $defultCurrency);
 
-
                 $gatewayCurrency = $this->currencyService->getDefaultCurrency()->code;
-                $gatewayAmount   = $paymentAmountDefault;
-
+                $gatewayAmount = $paymentAmountDefault;
 
                 // Update order status to pending
                 $order->update([
@@ -112,12 +116,12 @@ class CryptoMethod extends PaymentMethod
 
                 // Set success/cancel URLs
                 if ($isTopUp) {
-                    $successUrl = route('user.payment.success') . "?order_id={$order->order_id}";
-                    $cancelUrl = route('user.payment.failed') . "?order_id={$order->order_id}";
+                    $successUrl = route('user.payment.success')."?order_id={$order->order_id}";
+                    $cancelUrl = route('user.payment.failed')."?order_id={$order->order_id}";
                     $description = "Wallet Top-up for Order #{$order->order_id}";
                 } else {
-                    $successUrl = route('user.payment.success') . "?order_id={$order->order_id}";
-                    $cancelUrl = route('user.payment.failed') . "?order_id={$order->order_id}";
+                    $successUrl = route('user.payment.success')."?order_id={$order->order_id}";
+                    $cancelUrl = route('user.payment.failed')."?order_id={$order->order_id}";
                     $description = "Order ID: {$order->order_id}";
                 }
 
@@ -132,7 +136,6 @@ class CryptoMethod extends PaymentMethod
                         'success_url' => $successUrl,
                         'cancel_url' => $cancelUrl,
                     ]);
-
 
                 if ($response->failed()) {
                     $payment->update(['status' => PaymentStatus::FAILED->value]);
@@ -149,8 +152,7 @@ class CryptoMethod extends PaymentMethod
 
                 $invoice = $response->json();
 
-
-                if (!isset($invoice['id'])) {
+                if (! isset($invoice['id'])) {
                     return [
                         'success' => false,
                         'message' => 'Invoice ID missing from gateway.',
@@ -175,8 +177,6 @@ class CryptoMethod extends PaymentMethod
                     'invoice_id' => $invoice['id'],
                     'payment_id' => $payment->payment_id,
                 ];
-
-                dd($response);
             });
         } catch (Exception $e) {
             $order->update([
@@ -191,12 +191,10 @@ class CryptoMethod extends PaymentMethod
 
             return [
                 'success' => false,
-                'message' => 'Failed to initialize payment: ' . $e->getMessage(),
+                'message' => 'Failed to initialize payment: '.$e->getMessage(),
             ];
         }
     }
-
-
 
     /**
      * Confirm payment after NOWPayments success
@@ -217,18 +215,17 @@ class CryptoMethod extends PaymentMethod
             $nowPaymentId = $invoice['payment_id'];
             $nowInvoiceId = $invoice['invoice_id'];
 
-
             // Fetch payment by invoice ID
             $payment = Payment::where('payment_intent_id', $nowInvoiceId)
                 ->with(['order.user.wallet', 'order.source.user.wallet', 'user'])
                 ->first();
 
-            if (!$payment) {
+            if (! $payment) {
                 throw new Exception('Payment record not found.');
             }
 
             // Store final payment_id once
-            if (!$payment->payment_id) {
+            if (! $payment->payment_id) {
                 $payment->update([
                     'payment_id' => $nowPaymentId,
                 ]);
@@ -251,7 +248,7 @@ class CryptoMethod extends PaymentMethod
 
             return [
                 'success' => false,
-                'message' => 'Payment not completed. Status: ' . $status,
+                'message' => 'Payment not completed. Status: '.$status,
             ];
         } catch (Exception $e) {
             Log::error('Payment confirmation failed', [
@@ -261,11 +258,10 @@ class CryptoMethod extends PaymentMethod
 
             return [
                 'success' => false,
-                'message' => 'Payment confirmation failed: ' . $e->getMessage(),
+                'message' => 'Payment confirmation failed: '.$e->getMessage(),
             ];
         }
     }
-
 
     protected function processTopUpPayment($paymentData, Payment $payment, Order $order): array
     {
@@ -275,7 +271,7 @@ class CryptoMethod extends PaymentMethod
 
             $topUpData = Session::get("topup_order_{$order->order_id}");
 
-            if (!$topUpData) {
+            if (! $topUpData) {
                 throw new Exception('Top-up session data not found');
             }
 
@@ -325,7 +321,7 @@ class CryptoMethod extends PaymentMethod
                 'currency' => $defaultCurrency,
                 'payment_gateway' => 'nowpayments',
 
-                'gateway_transaction_id' => (string)$nowPaymentId,
+                'gateway_transaction_id' => (string) $nowPaymentId,
 
                 'source_id' => $payment->id,
                 'source_type' => Payment::class,
@@ -389,9 +385,9 @@ class CryptoMethod extends PaymentMethod
 
             $payment->update([
                 'status' => PaymentStatus::COMPLETED->value,
-                'transaction_id' => (string)$nowInvoiceId,
+                'transaction_id' => (string) $nowInvoiceId,
 
-                'payment_method_id' => (string)$nowPaymentId,
+                'payment_method_id' => (string) $nowPaymentId,
 
                 'paid_at' => now(),
                 'metadata' => array_merge($payment->metadata ?? [], [
@@ -436,7 +432,6 @@ class CryptoMethod extends PaymentMethod
             ];
         });
     }
-
 
     /**
      * Process regular payment with currency conversion
@@ -494,7 +489,7 @@ class CryptoMethod extends PaymentMethod
                 'currency' => $defaultCurrency,
                 'payment_gateway' => 'nowpayments',
 
-                'gateway_transaction_id' => (string)$nowPaymentId,
+                'gateway_transaction_id' => (string) $nowPaymentId,
 
                 'source_id' => $payment->id,
                 'source_type' => Payment::class,
@@ -559,9 +554,8 @@ class CryptoMethod extends PaymentMethod
             $payment->update([
                 'status' => PaymentStatus::COMPLETED->value,
 
-
-                'transaction_id' => (string)$nowInvoiceId,
-                'payment_method_id' => (string)$nowPaymentId,
+                'transaction_id' => (string) $nowInvoiceId,
+                'payment_method_id' => (string) $nowPaymentId,
 
                 'paid_at' => now(),
                 'metadata' => array_merge($payment->metadata ?? [], [
@@ -599,7 +593,6 @@ class CryptoMethod extends PaymentMethod
                 'balance_after_deposit' => $balanceAfterDeposit,
                 'balance_after_payment' => $balanceAfterPayment,
             ]);
-
 
             $this->dispatchPaymentNotificationsOnce($payment);
             $this->sendOrderMessage($order);

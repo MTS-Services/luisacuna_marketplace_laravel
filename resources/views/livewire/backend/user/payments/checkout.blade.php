@@ -131,7 +131,7 @@
                         </h2>
 
                         <form class="flex flex-col gap-3" wire:submit.prevent="processPayment">
-                        
+
                             @forelse ($gateways as $gatewayItem)
                                 <div wire:click="$set('gateway', '{{ $gatewayItem->slug }}')"
                                     class="gateway-label flex items-center p-4 rounded-xl transition-all duration-300 border-2 cursor-pointer
@@ -164,10 +164,9 @@
                                                     <path d="M3 5v14a2 2 0 002 2h16v-5" stroke-width="2" />
                                                     <circle cx="18" cy="12" r="2" />
                                                 </svg>
-
                                             @endif
-                                                <span
-                                                    class="text-base font-normal text-text-white">{{ $gatewayItem->name }}</span>
+                                            <span
+                                                class="text-base font-normal text-text-white">{{ $gatewayItem->name }}</span>
                                         </div>
 
                                         @if ($gatewayItem->slug === 'wallet' && $walletBalance !== null)
@@ -209,7 +208,7 @@
                                         </button>
                                     </div>
                                     <p class="text-text-white font-semibold text-base">
-                                        {{ $displaySymbol }}{{ number_format($order->tax_amount, 2) }}
+                                        {{ $displaySymbol }}{{ number_format($calculatedTaxAmount, 2) }}
                                     </p>
                                 </div>
 
@@ -229,7 +228,7 @@
 
                             <!-- Payment Fee Modal -->
                             <div id="paymentFeeModal"
-                                class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                                class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80">
                                 <div class="bg-bg-secondary rounded-2xl p-6 max-w-md w-full mx-4 relative">
                                     <button type="button" onclick="closePaymentFeeModal()"
                                         class="absolute top-4 right-4 text-text-white hover:text-gray-300 transition-colors">
@@ -257,8 +256,15 @@
                                 </x-ui.button>
                                 <x-ui.button type="submit" wire:loading.remove wire:target="processPayment"
                                     class="px-4! py-2! sm:px-6! sm:py-3!">
-                                    {{ $displayCurrency }} {{ number_format($order->grand_total, 2) }}
-                                    {{ __('| Pay Now') }}
+                                    <span wire:loading wire:target="gateway">
+                                        <flux:icon name="arrow-path"
+                                            class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary animate-spin" />
+                                    </span>
+                                    <span wire:loading.remove wire:target="gateway"
+                                        class="text-text-btn-primary group-hover:text-text-btn-secondary">
+                                        {{ $displayCurrency }} {{ number_format($calculatedGrandTotal, 2) }}
+                                        {{ __('| Pay Now') }}
+                                    </span>
                                 </x-ui.button>
                             </div>
 
@@ -303,128 +309,175 @@
 
     <!-- Top-Up Modal (Fixed) -->
     @if ($showTopUpModal)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 overflow-y-auto"
             wire:click.self="closeTopUpModal">
-            <div
-                class="bg-bg-primary border border-zinc-800 rounded-2xl p-6 lg:p-8 max-w-lg w-full mx-4 relative shadow-2xl">
+            <div class="bg-zinc-50 dark:bg-bg-secondary rounded-2xl shadow-2xl max-w-2xl w-full my-auto relative">
 
                 <!-- Close Button -->
                 <button type="button" wire:click="closeTopUpModal"
-                    class="absolute top-5 right-5 text-zinc-400 hover:text-white transition-colors">
+                    class="absolute top-6 right-6 text-text-secondary hover:text-text-white transition-colors z-10">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
 
-                <!-- Header -->
-                <div class="mb-6">
-                    <div class="flex items-start gap-3 mb-3">
-                        <div class="bg-yellow-500/10 p-3 rounded-xl">
-                            <svg class="w-7 h-7 text-yellow-500" fill="none" stroke="currentColor"
+                <!-- Header Section -->
+                <div
+                    class="p-5 lg:p-6 bg-gradient-to-br from-pink-500/10 to-transparent border-b border-zinc-200 dark:border-zinc-700">
+                    <div class="flex items-start gap-3">
+                        <div class="p-2.5 rounded-lg bg-pink-500/20 flex-shrink-0">
+                            <svg class="w-5 h-5 text-pink-400" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.398 16c-.77 1.333.192 3 1.732 3z" />
+                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-text-white font-bold text-2xl mb-1">
-                                {{ __('Insufficient Balance') }}
+                            <h3 class="text-text-white font-bold text-xl">
+                                {{ __('Amount Needed') }}
                             </h3>
-                            <p class="text-zinc-400 text-sm">
-                                {{ __('Top-up your wallet to complete this purchase') }}
+                            <p class="text-text-secondary text-xs mt-0.5">
+                                {{ __('Your wallet balance is insufficient') }}
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Balance Info -->
-                <div class="grid grid-cols-2 gap-3 mb-6">
-                    <div class="p-4 bg-bg-primary rounded-xl border border-zinc-800">
-                        <p class="text-zinc-500 text-xs font-semibold uppercase mb-1">{{ __('Your Balance') }}</p>
-                        <p class="text-text-white font-bold text-lg">
-                            {{ $displaySymbol }}{{ number_format($walletBalance ?? 0, 2) }}
+                <!-- Main Content -->
+                <div class="p-5 lg:p-6 space-y-5">
+
+                    <!-- Calculation Breakdown -->
+                    <div
+                        class="bg-zinc-50 dark:bg-zinc-900/50 rounded-2xl p-4 border border-zinc-100 dark:border-zinc-800 space-y-3">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-zinc-500 dark:text-zinc-400">{{ __('Subtotal') }}</span>
+                            <span
+                                class="text-zinc-900 dark:text-zinc-100 font-semibold tabular-nums">{{ $displaySymbol }}{{ number_format($order->total_amount, 2) }}</span>
+                        </div>
+
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-emerald-500 font-medium flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                {{ __('Wallet Balance') }}
+                            </span>
+                            <span class="text-emerald-500 font-bold tabular-nums">−
+                                {{ $displaySymbol }}{{ number_format($walletBalance ?? 0, 2) }}</span>
+                        </div>
+
+                        <div
+                            class="pt-2 border-t border-dashed border-zinc-200 dark:border-zinc-700 flex justify-between items-center">
+                            <div class="flex items-center gap-1">
+                                <span
+                                    class="text-pink-500 text-xs font-bold uppercase tracking-wider">{{ __('+ Fee') }}</span>
+                                <span
+                                    class="text-[10px] bg-pink-500/10 text-pink-500 px-1.5 py-0.5 rounded font-bold">{{ __('Service') }}</span>
+                            </div>
+                            <span class="text-pink-500 font-bold tabular-nums text-sm">+
+                                {{ $displaySymbol }}{{ number_format($calculatedTaxAmount, 2) }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Final Amount Highlight -->
+                    <div class="relative group">
+                        <div
+                            class="absolute -inset-0.5 bg-gradient-to-r from-pink-500 to-rose-600 rounded-2xl blur-sm opacity-20 group-hover:opacity-40 transition duration-1000">
+                        </div>
+                        <div
+                            class="relative bg-white dark:bg-zinc-900 border border-pink-500/20 rounded-2xl p-5 text-center shadow-sm">
+                            <p
+                                class="text-zinc-500 dark:text-zinc-400 text-[11px] uppercase tracking-[0.15em] font-bold mb-1">
+                                {{ __('Total Amount Needed') }}</p>
+                            <h4
+                                class="text-3xl sm:text-4xl font-black text-zinc-900 dark:text-white tracking-tight tabular-nums">
+                                {{ $displaySymbol }}{{ number_format($requiredTopUpAmount, 2) }}
+                            </h4>
+                        </div>
+                    </div>
+
+                    <!-- Gateway Selection -->
+                    <div>
+                        <p class="text-text-white font-semibold text-xs uppercase tracking-wide mb-2">
+                            {{ __('Select Payment Method') }}
                         </p>
-                    </div>
-                    <div class="p-4 bg-bg-primary rounded-xl border border-zinc-800">
-                        <p class="text-zinc-500 text-xs font-semibold uppercase mb-1">{{ __('Order Total') }}</p>
-                        <p class="text-text-white font-bold text-lg">
-                            {{ $displaySymbol }}{{ number_format($order->grand_total, 2) }}
-                        </p>
-                    </div>
-                </div>
 
-                <!-- Amount Needed -->
-                <div
-                    class="p-4 bg-gradient-to-r from-pink-500/10 to-purple-500/10 border border-pink-500/30 rounded-xl mb-6">
-                    <div class="flex items-center justify-between">
-                        <span class="text-pink-400 font-semibold">{{ __('Amount Needed:') }}</span>
-                        <span class="text-pink-400 font-bold text-2xl">
-                            {{ $displayCurrency }} {{ number_format($requiredTopUpAmount, 2) }}
-                        </span>
-                    </div>
-                </div>
+                        <div class="flex items-center gap-2 justify-between">
+                            @foreach ($topUpGateways as $gatewayItem)
+                                <button type="button" wire:click="$set('topUpGateway', '{{ $gatewayItem->slug }}')"
+                                    class="w-full flex items-center justify-between p-3 rounded-lg transition-all duration-300 border-2 text-sm
+                                    {{ $gatewayItem->slug === $topUpGateway ? 'border-pink-500 bg-pink-500/10 ring-2 ring-pink-500/30' : 'border-zinc-300 dark:border-zinc-700 bg-bg-primary/50 hover:border-zinc-400 dark:hover:border-zinc-600' }}">
 
-                <!-- Gateway Selection -->
-                <div class="mb-6">
-                    <h4 class="text-text-white font-semibold mb-3 flex items-center gap-2">
-                        <span
-                            class="w-6 h-6 rounded-full bg-pink-500 text-white flex items-center justify-center text-xs font-bold">1</span>
-                        {{ __('Select Top-Up Method') }}
-                    </h4>
-
-                    <div class="space-y-2">
-                        @foreach ($topUpGateways as $gatewayItem)
-                            <div wire:click="$set('topUpGateway', '{{ $gatewayItem->slug }}')"
-                                class="flex items-center p-4 rounded-xl transition-all duration-300 border-2 cursor-pointer
-                                {{ $gatewayItem->slug === $topUpGateway ? 'border-pink-500 bg-pink-500/5' : 'border-zinc-800 bg-bg-primary hover:border-zinc-700' }}">
-
-                                <div class="flex items-center justify-between w-full">
-                                    <div class="flex items-center gap-3">
+                                    <div class="flex items-center gap-2.5">
                                         @if ($gatewayItem->slug === 'stripe' || $gatewayItem->slug === 'card')
-                                            <svg class="w-5 h-5 text-text-white" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <rect x="2" y="5" width="20" height="14" rx="2"
-                                                    stroke-width="2" />
-                                                <path d="M2 10h20" stroke-width="2" />
-                                            </svg>
+                                            <div
+                                                class="p-1.5 rounded {{ $gatewayItem->slug === $topUpGateway ? 'bg-pink-500/20' : 'bg-zinc-200 dark:bg-zinc-800' }}">
+                                                <svg class="w-4 h-4 {{ $gatewayItem->slug === $topUpGateway ? 'text-pink-400' : 'text-text-secondary' }}"
+                                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <rect x="2" y="5" width="20" height="14" rx="2"
+                                                        stroke-width="2" />
+                                                    <path d="M2 10h20" stroke-width="2" />
+                                                </svg>
+                                            </div>
                                         @elseif($gatewayItem->slug === 'crypto')
-                                            <span class="text-text-white text-lg font-bold">₿</span>
+                                            <div
+                                                class="p-1.5 rounded {{ $gatewayItem->slug === $topUpGateway ? 'bg-pink-500/20' : 'bg-zinc-200 dark:bg-zinc-800' }}">
+                                                <span
+                                                    class="text-sm font-bold {{ $gatewayItem->slug === $topUpGateway ? 'text-pink-400' : 'text-text-secondary' }}">₿</span>
+                                            </div>
                                         @endif
-                                        <span
-                                            class="text-base font-medium text-text-white">{{ $gatewayItem->name }}</span>
+                                        <span class="text-text-white font-medium">{{ $gatewayItem->name }}</span>
                                     </div>
 
                                     <div
-                                        class="w-5 h-5 rounded-full border-2 flex items-center justify-center
-                                        {{ $gatewayItem->slug === $topUpGateway ? 'border-pink-500' : 'border-zinc-700' }}">
+                                        class="flex items-center justify-center w-5 h-5 rounded-full border-2 {{ $gatewayItem->slug === $topUpGateway ? 'border-pink-500 bg-pink-500' : 'border-zinc-400 dark:border-zinc-600' }}">
                                         @if ($gatewayItem->slug === $topUpGateway)
-                                            <div class="w-2.5 h-2.5 rounded-full bg-pink-500"></div>
+                                            <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
                                         @endif
                                     </div>
-                                </div>
-                            </div>
-                        @endforeach
+                                </button>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
 
-                <!-- Action Buttons -->
-                <div class="flex gap-3">
-                    <button type="button" wire:click="closeTopUpModal"
-                        class="flex-1 px-6 py-3 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-xl transition-all font-medium">
-                        {{ __('Cancel') }}
-                    </button>
+                    <!-- Action Buttons -->
+                    <div class="flex gap-3 pt-3 border-t border-zinc-200 dark:border-zinc-700">
+                        <button type="button" wire:click="closeTopUpModal"
+                            class="flex-1 px-4 py-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-text-white rounded-lg transition-all font-medium text-sm">
+                            {{ __('Cancel') }}
+                        </button>
 
-                    <button type="button" wire:click="processTopUpAndPayment" wire:loading.attr="disabled"
-                        class="flex-1 px-6 py-3 bg-gradient-to-r from-pink-500 to-zinc-600 hover:from-pink-600 hover:to-zinc-700 text-white rounded-xl transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-lg">
-                        <span wire:loading.remove wire:target="processTopUpAndPayment">
-                            {{ __('Pay Now') }}
-                        </span>
-                        <span wire:loading wire:target="processTopUpAndPayment"
-                            class="flex items-center justify-center gap-2">
-                            {{ __('Processing...') }}
-                        </span>
-                    </button>
+                        <button type="button" wire:click="processTopUpAndPayment" wire:loading.attr="disabled"
+                            class="flex-1 px-4 py-2 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white rounded-lg transition-all font-medium text-sm shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span wire:loading.remove wire:target="processTopUpAndPayment, topUpGateway">
+                                {{ __('Continue to Payment') }}
+                            </span>
+                            <span wire:loading wire:target="topUpGateway">
+                                <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10"
+                                        stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                    </path>
+                                </svg>
+                            </span>
+                            <span wire:loading wire:target="processTopUpAndPayment">
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                                            stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                        </path>
+                                    </svg>
+                                    {{ __('Processing...') }}
+                                </div>
+                            </span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
