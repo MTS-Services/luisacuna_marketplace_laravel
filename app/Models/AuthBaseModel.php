@@ -46,21 +46,21 @@ class AuthBaseModel extends Authenticatable
 
     public function creater_admin(): BelongsTo
     {
-        return $this->belongsTo(Admin::class, 'created_by', 'id')->select(['name', 'id', 'status']);
+        return $this->belongsTo(Admin::class, 'created_by', 'id');
     }
 
     public function updater_admin(): BelongsTo
     {
-        return $this->belongsTo(Admin::class, 'updated_by', 'id')->select(['name', 'id', 'status']);
+        return $this->belongsTo(Admin::class, 'updated_by', 'id');
     }
 
     public function deleter_admin(): BelongsTo
     {
-        return $this->belongsTo(Admin::class, 'deleted_by', 'id')->select(['name', 'id', 'status']);
+        return $this->belongsTo(Admin::class, 'deleted_by', 'id');
     }
     public function restorer_admin(): BelongsTo
     {
-        return $this->belongsTo(Admin::class, 'restored_by', 'id')->select(['name', 'id', 'status']);
+        return $this->belongsTo(Admin::class, 'restored_by', 'id');
     }
 
     public function creater(): MorphTo
