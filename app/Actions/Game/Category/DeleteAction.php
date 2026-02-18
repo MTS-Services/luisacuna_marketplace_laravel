@@ -12,9 +12,9 @@ class DeleteAction
         protected CategoryRepositoryInterface $interface
     ) {}
 
-    public function execute($id, $forceDelete = false, ?int $actionerId = null)
+    public function execute($id, $forceDelete = false, ?int $actionerId = null, bool $cascade = false)
     {
-        return DB::transaction(function () use ($id, $forceDelete, $actionerId) {
+        return DB::transaction(function () use ($id, $forceDelete, $actionerId, $cascade) {
             $findData = null;
 
             if ($forceDelete) {
@@ -26,9 +26,47 @@ class DeleteAction
             if (!$findData) {
                 throw new \Exception('Data not found');
             }
-            // Simple check - if any related data exists, prevent deletion
-            if ($findData->hasRelatedData()) {
+            // If related data exists and cascade not requested, prevent deletion
+            if ($findData->hasRelatedData() && !$cascade) {
                 throw new \Exception('Cannot delete this category. It has associated data in the system.');
+            }
+
+            // If cascade requested, delete related games and associated relations first
+            if ($cascade) {
+                $games = $findData->games()->get();
+                foreach ($games as $game) {
+                    // delete dependent relations for game
+                    if (method_exists($game, 'products')) {
+                        $game->products()->delete();
+                    }
+                    if (method_exists($game, 'gameConfig')) {
+                        $game->gameConfig()->delete();
+                    }
+                    // detach pivot relations
+                    if (method_exists($game, 'categories')) {
+                        $game->categories()->detach();
+                    }
+                    if (method_exists($game, 'platforms')) {
+                        $game->platforms()->detach();
+                    }
+                    if (method_exists($game, 'tags')) {
+                        $game->tags()->detach();
+                    }
+
+                    // finally delete the game (soft delete)
+                    $game->delete();
+                }
+
+                // delete other category-related data
+                if (method_exists($findData, 'gameCategories')) {
+                    $findData->gameCategories()->delete();
+                }
+                if (method_exists($findData, 'achievements')) {
+                    $findData->achievements()->delete();
+                }
+                if (method_exists($findData, 'products')) {
+                    $findData->products()->delete();
+                }
             }
             if ($forceDelete) {
                 if ($findData->icon && Storage::disk('public')->exists($findData->icon)) {
