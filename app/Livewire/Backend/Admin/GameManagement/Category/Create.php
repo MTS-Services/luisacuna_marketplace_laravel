@@ -48,10 +48,7 @@ class Create extends Component
         try {
             $data['created_by'] = admin()->id;
             $this->service->createData($data);
-            $this->success(
-                'Category created successfully! ' .
-                    'Translations are being processed in the background.'
-            );
+            $this->success('Category created successfully!');
             return $this->redirect(route('admin.gm.category.index'), navigate: true);
         } catch (\Exception $e) {
             $this->error('Failed to create data: ' . $e->getMessage());

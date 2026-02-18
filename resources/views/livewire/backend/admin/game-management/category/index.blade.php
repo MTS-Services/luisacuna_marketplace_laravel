@@ -11,11 +11,11 @@
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
                     {{ __('Trash') }}
                 </x-ui.button>
-                {{-- <x-ui.button href="{{ route('admin.gm.category.create') }}" class="w-auto py-2!">
+                <x-ui.button href="{{ route('admin.gm.category.create') }}" class="w-auto py-2!">
                     <flux:icon name="user-plus"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                     {{ __('Add') }}
-                </x-ui.button> --}}
+                </x-ui.button>
             </div>
         </div>
     </div>
