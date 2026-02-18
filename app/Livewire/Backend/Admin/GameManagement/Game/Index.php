@@ -24,6 +24,8 @@ class Index extends Component
     public $showBulkActionModal = false;
     public $showDeleteModal = false;
     public $deleteId = null;
+    public $deleteWarningMessage = null;
+    public bool $deleteCascade = false;
 
 
     protected CloudinaryService $cloudinaryService;
@@ -132,6 +134,24 @@ class Index extends Component
     public function confirmDelete($encrypted_id)
     {
         $this->deleteId = $encrypted_id;
+
+        // inspect related data to warn user
+        try {
+            $id = decrypt($encrypted_id);
+            $game = $this->service->findData($id, 'id', true);
+            if ($game && $game->hasRelatedData()) {
+                $productsCount = method_exists($game, 'products') ? $game->products()->count() : 0;
+                $this->deleteWarningMessage = "This game has {$productsCount} product(s) or other related data. Deleting will remove related records.";
+                $this->deleteCascade = true;
+            } else {
+                $this->deleteWarningMessage = null;
+                $this->deleteCascade = false;
+            }
+        } catch (\Exception $e) {
+            $this->deleteWarningMessage = null;
+            $this->deleteCascade = false;
+        }
+
         $this->showDeleteModal = true;
     }
 
@@ -142,12 +162,14 @@ class Index extends Component
                 $this->warning('No data selected');
                 return;
             }
-          $resposne =   $this->service->delete(decrypt($this->deleteId));
+          $resposne = $this->service->delete(decrypt($this->deleteId), false, $this->deleteCascade);
           if(!$resposne)  {
-              $this->error('Cannot delete this category. It has associated data in the system.');
+              $this->error('Cannot delete this game. It has associated data in the system.');
               return;
           }
             $this->reset(['deleteId', 'showDeleteModal']);
+            $this->deleteWarningMessage = null;
+            $this->deleteCascade = false;
 
             $this->success('Data deleted successfully');
         } catch (\Exception $e) {

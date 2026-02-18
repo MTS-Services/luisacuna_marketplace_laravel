@@ -27,7 +27,7 @@
         :showBulkActions="true" emptyMessage="No Game  found. Create your first admin to get started." />
 
     {{-- Delete Confirmation Modal --}}
-    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this Game?'" :message="'Are you absolutely sure  want to remove this data? All associated data will be moved to trash.'" :method="'delete'"
+    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this Game?'" :message="$deleteWarningMessage ?? 'Are you absolutely sure  want to remove this data? All associated data will be moved to trash.'" :method="'delete'"
         :button-text="'Delete Game'" />
 
     {{-- Bulk Action Confirmation Modal --}}

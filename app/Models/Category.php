@@ -193,8 +193,6 @@ class Category extends AuditBaseModel implements Auditable
     public function hasRelatedData(): bool
     {
         return $this->games()->exists()
-            || $this->gameCategories()->exists()
-            || $this->achievements()->exists()
-            || $this->products()->exists();
+            || $this->gameCategories()->exists();
     }
 }

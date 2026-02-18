@@ -75,12 +75,12 @@ class CategoryService
         return $this->updateAction->execute($id, $data);
     }
 
-    public function deleteData(int $id, bool $forceDelete = false, ?int $actionerId = null): bool
+    public function deleteData(int $id, bool $forceDelete = false, ?int $actionerId = null, bool $cascade = false): bool
     {
         if ($actionerId == null) {
             $actionerId = admin()->id;
         }
-        return $this->deleteAction->execute($id, $forceDelete, $actionerId);
+        return $this->deleteAction->execute($id, $forceDelete, $actionerId, $cascade);
     }
 
     public function restoreData(int $id, ?int $actionerId = null): bool

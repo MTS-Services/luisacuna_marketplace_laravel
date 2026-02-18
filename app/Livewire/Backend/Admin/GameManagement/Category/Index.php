@@ -23,6 +23,8 @@ class Index extends Component
     public $bulkAction = '';
     public $showBulkActionModal = false;
     public $deleteId = null;
+    public $deleteWarningMessage = null;
+    public bool $deleteCascade = false;
 
 
     // protected $listeners = ['adminCreated' => '$refresh', 'adminUpdated' => '$refresh'];
@@ -125,6 +127,18 @@ class Index extends Component
     public function confirmDelete($id): void
     {
         $this->deleteId = $id;
+
+        // fetch category and check related games/products
+        $category = $this->service->findData($id);
+        if ($category && $category->hasRelatedData()) {
+            $gamesCount = $category->games_count ?? $category->games()->count();
+            $this->deleteWarningMessage = "This category has {$gamesCount} game(s). If you delete the category, all games and related information will be deleted.";
+            $this->deleteCascade = true;
+        } else {
+            $this->deleteWarningMessage = null;
+            $this->deleteCascade = false;
+        }
+
         $this->showDeleteModal = true;
     }
 
@@ -135,8 +149,11 @@ class Index extends Component
                 $this->warning('No data selected');
                 return;
             }
-            $this->service->deleteData(($this->deleteId));
+            // pass cascade flag when user confirmed delete after warning
+            $this->service->deleteData(($this->deleteId), false, null, $this->deleteCascade);
             $this->reset(['deleteId', 'showDeleteModal']);
+            $this->deleteWarningMessage = null;
+            $this->deleteCascade = false;
 
             $this->success('Data deleted successfully');
         } catch (\Exception $e) {

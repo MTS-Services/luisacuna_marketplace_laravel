@@ -238,21 +238,46 @@ class GameService
         return true;
     }
 
-    public function delete(int $id, bool $force = false): bool
+    public function delete(int $id, bool $force = false, bool $cascade = false): bool
     {
         $game = $this->findData(value: $id, column: 'id', withTrashed: true);
         if (!$game) return false;
 
-        if ($game->hasRelatedData()) {
+        if ($game->hasRelatedData() && !$cascade) {
             return false;
         }
 
-        if ($force) {
-            return $game->forceDelete();
-        }
+        return DB::transaction(function () use ($game, $force, $cascade) {
+            // If cascade, remove related records first
+            if ($cascade) {
+                if (method_exists($game, 'products')) {
+                    $game->products()->delete();
+                }
+                if (method_exists($game, 'gameConfig')) {
+                    $game->gameConfig()->delete();
+                }
+                if (method_exists($game, 'gameCategories')) {
+                    $game->gameCategories()->delete();
+                }
+                // detach pivot relations
+                if (method_exists($game, 'categories')) {
+                    $game->categories()->detach();
+                }
+                if (method_exists($game, 'platforms')) {
+                    $game->platforms()->detach();
+                }
+                if (method_exists($game, 'tags')) {
+                    $game->tags()->detach();
+                }
+            }
 
-        $game->update(['deleted_by' => $this->adminId]);
-        return $game->delete();
+            if ($force) {
+                return $game->forceDelete();
+            }
+
+            $game->update(['deleted_by' => $this->adminId]);
+            return $game->delete();
+        });
     }
 
     public function restore(int $id): bool
