@@ -37,21 +37,21 @@ class AuditBaseModel extends Model
 
     public function creater_admin(): BelongsTo
     {
-        return $this->belongsTo(Admin::class, 'created_by')->select(['id', 'name', 'status']);
+        return $this->belongsTo(Admin::class, 'created_by');
     }
 
     public function updater_admin(): BelongsTo
     {
-        return $this->belongsTo(Admin::class, 'updated_by')->select(['id', 'name', 'status']);
+        return $this->belongsTo(Admin::class, 'updated_by');
     }
 
     public function deleter_admin(): BelongsTo
     {
-        return $this->belongsTo(Admin::class, 'deleted_by')->select(['id', 'name', 'status']);
+        return $this->belongsTo(Admin::class, 'deleted_by');
     }
     public function restorer_admin(): BelongsTo
     {
-        return $this->belongsTo(Admin::class, 'restored_by')->select(['id', 'name', 'status']);
+        return $this->belongsTo(Admin::class, 'restored_by');
     }
 
     public function creater(): MorphTo

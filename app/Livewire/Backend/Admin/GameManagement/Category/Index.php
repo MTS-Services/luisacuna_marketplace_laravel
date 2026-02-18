@@ -47,7 +47,7 @@ class Index extends Component
         $datas->load('creater_admin');
 
         $columns = [
-[
+            [
                 'key' => 'icon',
                 'label' => 'icon',
                 'format' => function ($data) {
@@ -56,7 +56,7 @@ class Index extends Component
                         : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
                 }
             ],
-             
+
             [
                 'key' => 'name',
                 'label' => 'Name',
@@ -122,7 +122,7 @@ class Index extends Component
         ]);
     }
 
-   public function confirmDelete($id): void
+    public function confirmDelete($id): void
     {
         $this->deleteId = $id;
         $this->showDeleteModal = true;
@@ -245,7 +245,7 @@ class Index extends Component
         ];
     }
 
-   protected function getSelectableIds(): array
+    protected function getSelectableIds(): array
     {
         $data = $this->service->getPaginatedData(
             perPage: $this->perPage,

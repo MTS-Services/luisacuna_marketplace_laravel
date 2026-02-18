@@ -223,6 +223,10 @@ class Admin extends AuthBaseModel implements Auditable
         parent::__construct($attributes);
         $this->appends = array_merge(parent::getAppends(), [
             'name',
+            'full_name',
+            'status_label',
+            'status_color',
+            'avatar_url',
         ]);
     }
 
