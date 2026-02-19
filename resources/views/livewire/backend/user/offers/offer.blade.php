@@ -92,11 +92,11 @@
                     </div>
                     <div class="flex gap-4 justify-center mt-5! sm:mt-10!">
                         <div class="flex md:w-auto! ">
-                            <x-ui.button class="w-fit! py-2! px-4! text-white">{{ __('Back') }}</x-ui.button>
+                            <x-ui.button class="w-fit! py-2! px-4!">{{ __('Back') }}</x-ui.button>
                         </div>
                         @if (count($games) > 0)
                             <div wire:click="selectGame" class="flex md:w-auto! ">
-                                <x-ui.button class="w-fit! py-2! px-4!">{{ __('Next') }}</x-ui.button>
+                                <x-ui.button class="w-fit! py-2! px-4!"><span class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Next') }}</span></x-ui.button>
                             </div>
                         @endif
                     </div>

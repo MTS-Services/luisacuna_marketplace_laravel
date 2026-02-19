@@ -317,13 +317,13 @@
                     @if ($data->seller_verified == 1)
                         <x-ui.button wire:click.prevent="makeRejected('{{ encrypt($data->id) }}')"
                             class="w-auto! py-3! px-6!" :variant="'tertiary'">
-                            <flux:icon name="x-mark" class="w-4 h-4" />
+                            <flux:icon name="x-mark" class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
                             {{ __('Mark as Rejected') }}
                         </x-ui.button>
                     @else
                         <x-ui.button wire:click.prevent="makeVerified('{{ encrypt($data->id) }}')"
                             class="w-auto! py-3! px-6!">
-                            <flux:icon name="check" class="w-4 h-4 stroke-white" />
+                            <flux:icon name="check" class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                             {{ __('Mark as Verified') }}
                         </x-ui.button>
                     @endif

@@ -4,7 +4,7 @@
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Language Create') }}</h2>
             <div class="flex items-center gap-2">
                 <x-ui.button href="{{ route('admin.language.index') }}">
-                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
+                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                     {{ __('Back') }}
                 </x-ui.button>
             </div>
@@ -103,13 +103,13 @@
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
                 <x-ui.button href="{{ route('admin.language.index') }}" type="danger">
-                    <flux:icon name="x-circle" class="w-4 h-4 stroke-white" />
+                    <flux:icon name="x-circle" class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
                     {{ __('Cancel') }}
                 </x-ui.button>
 
                 <x-ui.button type="accent" button>
-                    <span wire:loading.remove wire:target="save" class="text-white">{{__('Create User')}}</span>
-                    <span wire:loading wire:target="save" class="text-white">{{__('Creating...')}}</span>
+                    <span wire:loading.remove wire:target="save" class="text-text-btn-primary group-hover:text-text-btn-secondary">{{__('Create User')}}</span>
+                    <span wire:loading wire:target="save" class="text-text-btn-primary group-hover:text-text-btn-secondary">{{__('Creating...')}}</span>
                 </x-ui.button>
             </div>
         </form>

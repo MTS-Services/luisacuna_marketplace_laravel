@@ -32,7 +32,8 @@
                 </x-ui.button>
                 <a wire.navigate href="{{ route('user.offers') }}">
                     <x-ui.button class="w-auto! py-2!">
-                        <x-phosphor-plus class="w-5 h-5 fill-text-text-white group-hover:fill-accent" />
+                        {{-- <x-phosphor-plus class="w-5 h-5 stoke-white group-hover:fill-accent" /> --}}
+                        <flux:icon name="plus" class="w-5 h-5 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                         <span
                             class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('New Offer') }}</span>
                     </x-ui.button>

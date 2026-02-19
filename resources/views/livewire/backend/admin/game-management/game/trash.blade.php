@@ -7,8 +7,8 @@
             </h2>
             <div class="flex items-center gap-2 w-full sm:w-auto">
                     <x-ui.button href="{{ route('admin.gm.game.index') }}" class="w-auto! py-2!">
-                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-white" />
-                    <span class="sm:inline text-white">{{ __('Back') }}</span>
+                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
+                    <span class="sm:inline text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Back') }}</span>
                 </x-ui.button>
             </div>
         </div>

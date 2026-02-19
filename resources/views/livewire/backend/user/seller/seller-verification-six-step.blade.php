@@ -239,9 +239,9 @@
                 <div class="flex justify-center">
                     <x-ui.button type="submit" wire:click="submit" wire:loading.attr="disabled"
                         wire:target="selfie_image, submit" class="w-auto py-2! disabled:opacity-70 disabled:cursor-not-allowed ">
-                        <span wire:loading.remove  wire:target="selfie_image,submit" class="group-hover:text-primary">{{ __('Submit') }}</span>
-                        <span wire:loading wire:target="selfie_image" class="group-hover:text-primary" >{{ __('Please wait...') }}</span>
-                        <span wire:loading wire:target="submit" class="group-hover:text-primary">{{ __('Please wait...') }}</span>
+                        <span wire:loading.remove  wire:target="selfie_image,submit" class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Submit') }}</span>
+                        <span wire:loading wire:target="selfie_image" class="text-text-btn-primary group-hover:text-text-btn-secondary" >{{ __('Please wait...') }}</span>
+                        <span wire:loading wire:target="submit" class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Please wait...') }}</span>
                     </x-ui.button>
                 </div>
             </div>

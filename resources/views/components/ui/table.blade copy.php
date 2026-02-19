@@ -90,7 +90,7 @@
 
                     <div class="">
                         <x-ui.button wire:click="resetFilters" type="accent" button>
-                            <flux:icon icon="arrow-path" class="w-4 h-4 stroke-white" />
+                            <flux:icon icon="arrow-path" class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                             {{ __('Reset') }}
                         </x-ui.button>
                     </div>

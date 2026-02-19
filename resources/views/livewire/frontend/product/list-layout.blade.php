@@ -164,12 +164,12 @@
                                 <x-ui.button wire:click="submit" wire:loading.attr="disabled" :disabled="!isset($product)"
                                     class="w-full py-2!">
                                     <span wire:loading.remove wire:target="submit"
-                                        class="text-text-white group-hover:text-zinc-500">
+                                        class="text-text-btn-primary group-hover:text-text-btn-secondary">
                                         {{ currency_code() }} {{ currency_exchange($product->price ?? 00) }}
                                         {{ __(' Buy Now') }}
                                     </span>
                                     <span wire:loading wire:target="submit"
-                                        class="text-text-white group-hover:text-zinc-500">
+                                        class="text-text-btn-primary group-hover:text-text-btn-secondary">
                                         {{ __('Processing...') }}
                                     </span>
                                 </x-ui.button>

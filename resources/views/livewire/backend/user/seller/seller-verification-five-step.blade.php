@@ -176,8 +176,8 @@
                     <x-ui.button type="submit" wire:click="nextStep" wire:loading.attr="disabled"
                         wire:target="front_image" class="w-auto py-2! disabled:opacity-70 disabled:cursor-not-allowed">
                         {{-- Show 'Next' by default, show 'Wait' while uploading --}}
-                        <span wire:loading.remove wire:target="front_image,nextStep" class="group-hover:text-primary!">{{ __('Next') }}</span>
-                        <span wire:loading wire:target="front_image,nextStep">{{ __('Please wait...') }}</span>
+                        <span wire:loading.remove wire:target="front_image,nextStep" class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Next') }}</span>
+                        <span wire:loading wire:target="front_image,nextStep" class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Please wait...') }}</span>
                     </x-ui.button>
                 </div>
             </div>
