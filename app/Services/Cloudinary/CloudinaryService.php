@@ -186,15 +186,15 @@ class CloudinaryService
         }
     }
 
-    public function getUrlFromPublicId(?string $publicId = null, ?string $resourceType = null)
+    public function getUrlFromPublicId(?string $publicId = null)
     {
         try {
             if (empty($publicId)) {
                 return null;
             }
-            if (empty($resourceType)) {
-                $resourceType = $this->getResourceType($publicId);
-            }
+
+            $resourceType = $this->getResourceType($publicId);
+
             if ($resourceType === 'image') {
                 return (string) cloudinary()->image($publicId)->toUrl();
             } elseif ($resourceType === 'video') {
