@@ -53,7 +53,8 @@ class Home extends Component
 
         $topSelling = $this->productService->getPaginatedData($this->perPage, [
             'gameSlug' => $this->gameSlug,
-            'categorySlug' => $this->categorySlug
+            'categorySlug' => $this->categorySlug,
+            'skipSelf' => true,
         ]);
         $topSelling->load(['game', 'category', 'platform', 'user.feedbacksReceived']);
 
