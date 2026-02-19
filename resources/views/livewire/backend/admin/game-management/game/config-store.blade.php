@@ -3,6 +3,25 @@
     isLoading: @entangle('isLoading').live,
     fields: @entangle('fields').live,
     processingAction: false,
+    filterTypes: {!! e(json_encode($filterTypes)) !!},
+
+    allowedFilterTypesForInputType(inputType) {
+        const map = {
+            'text': ['no_filter'],
+            'number': ['no_filter', 'filter_by_range'],
+            'select_dropdown': ['filter_by_select']
+        };
+        const allowed = map[inputType] || ['no_filter'];
+        return this.filterTypes.filter(ft => allowed.includes(ft.value));
+    },
+
+    ensureFilterTypeAllowed(index) {
+        const allowed = this.allowedFilterTypesForInputType(this.fields[index].input_type);
+        const values = allowed.map(ft => ft.value);
+        if (!values.includes(this.fields[index].filter_type)) {
+            this.fields[index].filter_type = values[0] || 'no_filter';
+        }
+    },
 
     addField() {
         this.fields.push({
@@ -62,7 +81,7 @@
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/^-+|-+$/g, '');
     }
-}" x-show="showConfigModal" x-cloak x-transition:enter="transition ease-out duration-200"
+}" x-init="$watch('isLoading', (loading) => { if (!loading && this.fields.length) { this.fields.forEach((_, i) => this.ensureFilterTypeAllowed(i)); } })" x-show="showConfigModal" x-cloak x-transition:enter="transition ease-out duration-200"
     x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
     x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"
     x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;"
@@ -282,6 +301,7 @@
                                             {{ __('Input Type') }}
                                         </label>
                                         <select x-model="fields[index].input_type"
+                                            @change="ensureFilterTypeAllowed(index)"
                                             class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-150">
                                             @foreach ($inputTypes as $type)
                                                 <option value="{{ $type['value'] }}">{{ $type['label'] }}</option>
@@ -295,9 +315,9 @@
                                         </label>
                                         <select x-model="fields[index].filter_type"
                                             class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-150">
-                                            @foreach ($filterTypes as $type)
-                                                <option value="{{ $type['value'] }}">{{ $type['label'] }}</option>
-                                            @endforeach
+                                            <template x-for="ft in allowedFilterTypesForInputType(fields[index].input_type)" :key="ft.value">
+                                                <option :value="ft.value" x-text="ft.label"></option>
+                                            </template>
                                         </select>
                                     </div>
                                 </div>
