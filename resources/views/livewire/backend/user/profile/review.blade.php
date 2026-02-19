@@ -1,4 +1,4 @@
-<div class="bg-bg-primary pb-10">
+<div class="bg-page pb-10">
     <livewire:backend.user.profile.profile-component :user="$user" />
     <section class="container mx-auto bg-bg-secondary p-5! sm:p-10! rounded-2xl mb-10">
         <div class="">
@@ -41,7 +41,8 @@
                             <div class="flex items-center gap-3">
                                 <x-phosphor name="{{ $feedback->type->icon() }}" variant="solid"
                                     class="w-5 h-5 {{ $feedback->type->iconColor() }}" />
-                                <p class="font-semibold text-2xl">{{ $feedback->order->source->translatedName(app()->getLocale()) }}</p>
+                                <p class="font-semibold text-2xl">
+                                    {{ $feedback->order->source->translatedName(app()->getLocale()) }}</p>
                                 {{-- <span class="border-l border-text-white self-stretch"></span>
                                     <p class="text-xs">{{ __('Yeg***') }}</p> --}}
                             </div>
