@@ -312,15 +312,17 @@
                         delay: 2500,
                         disableOnInteraction: false,
                     },
-                    slidesPerView: 1,
+                    slidesPerView: 3,
+                    slidesPerGroup: 1,
                     spaceBetween: 20,
                     breakpoints: {
                         640: {
                             slidesPerView: 2,
+                            slidesPerGroup: 2,
                         },
-
                         1024: {
                             slidesPerView: 3,
+                            slidesPerGroup: 3,
                         },
                     },
                 });
