@@ -186,14 +186,23 @@ class CloudinaryService
         }
     }
 
-    public function getUrlFromPublicId(string $publicId)
+    public function getUrlFromPublicId(?string $publicId = null, ?string $resourceType = null)
     {
         try {
             if (empty($publicId)) {
                 return null;
             }
-            $result = cloudinary()->image($publicId)->toUrl();
-            return $result ?? null;
+            if (empty($resourceType)) {
+                $resourceType = $this->getResourceType($publicId);
+            }
+            if ($resourceType === 'image') {
+                return (string) cloudinary()->image($publicId)->toUrl();
+            } elseif ($resourceType === 'video') {
+                return (string) cloudinary()->video($publicId)->toUrl();
+            } elseif ($resourceType === 'raw') {
+                return (string) cloudinary()->raw($publicId)->toUrl();
+            }
+            return null;
         } catch (\Exception $e) {
             Log::error('Failed to get Cloudinary file info', [
                 'public_id' => $publicId,
