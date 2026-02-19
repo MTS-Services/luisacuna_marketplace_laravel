@@ -203,22 +203,52 @@ class CloudinaryService
     }
 
     /**
+     * Detect Cloudinary resource type for a public ID (when there is no file extension).
+     * Tries image first, then video, then returns 'raw'.
+     *
+     * @param string $publicId Cloudinary public ID
+     * @return string 'image'|'video'|'raw'
+     */
+    public function getResourceType(string $publicId): string
+    {
+        if (empty(trim($publicId))) {
+            return 'raw';
+        }
+
+        if ($this->getFileInfo($publicId, 'image') !== null) {
+            return 'image';
+        }
+        if ($this->getFileInfo($publicId, 'video') !== null) {
+            return 'video';
+        }
+
+        return 'raw';
+    }
+
+    /**
      * Generate transformation URL
      *
      * @param string $publicId
      * @param array $transformations
-     * @param string $resourceType
+     * @param string $resourceType 'image'|'video'|'raw'
      * @return string
      */
     public function getTransformedUrl(string $publicId, array $transformations, string $resourceType = 'image'): string
     {
         try {
-            return cloudinary()->image($publicId)
+            if ($resourceType === 'video') {
+                return (string) cloudinary()->video($publicId)
+                    ->addTransformation($transformations)
+                    ->toUrl();
+            }
+
+            return (string) cloudinary()->image($publicId)
                 ->addTransformation($transformations)
                 ->toUrl();
         } catch (\Exception $e) {
             Log::error('Failed to generate transformed URL', [
                 'public_id' => $publicId,
+                'resource_type' => $resourceType,
                 'error' => $e->getMessage()
             ]);
 
