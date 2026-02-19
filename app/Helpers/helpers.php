@@ -104,6 +104,11 @@ if (!function_exists('storage_url')) {
     {
         $defaultImage = 'no_image';
 
+        // Extract resource_type for video URL generation (not a Cloudinary transformation param)
+        $resourceType = $transform['resource_type'] ?? 'image';
+        $params = $transform;
+        unset($params['resource_type']);
+
         // Default Cloudinary transformations
         $params = array_merge([
             'width' => 300,
@@ -112,7 +117,7 @@ if (!function_exists('storage_url')) {
             'quality' => 'auto',
             'fetch_format' => 'auto',
             'dpr' => 'auto',
-        ], $transform);
+        ], $params);
 
         $cloudinaryService = app(CloudinaryService::class);
 
@@ -132,12 +137,61 @@ if (!function_exists('storage_url')) {
                 continue;
             }
 
-            // Get transformed URL from Cloudinary service
-            $urls[] = $cloudinaryService->getTransformedUrl($input, $params);
+            // Get transformed URL from Cloudinary service (image or video)
+            $urls[] = $cloudinaryService->getTransformedUrl($input, $params, $resourceType);
         }
 
         // Return a single string if input was a string, otherwise a comma-separated list
         return is_array($urlOrArray) ? implode(', ', $urls) : $urls[0];
+    }
+}
+
+if (!function_exists('storage_url_and_type')) {
+    /**
+     * Return display URL and MIME-like type for a path (Cloudinary public ID or full URL).
+     * Used by the file-input component to preview existing files without file extension.
+     *
+     * @param string|null $path Public ID, or full URL, or null
+     * @return array{path: string, url: string, type: string}|null null if path is empty
+     */
+    function storage_url_and_type(?string $path): ?array
+    {
+        $path = $path === null ? '' : trim($path);
+        if ($path === '') {
+            return null;
+        }
+
+        $cloudinaryService = app(CloudinaryService::class);
+
+        // Already a full URL: use as-is, infer type from URL path for Cloudinary
+        if (filter_var($path, FILTER_VALIDATE_URL)) {
+            $type = 'application/octet-stream';
+            if (str_contains($path, '/video/')) {
+                $type = 'video/mp4';
+            } elseif (str_contains($path, '/image/') || preg_match('#\\.(jpg|jpeg|png|gif|webp|svg)([?#]|$)#i', $path)) {
+                $type = 'image/jpeg';
+            }
+            return [
+                'path' => $path,
+                'url' => $path,
+                'type' => $type,
+            ];
+        }
+
+        // Cloudinary public ID: detect resource type and build URL
+        $resourceType = $cloudinaryService->getResourceType($path);
+        $url = storage_url($path, ['resource_type' => $resourceType]);
+        $type = match ($resourceType) {
+            'image' => 'image/jpeg',
+            'video' => 'video/mp4',
+            default => 'application/octet-stream',
+        };
+
+        return [
+            'path' => $path,
+            'url' => $url,
+            'type' => $type,
+        ];
     }
 }
 

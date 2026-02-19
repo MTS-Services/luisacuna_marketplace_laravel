@@ -10,7 +10,30 @@
 
 @php
     $inputId = 'file-' . uniqid();
-    $existingFilesJson = json_encode($existingFiles);
+    $raw = is_array($existingFiles) ? $existingFiles : (array) $existingFiles;
+    $existingFilesNormalized = [];
+    foreach (array_filter($raw) as $item) {
+        if (is_array($item) && isset($item['url'], $item['type'])) {
+            $existingFilesNormalized[] = [
+                'path' => $item['path'] ?? $item['url'],
+                'url' => $item['url'],
+                'type' => $item['type'],
+                'name' => $item['name'] ?? basename(str_replace('\\', '/', (string) ($item['path'] ?? $item['url']))),
+            ];
+        } else {
+            $path = is_string($item) ? $item : (string) ($item['path'] ?? '');
+            $res = storage_url_and_type($path);
+            if ($res !== null) {
+                $existingFilesNormalized[] = [
+                    'path' => $res['path'],
+                    'url' => $res['url'],
+                    'type' => $res['type'],
+                    'name' => basename(str_replace('\\', '/', $res['path'])),
+                ];
+            }
+        }
+    }
+    $existingFilesJson = json_encode($existingFilesNormalized);
 @endphp
 
 <div class="w-full">
@@ -27,30 +50,21 @@
         isUpdating: false,
     
         init() {
-            // Initialize existing files
+            // Initialize existing files (normalized: { path, url, type, name })
             const existingFiles = {{ $existingFilesJson }};
-            if (existingFiles && (Array.isArray(existingFiles) ? existingFiles.length > 0 : existingFiles)) {
+            if (existingFiles && Array.isArray(existingFiles) && existingFiles.length > 0) {
+                const mapEntry = (file) => ({
+                    name: file.name || this.getFileNameFromPath(file.path),
+                    size: 0,
+                    type: file.type,
+                    url: file.url,
+                    isExisting: true,
+                    path: file.path
+                });
                 if ({{ $multiple ? 'true' : 'false' }}) {
-                    // Multiple files mode
-                    this.existingPreviews = (Array.isArray(existingFiles) ? existingFiles : [existingFiles]).map(path => ({
-                        name: this.getFileNameFromPath(path),
-                        size: 0,
-                        type: this.getTypeFromPath(path),
-                        url: this.getFullUrl(path),
-                        isExisting: true,
-                        path: path
-                    }));
+                    this.existingPreviews = existingFiles.map(mapEntry);
                 } else {
-                    // Single file mode
-                    const filePath = Array.isArray(existingFiles) ? existingFiles[0] : existingFiles;
-                    this.preview = {
-                        name: this.getFileNameFromPath(filePath),
-                        size: 0,
-                        type: this.getTypeFromPath(filePath),
-                        url: this.getFullUrl(filePath),
-                        isExisting: true,
-                        path: filePath
-                    };
+                    this.preview = mapEntry(existingFiles[0]);
                 }
             }
         },
