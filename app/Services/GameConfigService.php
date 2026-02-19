@@ -62,6 +62,19 @@ class GameConfigService
     }
 
     /**
+     * Allowed filter types per input type (frontend and validation rules).
+     */
+    protected function allowedFilterTypesForInputType(string $inputType): array
+    {
+        return match ($inputType) {
+            'text' => ['no_filter'],
+            'number' => ['no_filter', 'filter_by_range'],
+            'select_dropdown' => ['filter_by_select'],
+            default => ['no_filter'],
+        };
+    }
+
+    /**
      * Validate configuration data
      */
     public function validate(array $deliveryMethods, array $fields): ?string
@@ -76,6 +89,12 @@ class GameConfigService
             }
             if (empty($field['slug'])) {
                 return "Field #" . ($index + 1) . " slug is required";
+            }
+            $inputType = $field['input_type'] ?? 'text';
+            $filterType = $field['filter_type'] ?? 'no_filter';
+            $allowed = $this->allowedFilterTypesForInputType($inputType);
+            if (! in_array($filterType, $allowed, true)) {
+                return "Field #" . ($index + 1) . ": invalid filter type for the selected input type.";
             }
         }
 
