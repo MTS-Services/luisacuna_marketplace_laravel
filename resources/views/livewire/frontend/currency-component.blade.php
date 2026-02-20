@@ -70,28 +70,19 @@
             document.addEventListener('livewire:navigated', function() {
                 const swiper = new Swiper('.popular-currency', {
                     loop: true,
+                    slidesPerView: 1,
+                    spaceBetween: 20,
                     pagination: {
-                        el: '.swiper-pagination',
+                        el: '.popular-currency .swiper-pagination',
                         clickable: true,
                     },
-                    // navigation: {
-                    //     nextEl: '.swiper-button-next',
-                    //     prevEl: '.swiper-button-prev',
-                    // },
                     autoplay: {
                         delay: 2500,
                         disableOnInteraction: false,
                     },
-                    slidesPerView: 1,
-                    spaceBetween: 20,
                     breakpoints: {
-                        640: {
-                            slidesPerView: 2,
-                        },
-
-                        1024: {
-                            slidesPerView: 3,
-                        },
+                        640: { slidesPerView: 2 },
+                        1024: { slidesPerView: 3 },
                     },
                 });
 

@@ -50,7 +50,7 @@
             <div class="title mt-10">
                 <h2 class="font-semibold text-40px">{{ __('Newly Boosting') }}</h2>
             </div>
-            <div wire:ignore class="swiper popular-boosting">
+            <div wire:ignore class="swiper newly-boosting">
                 <div class="swiper-wrapper py-16">
                     @foreach ($newly_boostings as $newly_boosting)
                         <div class="swiper-slide">
@@ -96,35 +96,40 @@
     @push('scripts')
         <script>
             document.addEventListener('livewire:navigated', function() {
-                const swiper = new Swiper('.popular-boosting', {
+                new Swiper('.popular-boosting', {
                     loop: true,
+                    slidesPerView: 1,
+                    spaceBetween: 20,
                     pagination: {
-                        el: '.swiper-pagination',
+                        el: '.popular-boosting .swiper-pagination',
                         clickable: true,
                     },
-                    // navigation: {
-                    //     nextEl: '.swiper-button-next',
-                    //     prevEl: '.swiper-button-prev',
-                    // },
                     autoplay: {
                         delay: 2500,
                         disableOnInteraction: false,
                     },
-                    slidesPerView: 1,
-                    spaceBetween: 20,
                     breakpoints: {
-                        640: {
-                            slidesPerView: 1,
-                        },
-                        768: {
-                            slidesPerView: 2,
-                        },
-                        1024: {
-                            slidesPerView: 3,
-                        },
+                        640: { slidesPerView: 2 },
+                        1024: { slidesPerView: 3 },
                     },
                 });
-
+                new Swiper('.newly-boosting', {
+                    loop: true,
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                    pagination: {
+                        el: '.newly-boosting .swiper-pagination',
+                        clickable: true,
+                    },
+                    autoplay: {
+                        delay: 2500,
+                        disableOnInteraction: false,
+                    },
+                    breakpoints: {
+                        640: { slidesPerView: 2 },
+                        1024: { slidesPerView: 3 },
+                    },
+                });
             });
         </script>
     @endpush

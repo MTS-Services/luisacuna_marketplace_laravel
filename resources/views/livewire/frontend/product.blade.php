@@ -176,29 +176,20 @@
             document.addEventListener('livewire:navigated', function() {
 
                 const swiper = new Swiper('.popular-currency', {
-                    loop: false, // IMPORTANT for correct bullets
+                    loop: true,
                     slidesPerView: 1,
-                    slidesPerGroup: 1,
                     spaceBetween: 20,
-
                     pagination: {
-                        el: '.swiper-pagination',
+                        el: '.popular-currency .swiper-pagination',
                         clickable: true,
                     },
-
                     autoplay: {
                         delay: 2500,
                         disableOnInteraction: false,
                     },
                     breakpoints: {
-                        640: {
-                            slidesPerView: 2,
-                            slidesPerGroup: 2,
-                        },
-                        1024: {
-                            slidesPerView: 3,
-                            slidesPerGroup: 3,
-                        },
+                        640: { slidesPerView: 2 },
+                        1024: { slidesPerView: 3 },
                     },
                 });
 
@@ -210,30 +201,20 @@
             document.addEventListener('livewire:navigated', function() {
 
                 const swiper = new Swiper('.new-boosting', {
-                    loop: false, // IMPORTANT for correct bullets
+                    loop: true,
                     slidesPerView: 1,
-                    slidesPerGroup: 1,
                     spaceBetween: 20,
-
                     pagination: {
-                        el: '.swiper-pagination',
+                        el: '.new-boosting .swiper-pagination',
                         clickable: true,
                     },
-
                     autoplay: {
                         delay: 2500,
                         disableOnInteraction: false,
                     },
-
                     breakpoints: {
-                        640: {
-                            slidesPerView: 2,
-                            slidesPerGroup: 2,
-                        },
-                        1024: {
-                            slidesPerView: 3,
-                            slidesPerGroup: 3,
-                        },
+                        640: { slidesPerView: 2 },
+                        1024: { slidesPerView: 3 },
                     },
                 });
 
