@@ -1,5 +1,6 @@
 <footer class="dark:bg-bg-secondary">
-    <div class="{{ request()->route()->getName() == 'profile' ?  'pt-0' : 'pt-10' }}">
+
+    <div class="{{ request()->route()->getName() == 'profile' && request()->input('tab') != 'reviews' && request()->input('tab') != 'about' ?  'pt-0' : 'pt-10' }}">
         <div class="container flex flex-col md:flex-row justify-start gap-8 mb-12">
             <div class="w-full md:w-1/4 flex flex-col items-start justify-start md:justify-start">
                 <div class="mb-4">
@@ -9,6 +10,7 @@
                         {{-- <img src="{{ asset('assets/images/header_logo.png') }}" alt="{{ __('Logo') }}"></a> --}}
                         <img src="{{ storage_url(app_logo()) }}" alt="{{ site_name() }}" class="rounded w-8 h-6" />
                         <p>
+                           
                             {{ short_name() }}
                         </p>
                     </a>
