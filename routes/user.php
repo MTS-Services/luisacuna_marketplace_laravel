@@ -1,19 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PaymentController;
-use App\Livewire\Backend\User\Payments\Checkout;
-use App\Livewire\Backend\User\Payments\NowPayment;
-use App\Http\Controllers\SellerVerificationController;
+use App\Http\Controllers\Backend\User\OfferManagement\BulkUploadController;
 use App\Http\Controllers\Backend\User\OfferManagement\OfferController;
+use App\Http\Controllers\Backend\User\OfferManagement\UserOfferController;
 use App\Http\Controllers\Backend\User\OrderManagement\OrderController;
 use App\Http\Controllers\Backend\User\WalletManagement\WalletController;
-use App\Http\Controllers\Backend\User\OfferManagement\UserOfferController;
-use App\Http\Controllers\Backend\User\OfferManagement\BulkUploadController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\SellerVerificationController;
+use App\Livewire\Backend\User\Payments\Checkout;
+use App\Livewire\Backend\User\Payments\NowPayment;
+use Illuminate\Support\Facades\Route;
 
 // , 'userVerify'
 Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->group(function () {
-
 
     Route::controller(OrderController::class)->name('order.')->prefix('orders')->group(function () {
         Route::get('/purchased-orders', 'purchasedOrders')->name('purchased-orders');
@@ -23,7 +22,6 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
         Route::get('/details/{orderId}', 'detail')->name('detail');
     });
 
-
     Route::group(['prefix' => 'offers'], function () {
 
         Route::controller(UserOfferController::class)->name('user-offer.')->prefix('offer')->group(function () {
@@ -32,7 +30,6 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
         Route::controller(BulkUploadController::class)->name('bulk-upload.')->prefix('bulk-upload')->group(function () {
             Route::get('category', 'category')->name('category');
         });
-
 
         // Route::get('/currency', function () {
         //     return view('backend.user.pages.offers.currency');
@@ -49,10 +46,13 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
         // Route::get('/gift-cards', function () {
         //     return view('backend.user.pages.offers.gift-cards');
         // })->name('gift-cards');
-        Route::get('create/', [OfferController::class, 'create'])->name('offers')->middleware('seller');
+        Route::middleware('seller')->group(function () {
+            Route::get('create', [OfferController::class, 'create'])->name('offers');
+            Route::get('create/{categorySlug}/games', [OfferController::class, 'gameSelect'])->name('offers.create.games');
+            Route::get('create/{categorySlug}/{gameSlug}', [OfferController::class, 'productForm'])->name('offers.create.form');
+        });
         Route::get('edit/{encrypted_id}', [OfferController::class, 'edit'])->name('offer.edit')->middleware('seller');
     });
-
 
     Route::group(['prefix' => 'boosting'], function () {
         Route::get('/my-requests', function () {
@@ -70,8 +70,6 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
 
         Route::get('verification/{step?}', [SellerVerificationController::class, 'index'])->name('seller.verification');
     });
-
-
 
     Route::get('/loyalty', function () {
         return view('backend.user.pages.loyalty.loyalty');
@@ -106,8 +104,8 @@ Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->g
             Route::get('/gateway/{slug}', 'getGatewayConfig')->name('gateway.config');
         });
 
-// NOWPayments IPN webhook
-Route::post('/nowpayments/ipn', [PaymentController::class, 'nowpaymentsWebhook'])->name('nowpayments.webhook');
+    // NOWPayments IPN webhook
+    Route::post('/nowpayments/ipn', [PaymentController::class, 'nowpaymentsWebhook'])->name('nowpayments.webhook');
     // Route::get('/payment/create/{id}', NowPayment::class)->name('payment.create');
     // Route::get('/payment/success', function () {
     //     return view('payment.success');
@@ -115,7 +113,6 @@ Route::post('/nowpayments/ipn', [PaymentController::class, 'nowpaymentsWebhook']
     // Route::get('/payment/cancel', function () {
     //     return view('payment.cancel');
     // })->name('payment.cancel');
-
 
     // Route::get('/test-nowpayments-config', function () {
     //     return [
@@ -131,6 +128,6 @@ Route::post('/nowpayments/ipn', [PaymentController::class, 'nowpaymentsWebhook']
         Route::get('/', 'wallet')->name('index');
         Route::get('/withdrawal-methods', 'withdrawalMethod')->name('withdrawal-methods');
         Route::get('/withdrawal-form/{id}', 'withdrawalForm')->name('withdrawal-form');
-        Route::get('/withdrawal-form-update/{account}','withdrawalFormUpdate')->name('withdrawal-form-update');
+        Route::get('/withdrawal-form-update/{account}', 'withdrawalFormUpdate')->name('withdrawal-form-update');
     });
 });
