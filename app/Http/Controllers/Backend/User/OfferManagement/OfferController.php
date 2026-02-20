@@ -3,67 +3,46 @@
 namespace App\Http\Controllers\Backend\User\OfferManagement;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Models\Game;
+use Illuminate\View\View;
 
 class OfferController extends Controller
 {
-    protected $masterView = 'backend.user.pages.offer-management.offer';
+    protected string $masterView = 'backend.user.pages.offer-management.offer';
 
-
-
-
-
-    public function create()
+    public function create(): View
     {
-        return view($this->masterView);
+        return view($this->masterView, ['step' => 'category']);
     }
 
-    
-    public function edit($encrypted_id){
+    public function gameSelect(string $categorySlug): View
+    {
+        $category = Category::where('slug', $categorySlug)->active()->firstOrFail();
 
+        return view($this->masterView, [
+            'step' => 'game',
+            'categorySlug' => $category->slug,
+            'categoryName' => $category->name,
+        ]);
+    }
+
+    public function productForm(string $categorySlug, string $gameSlug): View
+    {
+        $category = Category::where('slug', $categorySlug)->active()->firstOrFail();
+        $game = Game::where('slug', $gameSlug)
+            ->whereHas('categories', fn ($q) => $q->where('categories.id', $category->id))
+            ->firstOrFail();
+
+        return view($this->masterView, [
+            'step' => 'form',
+            'categorySlug' => $category->slug,
+            'gameSlug' => $game->slug,
+        ]);
+    }
+
+    public function edit(string $encrypted_id): View
+    {
         return view($this->masterView, compact('encrypted_id'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    // public function create()
-    // {
-    //     return view($this->masterView);
-    // }
-
-    /**
-     * Display the specified resource.
-     */
-
-
-    // public function show(string $encryptedId)
-    // {
-    //     $data = $this->service->findData(decrypt($encryptedId));
-    //     if (!$data) {
-    //         abort(404);
-    //     }
-    //     return view($this->masterView, [
-    //         'data' => $data
-    //     ]);
-    // }
-    /**
-     * Show the form for editing the specified resource.
-     */
-
-    // public function edit(string $encryptedId)
-    // {
-    //     $data = $this->service->findData(decrypt($encryptedId));
-    //     if (!$data) {
-    //         abort(404);
-    //     }
-    //     return view($this->masterView, [
-    //         'data' => $data
-    //     ]);
-    // }
-
-    // public function trash()
-    // {
-    //     return view($this->masterView);
-    // }
 }

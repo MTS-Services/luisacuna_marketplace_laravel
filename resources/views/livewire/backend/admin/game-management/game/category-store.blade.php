@@ -4,7 +4,7 @@
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Game Configuration') }}</h2>
             <x-ui.button href="{{ route('admin.gm.game.edit', encrypt($game->id)) }}" class="w-auto! py-2!">
-                <flux:icon name="arrow-left" class="w-4 h-4 stroke-white group-hover:stroke-text-btn-secondary" />
+                <flux:icon name="arrow-left" class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                 {{ __('Back') }}
             </x-ui.button>
         </div>
@@ -59,8 +59,8 @@
                         <x-ui.button x-on:click="$dispatch('open-config-modal', { slug: '{{ $category->slug }}' })"
                             class="w-auto! px-6 py-3! bg-linear-to-r from-blue-500 to-indigo-500 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2 whitespace-nowrap"
                             type="button">
-                            <flux:icon name="cog-8-tooth" class="w-5 h-5 stroke-text-btn-primary" />
-                            <span class="text-text-btn-primary">{{ __('Configure') }}</span>
+                            <flux:icon name="cog-8-tooth" class="w-5 h-5 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
+                            <span class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Configure') }}</span>
                         </x-ui.button>
                         <x-ui.button variant="tertiary" wire:click="confirmRemoveGameCategory('{{ $category->slug }}')"
                             wire:loading.attr="disabled" wire:target="confirmRemoveGameCategory"
@@ -94,10 +94,10 @@
                             class="w-auto! px-6 py-2! bg-linear-to-r from-blue-500 to-indigo-500 text-white rounded-lg font-semibold shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-2 whitespace-nowrap"
                             type="button">
                             <flux:icon wire:loading.remove wire:target="saveGameCategory" name="diamond-plus"
-                                class="w-5 h-5 stroke-text-btn-primary" />
+                                class="w-5 h-5 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                             <flux:icon wire:loading wire:target="saveGameCategory" name="arrows-pointing-in"
-                                class="w-5 h-5 stroke-text-btn-primary animate-spin" />
-                            <span class="text-text-btn-primary">{{ __('Add') }}</span>
+                                class="w-5 h-5 stroke-text-btn-primary group-hover:stroke-text-btn-secondary animate-spin" />
+                            <span class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Add') }}</span>
                         </x-ui.button>
                     </div>
                 @endif

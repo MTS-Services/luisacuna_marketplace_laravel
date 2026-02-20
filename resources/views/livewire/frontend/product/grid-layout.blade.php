@@ -99,7 +99,7 @@
                                     </div>
                                     <x-ui.button class="py-2! px-3! w-auto! rounded! hidden md:flex bg-transparent!"
                                         :variant="'primary'" wire:click="restPrice">
-                                        <flux:icon name="trash" class="w-5 h-5" />
+                                        <flux:icon name="trash" class="w-5 h-5 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                                     </x-ui.button>
                                 </div>
                                 <ol class="list pt-2.5 space-y-2">

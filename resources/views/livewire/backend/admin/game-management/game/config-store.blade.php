@@ -369,7 +369,7 @@
                         wire:target="saveConfiguration" type="button"
                         class="w-fit! rounded-md py-2! text-nowrap disabled:cursor-not-allowed">
                         <flux:icon wire:loading.remove wire:target="saveConfiguration"
-                            class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-secondary" name="check" />
+                            class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" name="check" />
                         <flux:icon wire:loading wire:target="saveConfiguration"
                             class="w-4 h-4 animate-spin stroke-text-btn-primary group-hover:stroke-text-btn-secondary"
                             name="arrow-path" />

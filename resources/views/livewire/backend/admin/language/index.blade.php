@@ -7,12 +7,12 @@
             </h2>
             <div class="flex items-center gap-2 w-full sm:w-auto">
                 <x-ui.button href="" type='secondary' class="flex-1 sm:flex-none">
-                    <flux:icon name="trash" class="w-4 h-4 stroke-white" />
-                    <span class="sm:inline text-white">{{ __('Trash') }}</span>
+                    <flux:icon name="trash" class="w-4 h-4 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
+                    <span class="sm:inline text-text-btn-secondary group-hover:text-text-btn-primary">{{ __('Trash') }}</span>
                 </x-ui.button>
                 <x-ui.button wire:navigate href="{{ route('admin.language.create') }}" class="flex-1 sm:flex-none">
-                    <flux:icon name="user-plus" class="w-4 h-4 stroke-white" />
-                    <span class="sm:inline text-white">{{ __('Add') }}</span>
+                    <flux:icon name="user-plus" class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
+                    <span class="sm:inline text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Add') }}</span>
                 </x-ui.button>
             </div>
         </div>

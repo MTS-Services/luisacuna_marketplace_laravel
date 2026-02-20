@@ -74,7 +74,7 @@
                     class="glass-card rounded-[2rem] p-6 space-y-4 border border-zinc-200 dark:border-white/5 bg-zinc-50 dark:bg-zinc-900/20 shadow-sm">
                     <h4 class="text-[10px] font-black text-text-primary uppercase tracking-[0.2em] px-2">
                         {{ __('Verification Status') }}</h4>
-                    
+
                     <div
                         class="p-4 rounded-xl bg-white dark:bg-white/5 border border-zinc-100 dark:border-white/5 shadow-sm">
                         <span class="text-xs font-bold text-text-primary">{{ __('Status') }}</span>
@@ -95,14 +95,14 @@
                             {{ $data->created_at_formatted ?? 'N/A' }}</p>
                     </div>
 
-                    @if($data->seller_verified_at)
-                    <div
-                        class="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-500/5 border border-emerald-100 dark:border-emerald-500/10">
-                        <p class="text-[10px] font-black text-emerald-600 dark:text-emerald-500 uppercase mb-1">
-                            {{ __('Verified At') }}</p>
-                        <p class="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
-                            {{ $data->seller_verified_at }}</p>
-                    </div>
+                    @if ($data->seller_verified_at)
+                        <div
+                            class="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-500/5 border border-emerald-100 dark:border-emerald-500/10">
+                            <p class="text-[10px] font-black text-emerald-600 dark:text-emerald-500 uppercase mb-1">
+                                {{ __('Verified At') }}</p>
+                            <p class="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                                {{ $data->seller_verified_at }}</p>
+                        </div>
                     @endif
                 </div>
             </div>
@@ -130,15 +130,35 @@
                                     ];
                                 } else {
                                     $personalFields = [
-                                        ['label' => 'Company Name', 'val' => $data->company_name, 'icon' => 'building-office'],
-                                        ['label' => 'License Number', 'val' => $data->company_license_number ?? 'N/A', 'icon' => 'document-text'],
-                                        ['label' => 'Tax Number', 'val' => $data->company_tax_number ?? 'N/A', 'icon' => 'document-text'],
+                                        [
+                                            'label' => 'Company Name',
+                                            'val' => $data->company_name,
+                                            'icon' => 'building-office',
+                                        ],
+                                        [
+                                            'label' => 'License Number',
+                                            'val' => $data->company_license_number ?? 'N/A',
+                                            'icon' => 'document-text',
+                                        ],
+                                        [
+                                            'label' => 'Tax Number',
+                                            'val' => $data->company_tax_number ?? 'N/A',
+                                            'icon' => 'document-text',
+                                        ],
                                     ];
                                 }
-                                
+
                                 $personalFields = array_merge($personalFields, [
-                                    ['label' => 'Date of Birth', 'val' => \Carbon\Carbon::parse($data->date_of_birth)->format('d M, Y'), 'icon' => 'calendar'],
-                                    ['label' => 'Nationality', 'val' => ucfirst($data->nationality ?? 'N/A'), 'icon' => 'flag'],
+                                    [
+                                        'label' => 'Date of Birth',
+                                        'val' => \Carbon\Carbon::parse($data->date_of_birth)->format('d M, Y'),
+                                        'icon' => 'calendar',
+                                    ],
+                                    [
+                                        'label' => 'Nationality',
+                                        'val' => ucfirst($data->nationality ?? 'N/A'),
+                                        'icon' => 'flag',
+                                    ],
                                 ]);
                             @endphp
 
@@ -187,7 +207,11 @@
                     <div class="p-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-12 gap-y-8">
                         @php
                             $addressFields = [
-                                ['label' => 'Street Address', 'val' => ucfirst($data->street_address), 'icon' => 'home'],
+                                [
+                                    'label' => 'Street Address',
+                                    'val' => ucfirst($data->street_address),
+                                    'icon' => 'home',
+                                ],
                                 ['label' => 'City', 'val' => ucfirst($data->city), 'icon' => 'building-office-2'],
                                 ['label' => 'Country', 'val' => ucfirst($data->country), 'icon' => 'globe-alt'],
                                 ['label' => 'Postal Code', 'val' => ucfirst($data->postal_code), 'icon' => 'envelope'],
@@ -210,10 +234,10 @@
                 </div>
 
                 {{-- Documents --}}
-                @php 
+                @php
                     $cloudinaryService = new \App\Services\Cloudinary\CloudinaryService();
                 @endphp
-                
+
                 <div
                     class="glass-card rounded-[2.5rem] p-8 border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900/30 shadow-xl overflow-hidden relative">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
@@ -228,13 +252,14 @@
                                     </div>
                                     <div>
                                         @if ($data->identification)
-                                            <a href="{{ $cloudinaryService->getUrlFromPublicId($data->identification ?? '') }}"
-                                                target="_blank"
-                                                class="text-sm font-black text-primary-600 dark:text-primary-400 hover:underline">
-                                                {{ __('Download Document') }}
-                                            </a>
+                                                <a href="{{ $cloudinaryService->getUrlFromPublicId($data->identification, ['flags' => 'attachment']) }}"
+                                                    download
+                                                    class="text-sm font-black text-primary-600 dark:text-primary-400 hover:underline">
+                                                    {{ __('Download Document') }}
+                                                </a>
                                         @else
-                                            <p class="text-sm font-black text-text-primary">{{ __('Not Available') }}</p>
+                                            <p class="text-sm font-black text-text-primary">{{ __('Not Available') }}
+                                            </p>
                                         @endif
                                     </div>
                                 </div>
@@ -289,16 +314,16 @@
 
                 {{-- Action Buttons --}}
                 <div class="flex justify-end gap-4">
-                    @if($data->seller_verified == 1)
+                    @if ($data->seller_verified == 1)
                         <x-ui.button wire:click.prevent="makeRejected('{{ encrypt($data->id) }}')"
                             class="w-auto! py-3! px-6!" :variant="'tertiary'">
-                            <flux:icon name="x-mark" class="w-4 h-4" />
+                            <flux:icon name="x-mark" class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
                             {{ __('Mark as Rejected') }}
                         </x-ui.button>
                     @else
                         <x-ui.button wire:click.prevent="makeVerified('{{ encrypt($data->id) }}')"
                             class="w-auto! py-3! px-6!">
-                            <flux:icon name="check" class="w-4 h-4 stroke-white" />
+                            <flux:icon name="check" class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                             {{ __('Mark as Verified') }}
                         </x-ui.button>
                     @endif
