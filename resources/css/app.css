@@ -415,6 +415,21 @@
         @apply !bg-purple-700 !opacity-100;
     }
 
+    /* Card swiper slides: width controlled by Swiper breakpoints (no fixed width) */
+    .swiper.top-sellings .swiper-slide,
+    .swiper.new-boosting .swiper-slide,
+    .swiper.popular-games .swiper-slide,
+    .swiper.popular-currency .swiper-slide,
+    .swiper.popular-toUp .swiper-slide,
+    .swiper.popular-launched .swiper-slide,
+    .swiper.popular-coaching .swiper-slide,
+    .swiper.popular-accounts .swiper-slide,
+    .swiper.popular-boosting .swiper-slide,
+    .swiper.newly-boosting .swiper-slide,
+    .swiper.popular-items .swiper-slide {
+        flex-shrink: 0;
+    }
+
     .mobile-nav-item {
         @apply text-text-primary hover:bg-bg-secondary block px-3 py-2 rounded-md text-base font-medium;
     }

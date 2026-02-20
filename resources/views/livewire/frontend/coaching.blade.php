@@ -31,15 +31,13 @@
             <div class="">
                 <h2 class="font-semibold text-text-white text-3xl sm:text-4xl md:text-5xl">{{ __('Popular Now') }}</h2>
             </div>
-            <div class="swiper popular-coaching">
-                <div wire:ignore class="swiper-wrapper pt-10">
-                    <div class="swiper-wrapper py-16">
-                        @foreach ($popular_coachings as $popular_coaching)
-                            <div class="swiper-slide">
-                                <x-product-card :data="$popular_coaching" />
-                            </div>
-                        @endforeach
-                    </div>
+            <div wire:ignore class="swiper popular-coaching">
+                <div class="swiper-wrapper py-10">
+                    @foreach ($popular_coachings as $popular_coaching)
+                        <div class="swiper-slide">
+                            <x-product-card :data="$popular_coaching" />
+                        </div>
+                    @endforeach
                 </div>
 
                 <!-- Add Pagination and Navigation -->
@@ -61,17 +59,15 @@
             </div>
             <div wire:ignore class="swiper popular-launched">
                 <div class="swiper-wrapper py-10">
-                    <div class="swiper-wrapper py-16">
-                        @foreach ($newly_coachings as $newly_coaching)
-                            <div class="swiper-slide">
-                                <x-product-card :data="$newly_coaching" />
-                            </div>
-                        @endforeach
-                    </div>
+                    @foreach ($newly_coachings as $newly_coaching)
+                        <div class="swiper-slide">
+                            <x-product-card :data="$newly_coaching" />
+                        </div>
+                    @endforeach
                 </div>
 
                 <!-- Add Pagination and Navigation -->
-                <div class="">
+                <div class="mt-10">
                     <div class="swiper-pagination"></div>
                     <div class="swiper-button-next"></div>
                     <div class="swiper-button-prev"></div>
@@ -102,27 +98,19 @@
             document.addEventListener('livewire:navigated', function() {
                 const swiper = new Swiper('.popular-coaching', {
                     loop: true,
+                    slidesPerView: 1,
+                    spaceBetween: 20,
                     pagination: {
-                        el: '.swiper-pagination',
+                        el: '.popular-coaching .swiper-pagination',
                         clickable: true,
                     },
-                    // navigation: {
-                    //     nextEl: '.swiper-button-next',
-                    //     prevEl: '.swiper-button-prev',
-                    // },
                     autoplay: {
                         delay: 2500,
                         disableOnInteraction: false,
                     },
-                    slidesPerView: 1,
-                    spaceBetween: 20,
                     breakpoints: {
-                        640: {
-                            slidesPerView: 2,
-                        },
-                        1024: {
-                            slidesPerView: 3,
-                        },
+                        640: { slidesPerView: 2 },
+                        1024: { slidesPerView: 3 },
                     },
                 });
 
@@ -130,27 +118,19 @@
             document.addEventListener('livewire:navigated', function() {
                 const swiper = new Swiper('.popular-launched', {
                     loop: true,
+                    slidesPerView: 1,
+                    spaceBetween: 20,
                     pagination: {
-                        el: '.swiper-pagination',
+                        el: '.popular-launched .swiper-pagination',
                         clickable: true,
                     },
-                    // navigation: {
-                    //     nextEl: '.swiper-button-next',
-                    //     prevEl: '.swiper-button-prev',
-                    // },
                     autoplay: {
                         delay: 2500,
                         disableOnInteraction: false,
                     },
-                    slidesPerView: 1,
-                    spaceBetween: 20,
                     breakpoints: {
-                        640: {
-                            slidesPerView: 2,
-                        },
-                        1024: {
-                            slidesPerView: 3,
-                        },
+                        640: { slidesPerView: 2 },
+                        1024: { slidesPerView: 3 },
                     },
                 });
 

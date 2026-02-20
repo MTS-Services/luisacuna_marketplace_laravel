@@ -214,7 +214,7 @@
                 const swiper = new Swiper('.swiper-hero', {
                     loop: true,
                     pagination: {
-                        el: '.swiper-pagination',
+                        el: '.swiper-hero .swiper-pagination',
                         clickable: true,
                     },
                     autoplay: {
@@ -231,30 +231,20 @@
             document.addEventListener('livewire:navigated', function() {
 
                 const swiper = new Swiper('.new-boosting', {
-                    loop: false, // IMPORTANT for correct bullets
+                    loop: true,
                     slidesPerView: 1,
-                    slidesPerGroup: 1,
                     spaceBetween: 20,
-
                     pagination: {
-                        el: '.swiper-pagination',
+                        el: '.new-boosting .swiper-pagination',
                         clickable: true,
                     },
-
                     autoplay: {
                         delay: 2500,
                         disableOnInteraction: false,
                     },
-
                     breakpoints: {
-                        640: {
-                            slidesPerView: 2,
-                            slidesPerGroup: 2,
-                        },
-                        1024: {
-                            slidesPerView: 3,
-                            slidesPerGroup: 3,
-                        },
+                        640: { slidesPerView: 2 },
+                        1024: { slidesPerView: 3 },
                     },
                 });
 
@@ -267,30 +257,20 @@
             document.addEventListener('livewire:navigated', function() {
 
                 const swiper = new Swiper('.popular-games', {
-                    loop: false, // IMPORTANT for correct bullets
+                    loop: true,
                     slidesPerView: 1,
-                    slidesPerGroup: 1,
                     spaceBetween: 20,
-
                     pagination: {
-                        el: '.swiper-pagination',
+                        el: '.popular-games .swiper-pagination',
                         clickable: true,
                     },
-
                     autoplay: {
                         delay: 2500,
                         disableOnInteraction: false,
                     },
-
                     breakpoints: {
-                        640: {
-                            slidesPerView: 2,
-                            slidesPerGroup: 2,
-                        },
-                        1024: {
-                            slidesPerView: 3,
-                            slidesPerGroup: 3,
-                        },
+                        640: { slidesPerView: 2 },
+                        1024: { slidesPerView: 3 },
                     },
                 });
 
@@ -300,30 +280,20 @@
             document.addEventListener('livewire:navigated', function() {
                 const swiper = new Swiper('.top-sellings', {
                     loop: true,
+                    slidesPerView: 1,
+                    spaceBetween: 20,
                     pagination: {
-                        el: '.swiper-pagination',
+                        el: '.top-sellings .swiper-pagination',
                         clickable: true,
                     },
-                    // navigation: {
-                    //     nextEl: '.swiper-button-next',
-                    //     prevEl: '.swiper-button-prev',
-                    // },
                     autoplay: {
                         delay: 2500,
                         disableOnInteraction: false,
                     },
-                    slidesPerView: 3,
-                    slidesPerGroup: 1,
-                    spaceBetween: 20,
                     breakpoints: {
-                        640: {
-                            slidesPerView: 2,
-                            slidesPerGroup: 2,
-                        },
-                        1024: {
-                            slidesPerView: 3,
-                            slidesPerGroup: 3,
-                        },
+                        640: { slidesPerView: 2 },
+                        1024: { slidesPerView: 3 },
+                        1280: { slidesPerView: 4 },
                     },
                 });
 

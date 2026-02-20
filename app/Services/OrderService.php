@@ -6,6 +6,7 @@ use App\Enums\CustomNotificationType;
 use App\Enums\EmailTemplateEnum;
 use App\Enums\MessageType;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\UserPoint;
 use App\Enums\OrderStatus;
 use App\Jobs\Order\DisputeResolutionEmailJob;
@@ -16,8 +17,9 @@ use App\Models\EmailTemplate;
 use App\Models\User;
 
 use App\Models\UserAchievementProgress;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Validation\ValidationException;
 
 class OrderService
 {
@@ -367,6 +369,15 @@ class OrderService
 
     public function createData(array $data)
     {
+        if (isset($data['source_type']) && $data['source_type'] === Product::class && isset($data['source_id'], $data['user_id'])) {
+            $sourceProduct = Product::find($data['source_id']);
+            if ($sourceProduct && (int) $sourceProduct->user_id === (int) $data['user_id']) {
+                throw ValidationException::withMessages([
+                    'order' => [__('You cannot purchase your own product.')],
+                ]);
+            }
+        }
+
         $product = $this->model->create($data);
 
         // $achievements = Achievement::whereNotNull('target_value')

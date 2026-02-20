@@ -160,6 +160,12 @@ class ListLayout extends Component
             return;
         }
 
+        if ((int) $this->product->user_id === (int) user()->id) {
+            $this->addError('order', __('You cannot purchase your own product.'));
+
+            return;
+        }
+
         try {
             $defaultCurrency = $this->currencyService->getDefaultCurrency();
 
@@ -317,6 +323,8 @@ class ListLayout extends Component
         if ($this->onlineOnly) {
             $filters['online_only'] = true;
         }
+
+        $filters['skipSelf'] = true;
 
         $otherSellers = $this->productService->getSellers(11, $filters);
         $otherSellers->load('user.feedbacksReceived');

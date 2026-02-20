@@ -2,11 +2,11 @@
 
 namespace App\Livewire\Frontend\Game;
 
-
-use Livewire\Component;
-use Livewire\Attributes\Url;
 use App\Services\ProductService;
 use App\Traits\WithPaginationData;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Url;
+use Livewire\Component;
 
 class BuyComponent extends Component
 {
@@ -36,6 +36,11 @@ class BuyComponent extends Component
         $this->product = $this->service->findData($this->productId)->load(['games', 'user']);
         $this->game = $this->product->games;
         $this->user = $this->product->user;
+
+        if (Auth::check() && (int) $this->product->user_id === (int) Auth::id()) {
+            session()->flash('message', __('You cannot purchase your own product.'));
+            $this->redirect(route('game.index', ['gameSlug' => $this->gameSlug, 'categorySlug' => $this->categorySlug]), navigate: true);
+        }
     }
     public function render()
     {
@@ -72,12 +77,12 @@ class BuyComponent extends Component
         if ($this->sellerFilter === 'top_sold') {
             $filters['top_sold'] = true;
         }
-        $otherSellers = $this->service->getSellers(
-            $this->product->category_id,
-            $this->product->game_id,
-            11,
-            $filters
-        );
+
+        $filters['skipSelf'] = true;
+        $filters['gameSlug'] = $this->gameSlug;
+        $filters['categorySlug'] = $this->categorySlug;
+
+        $otherSellers = $this->service->getSellers(11, $filters);
         $otherSellers->load('user.feedbacksReceived');
         return $otherSellers;
     }

@@ -14,30 +14,22 @@
         <div class="bg-bg-primary dark:bg-bg-secondary rounded-2xl p-4 shadow-lg transition">
 
             <div class="flex justify-between items-start">
-                <div class="flex items-center space-x-2">
-
+                <div class="flex-1 flex items-center space-x-2">
                     <div
-                        class="bg-orange text-text-white font-bold rounded-md w-13.5 h-8 inline-flex items-center justify-center">
+                        class="bg-orange text-text-white font-bold rounded-md w-8 h-8 inline-flex items-center justify-center">
                         {{ substr($game?->name, 0, 1) }}
                     </div>
-
-
-                    <span class="text-green w-full text-base font-medium">{{ $data?->platform?->name }}</span>
+                    <span class="text-green flex-1 text-base font-medium truncate">{{ $data?->platform?->name }}</span>
                 </div>
                 <span class="text-text-secondary text-sm">{{ __('• Stacked') }}</span>
             </div>
 
             <div class="flex justify-between my-2">
-                <p class="text-text-secondary text-sm mt-4 max-w-[60%]">
-
-                <p class="text-start w-full">
-                    {{-- {{
-                        $data->name ?? ''
-                    }} --}}
-                    {{ $data->translatedName(app()->getLocale()) }}
+                <p class="text-start flex-1 line-clamp-2">
+                    {{ Str::limit($data->translatedName(app()->getLocale()), 30) }}
                 </p>
                 <img src="{{ storage_url($game->logo) }}" alt="{{ $game->name }}"
-                    class="w-16 h-16 rounded float-right" />
+                    class="w-16 h-16 rounded float-right shrink-0" />
 
             </div>
 
@@ -60,13 +52,12 @@
                 </div>
             </div>
 
-            <div 
-                class="border-t border-zinc-500 mt-2 pt-3 flex items-center justify-between gap-3">
+            <div class="border-t border-zinc-500 mt-2 pt-3 flex items-center justify-between gap-3">
 
-                <a  href="{{ route('profile', ['username' => $data?->user?->username ?? '']) }}" class="w-18 h-14 relative ">
+                <a href="{{ route('profile', ['username' => $data?->user?->username ?? '']) }}"
+                    class="w-18 h-14 relative ">
                     <img src="{{ auth_storage_url($data?->user?->avatar ?? '') }}"
-                        class="w-14 h-14 rounded-full border-2 border-white "
-                        alt="{{ $data?->user?->full_name ?? '' }}" />
+                        class="w-fit rounded-full border-2 border-white " alt="{{ $data?->user?->full_name ?? '' }}" />
                     @if ($data?->user?->isOnline())
                         <span
                             class="absolute bottom-0 right-0 w-5 h-5 bg-green border-2 border-white rounded-full"></span>
@@ -90,10 +81,11 @@
                 @endphp
 
                 <div class="w-full ">
-                    <a   href="{{ route('profile', ['username' => $data?->user?->username ?? '']) }}" class="text-text-white font-semibold text-base flex items-center gap-2">
+                    <a href="{{ route('profile', ['username' => $data?->user?->username ?? '']) }}"
+                        class="text-text-white font-semibold text-base flex items-center gap-2">
                         <span> {{ $data?->user?->first_name ?? $data?->user?->username }}</span>
                         @if ($data?->user?->isVerifiedSeller())
-                        <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
+                            <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
                         @endif
                     </a>
                     <div class="flex items-center space-x-2 mt-1">
