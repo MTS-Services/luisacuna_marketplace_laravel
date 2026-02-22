@@ -74,8 +74,7 @@ class Product extends Component
 
     protected function getGames()
     {
-
-        if($this->sortOrder == 'all') $this->resetFilters(); 
+        $sortOrder = $this->sortOrder === 'all' ? '' : $this->sortOrder;
 
         try {
             $params = [
@@ -86,9 +85,9 @@ class Product extends Component
                 'search' => $this->search,
                 'status' => GameStatus::ACTIVE,
             ];
-            if($this->sortOrder){
+            if($sortOrder){
                 $params['sort_field'] = 'name';
-                $params['sort_direction'] = $this->sortOrder;
+                $params['sort_direction'] = $sortOrder;
             }
 
            

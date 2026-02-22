@@ -20,14 +20,15 @@
         @endforeach
     </div>
 
-    <div class="relative flex items-center ml-auto" wire:click="openGlobalSearch"
-        :style="searchActive ? 'width: 50rem' : 'width: 5.5rem'" style="transition: width 300ms ease-in-out">
+    <div class="relative flex items-center ml-auto" :style="searchActive ? 'width: 50rem' : 'width: 5.5rem'"
+        style="transition: width 300ms ease-in-out">
 
         <flux:icon name="magnifying-glass"
             class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 stroke-text-primary pointer-events-none z-10" />
 
         <input type="text" wire:model.live="search" placeholder="{{ __('Search') }}"
-            x-on:click="searchActive = true; open = ''; globalSearch = true"
+            x-on:click.stop="searchActive = true; open = ''; globalSearch = true; $wire.openGlobalSearch()"
+            x-on:focus="searchActive = true; open = ''; globalSearch = true; $wire.openGlobalSearch()"
             x-on:blur="setTimeout(() => { searchActive = false }, 200)"
             class="border dark:border-white border-gray-600 rounded-full py-2 pl-8 pr-2 text-sm focus:outline-none focus:border-purple-500 focus:bg-bg-primary w-full bg-transparent placeholder:text-text-primary">
     </div>
