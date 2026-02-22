@@ -1,9 +1,9 @@
-<nav class="hidden xl:flex gap-8 text-sm items-center relative" x-data="{ searchActive: false }" x-cloak>
+<nav class="hidden xl:flex gap-8 text-sm items-center relative" x-data="{ searchActive: false, globalSearch: false, open: '' }" x-cloak>
     <div x-show="!searchActive" class="flex gap-8" x-transition:opacity.duration.300ms>
         @foreach ($categories as $category)
             <a wire:navigate href="{{ category_route($category->slug) }}"
                 x-on:mouseenter="open = (open == '{{ $category->slug }}' || open == '' || open != '{{ $category->slug }}' ? '{{ $category->slug }}' : '')"
-                class="navbar_style group relative"
+                x-on:blur="open = ''" class="navbar_style group relative"
                 :class="{
                     'active': open == '{{ $category->slug }}' ||
                         {{ request()->routeIs($category->slug) ? 'true' : 'false' }}
@@ -29,7 +29,7 @@
         <input type="text" wire:model.live="search" placeholder="{{ __('Search') }}"
             x-on:click.stop="searchActive = true; open = ''; globalSearch = true; $wire.openGlobalSearch()"
             x-on:focus="searchActive = true; open = ''; globalSearch = true; $wire.openGlobalSearch()"
-            x-on:blur="setTimeout(() => { searchActive = false }, 200)"
+            x-on:blur="setTimeout(() => { searchActive = false; globalSearch = false }, 200)"
             class="border dark:border-white border-gray-600 rounded-full py-2 pl-8 pr-2 text-sm focus:outline-none focus:border-purple-500 focus:bg-bg-primary w-full bg-transparent placeholder:text-text-primary">
     </div>
 
