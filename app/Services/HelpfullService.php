@@ -15,10 +15,6 @@ class HelpfullService
         //
     }
 
-    public function findData(string $column_value, string $column_name = 'ip_address')
-    {
-        return $this->model->find($column_value, $column_name);
-    }
     public function createData(array $data): Helpful|false
     {
         if (!isset($data['user_id'])) {
@@ -28,15 +24,12 @@ class HelpfullService
         if (!isset($data['ip_address'])) {
             $data['ip_address'] = request()->ip();
         }
+        $recentEntry = $this->model->where('ip_address', $data['ip_address'])
+            ->where('cms_id', $data['cms_id'])
+            ->latest()
+            ->first();
 
-        $findData = $this->findData($data['ip_address']);
-
-
-        if (!$findData) {
-            return Helpful::create($data);
-        }
-
-        if ($findData->created_at->addHours(24)->isFuture()) {
+        if ($recentEntry && $recentEntry->created_at->addHours(24)->isFuture()) {
             return false;
         }
 

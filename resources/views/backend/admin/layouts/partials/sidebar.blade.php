@@ -306,9 +306,9 @@
                         ],
                         [
                             'name' => 'Reviews',
-                            'route' => '#',
+                            'route' => route('admin.rm.cms-helpful.index'),
                             'icon' => 'star',
-                            'active' => 'star',
+                            'active' => 'review-management',
                         ],
                     ]" />
 

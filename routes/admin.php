@@ -24,6 +24,7 @@ use App\Http\Controllers\Backend\Admin\FinanceManagement\FinanceController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\AccountController;
 use App\Http\Controllers\Backend\Admin\ProfileManagement\ProfileController;
 use App\Http\Controllers\Backend\Admin\ReviewManagement\PageViewController;
+use App\Http\Controllers\Backend\Admin\ReviewManagement\CmsHelpfulController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\BoostingsController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\GiftCardsController;
@@ -224,6 +225,10 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
             Route::get('/create', 'create')->name('create');
             Route::get('/show/{id}', 'show')->name('show');
             Route::get('/trash', 'trash')->name('trash');
+        });
+
+        Route::controller(CmsHelpfulController::class)->name('cms-helpful.')->prefix('cms-helpful')->group(function () {
+            Route::get('/', 'index')->name('index');
         });
     });
 

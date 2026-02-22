@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\Cms;
 use App\Enums\CmsType;
+use App\Enums\HelpfulType;
+use App\Models\Cms;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
 class CmsService
@@ -84,5 +86,17 @@ class CmsService
         }
 
         return $cms->fresh();
+    }
+
+    public function getAllWithHelpfulStats(): Collection
+    {
+        return $this->model->with(['latestHelpful'])->withCount([
+            'helpfuls as helpful_positive_count' => function ($query) {
+                $query->where('type', HelpfulType::POSITIVE->value);
+            },
+            'helpfuls as helpful_negative_count' => function ($query) {
+                $query->where('type', HelpfulType::NEGATIVE->value);
+            },
+        ])->orderBy('sort_order')->get();
     }
 }
