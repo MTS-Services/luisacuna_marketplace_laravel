@@ -1,5 +1,19 @@
-<section class="absolute container top-full left-0 right-0 z-50 mt-0" x-data x-show="open != ''" x-transition x-cloak
-    x-effect="$wire.setGameCategorySlug(open)" @mouseleave="open = ''">
+<section class="absolute container top-full left-0 right-0 z-50 mt-0" x-data="{
+    hideTimeout: null,
+    handleMouseEnter() {
+        if (this.hideTimeout) {
+            clearTimeout(this.hideTimeout);
+            this.hideTimeout = null;
+        }
+    },
+    handleMouseLeave() {
+        this.hideTimeout = setTimeout(() => {
+            open = '';
+        }, 150);
+    }
+}" x-show="open != ''"
+    x-transition x-cloak x-effect="$wire.setGameCategorySlug(open)" @mouseenter="handleMouseEnter()"
+    @mouseleave="handleMouseLeave()">
 
     <div class="relative" x-on:click.outside="open = ''">
         {{-- 🌟 Dropdown Content --}}
@@ -22,7 +36,8 @@
                                         class="w-full h-full object-contain rounded-lg">
                                 </div>
                                 {{-- <p class="text-base font-normal dark:text-white text-gray-900">{{ $item['name'] }}</p> --}}
-                                <p class="text-base font-normal dark:text-white text-gray-900">{{ $item->translatedName(app()->getLocale()) }}</p>
+                                <p class="text-base font-normal dark:text-white text-gray-900">
+                                    {{ $item->translatedName(app()->getLocale()) }}</p>
                             </div>
 
                         </a>
