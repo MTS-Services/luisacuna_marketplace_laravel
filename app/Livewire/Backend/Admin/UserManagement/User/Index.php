@@ -94,7 +94,7 @@ class Index extends Component
             ],
             [
                 'key' => 'id',
-                'label' => 'Band User',
+                'label' => 'Ban User',
                 'method' => 'confirmBandUser'
             ],
             [

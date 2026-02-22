@@ -352,5 +352,6 @@ Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->gr
     Route::controller(EmailTemplateController::class)->name('email-template.')->prefix('email-template')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/edit/{id}', 'edit')->name('edit');
+        Route::get('/view/{id}', 'view')->name('show');
     });
 });

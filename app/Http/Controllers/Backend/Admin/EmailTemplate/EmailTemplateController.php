@@ -17,4 +17,10 @@ class EmailTemplateController extends Controller
     public function edit($id){
         return view($this->masterView , compact('id'));
     }
+
+    public function view($id){
+        
+        return view($this->masterView , compact('id'));
+    }
+
 }

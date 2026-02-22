@@ -37,7 +37,7 @@ class Index extends Component
         ];
 
         $actions = [
-            ['key' => 'id', 'label' => 'View', 'route' => 'admin.flm.faq.show', 'encrypt' => true],
+            ['key' => 'id', 'label' => 'View', 'route' => 'admin.email-template.show', 'encrypt' => true],
             ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.email-template.edit', 'encrypt' => true],
         ];
 
