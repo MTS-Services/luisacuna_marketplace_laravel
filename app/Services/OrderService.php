@@ -260,13 +260,13 @@ class OrderService
         //     $order->user->full_name
         // );
 
-        
+
 
         DisputeResolutionEmailJob::dispatch(
             $order->id,
             $order->source?->user->email,
             $order->source?->user->full_name,
-            EmailTemplateEnum::ORDER_DISPUTE_UPDATE->value, 
+            EmailTemplateEnum::ORDER_DISPUTE_UPDATE->value,
         );
     }
 
