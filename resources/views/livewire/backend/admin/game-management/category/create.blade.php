@@ -7,7 +7,8 @@
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Category Create') }}</h2>
             <div class="flex items-center gap-2">
                 <x-ui.button href="{{ route('admin.gm.category.index') }}" class="w-auto! py-2!">
-                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
+                    <flux:icon name="arrow-left"
+                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                     {{ __('Back') }}
                 </x-ui.button>
             </div>
@@ -45,13 +46,6 @@
                     <x-ui.input-error :messages="$errors->get('form.slug')" />
                 </div>
 
-                {{-- meta title --}}
-                <div class="w-full">
-                    <x-ui.label value="Meta Title" class="mb-1" />
-                    <x-ui.input type="text" placeholder="Meta Title" id="meta_title" wire:model="form.meta_title" />
-                    <x-ui.input-error :messages="$errors->get('form.meta_title')" />
-                </div>
-
                 {{-- status --}}
                 <div class="w-full">
                     <x-ui.label value="Status" class="mb-1" />
@@ -75,6 +69,13 @@
                     <x-ui.input-error :messages="$errors->get('form.layout')" />
                 </div>
 
+            </div>
+
+            {{-- meta title --}}
+            <div class="w-full">
+                <x-ui.label value="Meta Title" class="mb-1" />
+                <x-ui.input type="text" placeholder="Meta Title" id="meta_title" wire:model="form.meta_title" />
+                <x-ui.input-error :messages="$errors->get('form.meta_title')" />
             </div>
 
             {{-- meta description --}}
