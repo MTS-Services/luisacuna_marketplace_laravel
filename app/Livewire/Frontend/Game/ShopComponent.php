@@ -8,25 +8,31 @@ use Livewire\Component;
 class ShopComponent extends Component
 {
     public $gameSlug;
-    public $categorySlug;
-    public $layoutView = 'list_grid';
 
+    public $categorySlug;
+
+    public $layoutView = 'list_grid';
 
     protected CategoryService $categoryService;
 
-    public function boot( CategoryService $categoryService)
+    public function boot(CategoryService $categoryService)
     {
         $this->categoryService = $categoryService;
     }
+
     public function mount($gameSlug, $categorySlug)
     {
-
         $this->gameSlug = $gameSlug;
 
         $this->categorySlug = $categorySlug;
 
-        $this->layoutView =   $this->categoryService->findData($categorySlug, 'slug')?->layout?->value;
+        $category = $this->categoryService->findData($this->categorySlug, 'slug');
 
+        if ($category === null) {
+            abort(404);
+        }
+
+        $this->layoutView = $category->layout?->value ?? 'list_grid';
     }
 
     public function render()
@@ -37,7 +43,8 @@ class ShopComponent extends Component
         ]);
     }
 
-    public function resetAllFilters(){
+    public function resetAllFilters()
+    {
         $this->reset();
     }
 }

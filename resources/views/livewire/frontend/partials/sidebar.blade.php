@@ -13,6 +13,13 @@
                 :current="request()->routeIs('home')">
                 {{ __('Home') }}
             </flux:navlist.item>
+
+            @foreach ($categories ?? [] as $category)
+                <flux:navlist.item icon="tag" href="{{ category_route($category->slug) }}" wire:navigate
+                    :current="request()->routeIs($category->slug)">
+                    {{ $category->translatedName(app()->getLocale()) }}
+                </flux:navlist.item>
+            @endforeach
         </flux:navlist>
 
         <flux:spacer />
