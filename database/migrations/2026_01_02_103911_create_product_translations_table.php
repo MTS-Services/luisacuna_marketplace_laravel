@@ -19,7 +19,6 @@ return new class extends Migration
             $table->unsignedBigInteger('language_id')->index();
             $table->unsignedBigInteger('product_id')->index();
 
-
             $table->string('name')->nullable();
             $table->string('description')->nullable();
             $table->string('delivery_timeline')->nullable();
@@ -32,6 +31,8 @@ return new class extends Migration
             $table->timestamps();
 
             $this->addAdminAuditColumns($table);
+
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

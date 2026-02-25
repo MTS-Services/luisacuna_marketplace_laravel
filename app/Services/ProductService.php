@@ -195,7 +195,7 @@ class ProductService
      */
     protected function storeProductConfigs(Product $product, array $fields): void
     {
-        if (empty($fields)) {
+        if (empty($fields) || $product->game_id === null || $product->category_id === null) {
             return;
         }
 
@@ -220,7 +220,7 @@ class ProductService
             ];
         }
 
-        if (!empty($configs)) {
+        if (! empty($configs)) {
             $product->product_configs()->createMany($configs);
         }
     }

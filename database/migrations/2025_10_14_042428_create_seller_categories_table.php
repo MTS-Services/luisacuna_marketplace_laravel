@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('sort_order')->default(0)->index();
             $table->unsignedBigInteger('seller_profile_id');
-            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('category_id')->nullable();
 
             $table->softDeletes();
             $table->timestamps();
@@ -26,7 +26,7 @@ return new class extends Migration {
             $table->unique(['seller_profile_id', 'category_id'], 'seller_category_unique');
 
             $table->foreign('seller_profile_id')->references('id')->on('seller_profiles')->onDelete('cascade');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null')->onUpdate('cascade');
         });
     }
 
