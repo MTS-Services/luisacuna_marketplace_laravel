@@ -2,9 +2,11 @@
 
 namespace App\Jobs\Payment;
 
+use App\Enums\EmailTemplateEnum;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Mail\Payment\PaymentSuccessMail;
+use App\Models\EmailTemplate;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -34,9 +36,10 @@ class SendPaymentSuccessEmailJob implements ShouldQueue
         try {
             $order = Order::with('user')->findOrFail($this->orderId);
             $payment = Payment::findOrFail($this->paymentId);
-
+            $template = EmailTemplate::where('key', EmailTemplateEnum::ORDER_CONFIRMATION->value)->first();
+            
             Mail::to($this->recipientEmail)
-                ->send(new PaymentSuccessMail($order, $payment));
+                ->send(new PaymentSuccessMail($order, $payment, $template));
 
             Log::info('Payment success email sent', [
                 'order_id' => $order->order_id,
@@ -48,6 +51,7 @@ class SendPaymentSuccessEmailJob implements ShouldQueue
                 'order_id' => $this->orderId,
                 'payment_id' => $this->paymentId,
                 'recipient' => $this->recipientEmail,
+                'template' => $template,
                 'error' => $e->getMessage(),
             ]);
 
