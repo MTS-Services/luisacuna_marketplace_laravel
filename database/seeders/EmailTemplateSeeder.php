@@ -50,14 +50,56 @@ class EmailTemplateSeeder extends Seeder
             ],
             [
                 'sort_order' => 3,
-                'key' => EmailTemplateEnum::ORDER_CONFIRMATION->value,
-                'name' => 'Order Confirmation',
-                'subject' => 'Your Order is Confirmed',
-                'template' => '<p>Hi {{name}},</p><p>Your order #{{order_id}} has been confirmed.</p>',
-                'variables' => json_encode(['name', 'order_id']),
+                'key'        => EmailTemplateEnum::ORDER_CONFIRMATION->value,
+                'name'       => 'Order Confirmation',
+                'subject'    => 'Your Order is Confirmed',
+                'template'   => $this->getOrderConfirmationTemplate(),
+                'variables'  => json_encode([
+                    'buyer_name',
+                    'order_id',
+                    'payment_gateway',
+                    'currency',
+                    'payment_id',
+                    'paid_at',
+                    'order_detail_link',
+                    'app_name',
+                    'date_time',
+                ]),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
+
         ]);
+    }
+
+
+    private function getOrderConfirmationTemplate(): string
+    {
+        return <<<HTML
+        🎉 Payment Successful!
+
+        Hello {buyer_name},
+
+        Great news! Your payment has been processed successfully and your order is confirmed.
+
+        AMOUNT PAID
+        {currency} {payment_id}
+
+        Order ID: #{order_id}
+        Payment Method: {payment_gateway}
+        Transaction ID: {payment_id}
+        Date & Time: {paid_at}
+
+        Your order is now being processed. We'll keep you updated on the progress.
+
+        <a href="{order_detail_link}">View Order Details</a>
+
+        Thank you for choosing {app_name}!
+
+        This is an automated notification. Please do not reply to this email.
+        If you have any questions, contact our support team.
+
+        © {date_time} {app_name}. All rights reserved.
+        HTML;
     }
 }
