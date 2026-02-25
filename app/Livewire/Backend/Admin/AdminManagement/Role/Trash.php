@@ -5,16 +5,19 @@ namespace App\Livewire\Backend\Admin\AdminManagement\Role;
 use App\Services\RoleService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
-use Livewire\Component;
 use Illuminate\Support\Facades\Log;
-
+use Livewire\Component;
 
 class Trash extends Component
 {
     use WithDataTable, WithNotification;
+
     public $showDeleteModal = false;
+
     public $selectedId = null;
+
     public $bulkAction = '';
+
     public $showBulkActionModal = false;
 
     protected RoleService $service;
@@ -37,12 +40,12 @@ class Trash extends Component
             [
                 'key' => 'name',
                 'label' => 'Name',
-                'sortable' => true
+                'sortable' => true,
             ],
             [
                 'key' => 'guard_name',
                 'label' => 'Guard Name',
-                'sortable' => true
+                'sortable' => true,
             ],
             [
                 'key' => 'deleted_at',
@@ -50,14 +53,14 @@ class Trash extends Component
                 'sortable' => true,
                 'format' => function ($data) {
                     return $data->deleted_at_formatted;
-                }
+                },
             ],
             [
                 'key' => 'deleted_by',
                 'label' => 'Deleted By',
                 'format' => function ($data) {
                     return $data->deleter_admin?->name ?? 'System';
-                }
+                },
             ],
         ];
 
@@ -66,13 +69,13 @@ class Trash extends Component
                 'key' => 'id',
                 'label' => 'Restore',
                 'method' => 'restore',
-                'encrypt' => true
+                'encrypt' => true,
             ],
             [
                 'key' => 'id',
                 'label' => 'Permanent Delete',
                 'method' => 'confirmDelete',
-                'encrypt' => true
+                'encrypt' => true,
             ],
         ];
 
@@ -91,9 +94,10 @@ class Trash extends Component
 
     public function confirmDelete($encryptedId): void
     {
-        if (!$encryptedId) {
+        if (! $encryptedId) {
             $this->error('No data selected');
             $this->resetPage();
+
             return;
         }
         $this->selectedId = $encryptedId;
@@ -108,9 +112,11 @@ class Trash extends Component
             $this->selectedId = null;
             $this->resetPage();
             $this->success('Data permanently deleted successfully');
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            $this->error($e->getMessage());
         } catch (\Throwable $e) {
             $this->error('Failed to permanently delete data.');
-            Log::error('Failed to delete data: ' . $e->getMessage());
+            Log::error('Failed to delete data: '.$e->getMessage());
             throw $e;
         }
     }
@@ -120,9 +126,11 @@ class Trash extends Component
         try {
             $this->service->restoreData(decrypt($encryptedId));
             $this->success('Data restored successfully');
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            $this->error($e->getMessage());
         } catch (\Throwable $e) {
             $this->error('Failed to restore data.');
-            Log::error('Failed to restore data: ' . $e->getMessage());
+            Log::error('Failed to restore data: '.$e->getMessage());
             throw $e;
         }
     }
@@ -137,6 +145,7 @@ class Trash extends Component
     {
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
             $this->warning('Please select data and an action');
+
             return;
         }
         $this->showBulkActionModal = true;
@@ -156,9 +165,11 @@ class Trash extends Component
             $this->selectedIds = [];
             $this->selectAll = false;
             $this->bulkAction = '';
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            $this->error($e->getMessage());
         } catch (\Exception $e) {
             $this->error('Failed to execute bulk action.');
-            Log::error('Failed to execute bulk action: ' . $e->getMessage());
+            Log::error('Failed to execute bulk action: '.$e->getMessage());
             throw $e;
         }
     }
@@ -192,6 +203,7 @@ class Trash extends Component
             perPage: $this->perPage,
             filters: $this->getFilters()
         );
+
         return array_column($data->items(), 'id');
     }
 }

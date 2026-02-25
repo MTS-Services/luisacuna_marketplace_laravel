@@ -2,10 +2,6 @@
 
 namespace App\Livewire\Backend\Admin\AdminManagement\Role;
 
-
-
-
-
 use App\Livewire\Forms\RoleForm;
 use App\Services\PermissionService;
 use App\Services\RoleService;
@@ -21,6 +17,7 @@ class Create extends Component
     public RoleForm $form;
 
     protected RoleService $service;
+
     protected PermissionService $permissionService;
 
     public function boot(RoleService $service, PermissionService $permissionService)
@@ -28,10 +25,11 @@ class Create extends Component
         $this->service = $service;
         $this->permissionService = $permissionService;
     }
-    
+
     public function render()
     {
         $permissions = $this->permissionService->getAllGroupedByPrefix('prefix', 'asc');
+
         return view(
             'livewire.backend.admin.admin-management.role.create',
             [
@@ -39,6 +37,7 @@ class Create extends Component
             ]
         );
     }
+
     public function save()
     {
         $data = $this->form->validate();
@@ -48,9 +47,10 @@ class Create extends Component
             $this->success('Data created successfully');
 
             return $this->redirect(route('admin.am.role.index'), navigate: true);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            $this->error($e->getMessage());
         } catch (\Exception $e) {
-
-            Log::error('Failed to create data: ' . $e->getMessage());
+            Log::error('Failed to create data: '.$e->getMessage());
             $this->error('Failed to create data: ');
         }
     }
@@ -59,6 +59,7 @@ class Create extends Component
     {
         $this->form->reset();
     }
+
     public function cancel(): void
     {
         $this->redirect(route('admin.am.role.index'), navigate: true);

@@ -4,8 +4,11 @@ namespace App\Actions\Admin;
 
 use App\Events\Admin\AdminUpdated;
 use App\Models\Admin;
+use App\Models\Role;
 use App\Repositories\Contracts\AdminRepositoryInterface;
 use App\Services\Cloudinary\CloudinaryService;
+use App\Support\SuperAdminGuard;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -31,9 +34,21 @@ class UpdateAction
             return DB::transaction(function () use ($id, $data, &$newSingleAvatarPath, &$uploadedPaths) {
                 $admin = $this->interface->find($id);
 
-                if (!$admin) {
+                if (! $admin) {
                     Log::error('Admin not found', ['admin_id' => $id]);
                     throw new \Exception('Data not found');
+                }
+
+                $superAdminRoleId = Role::getSuperAdminRoleId();
+                $assigningSuperAdmin = isset($data['role_id']) && (int) $data['role_id'] === $superAdminRoleId;
+                $targetIsSuperAdmin = (int) $admin->role_id === $superAdminRoleId;
+                if ($assigningSuperAdmin || $targetIsSuperAdmin) {
+                    SuperAdminGuard::requireSuperAdmin();
+                }
+
+                $changingOffSuperAdmin = $targetIsSuperAdmin && isset($data['role_id']) && (int) $data['role_id'] !== $superAdminRoleId;
+                if ($changingOffSuperAdmin && Role::countAdminsWithSuperAdminRole() === 1) {
+                    throw new AuthorizationException('You must assign the Super Admin role to another admin before you can change your role.');
                 }
 
                 $oldData = $admin->getAttributes();
@@ -47,7 +62,7 @@ class UpdateAction
                     // Delete old file permanently (File deletion is non-reversible)
                     if ($oldAvatarPath) {
                         $this->cloudinaryService->delete($oldAvatarPath);
-                     }
+                    }
 
                     $uploadedAvatar = $this->cloudinaryService->upload($uploadedAvatar, ['folder' => 'admins']);
 
@@ -62,15 +77,15 @@ class UpdateAction
                     $newData['avatar'] = null;
                 }
                 // Cleanup temporary/file object keys
-                if (!$newData['remove_file'] && !$newSingleAvatarPath) {
-                   
+                if (! $newData['remove_file'] && ! $newSingleAvatarPath) {
+
                     $newData['avatar'] = $oldAvatarPath ?? null;
                 }
                 unset($newData['remove_file']);
 
                 // --- 2. Password Handling ---
                 $newPassword = Arr::get($data, 'password');
-                if (!empty($newPassword)) {
+                if (! empty($newPassword)) {
                     $newData['password'] = Hash::make($newPassword);
                 } else {
                     unset($newData['password']);
@@ -81,14 +96,16 @@ class UpdateAction
                 // a. Prepare new file uploads
                 $newAvatars = Arr::get($data, 'avatars');
 
-                if (is_array($newAvatars) && !empty($newAvatars)) {
+                if (is_array($newAvatars) && ! empty($newAvatars)) {
                     $uploadedPaths = array_map(function ($avatar) {
                         if ($avatar instanceof UploadedFile) {
-                            $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                            $fileName = $prefix . '-' . $avatar->getClientOriginalName();
+                            $prefix = uniqid('IMX').'-'.time().'-'.uniqid();
+                            $fileName = $prefix.'-'.$avatar->getClientOriginalName();
+
                             // Upload file and collect path
                             return Storage::disk('public')->putFileAs('admins', $avatar, $fileName);
                         }
+
                         return null;
                     }, $newAvatars);
 
@@ -100,7 +117,7 @@ class UpdateAction
 
                 // b. Handle file removals from storage
                 $removedFiles = Arr::get($data, 'removed_files', []);
-                if (!empty($removedFiles)) {
+                if (! empty($removedFiles)) {
                     foreach ($removedFiles as $file) {
                         // Action deletes the file from disk (Permanent deletion)
                         if (Storage::disk('public')->exists($file)) {
@@ -115,10 +132,10 @@ class UpdateAction
 
                 // --- 4. Update Admin ---
                 Log::info('Data sent to repository', ['data' => $newData]);
-               
+
                 $updated = $this->interface->update($id, $newData);
 
-                if (!$updated) {
+                if (! $updated) {
                     throw new \Exception('Failed to update Data');
                 }
 
@@ -128,14 +145,16 @@ class UpdateAction
                 $changes = [];
 
                 foreach ($newAttributes as $key => $value) {
-                    if (in_array($key, ['created_at', 'updated_at', 'id'])) continue;
+                    if (in_array($key, ['created_at', 'updated_at', 'id'])) {
+                        continue;
+                    }
                     $oldValue = Arr::get($oldData, $key);
                     if ($oldValue !== $value) {
                         $changes[$key] = ['old' => $oldValue, 'new' => $value];
                     }
                 }
 
-                if (!empty($changes)) {
+                if (! empty($changes)) {
                     event(new AdminUpdated($admin, $changes));
                 }
 
@@ -151,13 +170,13 @@ class UpdateAction
             }
 
             // 2. Rollback multiple avatar files
-            if (!empty($uploadedPaths)) {
+            if (! empty($uploadedPaths)) {
                 foreach ($uploadedPaths as $path) {
                     if (Storage::disk('public')->exists($path)) {
                         Storage::disk('public')->delete($path);
                     }
                 }
-                Log::warning('File Rollback: Deleted ' . count($uploadedPaths) . ' new multiple avatar files.');
+                Log::warning('File Rollback: Deleted '.count($uploadedPaths).' new multiple avatar files.');
             }
 
             // Re-throw the exception to communicate failure
