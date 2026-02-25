@@ -3,37 +3,42 @@
 namespace App\Livewire\Frontend;
 
 use App\Enums\GameStatus;
-use App\Models\Game;
 use App\Services\CategoryService;
-use Livewire\Component;
 use App\Services\GameService;
 use App\Traits\WithPaginationData;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Url;
+use Livewire\Component;
 
 class Product extends Component
 {
     use WithPaginationData;
+
     // Public properties
     public $categorySlug = null;
+
     #[Url()]
     public $search = '';
+
     #[Url()]
     public $sortOrder = '';
 
-
     // Protected properties
     protected GameService $game_service;
-    protected  CategoryService $categoryService;
+
+    protected CategoryService $categoryService;
+
     public function boot(GameService $game_service, CategoryService $categoryService)
     {
         $this->game_service = $game_service;
         $this->categoryService = $categoryService;
     }
+
     public function mount($categorySlug)
     {
         $this->categorySlug = $categorySlug;
     }
+
     public function render()
     {
 
@@ -44,7 +49,7 @@ class Product extends Component
         $this->paginationData($games);
 
         $popular_games = $this->game_service->latestData(10, [
-            'category' => $this->categorySlug,
+            'categorySlug' => $this->categorySlug,
             'tag' => 'popular',
             'relations' => ['tags', 'categories'],
             'sort_field' => 'name',
@@ -55,9 +60,9 @@ class Product extends Component
 
         if ($this->categorySlug == 'boosting' || $this->categorySlug == 'coaching' || $this->categorySlug == 'top-up') {
             $new_boosting = $this->game_service->latestData(10, [
-                'category' => $this->categorySlug,
-                'relations' => ['tags', 'categories',],
-                'withProductCount' => true
+                'categorySlug' => $this->categorySlug,
+                'relations' => ['tags', 'categories'],
+                'withProductCount' => true,
             ]);
         }
 
@@ -71,33 +76,34 @@ class Product extends Component
         ]);
     }
 
-
     protected function getGames()
     {
 
-        if($this->sortOrder == 'all') $this->resetFilters(); 
+        if ($this->sortOrder == 'all') {
+            $this->resetFilters();
+        }
 
         try {
             $params = [
-                'category' => $this->categorySlug,
+                'categorySlug' => $this->categorySlug,
                 'relations' => ['tags', 'categories'],
                 'withProductCount' => true,
                 'hasProduct' => true,
                 'search' => $this->search,
                 'status' => GameStatus::ACTIVE,
             ];
-            if($this->sortOrder){
+            if ($this->sortOrder) {
                 $params['sort_field'] = 'name';
                 $params['sort_direction'] = $this->sortOrder;
             }
 
-           
             $games = $this->game_service->paginateDatas($this->perPage, $params);
 
             return $games;
 
         } catch (\Exception $e) {
-            Log::error('Error fetching games: ' . $e->getMessage());
+            Log::error('Error fetching games: '.$e->getMessage());
+
             return collect([]);
         }
     }

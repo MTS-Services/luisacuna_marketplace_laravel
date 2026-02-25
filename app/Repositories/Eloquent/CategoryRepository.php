@@ -10,10 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
-
-
     public function __construct(protected Category $model) {}
-
 
     /* ================== ================== ==================
      *                      Find Methods
@@ -27,11 +24,12 @@ class CategoryRepository implements CategoryRepositoryInterface
             $query->where('layout', $layout);
         }
         if ($trashed) {
-            $query->withTrashed();
+            $query->onlyTrashed();
         }
         if ($selects) {
             $query->select($selects);
         }
+
         return $query;
     }
 
@@ -44,10 +42,12 @@ class CategoryRepository implements CategoryRepositoryInterface
             'products',
             'categoryTranslations' => function ($query) {
                 $query->where('language_id', get_language_id());
-            }
+            },
         ]);
+
         return $query->orderBy($sortField, $order)->get();
     }
+
     public function findData($column_value, string $column_name, $status, $layout, $trashed): ?Category
     {
         $query = $this->model->query();
@@ -55,16 +55,18 @@ class CategoryRepository implements CategoryRepositoryInterface
         $query->with([
             'categoryTranslations' => function ($query) {
                 $query->where('language_id', get_language_id());
-            }
+            },
         ]);
+
         return $query->where($column_name, $column_value)->first();
     }
+
     public function getPaginatedData(int $perPage, array $filters, string $sortField, $order, $status, $layout, $trashed): LengthAwarePaginator
     {
         $search = $filters['search'] ?? null;
         $sortField = $filters['sort_field'] ?? $sortField;
         $sortDirection = $filters['sort_direction'] ?? $order;
-        $query = $this->model;
+        $query = $this->model->query();
         $this->commonQuery($query, $status, $layout, $trashed);
         if ($search) {
             return $query->search($search)
@@ -86,7 +88,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         $query = $this->model->onlyTrashed();
 
         // Apply filters
-        if (!empty($filters)) {
+        if (! empty($filters)) {
             $query->filter($filters);
         }
 
@@ -102,14 +104,15 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $query = $this->model->query();
         $this->commonQuery($query, $status, $layout, $trashed);
+
         return $query->search($query)->orderBy($sortField, $order)->get();
     }
-
 
     public function dataExists(int $id, $status, $layout, $trashed): bool
     {
         $query = $this->model->query();
         $this->commonQuery($query, $status, $layout, $trashed);
+
         return $query->where('id', $id)->exists();
     }
 
@@ -117,9 +120,10 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $query = $this->model->query();
         $this->commonQuery($query, $status, $layout, $trashed);
-        if (!empty($filters)) {
+        if (! empty($filters)) {
             $query->filter($filters);
         }
+
         return $query->count();
     }
     /* ================== ================== ==================
@@ -134,16 +138,17 @@ class CategoryRepository implements CategoryRepositoryInterface
     public function update(int $id, array $data): bool
     {
         $findData = $this->findData($id, 'id', false, false, false);
-        if (!$findData) {
+        if (! $findData) {
             return false;
         }
+
         return $findData->update($data);
     }
 
     public function delete(int $id, int $actionerId): bool
     {
         $findData = $this->findData($id, 'id', false, false, false);
-        if (!$findData) {
+        if (! $findData) {
             return false;
         }
         $findData->update(['deleted_by' => $actionerId]);
@@ -154,16 +159,17 @@ class CategoryRepository implements CategoryRepositoryInterface
     public function forceDelete(int $id): bool
     {
         $findData = $this->findData($id, 'id', false, false, true);
-        if (!$findData) {
+        if (! $findData) {
             return false;
         }
+
         return $findData->forceDelete();
     }
 
     public function restore(int $id, int $actionerId): bool
     {
         $findData = $this->findData($id, 'id', false, false, true);
-        if (!$findData) {
+        if (! $findData) {
             return false;
         }
         $findData->update(['restored_by' => $actionerId, 'restored_at' => now()]);
@@ -175,6 +181,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         return DB::transaction(function () use ($ids, $actionerId) {
             $this->model->whereIn('id', $ids)->update(['deleted_by' => $actionerId]);
+
             return $this->model->whereIn('id', $ids)->delete();
         });
     }
@@ -183,17 +190,21 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         return $this->model->withTrashed()->whereIn('id', $ids)->update(['status' => $status, 'updated_by' => $actionerId]);
     }
+
     public function bulkUpdateLayout(array $ids, string $layout, int $actionerId): int
     {
         return $this->model->withTrashed()->whereIn('id', $ids)->update(['layout' => $layout, 'updated_by' => $actionerId]);
     }
+
     public function bulkRestore(array $ids, int $actionerId): int
     {
         return DB::transaction(function () use ($ids, $actionerId) {
             $this->model->onlyTrashed()->whereIn('id', $ids)->update(['restored_by' => $actionerId, 'restored_at' => now()]);
+
             return $this->model->onlyTrashed()->whereIn('id', $ids)->restore();
         });
     }
+
     public function bulkForceDelete(array $ids): int //
     {
         return $this->model->onlyTrashed()->whereIn('id', $ids)->forceDelete();

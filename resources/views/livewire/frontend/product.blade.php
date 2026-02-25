@@ -5,7 +5,8 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-6 mb-13 mt-15">
             <div>
                 <h2 class="font-semibold text-4xl pb-3">
-                    {{ $category->categoryTranslations->first()->name ?? $category->name }}</h2>
+                    {{ $category?->categoryTranslations->first()->name ?? $category?->name ?? ucfirst(str_replace('-', ' ', $categorySlug)) }}
+                </h2>
                 @if ($categorySlug == 'top-up')
                     <p class="text-base lg:text-xl text-text-white font-light pb-3 ">
                        {{ __("Different from gift cards or vouchers, U7BUY provides a Top Up service with which you can add funds directly to your balance. It contains a large variety, including mobile games, live streaming, shopping, entertainment, etc.") }}
@@ -102,19 +103,25 @@
                 </div>
                 <div wire:ignore class="swiper popular-currency">
                     <div class="swiper-wrapper pt-10">
-                        @foreach ($popular_games as $popular_game)
+                        @forelse ($popular_games as $popular_game)
                             <div class="swiper-slide">
                                 <x-product-card :data="$popular_game" :categorySlug="$categorySlug" />
                             </div>
-                        @endforeach
+                        @empty
+                            <div class="w-full py-10 text-center text-text-white/60">
+                                {{ __('No popular games available for this category yet.') }}
+                            </div>
+                        @endforelse
                     </div>
 
-                    <!-- Add Pagination and Navigation -->
-                    <div class="mt-12">
-                        <div class="swiper-pagination"></div>
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
-                    </div>
+                    @if ($popular_games->count())
+                        <!-- Add Pagination and Navigation -->
+                        <div class="mt-12">
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    @endif
                 </div>
             </section>
         @endif
@@ -129,19 +136,25 @@
                 </div>
                 <div wire:ignore class="swiper new-boosting">
                     <div class="swiper-wrapper pt-10">
-                        @foreach ($new_boosting as $index => $boosting_game)
+                        @forelse ($new_boosting as $index => $boosting_game)
                             <div class="swiper-slide">
                                 <x-product-card :data="$boosting_game" :categorySlug="$categorySlug" />
                             </div>
-                        @endforeach
+                        @empty
+                            <div class="w-full py-10 text-center text-text-white/60">
+                                {{ __('No new games available for this category yet.') }}
+                            </div>
+                        @endforelse
                     </div>
 
-                    <!-- Add Pagination and Navigation -->
-                    <div class="mt-12">
-                        <div class="swiper-pagination"></div>
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
-                    </div>
+                    @if ($new_boosting->count())
+                        <!-- Add Pagination and Navigation -->
+                        <div class="mt-12">
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    @endif
                 </div>
             </section>
         @endif
@@ -160,13 +173,20 @@
             <div
                 class="grid grid-cols-1 sm:grid-cols-2 {{ $categorySlug == 'gift-card' ? 'lg:grid-cols-4' : 'lg:grid-cols-3' }} gap-6 md:gap-8 lg:gap-6">
 
-                @foreach ($games as $game)
+                @forelse ($games as $game)
                     <x-product-card :data="$game" :categorySlug="$categorySlug" />
-                @endforeach
+                @empty
+                    <div class="col-span-full py-10 text-center text-text-white/60">
+                        {{ __('No games configured for this category yet.') }}
+                    </div>
+                @endforelse
             </div>
-            <div class="pagination mb-24 mt-10">
-                <x-frontend.pagination-ui :pagination="$pagination" />
-            </div>
+
+            @if ($games->count())
+                <div class="pagination mb-24 mt-10">
+                    <x-frontend.pagination-ui :pagination="$pagination" />
+                </div>
+            @endif
         </section>
     </section>
 

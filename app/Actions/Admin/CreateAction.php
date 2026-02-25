@@ -2,13 +2,13 @@
 
 namespace App\Actions\Admin;
 
-
 use App\Events\Admin\AdminCreated;
 use App\Models\Admin;
+use App\Models\Role;
 use App\Repositories\Contracts\AdminRepositoryInterface;
 use App\Services\Cloudinary\CloudinaryService;
+use App\Support\SuperAdminGuard;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class CreateAction
 {
@@ -16,8 +16,14 @@ class CreateAction
         protected AdminRepositoryInterface $interface,
         protected CloudinaryService $cloudinaryService
     ) {}
+
     public function execute(array $data): Admin
     {
+        $superAdminRoleId = Role::getSuperAdminRoleId();
+        if ($superAdminRoleId !== null && isset($data['role_id']) && (int) $data['role_id'] === $superAdminRoleId) {
+            SuperAdminGuard::requireSuperAdmin();
+        }
+
         return DB::transaction(function () use ($data) {
             if ($data['avatar']) {
                 // $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();

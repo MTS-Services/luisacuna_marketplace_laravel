@@ -1,46 +1,47 @@
 <?php
+
 // File: app/Helpers/helpers.php (Add to existing helpers file)
 
-use Carbon\Carbon;
 use App\Enums\OtpType;
 use App\Models\Currency;
-use Illuminate\Support\Str;
 use App\Models\OtpVerification;
 use App\Services\Cloudinary\CloudinaryService;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use App\Services\CurrencyService;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 // ==================== Existing Auth Helpers ====================
 
-if (!function_exists('timeFormat')) {
+if (! function_exists('timeFormat')) {
     function timeFormat($time, $compareValue = null)
     {
         return $time && $time != $compareValue ? date(('H:i A'), strtotime($time)) : 'N/A';
     }
 }
 
-if (!function_exists('dateFormat')) {
+if (! function_exists('dateFormat')) {
     function dateFormat($date, $compareValue = null)
     {
         return $date && $date != $compareValue ? date(('d M Y'), strtotime($date)) : 'N/A';
     }
 }
-if (!function_exists('dateTimeFormat')) {
+if (! function_exists('dateTimeFormat')) {
     function dateTimeFormat($dateTime, $compareValue = null)
     {
-        return $dateTime && $dateTime != $compareValue ? dateFormat($dateTime) . ' ' . timeFormat($dateTime) : 'N/A';
+        return $dateTime && $dateTime != $compareValue ? dateFormat($dateTime).' '.timeFormat($dateTime) : 'N/A';
     }
 }
-if (!function_exists('dateTimeHumanFormat')) {
+if (! function_exists('dateTimeHumanFormat')) {
     function dateTimeHumanFormat($dateTime, $compareValue = null): mixed
     {
         return $dateTime && $dateTime != $compareValue ? Carbon::parse($dateTime)->diffForHumans() : 'N/A';
     }
 }
 
-if (!function_exists('isLoggedIn')) {
+if (! function_exists('isLoggedIn')) {
 
     function isLoggedIn()
     {
@@ -48,14 +49,14 @@ if (!function_exists('isLoggedIn')) {
     }
 }
 
-if (!function_exists('user')) {
+if (! function_exists('user')) {
     function user()
     {
         return Auth::guard('web')->user();
     }
 }
 
-if (!function_exists('admin')) {
+if (! function_exists('admin')) {
     function admin()
     {
         return Auth::guard('admin')->user();
@@ -98,7 +99,7 @@ if (!function_exists('admin')) {
 //     }
 // }
 
-if (!function_exists('storage_url')) {
+if (! function_exists('storage_url')) {
 
     function storage_url(array|string|null $urlOrArray = null, array $transform = [])
     {
@@ -128,12 +129,14 @@ if (!function_exists('storage_url')) {
         foreach ($inputs as $input) {
             if (empty($input)) {
                 $urls[] = $defaultImage;
+
                 continue;
             }
 
             // If it's already a full URL, don't transform it
             if (filter_var($input, FILTER_VALIDATE_URL)) {
                 $urls[] = $input;
+
                 continue;
             }
 
@@ -146,12 +149,12 @@ if (!function_exists('storage_url')) {
     }
 }
 
-if (!function_exists('storage_url_and_type')) {
+if (! function_exists('storage_url_and_type')) {
     /**
      * Return display URL and MIME-like type for a path (Cloudinary public ID or full URL).
      * Used by the file-input component to preview existing files without file extension.
      *
-     * @param string|null $path Public ID, or full URL, or null
+     * @param  string|null  $path  Public ID, or full URL, or null
      * @return array{path: string, url: string, type: string}|null null if path is empty
      */
     function storage_url_and_type(?string $path): ?array
@@ -171,6 +174,7 @@ if (!function_exists('storage_url_and_type')) {
             } elseif (str_contains($path, '/image/') || preg_match('#\\.(jpg|jpeg|png|gif|webp|svg)([?#]|$)#i', $path)) {
                 $type = 'image/jpeg';
             }
+
             return [
                 'path' => $path,
                 'url' => $path,
@@ -195,13 +199,12 @@ if (!function_exists('storage_url_and_type')) {
     }
 }
 
-if (!function_exists('auth_storage_url')) {
+if (! function_exists('auth_storage_url')) {
     /**
      * Generate a transformed Cloudinary URL for user avatars.
      *
-     * @param string|null $url The public ID or full URL of the image.
-     * @param array $transform Optional transformation overrides.
-     * @return string
+     * @param  string|null  $url  The public ID or full URL of the image.
+     * @param  array  $transform  Optional transformation overrides.
      */
     function auth_storage_url(?string $url = null, array $transform = []): string
     {
@@ -215,20 +218,20 @@ if (!function_exists('auth_storage_url')) {
 
         // 3. Merge avatar-specific defaults
         $params = array_merge([
-            'width'        => 200,
-            'height'       => 200,
-            'quality'      => 'auto',
+            'width' => 200,
+            'height' => 200,
+            'quality' => 'auto',
             'fetch_format' => 'auto',
-            'dpr'          => 'auto',
-            'crop'         => 'fill',
-            'gravity'      => 'face', // Focus on the face
-            'radius'       => 'max',  // Circular crop
+            'dpr' => 'auto',
+            'crop' => 'fill',
+            'gravity' => 'face', // Focus on the face
+            'radius' => 'max',  // Circular crop
         ], $transform);
 
         $cloudinaryService = app(CloudinaryService::class);
 
         // 4. Use the provided $url if present and not empty; otherwise, use fallback
-        $target = (!empty($url)) ? $url : $fallback;
+        $target = (! empty($url)) ? $url : $fallback;
 
         return $cloudinaryService->getTransformedUrl($target, $params);
     }
@@ -246,37 +249,32 @@ if (!function_exists('auth_storage_url')) {
 //     }
 // }
 
-
-
-
-
 // ==================== Existing Application Setting Helpers ====================
 
 // ==================== NEW OTP Helpers ====================
 
-if (!function_exists('generate_otp')) {
+if (! function_exists('generate_otp')) {
     /**
      * Generate a random OTP code
      *
-     * @param int $digits Number of digits (default: 6)
-     * @return string
+     * @param  int  $digits  Number of digits (default: 6)
      */
     function generate_otp(int $digits = 6): string
     {
         $min = pow(10, $digits - 1);
         $max = pow(10, $digits) - 1;
+
         return (string) mt_rand($min, $max);
     }
 }
 
-if (!function_exists('create_otp')) {
+if (! function_exists('create_otp')) {
     /**
      * Create OTP for a model
      *
-     * @param mixed $model Model instance (Admin, User, etc.)
-     * @param OtpType $type OTP type
-     * @param int $expiresInMinutes Expiration time in minutes
-     * @return OtpVerification
+     * @param  mixed  $model  Model instance (Admin, User, etc.)
+     * @param  OtpType  $type  OTP type
+     * @param  int  $expiresInMinutes  Expiration time in minutes
      */
     function create_otp($model, OtpType $type, int $expiresInMinutes = 10): OtpVerification
     {
@@ -284,20 +282,19 @@ if (!function_exists('create_otp')) {
     }
 }
 
-if (!function_exists('verify_otp')) {
+if (! function_exists('verify_otp')) {
     /**
      * Verify OTP code for a model
      *
-     * @param mixed $model Model instance
-     * @param string $code OTP code to verify
-     * @param OtpType $type OTP type
-     * @return bool
+     * @param  mixed  $model  Model instance
+     * @param  string  $code  OTP code to verify
+     * @param  OtpType  $type  OTP type
      */
     function verify_otp($model, string $code, OtpType $type): bool
     {
         $otp = $model->latestOtp($type);
 
-        if (!$otp) {
+        if (! $otp) {
             return false;
         }
 
@@ -305,39 +302,38 @@ if (!function_exists('verify_otp')) {
     }
 }
 
-if (!function_exists('has_valid_otp')) {
+if (! function_exists('has_valid_otp')) {
     /**
      * Check if model has valid unexpired OTP
      *
-     * @param mixed $model Model instance
-     * @param OtpType $type OTP type
-     * @return bool
+     * @param  mixed  $model  Model instance
+     * @param  OtpType  $type  OTP type
      */
     function has_valid_otp($model, OtpType $type): bool
     {
         $otp = $model->latestOtp($type);
 
-        if (!$otp) {
+        if (! $otp) {
             return false;
         }
 
-        return !$otp->isExpired() && !$otp->isVerified();
+        return ! $otp->isExpired() && ! $otp->isVerified();
     }
 }
 
-if (!function_exists('get_otp_remaining_time')) {
+if (! function_exists('get_otp_remaining_time')) {
     /**
      * Get remaining time for OTP expiration in seconds
      *
-     * @param mixed $model Model instance
-     * @param OtpType $type OTP type
+     * @param  mixed  $model  Model instance
+     * @param  OtpType  $type  OTP type
      * @return int|null Remaining seconds or null
      */
     function get_otp_remaining_time($model, OtpType $type): ?int
     {
         $otp = $model->latestOtp($type);
 
-        if (!$otp || $otp->isExpired()) {
+        if (! $otp || $otp->isExpired()) {
             return null;
         }
 
@@ -345,61 +341,56 @@ if (!function_exists('get_otp_remaining_time')) {
     }
 }
 
-if (!function_exists('format_otp_time')) {
+if (! function_exists('format_otp_time')) {
     /**
      * Format OTP remaining time in human-readable format
-     *
-     * @param int|null $seconds
-     * @return string
      */
     function format_otp_time(?int $seconds): string
     {
-        if (!$seconds || $seconds <= 0) {
+        if (! $seconds || $seconds <= 0) {
             return 'Expired';
         }
 
         if ($seconds < 60) {
-            return $seconds . ' second' . ($seconds > 1 ? 's' : '');
+            return $seconds.' second'.($seconds > 1 ? 's' : '');
         }
 
         $minutes = floor($seconds / 60);
         $remainingSeconds = $seconds % 60;
 
         if ($remainingSeconds > 0) {
-            return $minutes . ' minute' . ($minutes > 1 ? 's' : '') . ' ' .
-                $remainingSeconds . ' second' . ($remainingSeconds > 1 ? 's' : '');
+            return $minutes.' minute'.($minutes > 1 ? 's' : '').' '.
+                $remainingSeconds.' second'.($remainingSeconds > 1 ? 's' : '');
         }
 
-        return $minutes . ' minute' . ($minutes > 1 ? 's' : '');
+        return $minutes.' minute'.($minutes > 1 ? 's' : '');
     }
 }
 
-if (!function_exists('is_email_verified')) {
+if (! function_exists('is_email_verified')) {
     /**
      * Check if user/admin email is verified
      *
-     * @param mixed $model
-     * @return bool
+     * @param  mixed  $model
      */
     function is_email_verified($model): bool
     {
-        return !is_null($model?->email_verified_at);
+        return ! is_null($model?->email_verified_at);
     }
 }
 
-if (!function_exists('is_phone_verified')) {
+if (! function_exists('is_phone_verified')) {
     /**
      * Check if user/admin phone is verified
      *
-     * @param mixed $model
-     * @return bool
+     * @param  mixed  $model
      */
     function is_phone_verified($model): bool
     {
-        return !is_null($model?->phone_verified_at);
+        return ! is_null($model?->phone_verified_at);
     }
 }
-if (!function_exists('availableTimezones')) {
+if (! function_exists('availableTimezones')) {
     function availableTimezones()
     {
         $timezones = [];
@@ -407,7 +398,7 @@ if (!function_exists('availableTimezones')) {
 
         foreach ($timezoneIdentifiers as $timezoneIdentifier) {
             $timezone = new DateTimeZone($timezoneIdentifier);
-            $offset = $timezone->getOffset(new DateTime());
+            $offset = $timezone->getOffset(new DateTime);
             $offsetPrefix = $offset < 0 ? '-' : '+';
             $offsetFormatted = gmdate('H:i', abs($offset));
 
@@ -421,7 +412,7 @@ if (!function_exists('availableTimezones')) {
     }
 }
 
-if (!function_exists('gameCategories')) {
+if (! function_exists('gameCategories')) {
     function gameCategories()
     {
         return [
@@ -451,8 +442,8 @@ if (!function_exists('gameCategories')) {
                         'Black Desert Online Silver',
                         'Blade & Soul NEO Divine Gems',
                         'Blade Ball Tokens',
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'name' => 'Gift Card',
@@ -480,8 +471,8 @@ if (!function_exists('gameCategories')) {
                         'Black Desert Online Silver',
                         'Blade & Soul NEO Divine Gems',
                         'Blade Ball Tokens',
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'name' => 'Boosting',
@@ -509,8 +500,8 @@ if (!function_exists('gameCategories')) {
                         'Black Desert Online Silver',
                         'Blade & Soul NEO Divine Gems',
                         'Blade Ball Tokens',
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'name' => 'Items',
@@ -538,8 +529,8 @@ if (!function_exists('gameCategories')) {
                         'Black Desert Online Silver',
                         'Blade & Soul NEO Divine Gems',
                         'Blade Ball Tokens',
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'name' => 'Accounts',
@@ -567,8 +558,8 @@ if (!function_exists('gameCategories')) {
                         'Black Desert Online Silver',
                         'Blade & Soul NEO Divine Gems',
                         'Blade Ball Tokens',
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'name' => 'Top Up',
@@ -596,8 +587,8 @@ if (!function_exists('gameCategories')) {
                         'Black Desert Online Silver',
                         'Blade & Soul NEO Divine Gems',
                         'Blade Ball Tokens',
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'name' => 'Coaching',
@@ -625,88 +616,86 @@ if (!function_exists('gameCategories')) {
                         'Black Desert Online Silver',
                         'Blade & Soul NEO Divine Gems',
                         'Blade Ball Tokens',
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
     }
 }
 
-if (!function_exists('getAuditorName')) {
+if (! function_exists('getAuditorName')) {
     function getAuditorName($model)
     {
-        return $model && $model->name ? $model->name : (isset($model->first_name) ? $model->first_name . ' ' . $model->last_name : 'N/A');
+        return $model && $model->name ? $model->name : (isset($model->first_name) ? $model->first_name.' '.$model->last_name : 'N/A');
     }
 }
 
-
-if (!function_exists('log_error')) {
+if (! function_exists('log_error')) {
     function log_error($e): void
     {
         Log::error(
-            'LOG ERROR DATA: ' . [
-                "Error" => $e->getMessage(),
-                "Trace" => $e->getTraceAsString(),
-                "Data" => [
-                    "File" => $e->getFile(),
-                    "Line" => $e->getLine()
+            'LOG ERROR DATA: '.[
+                'Error' => $e->getMessage(),
+                'Trace' => $e->getTraceAsString(),
+                'Data' => [
+                    'File' => $e->getFile(),
+                    'Line' => $e->getLine(),
                 ],
-                "Request" => [
-                    "URL" => request()->fullUrl(),
-                    "Method" => request()->method(),
-                    "IP" => request()->ip(),
-                    "Input"  => json_encode(request()->all(), JSON_UNESCAPED_UNICODE),
-                ]
+                'Request' => [
+                    'URL' => request()->fullUrl(),
+                    'Method' => request()->method(),
+                    'IP' => request()->ip(),
+                    'Input' => json_encode(request()->all(), JSON_UNESCAPED_UNICODE),
+                ],
             ]
         );
     }
 }
 
-if (!function_exists('log_info')) {
+if (! function_exists('log_info')) {
     function log_info($i, $data = []): void
     {
         Log::info(
-            'LOG INFO DATA: ' . [
-                "Info" => $i,
-                "Data" => json_encode($data, JSON_UNESCAPED_UNICODE)
+            'LOG INFO DATA: '.[
+                'Info' => $i,
+                'Data' => json_encode($data, JSON_UNESCAPED_UNICODE),
             ]
         );
     }
 }
 
-
-if (!function_exists('category_route')) {
+if (! function_exists('category_route')) {
     /**
      * Get the route URL based on category slug
-     *
-     * @param string $slug
-     * @return string
      */
     function category_route(string $slug): string
     {
         $routes = [
-            'currency'   => 'currency',
-            'gift-card'  => 'gift-card',
-            'boosting'   => 'boosting',
-            'items'      => 'items',
-            'accounts'   => 'accounts',
-            'top-up'     => 'top-up',
-            'coaching'   => 'coaching',
+            'currency' => 'currency',
+            'gift-card' => 'gift-card',
+            'boosting' => 'boosting',
+            'items' => 'items',
+            'accounts' => 'accounts',
+            'top-up' => 'top-up',
+            'coaching' => 'coaching',
         ];
 
-        return isset($routes[$slug]) ? route($routes[$slug]) : '#';
+        if (isset($routes[$slug])) {
+            return route($routes[$slug]);
+        }
+
+        return route('category.generic', ['categorySlug' => $slug]);
     }
 }
 
-
-if (!function_exists('number_shorten')) {
+if (! function_exists('number_shorten')) {
     /**
      * Shorten a number to a human-readable format.
-     * 
-     * @param int|float $number The number to shorten
-     * @param int $precision The number of decimal places to round to
+     *
+     * @param  int|float  $number  The number to shorten
+     * @param  int  $precision  The number of decimal places to round to
      * @return string The shortened number
-     * 
+     *
      * Examples:
      * number_shorten(1234) // 1.2k
      * number_shorten(1234567) // 1.2M
@@ -739,16 +728,15 @@ if (!function_exists('number_shorten')) {
 
         // Remove unnecessary .0
         if ($precision > 0) {
-            $dotzero = '.' . str_repeat('0', $precision);
+            $dotzero = '.'.str_repeat('0', $precision);
             $number_format = str_replace($dotzero, '', $number_format);
         }
 
-        return $number_format . $suffix;
+        return $number_format.$suffix;
     }
 }
 
-
-if (!function_exists('currency_symbol')) {
+if (! function_exists('currency_symbol')) {
     /**
      * Get current currency symbol
      */
@@ -758,7 +746,7 @@ if (!function_exists('currency_symbol')) {
     }
 }
 
-if (!function_exists('currency_code')) {
+if (! function_exists('currency_code')) {
     /**
      * Get current currency code
      */
@@ -768,12 +756,12 @@ if (!function_exists('currency_code')) {
     }
 }
 
-if (!function_exists('currency_convert')) {
+if (! function_exists('currency_convert')) {
     /**
      * Convert amount from default currency to current user's currency
-     * 
-     * @param float $amount Amount in default currency
-     * @param string|null $targetCurrency Target currency code (null = current user currency)
+     *
+     * @param  float  $amount  Amount in default currency
+     * @param  string|null  $targetCurrency  Target currency code (null = current user currency)
      * @return float Converted amount
      */
     function currency_convert(float $amount, ?string $targetCurrency = null): float
@@ -782,28 +770,25 @@ if (!function_exists('currency_convert')) {
     }
 }
 
-if (!function_exists('currency_convert_to_default')) {
+if (! function_exists('currency_convert_to_default')) {
     /**
      * Convert amount from current currency to default currency
-     * 
-     * @param float $amount Amount in current currency
-     * @param string|null $sourceCurrency Source currency code (null = current user currency)
+     *
+     * @param  float  $amount  Amount in current currency
+     * @param  string|null  $sourceCurrency  Source currency code (null = current user currency)
      * @return float Amount in default currency
      */
     function currency_convert_to_default(float $amount, ?string $sourceCurrency = null): float
     {
         $sourceCurrency = $sourceCurrency ?? currency_code();
+
         return app(CurrencyService::class)->convertToDefault($amount, $sourceCurrency);
     }
 }
 
-if (!function_exists('currency_format')) {
+if (! function_exists('currency_format')) {
     /**
      * Format amount with currency symbol
-     * 
-     * @param float $amount
-     * @param string|null $currencyCode
-     * @return string
      */
     function currency_format(float $amount, ?string $currencyCode = null): string
     {
@@ -811,13 +796,9 @@ if (!function_exists('currency_format')) {
     }
 }
 
-if (!function_exists('currency_exchange')) {
+if (! function_exists('currency_exchange')) {
     /**
      * Alias for currency_convert (backward compatibility)
-     * 
-     * @param float $amount
-     * @param string|null $targetCurrency
-     * @return float
      */
     function currency_exchange(float $amount, ?string $targetCurrency = null): float
     {
@@ -825,10 +806,10 @@ if (!function_exists('currency_exchange')) {
     }
 }
 
-if (!function_exists('get_default_currency')) {
+if (! function_exists('get_default_currency')) {
     /**
      * Get default currency object
-     * 
+     *
      * @return \App\Models\Currency|null
      */
     function get_default_currency()
@@ -837,10 +818,10 @@ if (!function_exists('get_default_currency')) {
     }
 }
 
-if (!function_exists('get_current_currency')) {
+if (! function_exists('get_current_currency')) {
     /**
      * Get current user's currency object
-     * 
+     *
      * @return \App\Models\Currency
      */
     function get_current_currency()
@@ -849,11 +830,11 @@ if (!function_exists('get_current_currency')) {
     }
 }
 
-
-if (!function_exists('feedback_calculate')) {
+if (! function_exists('feedback_calculate')) {
     function feedback_calculate($positive, $negative)
     {
         $total = $positive + $negative;
+
         return $total > 0 ? round(($positive / $total) * 100, 2) : 0;
     }
 }

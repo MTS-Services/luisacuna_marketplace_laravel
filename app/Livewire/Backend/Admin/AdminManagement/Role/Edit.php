@@ -6,10 +6,11 @@ use App\Livewire\Forms\RoleForm;
 use App\Models\Role;
 use App\Services\PermissionService;
 use App\Services\RoleService;
+use App\Support\SuperAdminGuard;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
-use Livewire\Component;
 use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class Edit extends Component
 {
@@ -21,6 +22,7 @@ class Edit extends Component
     public Role $data;
 
     protected RoleService $service;
+
     protected PermissionService $permissionService;
 
     public function boot(RoleService $service, PermissionService $permissionService): void
@@ -32,6 +34,9 @@ class Edit extends Component
     public function mount(Role $data): void
     {
         $this->data = $data;
+        if (Role::isSuperAdminRole($this->data) && ! SuperAdminGuard::isSuperAdmin()) {
+            abort(403, 'Only a Super Admin can edit the Super Admin role.');
+        }
         $this->form->setData($this->data);
 
         // Load existing role permissions
@@ -42,6 +47,7 @@ class Edit extends Component
     {
         // Get permissions grouped by prefix
         $permissions = $this->permissionService->getAllGroupedByPrefix('prefix', 'asc');
+
         return view(
             'livewire.backend.admin.admin-management.role.edit',
             [
@@ -59,7 +65,7 @@ class Edit extends Component
             $this->service->updateData($this->data->id, $data);
 
             // Sync permissions with the role
-            if (!empty($data['permissions'])) {
+            if (! empty($data['permissions'])) {
                 $this->data->permissions()->sync($data['permissions']);
             } else {
                 // If no permissions selected, detach all
@@ -67,11 +73,14 @@ class Edit extends Component
             }
 
             $this->success('Role updated successfully with selected permissions');
+
             return $this->redirect(route('admin.am.role.index'), navigate: true);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            $this->error($e->getMessage());
         } catch (\Exception $e) {
-            Log::error('Failed to update role: ' . $e->getMessage(), [
+            Log::error('Failed to update role: '.$e->getMessage(), [
                 'exception' => $e,
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
             $this->error('Failed to update role. Please try again.');
         }

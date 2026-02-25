@@ -285,21 +285,11 @@
 
     <!-- Mobile Navigation Menu -->
     <nav class="lg:hidden mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-zinc-800 flex flex-wrap gap-2 sm:gap-3">
-        <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{ __('Currency') }}</a>
-        <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{ __('Gift
-                                    Cards') }}</a>
-        <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{ __('Boosting') }}</a>
-        <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{ __('Items') }}</a>
-        <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{ __('Accounts') }}</a>
-        <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{ __('Top
-                                    Ups') }}</a>
-        <a href="#"
-            class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">{{ __('Coaching') }}</a>
+        @foreach ($categories ?? [] as $category)
+            <a href="{{ route('user.user-offer.category', $category->slug) }}" wire:navigate
+                class="text-text-white text-xs font-medium hover:text-purple-400 transition-colors whitespace-nowrap">
+                {{ $category->translatedName(app()->getLocale()) }}
+            </a>
+        @endforeach
     </nav>
 </header>

@@ -7,7 +7,8 @@
             <h2 class="text-xl font-bold text-text-black dark:text-text-white">{{ __('Category Edit') }}</h2>
             <div class="flex items-center gap-2">
                 <x-ui.button href="{{ route('admin.gm.category.index') }}" class="w-auto! py-2!">
-                    <flux:icon name="arrow-left" class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
+                    <flux:icon name="arrow-left"
+                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                     {{ __('Back') }}
                 </x-ui.button>
             </div>
@@ -41,18 +42,12 @@
                 </div>
 
                 {{-- slug --}}
-                {{-- <div class="w-full">
+                <div class="w-full">
                     <x-ui.label value="Slug" class="mb-1" />
                     <x-ui.input type="text" placeholder="Slug" id="slug" wire:model="form.slug" />
                     <x-ui.input-error :messages="$errors->get('form.slug')" />
-                </div> --}}
-
-                {{-- meta title --}}
-                <div class="w-full">
-                    <x-ui.label value="Meta Title" class="mb-1" />
-                    <x-ui.input type="text" placeholder="Meta Title" id="meta_title" wire:model="form.meta_title" />
-                    <x-ui.input-error :messages="$errors->get('form.meta_title')" />
                 </div>
+
 
                 {{-- status --}}
                 <div class="w-full">
@@ -76,8 +71,13 @@
                     </x-ui.select>
                     <x-ui.input-error :messages="$errors->get('form.layout')" />
                 </div>
+            </div>
 
-
+            {{-- meta title --}}
+            <div class="w-full">
+                <x-ui.label value="Meta Title" class="mb-1" />
+                <x-ui.input type="text" placeholder="Meta Title" id="meta_title" wire:model="form.meta_title" />
+                <x-ui.input-error :messages="$errors->get('form.meta_title')" />
             </div>
 
             {{-- meta description --}}
@@ -91,13 +91,16 @@
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-4 mt-6">
                 <x-ui.button wire:click.prevent="resetForm" type="danger" class="w-auto! py-2!" variant="tertiary">
-                    <flux:icon name="x-circle" class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
+                    <flux:icon name="x-circle"
+                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
                     {{ __('Reset') }}
                 </x-ui.button>
 
                 <x-ui.button type="accent" class="w-auto! py-2!">
-                    <span wire:loading.remove wire:target="save" class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Update') }}</span>
-                    <span wire:loading wire:target="save" class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Updating...') }}</span>
+                    <span wire:loading.remove wire:target="save"
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Update') }}</span>
+                    <span wire:loading wire:target="save"
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Updating...') }}</span>
                 </x-ui.button>
             </div>
         </form>

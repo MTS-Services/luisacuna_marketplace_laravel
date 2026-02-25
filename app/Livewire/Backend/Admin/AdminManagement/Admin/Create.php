@@ -2,11 +2,12 @@
 
 namespace App\Livewire\Backend\Admin\AdminManagement\Admin;
 
-
 use App\Enums\AdminStatus;
 use App\Livewire\Forms\Backend\Admin\AdminManagement\AdminForm;
+use App\Models\Role;
 use App\Services\AdminService;
 use App\Services\RoleService;
+use App\Support\SuperAdminGuard;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -19,6 +20,7 @@ class Create extends Component
     public AdminForm $form;
 
     protected AdminService $service;
+
     protected RoleService $roleService;
 
     public function boot(AdminService $service, RoleService $roleService)
@@ -30,23 +32,30 @@ class Create extends Component
     public function render()
     {
         $roles = $this->roleService->getAllDatas();
+        if (! SuperAdminGuard::isSuperAdmin()) {
+            $roles = $roles->filter(fn ($role) => (int) $role->id !== Role::SUPER_ADMIN_ROLE_ID);
+        }
+
         return view('livewire.backend.admin.admin-management.admin.create', [
             'statuses' => AdminStatus::options(),
-            'roles' => $roles
+            'roles' => $roles,
         ]);
     }
+
     public function save()
     {
-        $data =  $this->form->validate();
+        $data = $this->form->validate();
         try {
             $data['created_by'] = admin()->id;
             $this->service->createData($data);
 
             $this->success('Data created successfully');
-            return $this->redirect(route('admin.am.admin.index'), navigate: true);
-        } catch (\Exception $e) {
 
-            Log::error('Failed to create data: ' . $e->getMessage());
+            return $this->redirect(route('admin.am.admin.index'), navigate: true);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            $this->error($e->getMessage());
+        } catch (\Exception $e) {
+            Log::error('Failed to create data: '.$e->getMessage());
             $this->error('Failed to create data.');
         }
     }

@@ -2,68 +2,73 @@
 
 namespace App\Livewire\Backend\Admin\GameManagement\Category;
 
-use Livewire\Component;
 use App\Services\CategoryService;
-use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+use Livewire\Component;
 
 class Trash extends Component
 {
     use WithDataTable, WithNotification;
 
     public $statusFilter = '';
-    protected CategoryService $service;
-    public $selectedId;
-    public bool $showDeleteModal = false;
-    public bool $showRestoreModal = false;
-    public $showBulkActionModal = false;
-    public $bulkAction = '';
 
+    protected CategoryService $service;
+
+    public $selectedId;
+
+    public bool $showDeleteModal = false;
+
+    public bool $showRestoreModal = false;
+
+    public $showBulkActionModal = false;
+
+    public $bulkAction = '';
 
     public function boot(CategoryService $service)
     {
 
         $this->service = $service;
     }
+
     public function render()
     {
         $columns = [
 
-              [
+            [
                 'key' => 'icon',
                 'label' => 'icon',
                 'format' => function ($data) {
                     return $data->icon
-                        ? '<img src="' . storage_url($data->icon) . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
-                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
-                }
+                        ? '<img src="'.storage_url($data->icon).'" alt="'.$data->name.'" class="w-10 h-10 rounded-full object-cover shadow-sm">'
+                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">'.strtoupper(substr($data->name, 0, 2)).'</div>';
+                },
             ],
             [
                 'key' => 'name',
                 'label' => 'Name',
-                'sortable' => true
+                'sortable' => true,
             ],
             [
                 'key' => 'status',
                 'label' => 'Status',
                 'sortable' => true,
                 'format' => function ($data) {
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
-                        $data->status->label() .
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft '.$data->status->color().'">'.
+                        $data->status->label().
                         '</span>';
-                }
+                },
             ],
             [
                 'key' => 'layout',
                 'label' => 'Layout',
                 'sortable' => true,
                 'format' => function ($data) {
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->layout->color() . '">' .
-                        $data->layout->label() .
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft '.$data->layout->color().'">'.
+                        $data->layout->label().
                         '</span>';
-                }
+                },
             ],
             [
                 'key' => 'deleted_at',
@@ -71,14 +76,14 @@ class Trash extends Component
                 'sortable' => true,
                 'format' => function ($data) {
                     return $data->deleted_at_formatted;
-                }
+                },
             ],
             [
                 'key' => 'deleted_by',
                 'label' => 'Deleted By',
                 'format' => function ($data) {
                     return $data->deleter_admin?->name ?? 'System';
-                }
+                },
             ],
         ];
 
@@ -87,13 +92,13 @@ class Trash extends Component
                 'key' => 'id',
                 'label' => 'Restore',
                 'method' => 'restore',
-                'encrypt' => true
+                'encrypt' => true,
             ],
             [
                 'key' => 'id',
                 'label' => 'Permanently Delete',
                 'method' => 'confirmDelete',
-                'encrypt' => true
+                'encrypt' => true,
             ],
         ];
 
@@ -108,10 +113,11 @@ class Trash extends Component
             perPage: $this->perPage,
             filters: $this->getFilters(),
         );
+
         return view('livewire.backend.admin.game-management.category.trash', [
             'datas' => $datas,
             'statuses' => [],
-            'columns' =>  $columns,
+            'columns' => $columns,
             'actions' => $actions,
             'bulkActions' => $bulkActions,
         ]);
@@ -119,9 +125,10 @@ class Trash extends Component
 
     public function confirmDelete($encryptedId): void
     {
-        if (!$encryptedId) {
+        if (! $encryptedId) {
             $this->error('No Data selected');
             $this->resetPage();
+
             return;
         }
         $this->selectedId = $encryptedId;
@@ -138,7 +145,7 @@ class Trash extends Component
             $this->success('Data permanently deleted successfully');
         } catch (\Throwable $e) {
             $this->error('Failed to delete data.');
-            Log::error('Failed to delete data: ' . $e->getMessage());
+            Log::error('Failed to delete data: '.$e->getMessage());
             throw $e;
         }
     }
@@ -151,7 +158,7 @@ class Trash extends Component
             $this->success('Data restored successfully');
         } catch (\Throwable $e) {
             $this->error('Failed to restore data.');
-            Log::error('Failed to restore data: ' . $e->getMessage());
+            Log::error('Failed to restore data: '.$e->getMessage());
             throw $e;
         }
     }
@@ -166,6 +173,7 @@ class Trash extends Component
     {
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
             $this->warning('Please select data and an action');
+
             return;
         }
 
@@ -188,7 +196,7 @@ class Trash extends Component
             $this->bulkAction = '';
         } catch (\Exception $e) {
             $this->error('Failed to execute bulk action.');
-            Log::error('Failed to execute bulk action: ' . $e->getMessage());
+            Log::error('Failed to execute bulk action: '.$e->getMessage());
             throw $e;
         }
     }
@@ -219,14 +227,13 @@ class Trash extends Component
 
     protected function getSelectableIds(): array
     {
-        $data = $this->service->getPaginatedData(
+        $data = $this->service->getTrashedPaginateDatas(
             perPage: $this->perPage,
             filters: $this->getFilters(),
-            trashed: true
         );
+
         return array_column($data->items(), 'id');
     }
-
 
     public function updatedStatusFilter(): void
     {

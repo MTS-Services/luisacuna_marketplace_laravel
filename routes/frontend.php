@@ -1,18 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Frontend\AccountsController;
+use App\Http\Controllers\Frontend\BoostingController;
+use App\Http\Controllers\Frontend\CoachingController;
+use App\Http\Controllers\Frontend\CurrencyController;
+use App\Http\Controllers\Frontend\FrontendController;
+use App\Http\Controllers\Frontend\GameController;
+use App\Http\Controllers\Frontend\GiftCardController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ItemsController;
 use App\Http\Controllers\Frontend\TopUpController;
-use App\Http\Controllers\Frontend\AccountsController;
-use App\Http\Controllers\Frontend\BoostingController;
-use App\Http\Controllers\Frontend\FrontendController;
-use App\Http\Controllers\Frontend\CoachingController;
-use App\Http\Controllers\Frontend\CurrencyController;
-use App\Http\Controllers\Frontend\GameController;
-use App\Http\Controllers\Frontend\GiftCardController;
 use App\Http\Controllers\Frontend\UserAccountController;
 use App\Http\Controllers\Frontend\UserProfileController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +24,6 @@ use App\Http\Controllers\Frontend\UserProfileController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/currency', [CurrencyController::class, 'index'])->name('currency');
@@ -38,7 +37,6 @@ Route::get('/coaching', [CoachingController::class, 'index'])->name('coaching');
 
 Route::get('/game/{gameSlug}/{categorySlug}', [GameController::class, 'index'])->name('game.index');
 Route::get('/game-buy/{gameSlug}/{categorySlug}/{productId}', [GameController::class, 'buy'])->name('game.buy');
-
 
 Route::controller(FrontendController::class)->group(function () {
     Route::get('/how-to-buy', 'howToBuy')->name('how-to-buy');
@@ -54,3 +52,8 @@ Route::controller(FrontendController::class)->group(function () {
 });
 Route::get('/users/{username}', [UserProfileController::class, 'index'])->name('profile');
 
+Route::get('/{categorySlug}', function (string $categorySlug) {
+    return view('frontend.pages.product', [
+        'categorySlug' => $categorySlug,
+    ]);
+})->name('category.generic');

@@ -14,4 +14,5 @@
     @endswitch
 
     <livewire:backend.admin.notification-management.announcement.send />
+    <livewire:backend.admin.notification-management.announcement.send-individual />
 </x-admin::app>

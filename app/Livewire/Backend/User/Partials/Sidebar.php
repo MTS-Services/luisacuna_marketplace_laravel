@@ -2,13 +2,15 @@
 
 namespace App\Livewire\Backend\User\Partials;
 
-use Livewire\Component;
 use App\Services\CategoryService;
+use Livewire\Component;
 
 class Sidebar extends Component
 {
     public string $pageSlug;
+
     public string $breadcrumb;
+
     public $categories;
 
     protected CategoryService $categoryService;
@@ -26,7 +28,12 @@ class Sidebar extends Component
 
     public function render()
     {
-        $this->categories = $this->categoryService->getDatas(status: "active");
+        $this->categories = $this->categoryService->getDatas(
+            sortField: 'sort_order',
+            order: 'asc',
+            status: 'active'
+        );
+
         return view('backend.user.layouts.partials.sidebar');
     }
 }
