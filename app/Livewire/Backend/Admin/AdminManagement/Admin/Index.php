@@ -7,6 +7,7 @@ use App\Models\Admin;
 use App\Models\Role;
 use App\Services\AdminService;
 use App\Services\Cloudinary\CloudinaryService;
+use App\Support\SuperAdminGuard;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
@@ -17,9 +18,13 @@ class Index extends Component
     use WithDataTable, WithNotification;
 
     public $statusFilter = '';
+
     public $showDeleteModal = false;
+
     public $deleteId = null;
+
     public $bulkAction = '';
+
     public $showBulkActionModal = false;
 
     protected $listeners = ['adminCreated' => '$refresh', 'adminUpdated' => '$refresh'];
@@ -27,7 +32,6 @@ class Index extends Component
     protected AdminService $service;
 
     protected CloudinaryService $cloudinaryService;
-
 
     public function boot(AdminService $service, CloudinaryService $cloudinaryService)
     {
@@ -41,26 +45,25 @@ class Index extends Component
             filters: $this->getFilters()
         )->load('role', 'creater_admin');
 
-
         $columns = [
             [
                 'key' => 'avatar',
                 'label' => 'avatar',
                 'format' => function ($data) {
                     return $data->avatar
-                        ? '<img src="' . auth_storage_url($data->avatar) . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
-                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
-                }
+                        ? '<img src="'.auth_storage_url($data->avatar).'" alt="'.$data->name.'" class="w-10 h-10 rounded-full object-cover shadow-sm">'
+                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">'.strtoupper(substr($data->name, 0, 2)).'</div>';
+                },
             ],
             [
                 'key' => 'name',
                 'label' => 'Name',
-                'sortable' => true
+                'sortable' => true,
             ],
             [
                 'key' => 'email',
                 'label' => 'Email',
-                'sortable' => true
+                'sortable' => true,
             ],
             [
                 'key' => 'role_id',
@@ -68,17 +71,17 @@ class Index extends Component
                 'format' => function ($data) {
                     return $data->role?->name;
                 },
-                'sortable' => true
+                'sortable' => true,
             ],
             [
                 'key' => 'status',
                 'label' => 'Status',
                 'sortable' => true,
                 'format' => function ($data) {
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
-                        $data->status->label() .
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft '.$data->status->color().'">'.
+                        $data->status->label().
                         '</span>';
-                }
+                },
             ],
             [
                 'key' => 'created_at',
@@ -86,14 +89,14 @@ class Index extends Component
                 'sortable' => true,
                 'format' => function ($data) {
                     return $data->created_at_formatted;
-                }
+                },
             ],
             [
                 'key' => 'created_by',
                 'label' => 'Created By',
                 'format' => function ($data) {
                     return $data->creater_admin?->name ?? 'System';
-                }
+                },
             ],
         ];
 
@@ -102,13 +105,13 @@ class Index extends Component
                 'key' => 'id',
                 'label' => 'View',
                 'route' => 'admin.am.admin.view',
-                'encrypt' => true
+                'encrypt' => true,
             ],
             [
                 'key' => 'id',
                 'label' => 'Edit',
                 'route' => 'admin.am.admin.edit',
-                'encrypt' => true
+                'encrypt' => true,
             ],
             [
                 'key' => 'id',
@@ -144,22 +147,36 @@ class Index extends Component
     public function delete(): void
     {
         try {
-            if (!$this->deleteId) {
+            if (! $this->deleteId) {
                 $this->warning('No data selected');
+
                 return;
             }
 
             if (decrypt($this->deleteId) == admin()->id) {
                 $this->warning('You cannot delete your own account');
                 $this->deleteId = null;
+
                 return;
             }
-            $this->service->deleteData(decrypt($this->deleteId));
+
+            $adminId = decrypt($this->deleteId);
+            $target = Admin::find($adminId);
+            $superAdminRoleId = Role::getSuperAdminRoleId();
+            if ($target && $superAdminRoleId !== null && (int) $target->role_id === $superAdminRoleId && ! SuperAdminGuard::isSuperAdmin()) {
+                $this->error('Only a Super Admin can delete an admin with the Super Admin role.');
+
+                return;
+            }
+
+            $this->service->deleteData($adminId);
             $this->reset(['deleteId', 'showDeleteModal']);
 
             $this->success('Data deleted successfully');
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            $this->error($e->getMessage());
         } catch (\Exception $e) {
-            $this->error('Failed to delete data: ' . $e->getMessage());
+            $this->error('Failed to delete data: '.$e->getMessage());
         }
     }
 
@@ -184,7 +201,7 @@ class Index extends Component
 
             $this->success('Data status updated successfully');
         } catch (\Exception $e) {
-            $this->error('Failed to update status: ' . $e->getMessage());
+            $this->error('Failed to update status: '.$e->getMessage());
         }
     }
 
@@ -193,6 +210,7 @@ class Index extends Component
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
             $this->warning('Please select data and an action');
             Log::info('No data selected or no bulk action selected');
+
             return;
         }
 
@@ -216,21 +234,33 @@ class Index extends Component
             $this->selectedIds = [];
             $this->selectAll = false;
             $this->bulkAction = '';
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            $this->error($e->getMessage());
         } catch (\Exception $e) {
-            $this->error('Bulk action failed: ' . $e->getMessage());
+            $this->error('Bulk action failed: '.$e->getMessage());
         }
     }
 
     protected function bulkDelete(): void
     {
-
         if (in_array(admin()->id, $this->selectedIds)) {
             $this->warning('You cannot delete your own account');
             $this->selectedIds = [];
+
             return;
         }
 
-        $count =  $this->service->bulkDeleteData($this->selectedIds);
+        $superAdminRoleId = Role::getSuperAdminRoleId();
+        if ($superAdminRoleId !== null && ! SuperAdminGuard::isSuperAdmin()) {
+            $targets = Admin::whereIn('id', $this->selectedIds)->get();
+            if ($targets->contains(fn (Admin $a) => (int) $a->role_id === $superAdminRoleId)) {
+                $this->error('Only a Super Admin can delete admins with the Super Admin role.');
+
+                return;
+            }
+        }
+
+        $count = $this->service->bulkDeleteData($this->selectedIds);
 
         $this->success("{$count} Data deleted successfully");
     }
@@ -240,6 +270,7 @@ class Index extends Component
         if (in_array(admin()->id, $this->selectedIds)) {
             $this->warning('You cannot change your own account');
             $this->selectedIds = [];
+
             return;
         }
         $count = $this->service->bulkUpdateStatus($this->selectedIds, $status);

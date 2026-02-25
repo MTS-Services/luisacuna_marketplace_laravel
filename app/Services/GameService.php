@@ -2,23 +2,21 @@
 
 namespace App\Services;
 
-
 use App\Enums\GameStatus;
 use App\Models\Category;
 use App\Models\Game;
 use App\Models\GameCategory;
 use App\Services\Cloudinary\CloudinaryService;
 use App\Traits\FileManagementTrait;
-use Cloudinary\Cloudinary;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class GameService
 {
     use FileManagementTrait;
+
     public function __construct(
         protected Game $model,
         protected Category $category,
@@ -42,7 +40,6 @@ class GameService
             ->get();
     }
 
-
     public function latestData(int $limit = 10, $filters = []): Collection
     {
         return $this->model->query()->with(['gameTranslations'])->filter($filters)->orderBy('created_at', 'desc')->limit($limit)->get();
@@ -54,14 +51,13 @@ class GameService
         return $this->model->query()->filter($filters)->inRandomOrder()->limit($limit)->get();
     }
 
-
-
     public function findData(mixed $value, string $column = 'id', bool $withTrashed = false): ?Game
     {
         $query = $this->model->newQuery();
         if ($withTrashed) {
             $query->withTrashed();
         }
+
         return $query->where($column, $value)->first();
     }
 
@@ -71,12 +67,11 @@ class GameService
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
-
         if ($search) {
             // Scout Search
 
             return Game::search($search)
-                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->query(fn ($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
         }
 
@@ -99,7 +94,7 @@ class GameService
         if ($search) {
             return Game::search($search)
                 ->onlyTrashed()
-                ->query(fn($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->query(fn ($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
                 ->paginate($perPage);
         }
 
@@ -134,6 +129,7 @@ class GameService
             })
             ->get();
     }
+
     // Repository
     public function searchGamesByCategory($categorySlug, $searchTerm): Collection
     {
@@ -143,8 +139,8 @@ class GameService
                 $query->where('slug', $categorySlug);
             })
             ->where(function ($query) use ($searchTerm) {
-                $query->where('name', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('description', 'like', '%' . $searchTerm . '%');
+                $query->where('name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('description', 'like', '%'.$searchTerm.'%');
             })
             ->get();
     }
@@ -163,10 +159,10 @@ class GameService
             $data['banner'] = $uploaded->publicId;
         }
 
-        if (!empty($data['meta_keywords']) && is_string($data['meta_keywords'])) {
+        if (! empty($data['meta_keywords']) && is_string($data['meta_keywords'])) {
             $keywords = array_filter(
                 array_map('trim', explode(',', $data['meta_keywords'])),
-                fn($item) => $item !== ''
+                fn ($item) => $item !== ''
             );
 
             $data['meta_keywords'] = json_encode(array_values($keywords));
@@ -176,20 +172,23 @@ class GameService
 
         Log::info('New game created', [
             'game_id' => $freshData->id,
-            'game_name' => $freshData->name
+            'game_name' => $freshData->name,
         ]);
 
         $freshData->dispatchTranslation(
             defaultLanguageLocale: 'en',
             targetLanguageIds: null
         );
+
         return $freshData;
     }
 
     public function update(int $id, array $data): bool
     {
         $game = $this->findData($id);
-        if (!$game) return false;
+        if (! $game) {
+            return false;
+        }
 
         $oldData = $game;
         $nameChanged = isset($data['name']) && $data['name'] !== $oldData['name'];
@@ -207,11 +206,11 @@ class GameService
         }
         $data['banner'] = $bannerPath;
 
-        // meta keywords 
-        if (!empty($data['meta_keywords']) && is_string($data['meta_keywords'])) {
+        // meta keywords
+        if (! empty($data['meta_keywords']) && is_string($data['meta_keywords'])) {
             $keywords = array_filter(
                 array_map('trim', explode(',', $data['meta_keywords'])),
-                fn($item) => $item !== ''
+                fn ($item) => $item !== ''
             );
 
             $data['meta_keywords'] = json_encode(array_values($keywords));
@@ -226,7 +225,7 @@ class GameService
             Log::info('Category name changed, dispatching translation job', [
                 'category_id' => $id,
                 'old_name' => $oldData['name'],
-                'new_name' => $newData['name']
+                'new_name' => $newData['name'],
             ]);
 
             $newData->dispatchTranslation(
@@ -241,9 +240,7 @@ class GameService
     public function delete(int $id, bool $force = false): bool
     {
         $game = $this->findData(value: $id, column: 'id', withTrashed: true);
-        if (!$game) return false;
-
-        if ($game->hasRelatedData()) {
+        if (! $game) {
             return false;
         }
 
@@ -252,27 +249,33 @@ class GameService
         }
 
         $game->update(['deleted_by' => $this->adminId]);
+
         return $game->delete();
     }
 
     public function restore(int $id): bool
     {
         $game = $this->findData(value: $id, column: 'id', withTrashed: true);
-        if (!$game) return false;
+        if (! $game) {
+            return false;
+        }
 
         $game->update(['restored_by' => $this->adminId]);
+
         return $game->restore();
     }
 
     public function updateStatus(int $id, GameStatus $status): bool
     {
         $game = $this->findData($id);
+
         return $game ? $game->update(['status' => $status->value]) : false;
     }
 
     public function bulkUpdate(array $ids, array $changes): int
     {
         $changes['updated_by'] = $this->adminId;
+
         return $this->model->whereIn('id', $ids)->update($changes);
     }
 
@@ -283,15 +286,16 @@ class GameService
         }
 
         $this->model->whereIn('id', $ids)->update(['deleted_by' => $this->adminId]);
+
         return $this->model->whereIn('id', $ids)->delete();
     }
 
     public function bulkRestore(array $ids): int
     {
         $this->model->whereIn('id', $ids)->update(['restored_by' => $this->adminId]);
+
         return $this->model->whereIn('id', $ids)->restore();
     }
-
 
     /* ================== ================== ==================
      *                      RELATIONSHIPS

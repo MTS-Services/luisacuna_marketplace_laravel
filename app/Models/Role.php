@@ -7,27 +7,30 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
+use Laravel\Scout\Searchable;
 use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Permission\Models\Role as SpatieRole;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Scout\Searchable;
 
 class Role extends SpatieRole implements Auditable
 {
-    use AuditableTrait, SoftDeletes, HasFactory, Searchable;
+    use AuditableTrait, HasFactory, Searchable, SoftDeletes;
 
+    public const SUPER_ADMIN_NAME = 'Super Admin';
+
+    public const SUPER_ADMIN_ROLE_ID = 1;
 
     protected $fillable = [
         'sort_order',
-        "name",
-        "guard_name",
+        'name',
+        'guard_name',
 
-        "created_by",
-        "updated_by",
-        "deleted_by",
-        "restored_by",
-        "restored_at",
+        'created_by',
+        'updated_by',
+        'deleted_by',
+        'restored_by',
+        'restored_at',
     ];
 
     /* ================================================================
@@ -64,6 +67,7 @@ class Role extends SpatieRole implements Auditable
     {
         return $this->belongsTo(Admin::class, 'deleted_by', 'id')->select(['name', 'id', 'status']);
     }
+
     public function restorer_admin(): BelongsTo
     {
         return $this->belongsTo(Admin::class, 'restored_by', 'id')->select(['name', 'id', 'status']);
@@ -87,6 +91,7 @@ class Role extends SpatieRole implements Auditable
     {
         return dateTimeHumanFormat($this->attributes['deleted_at']);
     }
+
     public function getRestoredAtHumanAttribute(): ?string
     {
         return dateTimeHumanFormat($this->attributes['restored_at']);
@@ -106,6 +111,7 @@ class Role extends SpatieRole implements Auditable
     {
         return dateTimeFormat($this->attributes['deleted_at']);
     }
+
     public function getRestoredAtFormattedAttribute(): string
     {
         return dateTimeFormat($this->attributes['restored_at']);
@@ -116,14 +122,43 @@ class Role extends SpatieRole implements Auditable
         return $this->hasMany(Admin::class, 'role_id', 'id');
     }
 
+    /**
+     * Whether the given role (model, id, or name) is the Super Admin role.
+     */
+    public static function isSuperAdminRole(Role|int|string $role): bool
+    {
+        if ($role instanceof Role) {
+            return (int) $role->id === self::SUPER_ADMIN_ROLE_ID;
+        }
+        if (is_int($role)) {
+            return $role === self::SUPER_ADMIN_ROLE_ID;
+        }
+
+        return $role === self::SUPER_ADMIN_NAME;
+    }
+
+    /**
+     * Get the Super Admin role id (from seeder).
+     */
+    public static function getSuperAdminRoleId(): int
+    {
+        return self::SUPER_ADMIN_ROLE_ID;
+    }
+
+    /**
+     * Count non-deleted admins that have the Super Admin role.
+     */
+    public static function countAdminsWithSuperAdminRole(): int
+    {
+        return Admin::where('role_id', self::SUPER_ADMIN_ROLE_ID)->count();
+    }
 
     public function scopeFilter(Builder $query, array $filters): Builder
     {
         return $query
             ->when(
                 $filters['name'] ?? null,
-                fn($q, $name) =>
-                $q->where('name', 'like', "%{$name}%")
+                fn ($q, $name) => $q->where('name', 'like', "%{$name}%")
             );
     }
 
@@ -145,5 +180,4 @@ class Role extends SpatieRole implements Auditable
     {
         return is_null($this->deleted_at);
     }
-
 }

@@ -11,7 +11,7 @@
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                     {{ __('Announcement') }}
                 </x-ui.button>
-                <x-ui.button class="w-auto py-2!" @click="$dispatch('announcement-send-modal-show')" variant="tertiary">
+                <x-ui.button class="w-auto py-2!" @click="$dispatch('individual-announcement-modal-show')" variant="tertiary">
                     <flux:icon name="bell"
                         class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-tertiary" />
                     {{ __('Individual') }}

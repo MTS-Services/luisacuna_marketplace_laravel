@@ -2,12 +2,12 @@
 
 namespace App\Livewire\Backend\User\Offers;
 
-use Livewire\Component;
 use App\Models\FeeSettings;
-use Livewire\Attributes\Locked;
-use App\Services\ProductService;
 use App\Services\PlatformService;
+use App\Services\ProductService;
 use App\Traits\Livewire\WithNotification;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class Edit extends Component
 {
@@ -21,18 +21,27 @@ class Edit extends Component
     public $timelineOptions = [];
 
     public $platforms = [];
+
     public $platform_id = null;
+
     public $price = null;
+
     public $quantity = null;
+
     public $description = null;
+
     public $name = null;
+
     public $delivery_timeline = null;
+
     public $deliveryMethod = null;
+
     public $fields = [];
 
     public $gameConfigs = [];
 
     protected ProductService $service;
+
     protected PlatformService $platformService;
 
     public function boot(ProductService $service, PlatformService $platformService)
@@ -53,7 +62,9 @@ class Edit extends Component
             'product_configs',
         ]);
 
-        $this->gameConfigs = $this->offer->game->gameconfig->where('category_id', $this->offer->category_id);
+        $this->gameConfigs = $this->offer->game
+            ? $this->offer->game->gameConfig()->where('category_id', $this->offer->category_id)->get()
+            : collect();
 
         // Set initial data
         $this->setData($this->offer);
@@ -67,7 +78,7 @@ class Edit extends Component
 
     public function updatedDeliveryMethod($deliveryMethod)
     {
-        if (!$deliveryMethod) {
+        if (! $deliveryMethod) {
             return;
         }
 
@@ -75,7 +86,7 @@ class Edit extends Component
         $this->timelineOptions = delivery_timelines($deliveryMethod);
 
         // Auto select first option if delivery timeline not set
-        if (!$this->delivery_timeline && !empty($this->timelineOptions)) {
+        if (! $this->delivery_timeline && ! empty($this->timelineOptions)) {
             $this->delivery_timeline = array_key_first($this->timelineOptions);
         }
     }
@@ -123,7 +134,7 @@ class Edit extends Component
         $updatedProduct = $this->service->updateData($this->productId, $updateData);
 
         // Update product configs
-        if (!empty($data['fields'])) {
+        if (! empty($data['fields'])) {
             $this->updateProductConfigs($updatedProduct, $data['fields']);
         }
 
@@ -131,7 +142,12 @@ class Edit extends Component
         $this->toastSuccess('Offer updated successfully');
 
         // Redirect to the offer listing page
-        return redirect(route('user.user-offer.category', $this->offer->category->slug));
+        $categorySlug = $this->offer->category?->slug;
+        if ($categorySlug) {
+            return redirect(route('user.user-offer.category', $categorySlug));
+        }
+
+        return redirect(route('user.offers'));
     }
 
     protected function updateProductConfigs($product, $fields)
@@ -141,10 +157,10 @@ class Edit extends Component
 
         // Create new product configs
         foreach ($fields as $gameConfigId => $fieldData) {
-            if (!empty($fieldData['value'])) {
+            if (! empty($fieldData['value'])) {
                 $product->product_configs()->create([
                     'game_config_id' => $gameConfigId,
-                    'category_id' => $product->category_id,
+                    'category_id' => $product->category_id ?? null,
                     'value' => $fieldData['value'],
                     'sort_order' => 0,
                 ]);
@@ -155,8 +171,9 @@ class Edit extends Component
     public function render()
     {
         $flatFee = FeeSettings::first()->value('buyer_fee');
+
         return view('livewire.backend.user.offers.edit', [
-            'flatFee' => $flatFee
+            'flatFee' => $flatFee,
         ]);
     }
 
@@ -174,7 +191,7 @@ class Edit extends Component
         if ($data->product_configs && $data->product_configs->isNotEmpty()) {
             foreach ($data->product_configs as $config) {
                 $this->fields[$config->game_config_id] = [
-                    'value' => $config->value
+                    'value' => $config->value,
                 ];
             }
         }

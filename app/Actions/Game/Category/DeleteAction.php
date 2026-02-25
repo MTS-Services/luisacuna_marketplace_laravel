@@ -23,13 +23,10 @@ class DeleteAction
                 $findData = $this->interface->findData($id, 'id', false, false, false);
             }
 
-            if (!$findData) {
+            if (! $findData) {
                 throw new \Exception('Data not found');
             }
-            // Simple check - if any related data exists, prevent deletion
-            if ($findData->hasRelatedData()) {
-                throw new \Exception('Cannot delete this category. It has associated data in the system.');
-            }
+
             if ($forceDelete) {
                 if ($findData->icon && Storage::disk('public')->exists($findData->icon)) {
 
@@ -38,6 +35,7 @@ class DeleteAction
 
                 return $this->interface->forceDelete($id);
             }
+
             return $this->interface->delete($id, $actionerId);
         });
     }

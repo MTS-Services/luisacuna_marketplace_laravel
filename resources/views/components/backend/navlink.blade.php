@@ -1,5 +1,6 @@
 @props([
     'icon' => 'folder', // Default parent icon
+    'img' => '', // Optional image URL; when set, shown instead of icon
     'name' => 'Multi Navlink',
     'boxicon' => false,
     'active' => '',
@@ -86,6 +87,8 @@
     $isAnyActive = $isMainActive || $isDropdownActive;
     $shouldShowComponent = $type === 'single' ? empty($permission) || admin()->can($permission) : count($items) > 0;
 
+    $hasParentImg = ! empty($img);
+
 @endphp
 
 @if ($shouldShowComponent)
@@ -120,8 +123,12 @@
                         class="sidebar-item flex items-center gap-4 p-1 rounded-xl hover:bg-hover transition-all duration-200 group {{ $isMainActive ? 'bg-primary hover:bg-primary/80' : '' }}">
                         <div
                             class="w-9 h-9 glass-card shadow-shadow-primary rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform relative {{ $isMainActive ? 'bg-primary border-none ' : '' }}">
-                            <flux:icon name="{{ $defaultParentIcon }}"
-                                class="w-5 h-5 shrink-0 {{ $isMainActive ? 'stroke-white' : 'stroke-text-base' }}" />
+                            @if ($hasParentImg)
+                                <img src="{{ $img }}" alt="" class="w-full h-full object-cover rounded-lg shrink-0" />
+                            @else
+                                <flux:icon name="{{ $defaultParentIcon }}"
+                                    class="w-5 h-5 shrink-0 {{ $isMainActive ? 'stroke-white' : 'stroke-text-base' }}" />
+                            @endif
                             <!-- Active indicator for collapsed state -->
                             <div x-show="!((desktop && sidebar_expanded) || (!desktop && mobile_menu_open)) && {{ $isAnyActive ? 'true' : 'false' }}"
                                 class="absolute -top-1 -right-1 w-3 h-3 bg-main/50 rounded-full animate-pulse invisible"
@@ -149,8 +156,12 @@
                         class="sidebar-item flex w-full items-center gap-4 p-1 rounded-xl hover:bg-hover transition-all duration-200 group {{ $isMainActive ? 'bg-primary hover:bg-primary/80' : '' }}">
                         <div
                             class="w-9 h-9 glass-card shadow-shadow-primary rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform relative {{ $isMainActive ? 'bg-primary border-none ' : '' }}">
-                            <flux:icon name="{{ $defaultParentIcon }}"
-                                class="w-5 h-5 shrink-0 {{ $isMainActive ? 'stroke-white' : 'stroke-text-base' }}" />
+                            @if ($hasParentImg)
+                                <img src="{{ $img }}" alt="" class="w-full h-full object-cover rounded-lg shrink-0" />
+                            @else
+                                <flux:icon name="{{ $defaultParentIcon }}"
+                                    class="w-5 h-5 shrink-0 {{ $isMainActive ? 'stroke-white' : 'stroke-text-base' }}" />
+                            @endif
                             <!-- Active indicator for collapsed state -->
                             <div x-show="!((desktop && sidebar_expanded) || (!desktop && mobile_menu_open)) && {{ $isAnyActive ? 'true' : 'false' }}"
                                 class="absolute -top-1 -right-1 w-3 h-3 bg-main/50 rounded-full animate-pulse invisible"
@@ -183,7 +194,11 @@
                 {{-- relative --}}
                 <div
                     class="w-9 h-9 shrink-0 glass-card shadow-shadow-primary rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform relative">
-                    <flux:icon name="{{ $defaultParentIcon }}" class="w-5 h-5 shrink-0" />
+                    @if ($hasParentImg)
+                        <img src="{{ $img }}" alt="" class="w-full h-full object-cover rounded-lg shrink-0" />
+                    @else
+                        <flux:icon name="{{ $defaultParentIcon }}" class="w-5 h-5 shrink-0" />
+                    @endif
 
                     <!-- Active indicator for collapsed state -->
                     <div x-show="!((desktop && sidebar_expanded) || (!desktop && mobile_menu_open)) && {{ $isAnyActive ? 'true' : 'false' }}"
@@ -273,7 +288,11 @@
                     <div class="flex items-center gap-3">
                         <div
                             class="w-8 h-8 shrink-0 glass-card shadow-shadow-primary rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform relativer">
-                            <flux:icon name="{{ $defaultParentIcon }}" class="w-5 h-5 stroke-accent shrink-0" />
+                            @if ($hasParentImg)
+                                <img src="{{ $img }}" alt="" class="w-full h-full object-cover rounded-lg shrink-0" />
+                            @else
+                                <flux:icon name="{{ $defaultParentIcon }}" class="w-5 h-5 stroke-accent shrink-0" />
+                            @endif
                         </div>
                         <div>
                             <h3 class="text-sm">{{ __($name) }}</h3>
@@ -287,6 +306,7 @@
                     @foreach ($items as $key => $item)
                         @php
                             $subitemIcon = $item['icon'] ?? $defaultSubitemIcon;
+                            $subitemImg = $item['img'] ?? '';
                             $subitemBoxicon = $item['boxicon'] ?? false;
                         @endphp
 
@@ -297,8 +317,12 @@
                                 class="flex items-center gap-3 p-3 mx-2 glass-card shadow-shadow-primary rounded-lg hover:bg-hover transition-all duration-200 group {{ isset($item['active']) && $page_slug == $item['active'] ? 'bg-primary hover:bg-primary/80 ' : '' }}">
                                 <div
                                     class="w-8 h-8 glass-card rounded-lg shadow-shadow-primary flex items-center justify-center group-hover:scale-110 transition-transform relative shrink-0 {{ isset($item['active']) && $page_slug == $item['active'] ? 'bg-primary border-none ' : '' }}">
-                                    <flux:icon name="{{ $subitemIcon }}"
-                                        class="w-4 h-4 shrink-0 {{ isset($item['active']) && $page_slug == $item['active'] ? 'stroke-white' : 'stroke-text-base' }}" />
+                                    @if (!empty($subitemImg))
+                                        <img src="{{ $subitemImg }}" alt="" class="w-full h-full object-cover rounded-lg shrink-0" />
+                                    @else
+                                        <flux:icon name="{{ $subitemIcon }}"
+                                            class="w-4 h-4 shrink-0 {{ isset($item['active']) && $page_slug == $item['active'] ? 'stroke-white' : 'stroke-text-base' }}" />
+                                    @endif
                                 </div>
                                 <div class="flex-1">
                                     <span
@@ -316,10 +340,12 @@
                                 class="flex items-center gap-3 p-3 mx-2 rounded-lg hover:bg-hover transition-all duration-200 group {{ isset($item['active']) && $page_slug == $item['active'] ? 'bg-primary hover:bg-primary/80 ' : '' }}">
                                 <div
                                     class="w-8 h-8 glass-card rounded-lg shadow-shadow-primary flex items-center justify-center group-hover:scale-110 transition-transform relative shrink-0 {{ isset($item['active']) && $page_slug == $item['active'] ? 'bg-primary border-none ' : '' }}">
-
-                                    <flux:icon name="{{ $subitemIcon }}"
-                                        class="w-4 h-4 {{ isset($item['active']) && $page_slug == $item['active'] ? 'stroke-white' : 'stroke-text-base' }}" />
-
+                                    @if (!empty($subitemImg))
+                                        <img src="{{ $subitemImg }}" alt="" class="w-full h-full object-cover rounded-lg shrink-0" />
+                                    @else
+                                        <flux:icon name="{{ $subitemIcon }}"
+                                            class="w-4 h-4 {{ isset($item['active']) && $page_slug == $item['active'] ? 'stroke-white' : 'stroke-text-base' }}" />
+                                    @endif
                                 </div>
                                 <div class="flex-1">
                                     <span
@@ -351,6 +377,7 @@
                 @foreach ($items as $item)
                     @php
                         $subitemIcon = $item['icon'] ?? $defaultSubitemIcon;
+                        $subitemImg = $item['img'] ?? '';
                         $subitemBoxicon = $item['boxicon'] ?? false;
                     @endphp
 
@@ -360,8 +387,12 @@
                             class="sidebar-item flex items-center gap-4 p-2 rounded-lg hover:bg-hover transition-all duration-200 group {{ isset($item['active']) && $page_slug == $item['active'] ? 'bg-primary hover:bg-primary/80 ' : '' }}">
                             <div
                                 class="w-6 h-6 glass-card rounded-lg shadow-shadow-primary flex items-center justify-center group-hover:scale-110 transition-transform relative">
-                                <flux:icon name="{{ $subitemIcon }}"
-                                    class="w-3 h-3 {{ isset($item['active']) && $page_slug == $item['active'] ? 'stroke-white' : 'stroke-text-base' }}" />
+                                @if (!empty($subitemImg))
+                                    <img src="{{ $subitemImg }}" alt="" class="w-full h-full object-cover rounded-lg shrink-0" />
+                                @else
+                                    <flux:icon name="{{ $subitemIcon }}"
+                                        class="w-3 h-3 {{ isset($item['active']) && $page_slug == $item['active'] ? 'stroke-white' : 'stroke-text-base' }}" />
+                                @endif
                             </div>
                             <span
                                 class="text-xs text-left {{ isset($item['active']) && $page_slug == $item['active'] ? 'text-white font-medium ' : 'text-text-base ' }}">{{ __($item['name']) }}</span>
@@ -372,8 +403,12 @@
                             class="flex items-center gap-3 p-2 rounded-lg hover:bg-hover transition-all duration-200 group {{ isset($item['active']) && $page_slug == $item['active'] ? 'bg-primary hover:bg-primary/80 ' : '' }}">
                             <div
                                 class="w-6 h-6 shrink-0 glass-card rounded-lg shadow-shadow-primary flex items-center justify-center group-hover:scale-110 transition-transform relative {{ isset($item['active']) && $page_slug == $item['active'] ? 'bg-primary border-none ' : '' }}">
-                                <flux:icon name="{{ $subitemIcon }}"
-                                    class="w-3 h-3 stroke-current {{ isset($item['active']) && $page_slug == $item['active'] ? 'stroke-white' : 'stroke-text-base' }}" />
+                                @if (!empty($subitemImg))
+                                    <img src="{{ $subitemImg }}" alt="" class="w-full h-full object-cover rounded-lg shrink-0" />
+                                @else
+                                    <flux:icon name="{{ $subitemIcon }}"
+                                        class="w-3 h-3 stroke-current {{ isset($item['active']) && $page_slug == $item['active'] ? 'stroke-white' : 'stroke-text-base' }}" />
+                                @endif
                             </div>
                             <span
                                 class="text-xs {{ isset($item['active']) && $page_slug == $item['active'] ? 'text-white font-medium ' : 'text-text-base ' }}">{{ __($item['name']) }}</span>

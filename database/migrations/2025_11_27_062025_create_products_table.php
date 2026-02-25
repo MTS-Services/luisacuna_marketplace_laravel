@@ -21,12 +21,9 @@ return new class extends Migration
 
             $table->unsignedBigInteger('user_id')->index();
 
-            $table->unsignedBigInteger('category_id')->index();
-   
-            $table->unsignedBigInteger('game_id')->index();
-            
-          
-            $table->unsignedBigInteger('platform_id');
+            $table->unsignedBigInteger('category_id')->nullable()->index();
+            $table->unsignedBigInteger('game_id')->nullable()->index();
+            $table->unsignedBigInteger('platform_id')->nullable();
             
             $table->string('name')->index();
             $table->text('description')->nullable();
@@ -49,9 +46,9 @@ return new class extends Migration
 
             $this->addMorphedAuditColumns($table);
             
-            $table->foreign('platform_id')->references('id')->on('platforms')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('game_id')->references('id')->on('games')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('game_id')->references('id')->on('games')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('platform_id')->references('id')->on('platforms')->onDelete('set null')->onUpdate('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
 

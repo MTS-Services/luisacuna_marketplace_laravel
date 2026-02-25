@@ -3,21 +3,22 @@
 namespace App\Livewire\Backend\Admin\AdminManagement\Role;
 
 use App\Services\RoleService;
-use Illuminate\Support\Facades\Log;
-use Livewire\Component;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\Log;
+use Livewire\Component;
 
 class Index extends Component
 {
     use WithDataTable, WithNotification;
 
     public $showDeleteModal = false;
+
     public $deleteId = null;
+
     public $bulkAction = '';
+
     public $showBulkActionModal = false;
-
-
 
     // protected $listeners = ['CurrencyCreated' => '$refresh', 'CurrencyUpdated' => '$refresh'];
 
@@ -40,12 +41,12 @@ class Index extends Component
             [
                 'key' => 'name',
                 'label' => 'Name',
-                'sortable' => true
+                'sortable' => true,
             ],
             [
                 'key' => 'guard_name',
                 'label' => 'Guard Name',
-                'sortable' => true
+                'sortable' => true,
             ],
             [
                 'key' => 'created_at',
@@ -53,14 +54,14 @@ class Index extends Component
                 'sortable' => true,
                 'format' => function ($data) {
                     return $data->created_at_formatted;
-                }
+                },
             ],
             [
                 'key' => 'created_by',
                 'label' => 'Created By',
                 'format' => function ($data) {
                     return $data->creater_admin?->name ?? 'System';
-                }
+                },
             ],
         ];
 
@@ -69,19 +70,19 @@ class Index extends Component
                 'key' => 'id',
                 'label' => 'View',
                 'route' => 'admin.am.role.view',
-                'encrypt' => true
+                'encrypt' => true,
             ],
             [
                 'key' => 'id',
                 'label' => 'Edit',
                 'route' => 'admin.am.role.edit',
-                'encrypt' => true
+                'encrypt' => true,
             ],
             [
                 'key' => 'id',
                 'label' => 'Delete',
                 'method' => 'confirmDelete',
-                'encrypt' => true
+                'encrypt' => true,
             ],
         ];
 
@@ -106,16 +107,19 @@ class Index extends Component
     public function delete(): void
     {
         try {
-            if (!$this->deleteId) {
+            if (! $this->deleteId) {
                 $this->warning('No data selected');
+
                 return;
             }
             $this->service->deleteData(decrypt($this->deleteId));
             $this->reset(['deleteId', 'showDeleteModal']);
 
             $this->success('Data deleted successfully');
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            $this->error($e->getMessage());
         } catch (\Exception $e) {
-            $this->error('Failed to delete data: ' . $e->getMessage());
+            $this->error('Failed to delete data: '.$e->getMessage());
         }
     }
 
@@ -125,12 +129,12 @@ class Index extends Component
         $this->resetPage();
     }
 
-
     public function confirmBulkAction(): void
     {
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
             $this->warning('Please select data and an action');
             Log::info('No data selected or no bulk action selected');
+
             return;
         }
 
@@ -150,8 +154,10 @@ class Index extends Component
             $this->selectedIds = [];
             $this->selectAll = false;
             $this->bulkAction = '';
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            $this->error($e->getMessage());
         } catch (\Exception $e) {
-            $this->error('Bulk action failed: ' . $e->getMessage());
+            $this->error('Bulk action failed: '.$e->getMessage());
         }
     }
 

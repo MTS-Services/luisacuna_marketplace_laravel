@@ -2,39 +2,51 @@
 
 namespace App\Livewire\Frontend\Partials;
 
-use Livewire\Component;
 use App\Models\Category;
-use App\Models\Conversation;
-use App\Services\GameService;
 use App\Services\CategoryService;
 use App\Services\ConversationService;
 use App\Services\CurrencyService;
+use App\Services\GameService;
 use App\Services\LanguageService;
 use App\Services\NotificationService;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\On;
+use Livewire\Component;
 
 class Header extends Component
 {
     public string $pageSlug;
+
     public string $search = '';
 
     public int $unreadNotificationCount = 0;
+
     public int $unreadMessageCount = 0;
 
     public $categories;
+
     public $sortField;
+
     public $order;
+
     public $currencies;
 
     public ?Collection $languages = null;
+
     protected GameService $game_service;
-    protected $popularGamesCache  = null;
+
+    protected $popularGamesCache = null;
+
     protected $allGamesCache = null;
+
     protected CategoryService $categoryService;
+
     protected LanguageService $languageService;
+
     protected CurrencyService $currencyService;
+
     protected NotificationService $notificationService;
+
     protected ConversationService $conversationService;
 
     public function boot(LanguageService $languageService, CategoryService $categoryService, GameService $game_service, CurrencyService $currencyService, NotificationService $notificationService, ConversationService $conversationService)
@@ -76,18 +88,20 @@ class Header extends Component
             $this->unreadMessageCount = $this->conversationService->getUnreadCount();
         }
     }
+
     public $popular_games = [];
+
     public function openGlobalSearch()
     {
         $this->popular_games = collect();
 
-        if (!empty($this->search)) {
+        if (! empty($this->search)) {
             if ($this->allGamesCache === null) {
-                $this->allGamesCache = $this->game_service->getAllDatas([], $this->sortField = 'name',  $this->order = 'asc');
+                $this->allGamesCache = $this->game_service->getAllDatas([], $this->sortField = 'name', $this->order = 'asc');
             }
         } else {
             if ($this->allGamesCache === null) {
-                $this->allGamesCache = $this->game_service->getAllDatas([], $this->sortField = 'name',  $this->order = 'asc');
+                $this->allGamesCache = $this->game_service->getAllDatas([], $this->sortField = 'name', $this->order = 'asc');
             }
             $this->popular_games = $this->allGamesCache->filter(function ($game) {
                 return $game->tags->contains('slug', 'popular');
@@ -95,17 +109,20 @@ class Header extends Component
         }
     }
 
-
     public function render()
     {
         // $categories= Category::where('status','active')->get();
         $this->languages = $this->languageService->getAllDatas();
-        $this->categories = $this->categoryService->getDatas(status: "active");
+        $this->categories = $this->categoryService->getDatas(
+            sortField: 'sort_order',
+            order: 'asc',
+            status: 'active'
+        );
         $this->currencies = $this->currencyService->getAllDatas();
 
         $search_results = collect();
 
-        if (!empty($this->search)) {
+        if (! empty($this->search)) {
             $search_results = $this->game_service->searchData($this->search);
         }
 

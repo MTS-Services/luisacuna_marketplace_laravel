@@ -2,34 +2,37 @@
 
 namespace App\Livewire\Backend\User\Offers;
 
-use App\Models\Product;
-use Livewire\Component;
-use App\Services\GameService;
-use Barryvdh\DomPDF\Facade\Pdf;
-use App\Services\ProductService;
 use App\Enums\ActiveInactiveEnum;
-use App\Services\OfferItemService;
-use App\Traits\WithPaginationData;
-use Illuminate\Support\Facades\Auth;
-use App\Traits\Livewire\WithDataTable;
+use App\Services\GameService;
+use App\Services\ProductService;
 use App\Traits\Livewire\WithNotification;
+use App\Traits\WithPaginationData;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class UserOffer extends Component
 {
-
     use WithNotification, WithPaginationData;
 
     public $categorySlug;
+
     public $showDeleteModal = false;
+
     public $deleteItemId;
+
     public $url;
+
     public $search = '';
+
     public $offers;
+
     public $status = null;
+
     public $game_id = null;
 
-
     protected ProductService $service;
+
     protected GameService $gameService;
 
     public function boot(ProductService $service, GameService $gameService)
@@ -42,6 +45,7 @@ class UserOffer extends Component
     {
         $this->categorySlug = $categorySlug;
     }
+
     public function render()
     {
 
@@ -52,23 +56,23 @@ class UserOffer extends Component
         );
         // if ($this->status) {
         //     dd($this->status);
-        // }   
+        // }
 
         $columns = [
             [
                 'key' => 'game',
-                'label' =>  $this->categorySlug == 'top-up' ? 'Service' : 'Game',
-                'sortable' =>  $this->categorySlug == 'top-up' ? true : false,
+                'label' => $this->categorySlug == 'top-up' ? 'Service' : 'Game',
+                'sortable' => $this->categorySlug == 'top-up' ? true : false,
                 'format' => function ($item) {
                     if ($this->categorySlug != 'top-up') {
-                        return   '<div class="flex items-center gap-3">
-                    <img src="' . storage_url($item?->games?->logo) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item?->games?->translatedName(app()->getLocale()) ?? 'Game') . '">
-                    <span class="font-semibold text-text-white">' . ($item->games->translatedName(app()->getLocale()) ?? '-') . '</span>
+                        return '<div class="flex items-center gap-3">
+                    <img src="'.storage_url($item?->games?->logo).'" class="w-10 h-10 rounded-lg object-cover" alt="'.($item?->games?->translatedName(app()->getLocale()) ?? 'Game').'">
+                    <span class="font-semibold text-text-white">'.($item->games->translatedName(app()->getLocale()) ?? '-').'</span>
                 </div>';
                     } else {
-                        return ' <span class="font-semibold text-text-white">' . ($item->games->translatedName(app()->getLocale()) ?? '-') . '</span>';
+                        return ' <span class="font-semibold text-text-white">'.($item->games->translatedName(app()->getLocale()) ?? '-').'</span>';
                     }
-                }
+                },
             ],
 
             [
@@ -79,27 +83,27 @@ class UserOffer extends Component
                 'key' => 'price',
                 'label' => 'Price',
                 'format' => function ($item) {
-                    return currency_symbol() . ' ' .  currency_exchange($item->price);
-                }
+                    return currency_symbol().' '.currency_exchange($item->price);
+                },
             ],
 
             [
                 'key' => 'status',
                 'label' => 'Status',
                 'format' => function ($data) {
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
-                        $data->status->label() .
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft '.$data->status->color().'">'.
+                        $data->status->label().
                         '</span>';
-                }
+                },
             ],
             [
                 'key' => 'delivery_timeline',
                 'label' => 'Delivery time',
                 'format' => function ($data) {
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">' .
-                        ($data->translatedDeliveryTimeline(app()->getLocale())) .
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">'.
+                        ($data->translatedDeliveryTimeline(app()->getLocale())).
                         '</span>';
-                }
+                },
             ],
         ];
 
@@ -108,13 +112,13 @@ class UserOffer extends Component
                 'icon' => 'pause-fill',
                 'method' => 'pauseOffer',
                 'label' => 'Pause',
-                'condition' => fn($item) => $item->status->value === ActiveInactiveEnum::ACTIVE->value,
+                'condition' => fn ($item) => $item->status->value === ActiveInactiveEnum::ACTIVE->value,
             ],
             [
                 'icon' => 'play-fill',
                 'method' => 'resumeOffer',
                 'label' => 'Resume',
-                'condition' => fn($item) => $item->status->value === ActiveInactiveEnum::INACTIVE->value,
+                'condition' => fn ($item) => $item->status->value === ActiveInactiveEnum::INACTIVE->value,
             ],
             [
                 'icon' => 'link-fill',
@@ -135,6 +139,7 @@ class UserOffer extends Component
         ];
 
         $this->PaginationData($datas);
+
         return view('livewire.backend.user.offers.user-offer', [
             'datas' => $datas,
             'columns' => $columns,
@@ -144,6 +149,7 @@ class UserOffer extends Component
             'games' => $this->gameService->getAllDatas(),
         ]);
     }
+
     public function pauseOffer(int $productId)
     {
         $this->changeStatus($productId, ActiveInactiveEnum::INACTIVE->value);
@@ -162,7 +168,7 @@ class UserOffer extends Component
             $this->success(__('Status updated successfully'));
             $this->dispatch('refreshDataTable');
         } catch (\Exception $e) {
-            $this->error('Failed to update status: ' . $e->getMessage());
+            $this->error('Failed to update status: '.$e->getMessage());
         }
     }
 
@@ -175,8 +181,9 @@ class UserOffer extends Component
     public function deleteProduct(): void
     {
         try {
-            if (!$this->deleteItemId) {
+            if (! $this->deleteItemId) {
                 $this->warning('No data selected');
+
                 return;
             }
             $this->service->deleteProduct($this->deleteItemId);
@@ -185,7 +192,7 @@ class UserOffer extends Component
             $this->success('Data deleted successfully');
             $this->emit('refreshDataTable');
         } catch (\Exception $e) {
-            $this->error('Failed to delete product: ' . $e->getMessage());
+            $this->error('Failed to delete product: '.$e->getMessage());
         }
     }
 
@@ -194,21 +201,25 @@ class UserOffer extends Component
         return [
             'search' => $this->search ?? null,
             'status' => $this->status ?? null,
-            'game_id' => $this->game_id ?? null, 
+            'game_id' => $this->game_id ?? null,
             'sort_field' => $this->sortField ?? 'created_at',
             'sort_direction' => $this->sortDirection ?? 'desc',
             'user_id' => user()->id,
             'categorySlug' => $this->categorySlug,
         ];
     }
+
     public function copyItemLink($id)
     {
 
-        $data = $this->service->findData($id)->load(['category', 'games']);
-        $url = route('game.buy', ['gameSlug' => $data->games->slug, 'categorySlug' => $data->category->slug, 'productId' => encrypt($id)]);
+        $data = $this->service->findData($id)->load(['category', 'game']);
+        $gameSlug = $data->game?->slug;
+        $categorySlug = $data->category?->slug;
+        $url = ($gameSlug && $categorySlug)
+            ? route('game.buy', ['gameSlug' => $gameSlug, 'categorySlug' => $categorySlug, 'productId' => encrypt($id)])
+            : route('user.offers');
         $this->url = $url;
     }
-
 
     public function offerExport()
     {
@@ -216,19 +227,20 @@ class UserOffer extends Component
 
         if ($offers->isEmpty()) {
             session()->flash('error', 'No data found to download.');
+
             return;
         }
-        $invoiceId = 'INV-' . strtoupper(uniqid());
+        $invoiceId = 'INV-'.strtoupper(uniqid());
         $pdf = Pdf::loadView('pdf-template.offer', [
             'offers' => $offers,
             'seller' => Auth::user(),
-            'date'   => now()->format('d M Y'),
-            'invoiceId' => $invoiceId
+            'date' => now()->format('d M Y'),
+            'invoiceId' => $invoiceId,
         ]);
 
         return response()->streamDownload(
-            fn() => print($pdf->output()),
-            'sold-orders-invoice-' . now()->format('Y-m-d') . '.pdf'
+            fn () => print ($pdf->output()),
+            'sold-orders-invoice-'.now()->format('Y-m-d').'.pdf'
         );
     }
 }

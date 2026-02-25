@@ -2,12 +2,13 @@
 
 namespace App\Services;
 
+use App\Enums\CustomNotificationType;
+use App\Events\AdminNotificationSent;
+use App\Events\UserNotificationSent;
+use App\Models\Admin;
 use App\Models\CustomNotification;
 use App\Models\CustomNotificationStatus;
 use App\Models\DeletedCustomNotification;
-use App\Events\UserNotificationSent;
-use App\Events\AdminNotificationSent;
-use App\Enums\CustomNotificationType;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -44,7 +45,7 @@ class NotificationService
             ->query()
             ->forReceiver($actorId, $actorType)
             ->forActorType($actorType)
-            ->when($type, fn($q) => $q->where('type', $type))
+            ->when($type, fn ($q) => $q->where('type', $type))
             ->unreadForActor($actorId, $actorType)
             ->notDeletedForActor($actorId, $actorType)
             ->exists();
@@ -64,7 +65,7 @@ class NotificationService
             ->query()
             ->forReceiver($actorId, $actorType)
             ->forActorType($actorType)
-            ->when($type, fn($q) => $q->where('type', $type))
+            ->when($type, fn ($q) => $q->where('type', $type))
             ->unreadForActor($actorId, $actorType)
             ->notDeletedForActor($actorId, $actorType)
             ->count();
@@ -86,7 +87,7 @@ class NotificationService
             ->forReceiver($actorId, $actorType)
             ->forActorType($actorType)
             ->notDeletedForActor($actorId, $actorType)
-            ->when($type, fn($q) => $q->where('type', $type))
+            ->when($type, fn ($q) => $q->where('type', $type))
             ->byState($state, $actorId, $actorType)
             ->latest()
             ->paginate($perPage);
@@ -95,9 +96,10 @@ class NotificationService
     /**
      * Get recent notifications
      */
-    public function getRecent(int $limit = 10): mixed
+    public function getRecent(int $limit = 10, ?bool $onlyAdmin = false): mixed
     {
-        [$actorId, $actorType] = $this->resolveActor();
+
+        [$actorId, $actorType] = $this->resolveActor(type: $onlyAdmin ? 'admin' : null);
 
         return $this->notification
             ->query()
@@ -186,7 +188,7 @@ class NotificationService
         return DB::transaction(function () use ($id, $data) {
             $notification = $this->notification->find($id);
 
-            if (!$notification) {
+            if (! $notification) {
                 return null;
             }
 
@@ -215,7 +217,7 @@ class NotificationService
 
         $notification = $this->find($notificationId);
 
-        if (!$notification) {
+        if (! $notification) {
             return false;
         }
 
@@ -261,7 +263,7 @@ class NotificationService
                 ->query()
                 ->forReceiver($actorId, $actorType)
                 ->forActorType($actorType)
-                ->when($type, fn($q) => $q->where('type', $type))
+                ->when($type, fn ($q) => $q->where('type', $type))
                 ->unreadForActor($actorId, $actorType)
                 ->notDeletedForActor($actorId, $actorType)
                 ->pluck('id');
@@ -295,7 +297,7 @@ class NotificationService
 
         $notification = $this->find($notificationId);
 
-        if (!$notification) {
+        if (! $notification) {
             return false;
         }
 
@@ -326,7 +328,7 @@ class NotificationService
         [$actorId, $actorType] = $this->resolveActor();
 
         return DB::transaction(function () use ($notificationIds, $actorId, $actorType) {
-            $records = collect($notificationIds)->map(fn($id) => [
+            $records = collect($notificationIds)->map(fn ($id) => [
                 'notification_id' => $id,
                 'actor_id' => $actorId,
                 'actor_type' => $actorType,
@@ -352,7 +354,7 @@ class NotificationService
                 ->query()
                 ->forReceiver($actorId, $actorType)
                 ->forActorType($actorType)
-                ->when($type, fn($q) => $q->where('type', $type))
+                ->when($type, fn ($q) => $q->where('type', $type))
                 ->notDeletedForActor($actorId, $actorType)
                 ->pluck('id');
 
@@ -360,7 +362,7 @@ class NotificationService
                 return 0;
             }
 
-            $records = $notificationIds->map(fn($id) => [
+            $records = $notificationIds->map(fn ($id) => [
                 'notification_id' => $id,
                 'actor_id' => $actorId,
                 'actor_type' => $actorType,
@@ -397,7 +399,7 @@ class NotificationService
     {
         $notification = $this->notification->find($notificationId);
 
-        if (!$notification) {
+        if (! $notification) {
             return false;
         }
 
@@ -420,7 +422,7 @@ class NotificationService
             ->query()
             ->forReceiver($actorId, $actorType)
             ->forActorType($actorType)
-            ->when($type, fn($q) => $q->where('type', $type))
+            ->when($type, fn ($q) => $q->where('type', $type))
             ->notDeletedForActor($actorId, $actorType);
 
         $total = $query->count();
@@ -440,14 +442,14 @@ class NotificationService
             CustomNotificationType::ADMIN => broadcast(new AdminNotificationSent($notification)),
             CustomNotificationType::PUBLIC => [
                 broadcast(new UserNotificationSent($notification)),
-                broadcast(new AdminNotificationSent($notification))
+                broadcast(new AdminNotificationSent($notification)),
             ],
             default => null,
         };
 
         Log::info('Notification broadcasted', [
             'id' => $notification->id,
-            'type' => $notification->type->value
+            'type' => $notification->type->value,
         ]);
     }
 
@@ -459,8 +461,11 @@ class NotificationService
         if ($id && $type) {
             return [$id, $type];
         }
+        if ($type == 'admin') {
+            return [admin()->id, Admin::class];
+        }
 
-        if (!request()->routeIs('admin.*')) {
+        if (! request()->routeIs('admin.*')) {
             if ($user = user()) {
                 return [$user->id, get_class($user)];
             }

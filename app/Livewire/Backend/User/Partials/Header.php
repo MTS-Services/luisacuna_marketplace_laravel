@@ -2,14 +2,23 @@
 
 namespace App\Livewire\Backend\User\Partials;
 
+use App\Services\CategoryService;
 use Livewire\Component;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class Header extends Component
 {
     public string $pageSlug;
+
     public string $breadcrumb;
+
+    public $categories;
+
+    protected CategoryService $categoryService;
+
+    public function boot(CategoryService $categoryService): void
+    {
+        $this->categoryService = $categoryService;
+    }
 
     public function mount(string $pageSlug = 'home', string $breadcrumb = '')
     {
@@ -19,6 +28,12 @@ class Header extends Component
 
     public function render()
     {
+        $this->categories = $this->categoryService->getDatas(
+            sortField: 'sort_order',
+            order: 'asc',
+            status: 'active'
+        );
+
         return view('backend.user.layouts.partials.header');
     }
 }

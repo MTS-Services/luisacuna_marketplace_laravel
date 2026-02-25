@@ -2,34 +2,37 @@
 
 namespace App\Livewire\Backend\Admin\GameManagement\Category;
 
-use Livewire\Component;
-use App\Enums\CategoryStatus;
 use App\Enums\CategoryLayout;
+use App\Enums\CategoryStatus;
 use App\Services\CategoryService;
 use App\Services\Cloudinary\CloudinaryService;
-use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+use Livewire\Component;
 
 class Index extends Component
 {
-
     use WithDataTable, WithNotification;
 
     public $statusFilter = '';
-    public $showDeleteModal = false;
-    public $deleteCategoryId = null;
-    public $bulkAction = '';
-    public $showBulkActionModal = false;
-    public $deleteId = null;
 
+    public $showDeleteModal = false;
+
+    public $deleteCategoryId = null;
+
+    public $bulkAction = '';
+
+    public $showBulkActionModal = false;
+
+    public $deleteId = null;
 
     // protected $listeners = ['adminCreated' => '$refresh', 'adminUpdated' => '$refresh'];
 
     protected CategoryService $service;
 
     protected CloudinaryService $cloudinaryService;
+
     public function boot(CategoryService $service, CloudinaryService $cloudinaryService)
     {
         $this->service = $service;
@@ -52,35 +55,35 @@ class Index extends Component
                 'label' => 'icon',
                 'format' => function ($data) {
                     return $data->icon
-                        ? '<img src="' . storage_url($data->icon) . '" alt="' . $data->name . '" class="w-10 h-10 rounded-full object-cover shadow-sm">'
-                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">' . strtoupper(substr($data->name, 0, 2)) . '</div>';
-                }
+                        ? '<img src="'.storage_url($data->icon).'" alt="'.$data->name.'" class="w-10 h-10 rounded-full object-cover shadow-sm">'
+                        : '<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-semibold">'.strtoupper(substr($data->name, 0, 2)).'</div>';
+                },
             ],
 
             [
                 'key' => 'name',
                 'label' => 'Name',
-                'sortable' => true
+                'sortable' => true,
             ],
             [
                 'key' => 'status',
                 'label' => 'Status',
                 'sortable' => true,
                 'format' => function ($data) {
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->status->color() . '">' .
-                        $data->status->label() .
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft '.$data->status->color().'">'.
+                        $data->status->label().
                         '</span>';
-                }
+                },
             ],
             [
                 'key' => 'layout',
                 'label' => 'Layout',
                 'sortable' => true,
                 'format' => function ($data) {
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft ' . $data->layout->color() . '">' .
-                        $data->layout->label() .
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge badge-soft '.$data->layout->color().'">'.
+                        $data->layout->label().
                         '</span>';
-                }
+                },
             ],
             [
                 'key' => 'created_at',
@@ -88,14 +91,14 @@ class Index extends Component
                 'sortable' => true,
                 'format' => function ($data) {
                     return $data->created_at_formatted;
-                }
+                },
             ],
             [
                 'key' => 'created_by',
                 'label' => 'Created By',
                 'format' => function ($data) {
                     return $data->creater_admin?->name ?? 'System';
-                }
+                },
             ],
         ];
 
@@ -111,12 +114,11 @@ class Index extends Component
             ['value' => 'inactive', 'label' => 'Inactive'],
         ];
 
-
         return view('livewire.backend.admin.game-management.category.index', [
             'categories' => $datas,
             'statuses' => CategoryStatus::options(),
             'layouts' => CategoryLayout::options(),
-            'columns' =>  $columns,
+            'columns' => $columns,
             'actions' => $actions,
             'bulkActions' => $bulkActions,
         ]);
@@ -131,8 +133,9 @@ class Index extends Component
     public function delete(): void
     {
         try {
-            if (!$this->deleteId) {
+            if (! $this->deleteId) {
                 $this->warning('No data selected');
+
                 return;
             }
             $this->service->deleteData(($this->deleteId));
@@ -140,7 +143,7 @@ class Index extends Component
 
             $this->success('Data deleted successfully');
         } catch (\Exception $e) {
-            $this->error('Failed to delete data: ' . $e->getMessage());
+            $this->error('Failed to delete data: '.$e->getMessage());
         }
     }
 
@@ -163,9 +166,10 @@ class Index extends Component
 
             $this->success('Data status updated successfully');
         } catch (\Exception $e) {
-            $this->error('Failed to update status: ' . $e->getMessage());
+            $this->error('Failed to update status: '.$e->getMessage());
         }
     }
+
     public function changeLayout($id, $layout): void
     {
         try {
@@ -179,7 +183,7 @@ class Index extends Component
 
             $this->success('Data status updated successfully');
         } catch (\Exception $e) {
-            $this->error('Failed to update status: ' . $e->getMessage());
+            $this->error('Failed to update status: '.$e->getMessage());
         }
     }
 
@@ -188,6 +192,7 @@ class Index extends Component
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
             $this->warning('Please select data and an action');
             Log::info('No data selected or no bulk action selected');
+
             return;
         }
 
@@ -203,8 +208,6 @@ class Index extends Component
                 'delete' => $this->bulkDelete(),
                 'active' => $this->bulkUpdateStatus(CategoryStatus::ACTIVE),
                 'inactive' => $this->bulkUpdateStatus(CategoryStatus::INACTIVE),
-                'list_grid' => $this->bulkUpdateLyout(CategoryLayout::LIST_GRID),
-                'group_gift_card' => $this->bulkUpdateLyout(CategoryLayout::GROUP_GIFT_CARD),
                 default => null,
             };
 
@@ -212,13 +215,13 @@ class Index extends Component
             $this->selectAll = false;
             $this->bulkAction = '';
         } catch (\Exception $e) {
-            $this->error('Bulk action failed: ' . $e->getMessage());
+            $this->error('Bulk action failed: '.$e->getMessage());
         }
     }
 
     protected function bulkDelete(): void
     {
-        $count =  $this->service->bulkDeleteData($this->selectedIds);
+        $count = $this->service->bulkDeleteData($this->selectedIds);
         $this->success("{$count} Data deleted successfully");
     }
 
@@ -228,7 +231,8 @@ class Index extends Component
         $this->service->bulkUpdateStatus($this->selectedIds, $status);
         $this->success("{$count} Data updated successfully");
     }
-    protected function bulkUpdateLyout(CategoryLayout $layout): void
+
+    protected function bulkUpdateLayout(CategoryLayout $layout): void
     {
         $count = count($this->selectedIds);
         $this->service->bulkUpdateLayout($this->selectedIds, $layout);

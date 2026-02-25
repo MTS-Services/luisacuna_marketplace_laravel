@@ -1,19 +1,19 @@
 <div class="bg-bg-primary">
     <div class="container pb-10">
-        <livewire:frontend.partials.breadcrumb :gameSlug="$offer->game->slug" :categorySlug="$offer->category->slug" />
+        <livewire:frontend.partials.breadcrumb :gameSlug="$offer->game?->slug ?? ''" :categorySlug="$offer->category?->slug ?? ''" />
 
         <div class="w-full mx-auto rounded-2xl">
             <h2 class="text-2xl sm:text-40px font-semibold text-center text-text-white mb-3">
-                {{ __('Edit ') . ucfirst($offer->category->name) . __(' Offer') }}
+                {{ __('Edit ') . ucfirst($offer->category?->name ?? __('Uncategorized')) . __(' Offer') }}
             </h2>
 
             <div class="flex items-center justify-center gap-3 mb-5">
-                @if ($offer->game->logo)
+                @if ($offer->game?->logo)
                     <img src="{{ storage_url($offer->game->logo) }}" alt="{{ $offer->game->name }}"
                         class="w-12 h-12 sm:w-16 sm:h-16 rounded-lg object-cover">
                 @endif
                 <span class="text-lg sm:text-xl font-semibold text-text-white">
-                    {{ $offer->game->name }}
+                    {{ $offer->game?->name ?? __('Game removed') }}
                 </span>
             </div>
 
@@ -252,7 +252,7 @@
                     <x-ui.button type="submit" class="w-auto! py-2!">
                         {{ __('Update Offer') }}
                     </x-ui.button>
-                    <a href="{{ route('user.user-offer.category', $offer->category->slug) }}"
+                    <a href="{{ $offer->category ? route('user.user-offer.category', $offer->category->slug) : route('user.offers') }}"
                         class="px-6 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors">
                         {{ __('Cancel') }}
                     </a>

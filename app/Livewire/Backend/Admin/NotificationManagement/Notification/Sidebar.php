@@ -15,7 +15,9 @@ class Sidebar extends Component
     use WithNotification;
 
     public bool $openSidebarNotifications = false;
+
     public Collection $notifications;
+
     public bool $isLoading = true;
 
     protected NotificationService $service;
@@ -27,7 +29,7 @@ class Sidebar extends Component
 
     public function mount(): void
     {
-        $this->notifications = new Collection();
+        $this->notifications = new Collection;
     }
 
     public function render()
@@ -55,19 +57,18 @@ class Sidebar extends Component
     {
         try {
             $this->isLoading = true;
-            $this->notifications = $this->service->getRecent(10);
+            $this->notifications = $this->service->getRecent(10, true);
         } catch (\Exception $e) {
             Log::error('Failed to fetch notifications', [
                 'error' => $e->getMessage(),
                 'line' => $e->getLine(),
                 'file' => $e->getFile(),
             ]);
-            $this->notifications = new Collection();
+            $this->notifications = new Collection;
         } finally {
             $this->isLoading = false;
         }
     }
-
 
     #[Computed()]
     public function unreadCount(): int

@@ -216,10 +216,12 @@ class OfferProductForm extends Component
 
         $this->toastSuccess(__('Offer created successfully'));
 
-        return $this->redirect(
-            route('user.user-offer.category', $createdProduct->category->slug),
-            navigate: false,
-        );
+        $categorySlug = $createdProduct->category?->slug;
+        $redirectRoute = $categorySlug
+            ? route('user.user-offer.category', $categorySlug)
+            : route('user.offers');
+
+        return $this->redirect($redirectRoute, navigate: false);
     }
 
     public function render(): View

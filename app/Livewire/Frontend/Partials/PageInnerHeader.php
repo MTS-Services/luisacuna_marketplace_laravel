@@ -6,10 +6,10 @@ use Livewire\Component;
 
 class PageInnerHeader extends Component
 {
-
-
     public $gameSlug;
+
     public $categorySlug;
+
     public $game;
 
     public function mount($gameSlug, $categorySlug, $game)
@@ -17,18 +17,22 @@ class PageInnerHeader extends Component
         $this->gameSlug = $gameSlug;
         $this->categorySlug = $categorySlug;
         $this->game = $game->load([
+            'categories' => function ($query) {
+                $query->active()->orderBy('sort_order');
+            },
             'categories.categoryTranslations' => function ($query) {
                 $query->where('language_id', get_language_id());
             },
             'gameTranslations' => function ($query) {
                 $query->where('language_id', get_language_id());
-            }
+            },
         ]);
 
         // $this->game = $game->load(['categories', 'gameTranslations' => function ($query) {
         //     $query->where('language_id', get_language_id());
         // }]);
     }
+
     public function render()
     {
         return view('livewire.frontend.partials.page-inner-header', [

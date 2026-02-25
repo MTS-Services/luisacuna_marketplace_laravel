@@ -4,52 +4,61 @@ namespace App\Livewire\Backend\User\Offers;
 
 use App\Models\FeeSettings;
 use App\Models\Game;
-use App\Models\User;
 use App\Models\Platform;
-use Livewire\Component;
-use App\Services\GameService;
-use App\Services\ProductService;
-use App\Services\CategoryService;
-use App\Services\PlatformService;
 use App\Services\AchievementService;
+use App\Services\CategoryService;
+use App\Services\GameService;
+use App\Services\PlatformService;
+use App\Services\ProductService;
 use App\Traits\Livewire\WithNotification;
+use Livewire\Component;
 
 class Offer extends Component
 {
-
     use WithNotification;
-    //Public Variable 
+    // Public Variable
 
     public $step = 1;
 
     public $categoryId = null;
-    public $categoryName = null;
-    public $gameId = null;
-    public $deliveryMethod = null;
-    public $platform_id = null;
-    public $price = null;
-    public $quantity = null;
-    public $description = null;
-    public $name = null;
-    public $delivery_timeline = null;
-    public $fields = [];
 
+    public $categoryName = null;
+
+    public $gameId = null;
+
+    public $deliveryMethod = null;
+
+    public $platform_id = null;
+
+    public $price = null;
+
+    public $quantity = null;
+
+    public $description = null;
+
+    public $name = null;
+
+    public $delivery_timeline = null;
+
+    public $fields = [];
 
     // Dynamic Variable Just for demostration , if it store in another table then remove this code .
     // Dynamic varibale created by "config_". game_confisg's slug but if slug contains '-' it will replace by "_".
 
     public $config_server;
+
     public $config_faction;
+
     public $config_number_of_skin;
+
     public $config_rare_skin;
 
-    //Data Collections
+    // Data Collections
 
     public $games;
 
     // When A single Game selected will store the data to $game
     public Game $game;
-
 
     // Dynamic Configs Data need to create offer
     public $gameConfigs;
@@ -60,17 +69,19 @@ class Offer extends Component
 
     public $deliveryMethods;
 
-
-    //Load Services
+    // Load Services
 
     protected CategoryService $categoryService;
+
     protected GameService $gameService;
+
     protected PlatformService $platformService;
+
     protected ProductService $productService;
+
     protected AchievementService $achievementService;
 
     public $timelineOptions = [];
-
 
     public function boot(CategoryService $categoryService, GameService $gameService, PlatformService $platformService, ProductService $productService, AchievementService $achievementService)
     {
@@ -83,7 +94,7 @@ class Offer extends Component
 
     public function updatedDeliveryMethod($deliveryMethod)
     {
-        if (!$deliveryMethod) {
+        if (! $deliveryMethod) {
             return;
         }
 
@@ -91,11 +102,10 @@ class Offer extends Component
         $this->timelineOptions = delivery_timelines($deliveryMethod);
 
         // Auto select first option if delivery timeline not set
-        if (!$this->delivery_timeline && !empty($this->timelineOptions)) {
+        if (! $this->delivery_timeline && ! empty($this->timelineOptions)) {
             $this->delivery_timeline = array_key_first($this->timelineOptions);
         }
     }
-
 
     // When Select Category will run Select Category with category id and name
     public function selectCategory($categoryId, $categoryName)
@@ -103,14 +113,12 @@ class Offer extends Component
         $this->categoryId = $categoryId;
         $this->categoryName = $categoryName;
 
-
         $category = $this->categoryService->findData($categoryId)
             ->load([
-                'games' => fn($q) => $q->orderBy('name', 'asc')
+                'games' => fn ($q) => $q->orderBy('name', 'asc'),
             ]);
 
         $this->games = $category->games;
-
 
         $this->step = 2;
     }
@@ -138,7 +146,6 @@ class Offer extends Component
     public function updatedSelectedGame($gameId)
     {
 
-
         if ($gameId) {
 
             $game = $this->gameService->findData($gameId);
@@ -154,10 +161,7 @@ class Offer extends Component
 
             $this->gameConfigs = $game->gameConfig;
 
-
             $this->platforms = $this->platformService->getActiveData();
-
-
 
             // $this->deliveryMethods = json_decode($game->gameConfig->first()->delivery_methods, true);
 
@@ -166,11 +170,8 @@ class Offer extends Component
         }
     }
 
-
-
     public function submitOffer()
     {
-
 
         $data = $this->validate(
             [
@@ -195,7 +196,7 @@ class Offer extends Component
                 'quantity.required' => 'Stock quantity is required.',
                 'deliveryMethod.required' => 'Delivery method is required.',
                 'name.required' => 'Name is required.',
-                'delivery_timeline' => "Delivery Timeline is required.",
+                'delivery_timeline' => 'Delivery Timeline is required.',
                 'fields.*.required' => 'This Field must to be filled.',
             ]
 
@@ -216,11 +217,7 @@ class Offer extends Component
             $data['price'] = $data['price'] * 1;
         }
 
-
-
-
         $createdData = $this->productService->createData($data);
-
 
         // success
 
@@ -229,9 +226,12 @@ class Offer extends Component
         // Reset properties
         $this->resetField();
 
-        return redirect(route('user.user-offer.category', $createdData->category->slug));
-    }
+        $categorySlug = $createdData->category?->slug;
 
+        return redirect($categorySlug
+            ? route('user.user-offer.category', $categorySlug)
+            : route('user.offers'));
+    }
 
     public function render()
     {
@@ -245,8 +245,6 @@ class Offer extends Component
     }
 
     // Existing
-
-
 
     public function back()
     {

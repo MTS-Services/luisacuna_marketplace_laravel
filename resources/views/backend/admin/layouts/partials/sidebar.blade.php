@@ -186,6 +186,7 @@
                             'name' => $cat->name,
                             'route' => route('admin.pm.category.index', $cat->slug),
                             // 'icon' => $cat->icon ?? 'circle',
+                            'img' => $cat->icon ? storage_url($cat->icon) : null,
                             'active' => $cat->slug,
                         ];
                     }
