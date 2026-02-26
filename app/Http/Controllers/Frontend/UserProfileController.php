@@ -28,11 +28,4 @@ class UserProfileController extends Controller
             'user' => $user
         ]);
     }
-
-
-
-    public function shop()
-    {
-        return view($this->masterView);
-    }
 }

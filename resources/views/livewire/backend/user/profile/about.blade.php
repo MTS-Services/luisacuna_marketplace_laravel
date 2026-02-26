@@ -1,5 +1,4 @@
-<div class="bg-page pb-10">
-  <livewire:backend.user.profile.profile-component :user="$user" />
+<div class="pb-10">
     <section class="container mx-auto bg-bg-secondary rounded-2xl mb-10 p-5 sm:p-10 md:p-20">
         <div class="mb-5">
             <h2 class="font-semibold text-3xl">{{ __('About') }}</h2>

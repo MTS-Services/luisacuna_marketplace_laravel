@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Backend\User\Profile\ShopCategories;
+namespace App\Livewire\Backend\User\Profile;
 
 use App\Models\User;
 use App\Services\CategoryService;
@@ -35,7 +35,7 @@ class Shop extends Component
     }
     public function render()
     {
-        return view('livewire.backend.user.profile.shop-categories.shop');
+        return view('livewire.backend.user.profile.shop');
     }
 
 

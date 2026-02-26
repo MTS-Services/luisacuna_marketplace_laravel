@@ -1,10 +1,11 @@
-<section class="mx-auto">
+<div class="mx-auto bg-page">
+
     <section class="relative z-0!">
         <div class="inner_banner h-16 sm:h-32">
             <img src="{{ asset('assets/images/user_profile/inner_banner.png') }}" alt="" class="w-full h-full">
         </div>
     </section>
-    {{-- profile header --}}
+    {{-- profile header (single instance, no duplication) --}}
     <section
         class="container p-4 sm:p-10 rounded-2xl -mt-5 sm:-mt-10 shadow-xl mb-12 relative z-20 bg-white dark:bg-bg-secondary isolate">
         <div class="">
@@ -16,7 +17,7 @@
                                 <img src="{{ auth_storage_url($user?->avatar) }}" alt="{{ $user->name }}"
                                     class="h-full w-full rounded-full border-2 border-text-white" />
                             </div>
-                            @if ($user->isVerifiedSeller())
+                              @if ($user->isVerifiedSeller())
                                 <div class="absolute -right-5 top-7 sm:-right-3 sm:top-20 w-10 h-10 sm:w-12 sm:h-12">
                                     <img src="{{ asset('assets/images/user_profile/Frame 1261153813.png') }}"
                                         alt="" class="w-full h-full rounded-full">
@@ -27,7 +28,8 @@
                     </div>
                     <div class="">
                         <div class="flex gap-2 items-center mb-0 sm:mb-2">
-                            <h3 class="text-base sm:text-2xl font-semibold text-text-white mb-2">{{ $user->full_name }}
+                            <h3 class="text-base sm:text-2xl font-semibold text-text-white mb-2">
+                                {{ $user->full_name }}
                             </h3>
                             @if ($user->isVerifiedSeller())
                                 <x-phosphor name="seal-check" variant="solid" class="fill-zinc-700 w-5 h-5" />
@@ -71,23 +73,20 @@
             <div class="border-b border-zinc-700 mt-6 mb-4"></div>
             <div class="flex gap-6">
                 <a wire:navigate href="{{ route('profile', ['username' => $user->username, 'tab' => 'shop']) }}"
-                    class="group border-b-3
-                 {{ request()->routeIs('profile') && (request('tab') === 'shop' || request('tab') === null) ? 'border-zinc-500' : 'border-transparent' }}">
+                    class="group border-b-3 {{ $tab === 'shop' ? 'border-zinc-500' : 'border-transparent' }}">
                     <span class="relative z-10 text-text-white">
                         {{ __('Shop') }}
                     </span>
                 </a>
 
                 <a wire:navigate href="{{ route('profile', ['username' => $user->username, 'tab' => 'reviews']) }}"
-                    class="group border-b-3
-                 {{ request('tab') === 'reviews' ? 'border-zinc-500' : 'border-transparent' }}">
+                    class="group border-b-3 {{ $tab === 'reviews' ? 'border-zinc-500' : 'border-transparent' }}">
                     <span class="relative z-10 text-text-white">
                         {{ __('Reviews') }}
                     </span>
                 </a>
                 <a wire:navigate href="{{ route('profile', ['username' => $user->username, 'tab' => 'about']) }}"
-                    class="group border-b-3
-                 {{ request('tab') === 'about' ? 'border-zinc-500' : 'border-transparent' }}">
+                    class="group border-b-3 {{ $tab === 'about' ? 'border-zinc-500' : 'border-transparent' }}">
                     <span class="relative z-10 text-text-white">
                         {{ __('About') }}
                     </span>
@@ -96,4 +95,20 @@
         </div>
     </section>
 
-</section>
+
+    {{-- Tab content: one child component per tab, keyed so state is correct when switching --}}
+    <div wire:key="profile-tab-{{ $tab }}">
+        @switch($tab)
+            @case('reviews')
+                <livewire:backend.user.profile.review :user="$user" />
+            @break
+
+            @case('about')
+                <livewire:backend.user.profile.about :user="$user" />
+            @break
+
+            @default
+                <livewire:backend.user.profile.shop :user="$user" />
+        @endswitch
+    </div>
+</div>

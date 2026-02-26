@@ -1,4 +1,4 @@
-<main class="mx-auto">
+<div class="mx-auto">
 
 
     {{-- select game --}}
@@ -12,6 +12,7 @@
         </x-ui.custom-select>
     </div>
 
+    {{-- Layout is per-category from Category.layout (e.g. list_grid vs group_gift_card) --}}
     @if ($list_type == 'list_grid')
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
 
@@ -78,4 +79,4 @@
 
         <x-frontend.pagination-ui :pagination="$pagination" />
     </div>
-</main>
+</div>
