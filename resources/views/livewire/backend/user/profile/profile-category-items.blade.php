@@ -34,7 +34,7 @@
         @if ($list_type == 'list_grid')
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
-                @forelse ($this->products as $product)
+                @forelse ($products as $product)
                     <x-ui.shop-card :gameSlug="$product->games->slug" :categorySlug="$this->categorySlug" :data="$product" :game="$product->games" />
                 @empty
                     <div class="flex justify-center items-center mt-10 col-span-4">
@@ -46,7 +46,7 @@
         @else
             <div class="md:flex gap-6 h-auto mt-10">
                 <div class="w-full grid grid-cols-1 xxxs:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 2xl:grid-cols-4">
-                    @forelse ($this->products as $product)
+                    @forelse ($products as $product)
                         <div
                             class="bg-bg-primary shadow-sm dark:bg-bg-secondary rounded-2xl p-3 border border-transparent hover:border-pink-500 transition-all duration-300 cursor-pointer">
 

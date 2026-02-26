@@ -7,7 +7,6 @@ use App\Services\CategoryService;
 use App\Services\GameService;
 use App\Services\ProductService;
 use App\Traits\WithPaginationData;
-use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 use Livewire\Attributes\Url;
@@ -49,24 +48,21 @@ class ProfileCategoryItems extends Component
 
         $games = $this->gameService->randomData(50);
 
-        $this->paginationData($this->products);
-
-        return view('livewire.backend.user.profile.profile-category-items', [
-            'games' => $games,
-        ]);
-    }
-
-    #[Computed(cache: false)]
-    public function products()
-    {
-        return $this->productService->getPaginatedData($this->perPage, [
+        $productsPaginator = $this->productService->getPaginatedData(1, [
             'categorySlug'        => $this->categorySlug,
             'relations'           => ['games'],
             'user_id'             => $this->userId,
-            'gameSlug'           => $this->gameSlug,
+            'gameSlug'            => $this->gameSlug,
             'productTranslations' => function ($query) {
                 $query->where('language_id', get_language_id());
             }
+        ]);
+
+        $this->paginationData($productsPaginator);
+
+        return view('livewire.backend.user.profile.profile-category-items', [
+            'games'    => $games,
+            'products' => $productsPaginator,
         ]);
     }
 }

@@ -138,7 +138,7 @@ class UserOffer extends Component
             ],
         ];
 
-        $this->PaginationData($datas);
+        $this->paginationData($datas);
 
         return view('livewire.backend.user.offers.user-offer', [
             'datas' => $datas,

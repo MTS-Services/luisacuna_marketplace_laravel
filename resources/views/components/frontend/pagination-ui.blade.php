@@ -1,20 +1,31 @@
-@props(['pagination' => [], 'class' => ''])
+{{--
+    Reusable pagination component (Custom UI).
+    Accepts ONLY pagination metadata—no item data.
+    Props: pagination (array: current_page, last_page, per_page, total, from, to), class (optional), pageName (optional, for Livewire named paginators).
+--}}
+@props([
+    'pagination' => [],
+    'class' => '',
+    'pageName' => null,
+])
 
 @php
-
-    $current = $pagination['current_page'];
-    $last = $pagination['last_page'];
-
+    $pagination = is_array($pagination) ? $pagination : [];
+    $current = (int) ($pagination['current_page'] ?? 1);
+    $last = (int) ($pagination['last_page'] ?? 1);
+    $last = max(1, $last);
     $start = max(4, $current - 1);
-    $end   = min($last - 3, $current + 1);
+    $end = min($last - 3, $current + 1);
     $class = $class ?? '';
+    $pageName = $pageName ?? null;
+    $pageNameArg = $pageName ? ", '".e($pageName)."'" : '';
 @endphp
 
 @if ($last > 1)
 <div class="flex flex-wrap items-center justify-end mt-8 text-sm gap-2 mb-7 {{ $class }}">
     {{-- Previous --}}
     <button
-        wire:click="previousPage"
+        wire:click="previousPage({{ $pageName ? "'".e($pageName)."'" : '' }})"
         @disabled($current <= 1)
         class="px-3 md:px-4 py-2 text-text-primary shadow-2xl rounded-lg
                hover:bg-bg-primary/60 transition-colors
@@ -25,7 +36,7 @@
     {{-- First 3 Pages --}}
     @for ($i = 1; $i <= min(3, $last); $i++)
         <button
-            wire:click="gotoPage({{ $i }})"
+            wire:click="gotoPage({{ $i }}{{ $pageNameArg }})"
             class="px-3 md:px-4 py-2 rounded-lg transition-colors
             {{ $i == $current
                 ? 'bg-zinc-500 text-text-primary font-semibold'
@@ -42,7 +53,7 @@
     {{-- Middle Pages (Sliding) --}}
     @for ($i = $start; $i <= $end; $i++)
         <button
-            wire:click="gotoPage({{ $i }})"
+            wire:click="gotoPage({{ $i }}{{ $pageNameArg }})"
             class="px-3 md:px-4 py-2 rounded-lg transition-colors
             {{ $i == $current
                 ? 'bg-zinc-500 text-text-primary font-semibold'
@@ -59,7 +70,7 @@
     {{-- Last 3 Pages --}}
     @for ($i = max($last - 2, 4); $i <= $last; $i++)
         <button
-            wire:click="gotoPage({{ $i }})"
+            wire:click="gotoPage({{ $i }}{{ $pageNameArg }})"
             class="px-3 md:px-4 py-2 rounded-lg transition-colors
             {{ $i == $current
                 ? 'bg-zinc-500 text-text-primary font-semibold'
@@ -70,7 +81,7 @@
 
     {{-- Next --}}
     <button
-        wire:click="nextPage"
+        wire:click="nextPage({{ $pageName ? "'".e($pageName)."'" : '' }})"
         @disabled($current >= $last)
         class="px-3 md:px-4 py-2 text-text-primary shadow-2xl rounded-lg
                hover:bg-bg-primary/60 transition-colors

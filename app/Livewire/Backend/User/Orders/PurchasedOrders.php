@@ -100,7 +100,7 @@ class PurchasedOrders extends Component
             ],
         ];
 
-        $this->PaginationData($datas);
+        $this->paginationData($datas);
         return view('livewire.backend.user.orders.purchased-orders', [
             'datas' => $datas,
             'columns' => $columns,
