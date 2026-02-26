@@ -95,42 +95,46 @@
                         target="sortDirection, filter_by_config, platform_id, game_tag, gotoPage, nextPage, previousPage"
                         style="list" />
 
-                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 2xl:grid-cols-4 content-start"
-                        wire:loading.remove
-                        wire:loading.target="sortDirection, filter_by_config, platform_id, game_tag, gotoPage, nextPage, previousPage">
-                        @forelse ($datas as $item)
-                            <div wire:key="prod-{{ $item->id }}" wire:click="selectItem({{ $item->id }})"
-                                @click="selectedId = {{ $item->id }}"
-                                :class="selectedId == {{ $item->id }} ? 'border-pink-500 ring-1 ring-pink-500' :
-                                    'border-transparent'"
-                                class="bg-bg-primary dark:bg-bg-secondary rounded-2xl p-3 border transition-all duration-300 cursor-pointer hover:border-pink-500/50">
+                    <div wire:loading.remove
+                        wire:loading.target="sortDirection, filter_by_config, platform_id, game_tag, gotoPage, nextPage, previousPage"
+                        wire:loading.class="opacity-50" class="w-full">
+                        <div
+                            class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 2xl:grid-cols-4 content-start w-full">
+                            @forelse ($datas as $item)
+                                <div wire:key="prod-{{ $item->id }}" wire:click="selectItem({{ $item->id }})"
+                                    @click="selectedId = {{ $item->id }}"
+                                    :class="selectedId == {{ $item->id }} ? 'border-pink-500 ring-1 ring-pink-500' :
+                                        'border-transparent'"
+                                    class="bg-bg-primary dark:bg-bg-secondary rounded-2xl p-3 border transition-all duration-300 cursor-pointer hover:border-pink-500/50">
 
-                                <div class="flex items-center justify-between">
-                                    <img src="{{ storage_url($game?->logo) }}" class="w-6 h-6 object-cover">
-                                    @if ($game?->tags?->isNotEmpty())
-                                        <span
-                                            class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl text-[10px] flex items-center gap-1">
-                                            <x-phosphor name="fire" variant="regular" class="w-3 h-3 fill-white" />
-                                            {{ optional($game->tags->random())->name }}
-                                        </span>
-                                    @endif
+                                    <div class="flex items-center justify-between">
+                                        <img src="{{ storage_url($game?->logo) }}" class="w-6 h-6 object-cover">
+                                        @if ($game?->tags?->isNotEmpty())
+                                            <span
+                                                class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl text-[10px] flex items-center gap-1">
+                                                <x-phosphor name="fire" variant="regular"
+                                                    class="w-3 h-3 fill-white" />
+                                                {{ optional($game->tags->random())->name }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                    <h3 class="text-base font-semibold text-text-white mt-4">{{ $item->quantity }}
+                                        {{ __('Units') }}
+                                    </h3>
+                                    <p class="text-xs text-text-white mt-2 opacity-70">
+                                        {{ Str::limit($item->translatedName(app()->getLocale()), 22) }}
+                                    </p>
+                                    <span class="block text-base font-semibold text-pink-500 mt-4">
+                                        {{ currency_symbol() . currency_exchange($item->price) }}
+                                    </span>
                                 </div>
-                                <h3 class="text-base font-semibold text-text-white mt-4">{{ $item->quantity }}
-                                    {{ __('Units') }}
-                                </h3>
-                                <p class="text-xs text-text-white mt-2 opacity-70">
-                                    {{ Str::limit($item->translatedName(app()->getLocale()), 22) }}
-                                </p>
-                                <span class="block text-base font-semibold text-pink-500 mt-4">
-                                    {{ currency_symbol() . currency_exchange($item->price) }}
-                                </span>
-                            </div>
-                        @empty
-                            <div class="col-span-full" wire:loading.remove
-                                wire:target="sortDirection, filter_by_config, platform_id, game_tag, gotoPage, nextPage, previousPage">
-                                <x-ui.empty-card />
-                            </div>
-                        @endforelse
+                            @empty
+                                <div class="col-span-full" wire:loading.remove
+                                    wire:target="sortDirection, filter_by_config, platform_id, game_tag, gotoPage, nextPage, previousPage">
+                                    <x-ui.empty-card />
+                                </div>
+                            @endforelse
+                        </div>
                     </div>
                 </div>
 
