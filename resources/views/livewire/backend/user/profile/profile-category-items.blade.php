@@ -37,9 +37,9 @@
                 @forelse ($products as $product)
                     <x-ui.shop-card :gameSlug="$product->games->slug" :categorySlug="$this->categorySlug" :data="$product" :game="$product->games" />
                 @empty
-                    <div class="flex justify-center items-center mt-10 col-span-4">
+                    <div class="flex justify-center items-center col-span-4">
                         <img src="{{ storage_url('nothing_found_kqlrqq', ['width' => 1926, 'height' => '926']) }}"
-                            alt="No products found" class="w-full" />
+                            alt="No products found" class="w-full rounded-lg" />
                     </div>
                 @endforelse
             </div>
@@ -81,9 +81,9 @@
 
                         </div>
                     @empty
-                        <div class="flex justify-center items-center mt-10 col-span-4">
+                        <div class="flex justify-center items-center col-span-4">
                             <img src="{{ storage_url('nothing_found_kqlrqq', ['width' => 1926, 'height' => '926']) }}"
-                                alt="No products found" class="w-full" />
+                                alt="No products found" class="w-full rounded-lg" />
                         </div>
                     @endforelse
                 </div>
