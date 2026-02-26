@@ -92,12 +92,12 @@
                 <div class="relative">
 
                     <x-loading-animation
-                        target="sortDirection, filter_by_config, platform_id, game_tag, datas, product, pagination"
+                        target="sortDirection, filter_by_config, platform_id, game_tag, gotoPage, nextPage, previousPage"
                         style="list" />
 
                     <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 2xl:grid-cols-4 content-start"
                         wire:loading.remove
-                        wire:loading.target="sortDirection, filter_by_config, platform_id, game_tag, datas, product, pagination">
+                        wire:loading.target="sortDirection, filter_by_config, platform_id, game_tag, gotoPage, nextPage, previousPage">
                         @forelse ($datas as $item)
                             <div wire:key="prod-{{ $item->id }}" wire:click="selectItem({{ $item->id }})"
                                 @click="selectedId = {{ $item->id }}"
@@ -127,7 +127,7 @@
                             </div>
                         @empty
                             <div class="col-span-full" wire:loading.remove
-                                wire:target="sortDirection, filter_by_config, platform_id, game_tag, datas, product, pagination">
+                                wire:target="sortDirection, filter_by_config, platform_id, game_tag, gotoPage, nextPage, previousPage">
                                 <x-ui.empty-card />
                             </div>
                         @endforelse
@@ -135,7 +135,7 @@
                 </div>
 
                 <div class="mt-8" wire:loading.remove
-                    wire:target="sortDirection, filter_by_config, platform_id, game_tag, datas, product, pagination">
+                    wire:target="sortDirection, filter_by_config, platform_id, game_tag, gotoPage, nextPage, previousPage">
                     <x-frontend.pagination-ui :pagination="$pagination" class="justify-center!" />
                 </div>
             </div>
