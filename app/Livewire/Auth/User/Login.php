@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth\User;
 
+use App\Enums\UserAccountStatus;
 use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
@@ -166,6 +167,14 @@ class Login extends Component
 
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
+            ]);
+        }
+
+        if ($user->account_status === UserAccountStatus::BANNED) {
+            RateLimiter::hit($this->throttleKey());
+
+            throw ValidationException::withMessages([
+                'message' => $user->getBannedLoginMessage(),
             ]);
         }
 

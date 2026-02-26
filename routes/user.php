@@ -12,7 +12,7 @@ use App\Livewire\Backend\User\Payments\NowPayment;
 use Illuminate\Support\Facades\Route;
 
 // , 'userVerify'
-Route::middleware(['auth', 'userVerify'])->prefix('dashboard')->name('user.')->group(function () {
+Route::middleware(['auth', 'userVerify', 'userNotBanned'])->prefix('dashboard')->name('user.')->group(function () {
 
     Route::controller(OrderController::class)->name('order.')->prefix('orders')->group(function () {
         Route::get('/purchased-orders', 'purchasedOrders')->name('purchased-orders');

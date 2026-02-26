@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth\User\Socialite;
 
+use App\Enums\UserAccountStatus;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -53,6 +54,10 @@ class GoogleAuthController extends Controller
                     'password' => Hash::make(Str::random(24)),
                     'email_verified_at' => now(),
                 ]);
+            }
+
+            if ($user->account_status === UserAccountStatus::BANNED) {
+                return redirect()->route('login')->withErrors(['message' => $user->getBannedLoginMessage()]);
             }
 
             Auth::login($user);

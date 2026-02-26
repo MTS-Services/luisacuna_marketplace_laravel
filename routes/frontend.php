@@ -25,35 +25,38 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/currency', [CurrencyController::class, 'index'])->name('currency');
-Route::get('/boosting', [BoostingController::class, 'index'])->name('boosting');
-Route::get('/account', [UserAccountController::class, 'index'])->name('account');
-Route::get('/items', [ItemsController::class, 'index'])->name('items');
-Route::get('/accounts', [AccountsController::class, 'index'])->name('accounts');
-Route::get('/top-up', [TopUpController::class, 'index'])->name('top-up');
-Route::get('/gift-card', [GiftCardController::class, 'index'])->name('gift-card');
-Route::get('/coaching', [CoachingController::class, 'index'])->name('coaching');
+Route::middleware('userNotBanned')->group(function () {
 
-Route::get('/game/{gameSlug}/{categorySlug}', [GameController::class, 'index'])->name('game.index');
-Route::get('/game-buy/{gameSlug}/{categorySlug}/{productId}', [GameController::class, 'buy'])->name('game.buy');
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/currency', [CurrencyController::class, 'index'])->name('currency');
+    Route::get('/boosting', [BoostingController::class, 'index'])->name('boosting');
+    Route::get('/account', [UserAccountController::class, 'index'])->name('account');
+    Route::get('/items', [ItemsController::class, 'index'])->name('items');
+    Route::get('/accounts', [AccountsController::class, 'index'])->name('accounts');
+    Route::get('/top-up', [TopUpController::class, 'index'])->name('top-up');
+    Route::get('/gift-card', [GiftCardController::class, 'index'])->name('gift-card');
+    Route::get('/coaching', [CoachingController::class, 'index'])->name('coaching');
 
-Route::controller(FrontendController::class)->group(function () {
-    Route::get('/how-to-buy', 'howToBuy')->name('how-to-buy');
-    Route::get('/buyer-protection', 'buyerProtection')->name('buyer-protection');
-    Route::get('/how-to-sell', 'howToSell')->name('how-to-sell');
-    Route::get('/seller-protection', 'sellerProtection')->name('seller-protection');
-    Route::get('/faq', 'faq')->name('faq');
-    // Route::get('/faq', 'faq')->name('faq');
-    Route::get('/contact-us', 'contactUs')->name('contact-us');
-    Route::get('/terms-and-conditions', 'termsAndConditions')->name('terms-and-conditions');
-    Route::get('/refund-policy', 'refunPolicy')->name('refund-policy');
-    Route::get('/privacy-policy', 'privacyPolicy')->name('privacy-policy');
+    Route::get('/game/{gameSlug}/{categorySlug}', [GameController::class, 'index'])->name('game.index');
+    Route::get('/game-buy/{gameSlug}/{categorySlug}/{productId}', [GameController::class, 'buy'])->name('game.buy');
+
+    Route::controller(FrontendController::class)->group(function () {
+        Route::get('/how-to-buy', 'howToBuy')->name('how-to-buy');
+        Route::get('/buyer-protection', 'buyerProtection')->name('buyer-protection');
+        Route::get('/how-to-sell', 'howToSell')->name('how-to-sell');
+        Route::get('/seller-protection', 'sellerProtection')->name('seller-protection');
+        Route::get('/faq', 'faq')->name('faq');
+        // Route::get('/faq', 'faq')->name('faq');
+        Route::get('/contact-us', 'contactUs')->name('contact-us');
+        Route::get('/terms-and-conditions', 'termsAndConditions')->name('terms-and-conditions');
+        Route::get('/refund-policy', 'refunPolicy')->name('refund-policy');
+        Route::get('/privacy-policy', 'privacyPolicy')->name('privacy-policy');
+    });
+    Route::get('/users/{username}', [UserProfileController::class, 'index'])->name('profile');
+
+    Route::get('/{categorySlug}', function (string $categorySlug) {
+        return view('frontend.pages.product', [
+            'categorySlug' => $categorySlug,
+        ]);
+    })->name('category.generic');
 });
-Route::get('/users/{username}', [UserProfileController::class, 'index'])->name('profile');
-
-Route::get('/{categorySlug}', function (string $categorySlug) {
-    return view('frontend.pages.product', [
-        'categorySlug' => $categorySlug,
-    ]);
-})->name('category.generic');

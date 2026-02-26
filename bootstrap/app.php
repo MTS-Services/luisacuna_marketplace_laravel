@@ -3,6 +3,8 @@
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\AdminVerifyMiddleware;
 use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\EnsureAdminNotBanned;
+use App\Http\Middleware\EnsureUserNotBanned;
 use App\Http\Middleware\PaymentSecurityMiddleware;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\SellerMiddleware;
@@ -31,6 +33,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => AdminMiddleware::class,
             'adminVerify' => AdminVerifyMiddleware::class,
             'userVerify' => UserVerifyMiddleware::class,
+            'adminNotBanned' => EnsureAdminNotBanned::class,
+            'userNotBanned' => EnsureUserNotBanned::class,
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,
