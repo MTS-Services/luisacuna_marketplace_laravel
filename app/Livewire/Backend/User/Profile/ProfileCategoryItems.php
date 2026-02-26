@@ -48,7 +48,7 @@ class ProfileCategoryItems extends Component
 
         $games = $this->gameService->randomData(50);
 
-        $productsPaginator = $this->productService->getPaginatedData(1, [
+        $productsPaginator = $this->productService->getPaginatedData($this->perPage, [
             'categorySlug'        => $this->categorySlug,
             'relations'           => ['games'],
             'user_id'             => $this->userId,
