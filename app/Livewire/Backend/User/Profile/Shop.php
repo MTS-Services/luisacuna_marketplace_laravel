@@ -12,24 +12,26 @@ class Shop extends Component
 {
 
     #[Url(keep: true)]
-    public $activeTab = 'currency';
+    public $categorySlug = null;
+
     public $user;
 
     public $categories = [];
 
-    protected CategoryService $service ;
-    
+    protected CategoryService $service;
+
     public function boot(CategoryService $Service,)
     {
         $this->service = $Service;
-
     }
     public function mount(User $user)
     {
 
         $this->user = $user;
 
-        $this->categories = $this->service->getDatas();
+        $categories = $this->service->getDatas();
+        $this->categories = $categories;
+        $this->categorySlug = request()->input('categorySlug', $categories->first()?->slug);
         // $this->categories->load('products');
 
     }
@@ -37,6 +39,4 @@ class Shop extends Component
     {
         return view('livewire.backend.user.profile.shop');
     }
-
-
 }
