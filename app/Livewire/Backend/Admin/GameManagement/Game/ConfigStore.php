@@ -93,7 +93,7 @@ class ConfigStore extends Component
      */
     protected function setDefaultConfig(): void
     {
-        $this->selectedDeliveryMethods = ['game_delivery'];
+        $this->selectedDeliveryMethods = [];
         $this->fields = [];
     }
 
