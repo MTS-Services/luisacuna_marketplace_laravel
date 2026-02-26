@@ -1,4 +1,4 @@
-<header x-data="{ mobileMenuOpen: false, notification: false, dropdown: '', globalSearchModal: false, open: '' }" x-cloak
+<header x-data="{ mobileMenuOpen: false, notification: false, dropdown: '', globalSearchModal: false, open: '', dropdownJustClosed: false, dropdownCloseTimeout: null }" x-cloak
     class="sticky top-0 z-50   {{ request()->routeIs('home') ? 'bg-bg-secondary glass-card shadow-none!' : 'bg-bg-secondary glass-card' }}">
     <div class=" px-4 py-4 flex items-center justify-between relative" x-cloak>
 

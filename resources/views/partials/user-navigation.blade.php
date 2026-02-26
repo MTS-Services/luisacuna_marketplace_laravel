@@ -2,7 +2,8 @@
     <div x-show="!searchActive" class="flex gap-8" x-transition:opacity.duration.300ms>
         @foreach ($categories as $category)
             <a wire:navigate href="{{ category_route($category->slug) }}"
-                x-on:mouseenter="open = (open == '{{ $category->slug }}' || open == '' || open != '{{ $category->slug }}' ? '{{ $category->slug }}' : '')"
+                x-on:mouseenter="if (dropdownCloseTimeout) { clearTimeout(dropdownCloseTimeout); dropdownCloseTimeout = null }; if (!dropdownJustClosed) { open = (open == '{{ $category->slug }}' || open == '' || open != '{{ $category->slug }}' ? '{{ $category->slug }}' : '') }"
+                x-on:mouseleave="if (dropdownCloseTimeout) clearTimeout(dropdownCloseTimeout); dropdownCloseTimeout = setTimeout(() => { open = ''; dropdownCloseTimeout = null }, 150)"
                 class="navbar_style group relative"
                 :class="{
                     'active': open == '{{ $category->slug }}' ||
