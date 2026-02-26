@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Auth\User\Socialite;
 
+use App\Enums\UserAccountStatus;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
@@ -44,6 +44,10 @@ class AppleAuthController extends Controller
                 if (!$user->apple_id) {
                     $user->update(['apple_id' => $appleUser->$this->id]);
                 }
+            }
+
+            if ($user->account_status === UserAccountStatus::BANNED) {
+                return redirect()->route('login')->withErrors(['message' => $user->getBannedLoginMessage()]);
             }
 
             Auth::login($user, true);

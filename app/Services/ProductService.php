@@ -53,12 +53,19 @@ class ProductService
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
+        $with = $filters['with'] ?? ['game', 'platform', 'product_configs', 'user'];
+
+        $allowedSortFields = ['created_at', 'price', 'quantity', 'sort_order'];
+        if (! in_array($sortField, $allowedSortFields, true)) {
+            $sortField = 'created_at';
+        }
+
         if ($search) {
             // Scout Search with online filter
             return Product::search($search)
                 ->query(
                     fn ($query) => $query
-                        ->with(['game', 'platform', 'product_configs', 'user'])
+                        ->with($with)
                         ->filter($filters)
                         ->when(isset($filters['online_only']) && $filters['online_only'], function ($q) {
                             $q->whereHas('user', function ($query) {
@@ -72,7 +79,7 @@ class ProductService
 
         // Normal query with online filter
         return $this->model->query()
-            ->with(['game', 'platform', 'product_configs', 'user'])
+            ->with($with)
             ->filter($filters)
             ->when(isset($filters['online_only']) && $filters['online_only'], function ($q) {
                 $q->whereHas('user', function ($query) {
@@ -131,7 +138,7 @@ class ProductService
         $filters = is_array($filters) ? $filters : [];
 
         return $this->model->query()
-            ->with(['user', 'game', 'platform'])
+            ->with(['user'])
             ->whereIn('products.id', function ($sub) {
                 $sub->selectRaw('MAX(id)')
                     ->from('products')

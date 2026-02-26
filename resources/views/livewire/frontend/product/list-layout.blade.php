@@ -1,6 +1,7 @@
 <div>
     <section class="container mt-2">
         <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" :game="$game" />
+
         {{-- Breadcrumbs --}}
         <div class="flex items-center gap-2 mt-8 text-lg font-semibold">
             <div class="w-4 h-4">
@@ -89,46 +90,56 @@
             {{-- Product Grid --}}
             <div class="w-full md:w-[65%] flex flex-col">
                 <div class="relative">
-                    <x-loading-animation target="serach, sortDirection" style="list" />
 
-                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 2xl:grid-cols-4 content-start"
-                        wire:loading.class="opacity-50">
-                        @forelse ($datas as $item)
-                            <div wire:key="prod-{{ $item->id }}" wire:click="selectItem({{ $item->id }})"
-                                @click="selectedId = {{ $item->id }}"
-                                :class="selectedId == {{ $item->id }} ? 'border-pink-500 ring-1 ring-pink-500' :
-                                    'border-transparent'"
-                                class="bg-bg-primary dark:bg-bg-secondary rounded-2xl p-3 border transition-all duration-300 cursor-pointer hover:border-pink-500/50">
+                    <x-loading-animation
+                        target="sortDirection, filter_by_config, platform_id, game_tag, gotoPage, nextPage, previousPage"
+                        style="list" />
 
-                                <div class="flex items-center justify-between">
-                                    <img src="{{ storage_url($game?->logo) }}" class="w-6 h-6 object-cover">
-                                    @if ($game->tags->isNotEmpty())
-                                        <span
-                                            class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl text-[10px] flex items-center gap-1">
-                                            <x-phosphor name="fire" variant="regular" class="w-3 h-3 fill-white" />
-                                            {{ optional($game->tags->random())->name }}
-                                        </span>
-                                    @endif
+                    <div wire:loading.remove
+                        wire:loading.target="sortDirection, filter_by_config, platform_id, game_tag, gotoPage, nextPage, previousPage"
+                        wire:loading.class="opacity-50" class="w-full">
+                        <div
+                            class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 2xl:grid-cols-4 content-start w-full">
+                            @forelse ($datas as $item)
+                                <div wire:key="prod-{{ $item->id }}" wire:click="selectItem({{ $item->id }})"
+                                    @click="selectedId = {{ $item->id }}"
+                                    :class="selectedId == {{ $item->id }} ? 'border-pink-500 ring-1 ring-pink-500' :
+                                        'border-transparent'"
+                                    class="bg-bg-primary dark:bg-bg-secondary rounded-2xl p-3 border transition-all duration-300 cursor-pointer hover:border-pink-500/50">
+
+                                    <div class="flex items-center justify-between">
+                                        <img src="{{ storage_url($game?->logo) }}" class="w-6 h-6 object-cover">
+                                        @if ($game?->tags?->isNotEmpty())
+                                            <span
+                                                class="bg-zinc-500 text-text-white py-1 px-2 rounded-2xl text-[10px] flex items-center gap-1">
+                                                <x-phosphor name="fire" variant="regular"
+                                                    class="w-3 h-3 fill-white" />
+                                                {{ optional($game->tags->random())->name }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                    <h3 class="text-base font-semibold text-text-white mt-4">{{ $item->quantity }}
+                                        {{ __('Units') }}
+                                    </h3>
+                                    <p class="text-xs text-text-white mt-2 opacity-70">
+                                        {{ Str::limit($item->translatedName(app()->getLocale()), 22) }}
+                                    </p>
+                                    <span class="block text-base font-semibold text-pink-500 mt-4">
+                                        {{ currency_symbol() . currency_exchange($item->price) }}
+                                    </span>
                                 </div>
-                                <h3 class="text-base font-semibold text-text-white mt-4">{{ $item->quantity }}
-                                    {{ __('Units') }}
-                                </h3>
-                                <p class="text-xs text-text-white mt-2 opacity-70">
-                                    {{ Str::limit($item->translatedName(app()->getLocale()), 22) }}
-                                </p>
-                                <span class="block text-base font-semibold text-pink-500 mt-4">
-                                    {{ currency_symbol() . currency_exchange($item->price) }}
-                                </span>
-                            </div>
-                        @empty
-                            <div class="col-span-full">
-                                <x-ui.empty-card />
-                            </div>
-                        @endforelse
+                            @empty
+                                <div class="col-span-full" wire:loading.remove
+                                    wire:target="sortDirection, filter_by_config, platform_id, game_tag, gotoPage, nextPage, previousPage">
+                                    <x-ui.empty-card />
+                                </div>
+                            @endforelse
+                        </div>
                     </div>
                 </div>
 
-                <div class="mt-8">
+                <div class="mt-8" wire:loading.remove
+                    wire:target="sortDirection, filter_by_config, platform_id, game_tag, gotoPage, nextPage, previousPage">
                     <x-frontend.pagination-ui :pagination="$pagination" class="justify-center!" />
                 </div>
             </div>
@@ -140,7 +151,7 @@
                         @if ($product)
                             <div class="flex items-center gap-1 mb-8">
                                 <div class="w-8 h-8">
-                                    <img src="{{ storage_url($product->game->logo) }}" alt=""
+                                    <img src="{{ storage_url($product->game?->logo) }}" alt=""
                                         class="w-full h-full object-cover">
                                 </div>
                                 <p></p>
@@ -148,7 +159,7 @@
                         @else
                             <p class="text-base text-text-white mb-3">{{ __('No Product Selected') }}</p>
                         @endif
-                        <div class="flex items-center justify-between py-3 border-t border-b  border-zinc-500 w-full">
+                        <div class="flex items-center justify-between py-3 border-t border-b border-zinc-500 w-full">
                             <p class="text-base text-text-white"> {{ __('Delivery Timeline') }}</p>
                             @if ($product)
                                 <p class="text-base text-text-white font-semibold">
@@ -174,8 +185,9 @@
                                     </span>
                                 </x-ui.button>
                             @else
+                                {{-- Fixed duplicate text-text class typo here --}}
                                 <a href="{{ route('login') }}" wire:navigate @class([
-                                    'bg-zinc-500 px-4 md:px-6 py-2! md:py-4 text-text-text-btn-primary hover:text-text-btn-secondary hover:bg-zinc-50 border border-zinc-500 focus:outline-none focus:ring focus:ring-pink-500 font-medium text-base w-full rounded-full flex items-center justify-center gap-2 transition duration-150 ease-in-out group text-nowrap cursor-pointer',
+                                    'bg-zinc-500 px-4 md:px-6 py-2! md:py-4 text-text-btn-primary hover:text-text-btn-secondary hover:bg-zinc-50 border border-zinc-500 focus:outline-none focus:ring focus:ring-pink-500 font-medium text-base w-full rounded-full flex items-center justify-center gap-2 transition duration-150 ease-in-out group text-nowrap cursor-pointer',
                                     'opacity-50 pointer-events-none' => !isset($product),
                                 ])>
                                     <span class="text-text-white group-hover:text-zinc-500">
@@ -221,12 +233,12 @@
                                             <x-phosphor name="thumbs-up" variant="solid"
                                                 class="w-3 h-3 fill-green-500" />
                                             <span class="text-[10px] text-zinc-300">
-                                                {{ feedback_calculate($product->user->pos_count ?? 0, $product->user->neg_count ?? 0) }}%
+                                                {{ feedback_calculate($product->user?->pos_count ?? 0, $product->user?->neg_count ?? 0) }}%
                                                 {{ __('Positive') }}
                                             </span>
                                             <span class="w-px h-2 bg-zinc-600"></span>
                                             <span
-                                                class="text-[10px] text-zinc-300">{{ $product->user->orders_count ?? 0 }}
+                                                class="text-[10px] text-zinc-300">{{ $product->user?->orders_count ?? 0 }}
                                                 {{ __('Sold') }}</span>
                                         </div>
                                     </div>
@@ -240,7 +252,7 @@
     </section>
 
     {{-- Other Sellers Table --}}
-    <section class="container mt-32 mb-20">
+    <section class="container my-10">
         <div class="mb-10">
             <h2 class="text-text-white font-semibold text-3xl">{{ __('Other Sellers') }}
                 ({{ $otherSellers->count() }})</h2>
@@ -285,7 +297,8 @@
                         <th class="px-6 py-3 font-medium text-right">{{ __('Price') }}</th>
                     </tr>
                 </thead>
-                <tbody class="space-y-4" wire.loading.remove wire:target="sellerFilter">
+                {{-- Fixed wire.loading.remove to wire:loading.remove --}}
+                <tbody class="space-y-4" wire:loading.remove wire:target="sellerFilter">
                     @forelse ($otherSellers as $seller)
                         <tr wire:key="row-{{ $seller->id }}" wire:click="selectItem({{ $seller->id }})"
                             class="bg-bg-primary dark:bg-bg-secondary hover:bg-bg-hover transition-colors group">
@@ -297,24 +310,16 @@
                                     </a>
                                     <div>
                                         <a href="{{ route('profile', $seller->user?->username) }}">
-                                            <p class="dark:text-zinc-300  font-medium text-sm">
+                                            <p class="dark:text-zinc-300 font-medium text-sm">
                                                 {{ $seller->user?->full_name }}</p>
                                         </a>
                                         <div class="flex items-center gap-1 opacity-60">
                                             <x-phosphor name="thumbs-up" variant="solid"
                                                 class="w-3 h-3 fill-zinc-400" />
                                             @php
-                                                $positiveCount =
-                                                    $seller?->user
-                                                        ?->feedbacksReceived()
-                                                        ->where('type', App\Enums\FeedbackType::POSITIVE->value)
-                                                        ->count() ?? 0;
-
-                                                $negativeCount =
-                                                    $seller?->user
-                                                        ?->feedbacksReceived()
-                                                        ->where('type', App\Enums\FeedbackType::NEGATIVE->value)
-                                                        ->count() ?? 0;
+                                                // Fixed N+1 Query issue here
+                                                $positiveCount = $seller->user?->pos_count ?? 0;
+                                                $negativeCount = $seller->user?->neg_count ?? 0;
                                             @endphp
                                             <span
                                                 class="text-[10px] dark:text-zinc-300">{{ feedback_calculate($positiveCount, $negativeCount) }}%</span>
@@ -325,7 +330,6 @@
 
                             <td
                                 class="px-6 py-4 hidden md:table-cell text-sm dark:text-zinc-300 group-hover:text-zinc-300">
-                                {{-- @dd($seller) --}}
                                 {{ $seller->translatedDeliveryTimeline(app()->getLocale()) ?? '--' }}
                             </td>
 

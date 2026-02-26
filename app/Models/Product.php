@@ -231,11 +231,14 @@ class Product extends BaseModel implements Auditable
         }
 
        if ($filters['filter_by_tag'] ?? null) {
-            $query->whereHas('platform', function ($q) use ($filters) {
-                $q->where('name', 'LIKE', '%' . $filters['filter_by_tag'] . '%');
-            })
-            ->orWhereHas('product_configs', function ($q) use ($filters) {
-                $q->where('value', 'LIKE', '%' . $filters['filter_by_tag'] . '%');
+            $tag = $filters['filter_by_tag'];
+
+            $query->where(function (Builder $q) use ($tag) {
+                $q->whereHas('platform', function ($sub) use ($tag) {
+                    $sub->where('name', 'LIKE', '%' . $tag . '%');
+                })->orWhereHas('product_configs', function ($sub) use ($tag) {
+                    $sub->where('value', 'LIKE', '%' . $tag . '%');
+                });
             });
         }
 
@@ -244,34 +247,46 @@ class Product extends BaseModel implements Auditable
         return $query;
     }
 
-
-
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
-        End of RELATIONSHIPS
-=#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
-#[SearchUsingPrefix(['name', 'description', 'delivery_timeline', 'price', 'game_name', 'platform_name', 'config'])]
-public function toSearchableArray(): array
-{
-    $this->loadMissing([
-        'game:id,name',
-        'platform:id,name',
-        'product_configs:product_id,value'
-    ]);
-    
-    return [
-        'name' => $this->name,
-        'description' => $this->description,
-        'price' => (float) $this->price,
-        'delivery_timeline' => $this->delivery_timeline,
-        'game_name' => $this->game?->name ?? '',
-        'platform_name' => $this->platform?->name ?? '',
-        'config' => $this->product_configs
-            ?->pluck('value')
-            ->filter()
-            ->values()
-            ->toArray() ?? [],
-    ];
-}
+        Scout Searchable Configuration
+    =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#= */
+    #[SearchUsingPrefix(['name', 'description', 'delivery_timeline', 'price'])]
+    public function toSearchableArray(): array
+    {
+        // For the "database" engine, Scout expects every searchable key
+        // to correspond to a real database column on the products table.
+        // So we only expose actual columns when using that engine.
+        if (config('scout.driver') === 'database') {
+            return [
+                'name' => $this->name,
+                'description' => $this->description,
+                'price' => (float) $this->price,
+                'delivery_timeline' => $this->delivery_timeline,
+            ];
+        }
+
+        // For other engines (algolia, meilisearch, collection, etc.),
+        // we can safely include related / computed attributes.
+        $this->loadMissing([
+            'game:id,name',
+            'platform:id,name',
+            'product_configs:product_id,value',
+        ]);
+
+        return [
+            'name' => $this->name,
+            'description' => $this->description,
+            'price' => (float) $this->price,
+            'delivery_timeline' => $this->delivery_timeline,
+            'game_name' => $this->game?->name ?? '',
+            'platform_name' => $this->platform?->name ?? '',
+            'config' => $this->product_configs
+                ?->pluck('value')
+                ->filter()
+                ->values()
+                ->toArray() ?? [],
+        ];
+    }
 
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=

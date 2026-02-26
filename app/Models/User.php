@@ -425,6 +425,19 @@ class User extends AuthBaseModel implements Auditable
         $this->update(['status' => UserStatus::SUSPENDED]);
     }
 
+    /**
+     * Get the message to show when a banned user attempts to log in.
+     */
+    public function getBannedLoginMessage(): string
+    {
+        $msg = __('auth.banned');
+        if (! empty($this->banned_reason)) {
+            $msg .= ' ' . __('auth.banned_reason', ['reason' => $this->banned_reason]);
+        }
+
+        return $msg;
+    }
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);

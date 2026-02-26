@@ -59,7 +59,7 @@
                         class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600 select2">
                         <option value="">{{ __('Select Status') }}</option>
                         @foreach ($statuses as $status)
-                            <option value="{{ $status['value'] }}">{{ $status['label'] }}</option>
+                            <option value="{{ $status['value'] }}" @selected($form->status == $status['value'])>{{ $status['label'] }}</option>
                         @endforeach
                     </x-ui.select>
                     <x-ui.input-error :messages="$errors->get('form.status')" class="mt-2" />

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth\User;
 
+use App\Enums\UserAccountStatus;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -66,6 +67,12 @@ class TwoFactorAuthenticatedSessionController extends Controller
                     'code' => $result['message'],
                 ]);
             }
+        }
+
+        if ($user->account_status === UserAccountStatus::BANNED) {
+            $request->session()->forget(['login.id', 'login.remember', 'login.device_info']);
+
+            return redirect()->route('login')->withErrors(['message' => $user->getBannedLoginMessage()]);
         }
 
         // Login the user and mark device validation as pending

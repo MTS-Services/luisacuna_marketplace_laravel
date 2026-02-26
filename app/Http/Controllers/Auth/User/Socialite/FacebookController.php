@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth\User\Socialite;
 
+use App\Enums\UserAccountStatus;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -87,6 +88,11 @@ class FacebookController extends Controller
                     'email_verified_at' => $email ? now() : now(),
                 ]);
             }
+
+            if ($user->account_status === UserAccountStatus::BANNED) {
+                return redirect()->route('login')->withErrors(['message' => $user->getBannedLoginMessage()]);
+            }
+
             Auth::login($user, true);
 
             return redirect()->route('profile', $user->username);

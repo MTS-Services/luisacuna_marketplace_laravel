@@ -1,5 +1,5 @@
-<section class="absolute container top-full left-0 right-0 z-50 mt-0" x-data x-show="open != ''" x-transition x-cloak
-    x-effect="$wire.setGameCategorySlug(open)" @mouseleave="open = ''">
+<section class="absolute container top-full left-0 right-0 z-50 mt-0" x-show="open != ''" x-transition x-cloak
+    x-effect="$wire.setGameCategorySlug(open)" @mouseenter="if (dropdownCloseTimeout) { clearTimeout(dropdownCloseTimeout); dropdownCloseTimeout = null }" @mouseleave="open = ''; dropdownJustClosed = true; setTimeout(() => dropdownJustClosed = false, 150)">
 
     <div class="relative" x-on:click.outside="open = ''">
         {{-- 🌟 Dropdown Content --}}

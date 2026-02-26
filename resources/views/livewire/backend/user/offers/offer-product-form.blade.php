@@ -1,4 +1,5 @@
 <div class="bg-bg-primary">
+                
     <div class="container pb-10">
         <livewire:frontend.partials.breadcrumb :gameSlug="$gameSlug" :categorySlug="$categoryName" />
         <div class="w-full mx-auto rounded-2xl">
@@ -17,7 +18,7 @@
                 </span>
             </div>
 
-            <form wire:submit.prevent="submitOffer" class="mt-10">
+            <form wire:submit="submitOffer" class="mt-10">
                 {{-- Offer Title --}}
                 <div class="bg-bg-secondary rounded-2xl mb-10 p-4 sm:p-10 md:p-20">
                     <div class="mt-8">

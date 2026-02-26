@@ -42,7 +42,7 @@ use App\Http\Controllers\Backend\Admin\GatewayAndIntegration\GatewayAndIntegrati
 use App\Http\Controllers\Backend\Admin\ProductManagement\CurrencyController as ProductCurrencyController;
 use App\Models\EmailTemplate;
 
-Route::middleware(['admin', 'adminVerify'])->name('admin.')->prefix('admin')->group(function () {
+Route::middleware(['admin', 'adminVerify', 'adminNotBanned'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
         return view('backend.admin.pages.dashboard');
     })->name('dashboard');

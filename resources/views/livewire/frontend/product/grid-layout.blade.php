@@ -2,23 +2,17 @@
     <div class="container ">
         <livewire:frontend.partials.page-inner-header :gameSlug="$gameSlug" :categorySlug="$categorySlug" :game="$game" />
 
-
-
         <div class="max-w-7xl mx-auto lg:px-8 lg:py-10">
-            <!-- Breadcrumb -->
-
             {{-- <livewire:frontend.partials.breadcrumb :gameSlug="$gameSlug" :categorySlug="$categorySlug" /> --}}
 
-            <!-- Filters Section -->
             <div class="mb-8 space-y-4">
                 <div class="flex gap-4 flex-col md:flex-row justify-between items-center md:justify-start relative"
-                    x-data={filter:false}>
-
+                    x-data="{ filter: false }">
 
                     {{-- Search --}}
                     <div class="flex-1 w-full md:min-w-64">
                         <div class="relative">
-                            <input type="text" placeholder="{{ __('Search') }}" wire:model.live="search"
+                            <input type="text" placeholder="{{ __('Search') }}" wire:model.debounce.500ms="search"
                                 class="w-full bg-bg-transparent rounded-full border border-zinc-700 px-4 py-2 pl-10 focus:outline-none focus:border-zinc-500">
                             <span class="absolute left-3 top-2.5">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -28,9 +22,8 @@
                                 </svg>
                             </span>
 
-                            <!-- Loading Spinner -->
                             <span class="absolute right-3 top-2.5" wire:loading
-                                wire:target="search, tagSelected, selectedDevice, selectedAccountType,  selectedPrice, selectedDeliveryTime , resetAllFilters">
+                                wire:target="search, platform_id, min_price, max_price, restPrice, delivery_timeline, resetAllFilters, filter_by_tag, toggleOnlineFilter, sortDirection">
                                 <svg class="animate-spin h-5 w-5 text-purple-500" xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 24 24">
                                     <circle class="opacity-25" cx="12" cy="12" r="10"
@@ -43,22 +36,16 @@
                         </div>
                     </div>
 
-
                     {{-- Platforms --}}
-
-
                     <div class="w-full md:min-w-64">
                         <x-ui.custom-select wire-model="platform_id" :wire-live="true"
                             class="rounded-full bg-transparent" label="{{ __('Platform') }}">
-
                             <x-ui.custom-option label="{{ __('All Platforms') }}" value="" />
-
                             @foreach ($platforms as $platform)
                                 <x-ui.custom-option label="{{ $platform->name }}" value="{{ $platform->id }}" />
                             @endforeach
                         </x-ui.custom-select>
                     </div>
-
 
                     {{-- Price Filters --}}
                     <div class="flex-nowrap gap-5 relative hidden md:flex" x-data="{
@@ -99,17 +86,16 @@
                                     </div>
                                     <x-ui.button class="py-2! px-3! w-auto! rounded! hidden md:flex bg-transparent!"
                                         :variant="'primary'" wire:click="restPrice">
-                                        <flux:icon name="trash" class="w-5 h-5 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
+                                        <flux:icon name="trash"
+                                            class="w-5 h-5 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
                                     </x-ui.button>
                                 </div>
                                 <ol class="list pt-2.5 space-y-2">
-
                                     <li class="py-3 px-2 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
                                         data-min="0" data-max="100"
                                         @click="selectedMin = $el.dataset.min; selectedMax = $el.dataset.max; open = false;">
                                         $0 to $100
                                     </li>
-
                                     <li class="py-3 px-2 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
                                         data-min="101" data-max="1000"
                                         @click="selectedMin = $el.dataset.min; selectedMax = $el.dataset.max; open = false;">
@@ -120,15 +106,11 @@
                         </div>
                     </div>
 
-
-                    {{-- Dellivery Timeline --}}
-
+                    {{-- Delivery Timeline --}}
                     <div class="w-full md:min-w-64">
                         <x-ui.custom-select wire-model="delivery_timeline" :wire-live="true"
                             class="rounded-full bg-transparent" label="{{ __('Delivery Timeline') }}">
-
                             <x-ui.custom-option label="{{ __('All Timeline') }}" value="" />
-
                             @foreach ($delivery_timelines as $delivery_timeline)
                                 <x-ui.custom-option label="{{ __($delivery_timeline['label']) }}"
                                     value="{{ $delivery_timeline['value'] }}" />
@@ -136,33 +118,14 @@
                         </x-ui.custom-select>
                     </div>
 
-
-
                     <x-ui.button
                         class="w-full! md:w-auto! py-2! px-3!  rounded-full  md:flex bg-transparent! text-text-primary! font-normal "
                         :variant="'primary'" wire:click="resetAllFilters">
                         {{ __('Clear All') }}
                     </x-ui.button>
 
-                    {{-- <button @click="filter = !filter"
-                        class="flex items-center gap-2 border border-zinc-500 rounded-full px-5 py-2 hover:bg-zinc-600  transition md:hidden group"
-                        :class="{ 'bg-zinc-600': filter }">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            class="h-5 w-5 group-hover:stroke-white transition-color duration-300"
-                            :class="{ 'stroke-white': filter }" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2l-7 7v5l-4 4v-9L3 6V4z" />
-                        </svg>
-                        <span class="group-hover:text-white transition-color duration-300"
-                            :class="{ 'text-white': filter }">{{ __('Filter') }}</span>
-                    </button> --}}
                     {{-- This filter for mobile Menu --}}
-
                     <x-currency.mobile-filter />
-
-                    {{-- End of Filter --}}
-
                 </div>
 
                 <div x-data="{
@@ -172,7 +135,6 @@
                     search: @entangle('filter_by_tag').live
                 }" class="w-full">
                     <div class="flex flex-wrap gap-2 sm:gap-3 transition-all duration-300">
-                        <!-- All Tags (Desktop shows all, Mobile shows limited) -->
                         <template
                             x-for="(tag, index) in (window.innerWidth < 640 ? (showAll ? tags : tags.slice(0, limit)) : tags)"
                             :key="index">
@@ -182,7 +144,6 @@
                             </span>
                         </template>
 
-                        <!-- Toggle Button (Mobile Only - Shows when tags exceed limit) -->
                         <template x-if="window.innerWidth < 640 && tags.length > limit">
                             <button @click="showAll = !showAll"
                                 class="px-3 py-1 bg-bg-secondary dark:bg-bg-secondary rounded text-sm hover:bg-bg-hover transition cursor-pointer text-text-primary flex items-center gap-1">
@@ -197,10 +158,7 @@
                     </div>
                 </div>
 
-                <!-- Recommendation -->
                 <div class="gap-3 justify-end hidden md:flex">
-
-
                     <button wire:click="toggleOnlineFilter" type="button"
                         class="px-4 py-2 border rounded-full text-sm transition whitespace-nowrap
                         {{ $onlineOnly
@@ -210,10 +168,8 @@
                             class="inline-block w-2 h-2 rounded-full mr-2 
                                 {{ $onlineOnly ? 'bg-white' : 'bg-green-500' }}"></span>
                         {{ __('Online Seller') }}
-                        @if ($onlineOnly)
-                            <span class="ml-1 text-xs"></span>
-                        @endif
                     </button>
+
                     <div class="hidden md:flex w-56!">
                         <x-ui.custom-select wireModel="sortDirection" :wireLive="true" :label="__('Highest to Lowest')"
                             class="w-full rounded-full! bg-transparent! border! border-zinc-700!">
@@ -224,14 +180,11 @@
                 </div>
             </div>
 
+            <div class="relative">
+                <x-loading-animation :target="'search, platform_id, min_price, max_price, restPrice, delivery_timeline, resetAllFilters, filter_by_tag, toggleOnlineFilter, sortDirection'" />
 
-            <!-- Products Grid Section -->
-            <div class="relative min-h-[40vh]">
-                <!-- Skeleton Loading -->
-                <x-loading-animation :target="'search, tagSelected, selectedDevice, filter_by_tag, selectedAccountType,  selectedPrice, selectedDeliveryTime , resetAllFilters'" />
-                <!-- Actual Product Cards -->
-                <div wire:loading.class="opacity-0"
-                    wire:target="search, tagSelected, selectedDevice, selectedAccountType,  selectedPrice, selectedDeliveryTime , resetAllFilters"
+                <div wire:loading.remove
+                    wire:target="search, platform_id, min_price, max_price, restPrice, delivery_timeline, resetAllFilters, filter_by_tag, toggleOnlineFilter, sortDirection, gotoPage, nextPage, previousPage"
                     x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
                     x-transition:enter-end="opacity-100"
                     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 w-full">
@@ -246,7 +199,6 @@
 
                 </div>
             </div>
-
 
             <x-frontend.pagination-ui :pagination="$pagination" />
 

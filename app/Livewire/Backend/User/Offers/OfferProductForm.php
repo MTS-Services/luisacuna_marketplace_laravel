@@ -166,6 +166,7 @@ class OfferProductForm extends Component
 
     public function submitOffer(): mixed
     {
+ 
         $rules = [
             'name' => 'required|string|max:200',
             'description' => 'nullable|string|max:500',
@@ -182,6 +183,7 @@ class OfferProductForm extends Component
             $rules['fields'] = 'nullable|array';
         }
 
+ 
         $messages = [
             'name.required' => __('Offer title is required.'),
             'platform_id.required' => __('Platform is required.'),
@@ -198,6 +200,7 @@ class OfferProductForm extends Component
         }
 
         $data = $this->validate($rules, $messages);
+
 
         $data['user_id'] = user()->id;
         $data['game_id'] = $this->gameId;
@@ -222,6 +225,7 @@ class OfferProductForm extends Component
             : route('user.offers');
 
         return $this->redirect($redirectRoute, navigate: false);
+
     }
 
     public function render(): View

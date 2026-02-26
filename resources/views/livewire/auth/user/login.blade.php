@@ -37,6 +37,9 @@
                     @error('message')
                         <span class="text-pink-500 text-sm mt-1">{{ $message }}</span>
                     @enderror
+                    @if (session('error'))
+                        <span class="text-pink-500 text-sm mt-1">{{ session('error') }}</span>
+                    @endif
 
                     <!-- Password -->
                     <div class="mb-4 sm:mb-7 px-2 sm:px-6">
