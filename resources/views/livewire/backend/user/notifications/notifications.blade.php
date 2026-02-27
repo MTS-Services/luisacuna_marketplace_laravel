@@ -67,12 +67,13 @@
                                 $isUnread = !$notification->isRead(encrypt(user()->id), get_class(user()));
                             @endphp
 
-                           <a href="{{ $notification->action }}" target="_blank" class="block">
-                            <div wire:key="notification-{{ encrypt($notification->id) }}"
-                                class="group flex flex-col sm:flex-row gap-2 md:gap-4 hover:bg-zinc-800/50 rounded-xl p-4 transition-colors {{ $isUnread ? 'bg-bg-info' : '' }}">
+                            <a href="{{ route('user.notifications.show', encrypt($notification->id)) }}"
+                                class="block"
+                                wire:navigate>
+                                <div wire:key="notification-{{ encrypt($notification->id) }}"
+                                    class="group flex flex-col sm:flex-row gap-2 md:gap-4 hover:bg-zinc-800/50 rounded-xl p-4 transition-colors {{ $isUnread ? 'bg-bg-info' : '' }}">
 
-                                <div class="flex gap-2 md:gap-4 flex-1"
-                                    wire:click="markAsRead('{{ encrypt($notification->id) }}')">
+                                    <div class="flex gap-2 md:gap-4 flex-1">
                                     <div class="shrink-0">
                                         {{-- Notification icon --}}
                                         <div
@@ -96,24 +97,15 @@
                                             class="text-sm text-text-white dark:text-zinc-200/60 mt-1 leading-relaxed line-clamp-4">
                                             {{ $notification->data['message'] ?? '' }}
                                         </p>
-                                        {{-- @if ($notification->action)
-                                            <a href="{{ $notification->action }}" target="_blank"
-                                                rel="noopener noreferrer"
-                                                class="mt-2 inline-flex items-center gap-1 text-xs text-pink-500 hover:text-pink-600 transition-colors"
-                                                wire:click="markAsRead('{{ encrypt($notification->id) }}')">
-                                                <span>{{ __('View Details') }}</span>
-                                                <flux:icon name="arrow-up-right" class="w-3 h-3" />
-                                            </a>
-                                        @endif --}}
                                     </div>
                                 </div>
 
-                                <div class="flex items-start justify-between sm:flex-col sm:items-end gap-2">
+                                <div class="flex items-start justify-between sm:flex-col sm:items-end gap-2 mt-1">
                                     <span class="text-xs text-pink-500 whitespace-nowrap">
                                         {{ $notification->created_at->diffForHumans() }}
                                     </span>
 
-                                    {{-- Action Buttons --}}
+                                    {{-- Hover Action (mark as read) --}}
                                     <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity"
                                         onclick="event.stopPropagation()">
                                         @if ($isUnread)
@@ -123,25 +115,9 @@
                                                 title="{{ __('Mark as read') }}">
                                                 <flux:icon name="check-check" class="w-4 h-4 text-green-500" />
                                             </button>
-                                        {{-- @else
-                                            <button wire:click="markAsUnread('{{ encrypt($notification->id) }}')"
-                                                wire:loading.attr="disabled"
-                                                class="p-1.5 hover:bg-zinc-700 rounded-lg transition-colors"
-                                                title="{{ __('Mark as unread') }}">
-                                                <flux:icon name="check-line" class="w-4 h-4 text-zinc-400" />
-                                            </button> --}}
                                         @endif
-
-                                        {{-- <button wire:click="deleteNotification('{{ encrypt($notification->id) }}')"
-                                            wire:confirm="Are you sure you want to delete this notification?"
-                                            wire:loading.attr="disabled"
-                                            class="p-1.5 hover:bg-red-500/20 rounded-lg transition-colors"
-                                            title="{{ __('Delete notification') }}">
-                                            <flux:icon name="trash" class="w-4 h-4 text-red-500" />
-                                        </button> --}}
                                     </div>
                                 </div>
-                            </div>
                             </a>
                         @endforeach
                     </div>

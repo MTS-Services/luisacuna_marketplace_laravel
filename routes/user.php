@@ -81,6 +81,9 @@ Route::middleware(['auth', 'userVerify', 'userNotBanned'])->prefix('dashboard')-
     Route::get('/notifications', function () {
         return view('backend.user.pages.notifications.notifications');
     })->name('notifications');
+    Route::get('/notifications/show/{id}', function (string $id) {
+        return view('backend.user.pages.notifications.notifications', ['encryptedId' => $id]);
+    })->name('notifications.show');
     Route::get('/feedback', function () {
         return view('backend.user.pages.feedback.feedback');
     })->name('feedback');

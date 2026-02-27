@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend\Game;
 
+use App\Enums\ActiveInactiveEnum;
 use App\Services\ProductService;
 use App\Traits\WithPaginationData;
 use Illuminate\Support\Facades\Auth;
@@ -10,13 +11,18 @@ use Livewire\Component;
 
 class BuyComponent extends Component
 {
-
     use WithPaginationData;
+
     public $gameSlug;
+
     public $categorySlug;
+
     public $productId;
+
     public $product;
+
     public $game;
+
     public $user;
 
     #[Url(keep: true)]
@@ -28,6 +34,7 @@ class BuyComponent extends Component
     {
         $this->service = $service;
     }
+
     public function mount($gameSlug, $categorySlug, $productId)
     {
         $this->gameSlug = $gameSlug;
@@ -42,10 +49,12 @@ class BuyComponent extends Component
             $this->redirect(route('game.index', ['gameSlug' => $this->gameSlug, 'categorySlug' => $this->categorySlug]), navigate: true);
         }
     }
+
     public function render()
     {
-        $othersSellerProducts =  $this->othersSellerProducts();
+        $othersSellerProducts = $this->othersSellerProducts();
         $this->paginationData($othersSellerProducts);
+
         return view('livewire.frontend.game.buy-component', [
 
             'relatedProducts' => $othersSellerProducts,
@@ -81,9 +90,11 @@ class BuyComponent extends Component
         $filters['skipSelf'] = true;
         $filters['gameSlug'] = $this->gameSlug;
         $filters['categorySlug'] = $this->categorySlug;
+        $filters['status'] = ActiveInactiveEnum::ACTIVE->value;
 
         $otherSellers = $this->service->getSellers(11, $filters);
         $otherSellers->load('user.feedbacksReceived');
+
         return $otherSellers;
     }
 }

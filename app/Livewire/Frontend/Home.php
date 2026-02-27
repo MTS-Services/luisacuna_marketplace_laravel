@@ -2,24 +2,27 @@
 
 namespace App\Livewire\Frontend;
 
-use Livewire\Component;
+use App\Enums\ActiveInactiveEnum;
 use App\Services\GameService;
 use App\Services\HeroService;
 use App\Services\ProductService;
-
+use Livewire\Component;
 
 class Home extends Component
 {
-
     public $perPage = 10;
+
     public $categorySlug;
+
     public $gameSlug;
 
     protected GameService $gameService;
+
     protected HeroService $heroService;
+
     protected ProductService $productService;
 
-    public function boot(GameService $gameService, HeroService $heroService, ProductService $productService,)
+    public function boot(GameService $gameService, HeroService $heroService, ProductService $productService)
     {
 
         $this->gameService = $gameService;
@@ -32,7 +35,6 @@ class Home extends Component
         $this->gameSlug = $gameSlug;
         $this->categorySlug = $categorySlug;
     }
-
 
     public function render()
     {
@@ -50,11 +52,11 @@ class Home extends Component
         ]);
         $new_bostings->load(['categories']);
 
-
         $topSelling = $this->productService->getPaginatedData($this->perPage, [
             'gameSlug' => $this->gameSlug,
             'categorySlug' => $this->categorySlug,
             'skipSelf' => true,
+            'status' => ActiveInactiveEnum::ACTIVE->value,
         ]);
         $topSelling->load(['game', 'category', 'platform', 'user.feedbacksReceived']);
 

@@ -1,5 +1,7 @@
 <section class="absolute container top-full left-0 right-0 z-50 mt-0" x-show="open != ''" x-transition x-cloak
-    x-effect="$wire.setGameCategorySlug(open)" @mouseenter="if (dropdownCloseTimeout) { clearTimeout(dropdownCloseTimeout); dropdownCloseTimeout = null }" @mouseleave="open = ''; dropdownJustClosed = true; setTimeout(() => dropdownJustClosed = false, 150)">
+    x-effect="$wire.setGameCategorySlug(open)"
+    @mouseenter="if (dropdownCloseTimeout) { clearTimeout(dropdownCloseTimeout); dropdownCloseTimeout = null }"
+    @mouseleave="open = ''; dropdownJustClosed = true; setTimeout(() => dropdownJustClosed = false, 150)">
 
     <div class="relative" x-on:click.outside="open = ''">
         {{-- 🌟 Dropdown Content --}}
@@ -22,7 +24,8 @@
                                         class="w-full h-full object-contain rounded-lg">
                                 </div>
                                 {{-- <p class="text-base font-normal dark:text-white text-gray-900">{{ $item['name'] }}</p> --}}
-                                <p class="text-base font-normal dark:text-white text-gray-900">{{ $item->translatedName(app()->getLocale()) }}</p>
+                                <p class="text-base font-normal dark:text-white text-gray-900">
+                                    {{ $item->translatedName(app()->getLocale()) }}</p>
                             </div>
 
                         </a>
@@ -77,7 +80,21 @@
                         {{ __('All Games') }}
                     </p>
 
-                    <div class="overflow-y-auto pr-2 space-y-2 flex-1 custom-scrollbar">
+                    <div class="space-y-2" wire:loading wire:target="search">
+                        @for ($i = 0; $i < 3; $i++)
+                            <div
+                                class="flex items-center gap-2.5 p-2.5 dark:hover:bg-purple-500/10 hover:bg-purple-100 rounded-lg transition cursor-pointer">
+
+                                <div
+                                    class="w-6 h-6 bg-bg-info rounded-full flex items-center justify-center animate-pulse">
+                                </div>
+                                <p class="w-full bg-bg-info rounded-full flex-1 h-2 animate-pulse"></p>
+                            </div>
+                        @endfor
+                    </div>
+
+                    <div class="overflow-y-auto pr-2 space-y-2 flex-1 custom-scrollbar" wire:loading.remove
+                        wire:target="search">
                         @forelse($this->content['all'] ?? [] as $gameItem)
                             <a href="{{ route('game.index', [
                                 'gameSlug' => $gameItem->slug,

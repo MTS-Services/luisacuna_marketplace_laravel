@@ -40,20 +40,21 @@ class Notifications extends Component
         return $this->service->getAll(
             state: $this->filter,
             type: null,
-            perPage: $this->perPage
+            perPage: $this->perPage,
+            actorType: 'user'
         );
     }
 
     #[Computed]
     public function stats(): array
     {
-        return $this->service->getStats(null);
+        return $this->service->getStats(actorType: 'user');
     }
 
     #[Computed]
     public function unreadCount(): int
     {
-        return $this->service->getUnreadCount(null);
+        return $this->service->getUnreadCount(receiverType: 'user');
     }
 
     public function updatedFilter(): void
@@ -70,7 +71,7 @@ class Notifications extends Component
     {
         $id = decrypt($encryptedId);
         try {
-            $this->service->markAsRead($id);
+            $this->service->markAsRead(notificationId: $id, actorType: 'user');
             $this->dispatch('notification-read');
             unset($this->notifications);
         } catch (\Exception $e) {
@@ -82,7 +83,7 @@ class Notifications extends Component
     {
         $id = decrypt($encryptedId);
         try {
-            $this->service->markAsUnread($id);
+            $this->service->markAsUnread(notificationId: $id, actorType: 'user');
             $this->dispatch('notification-unread');
             unset($this->notifications);
         } catch (\Exception $e) {
@@ -93,7 +94,7 @@ class Notifications extends Component
     public function markAllAsRead(): void
     {
         try {
-            $count = $this->service->markAllAsRead(null);
+            $count = $this->service->markAllAsRead(actorType: 'user');
             $this->success(__("Marked {$count} notifications as read"));
             $this->dispatch('all-notifications-read');
             unset($this->notifications);
@@ -106,7 +107,7 @@ class Notifications extends Component
     {
         $id = decrypt($encryptedId);
         try {
-            $this->service->delete($id);
+            $this->service->delete(notificationId: $id, actorType: 'user');
             $this->toasSuccess(__('Notification deleted successfully'));
             $this->dispatch('notification-deleted');
             unset($this->notifications);

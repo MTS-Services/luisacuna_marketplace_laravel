@@ -2,10 +2,8 @@
 
 namespace App\Livewire\Backend\Admin\NotificationManagement\Notification;
 
-use App\Enums\CustomNotificationType;
 use App\Services\NotificationService;
 use App\Traits\Livewire\WithNotification;
-use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -16,14 +14,13 @@ class Index extends Component
     use WithPagination, WithNotification;
 
     #[Url(keep: true)]
-    public string $filter = 'all'; // all, unread, read
+    public string $filter = 'all'; // all | unread | read
 
-    #[Url()]
+    #[Url]
     public int $perPage = 15;
 
-    public bool $isLoading = false;
     public array $selectedNotifications = [];
-    public bool $selectAll = false;
+    public bool  $selectAll             = false;
 
     protected NotificationService $service;
 
@@ -32,37 +29,15 @@ class Index extends Component
         $this->service = $service;
     }
 
-    public function mount(): void
-    { //
-    }
-
-    #[Computed]
-    public function notifications()
-    {
-        return $this->service->getAll(
-            state: $this->filter,
-            type: null,
-            perPage: $this->perPage
-        );
-    }
-
-    #[Computed]
-    public function stats(): array
-    {
-        return $this->service->getStats(null);
-    }
-
-    #[Computed]
-    public function unreadCount(): int
-    {
-        return $this->service->getUnreadCount(null);
-    }
+    /* ═══════════════════════════════════════
+     |  Property Watchers
+     ═══════════════════════════════════════ */
 
     public function updatedFilter(): void
     {
         $this->resetPage();
         $this->selectedNotifications = [];
-        $this->selectAll = false;
+        $this->selectAll             = false;
     }
 
     public function updatedPerPage(): void
@@ -70,36 +45,49 @@ class Index extends Component
         $this->resetPage();
     }
 
-    public function updatedSelectAll($value): void
+    public function updatedSelectAll(bool $value): void
     {
         if ($value) {
-            $this->selectedNotifications = $this->notifications->pluck('id')->toArray();
+            $this->selectedNotifications = $this->service
+                ->getAll(state: $this->filter, type: null, perPage: $this->perPage)
+                ->pluck('id')
+                ->toArray();
         } else {
             $this->selectedNotifications = [];
         }
     }
 
-    public function markAsRead(string $encryptedId): void
+    /* ═══════════════════════════════════════
+     |  Actions
+     |
+     |  Methods receive the raw notification UUID directly.
+     |  Encryption is NOT used here — encrypted values change on
+     |  every render (new random IV), which breaks wire:target matching
+     |  after the first action. Raw UUIDs are stable across renders,
+     |  so wire:target="markAsRead('uuid')" always matches wire:click.
+     |
+     |  The service already scopes every query to the authenticated actor,
+     |  so passing a UUID the actor doesn't own simply returns no result.
+     ═══════════════════════════════════════ */
+
+    public function markAsRead(string $id): void
     {
-        $id = decrypt($encryptedId);
         try {
-            $this->service->markAsRead($id);
+            $this->service->markAsRead(notificationId: $id, actorType: 'admin');
+            $this->toastSuccess('Notification marked as read');
             $this->dispatch('notification-read');
-            unset($this->notifications);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $this->error('Failed to mark notification as read');
         }
     }
 
-    public function markAsUnread(string $encryptedId): void
+    public function markAsUnread(string $id): void
     {
-        $id = decrypt($encryptedId);
         try {
-            $this->service->markAsUnread($id);
-            $this->success('Notification marked as unread');
+            $this->service->markAsUnread(notificationId: $id, actorType: 'admin');
+            $this->toastSuccess('Notification marked as unread');
             $this->dispatch('notification-unread');
-            unset($this->notifications);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $this->error('Failed to mark notification as unread');
         }
     }
@@ -107,28 +95,26 @@ class Index extends Component
     public function markAllAsRead(): void
     {
         try {
-            $count = $this->service->markAllAsRead(null);
-
-            $this->success("Marked {$count} notifications as read");
+            $count = $this->service->markAllAsRead(actorType: 'admin');
+            $this->toastSuccess("Marked {$count} notifications as read");
             $this->dispatch('all-notifications-read');
             $this->selectedNotifications = [];
-            $this->selectAll = false;
-            unset($this->notifications);
-        } catch (\Exception $e) {
+            $this->selectAll             = false;
+        } catch (\Exception) {
             $this->error('Failed to mark all notifications as read');
         }
     }
 
-    public function deleteNotification(string $encryptedId): void
+    public function deleteNotification(string $id): void
     {
-        $id = decrypt($encryptedId);
         try {
-            $this->service->delete($id);
-            $this->toastSuccess('Notification deleted successfully');
+            $this->service->delete(notificationId: $id, actorType: 'admin');
+            $this->toastSuccess('Notification deleted');
             $this->dispatch('notification-deleted');
-            $this->selectedNotifications = array_diff($this->selectedNotifications, [$id]);
-            unset($this->notifications);
-        } catch (\Exception $e) {
+            $this->selectedNotifications = array_values(
+                array_diff($this->selectedNotifications, [$id])
+            );
+        } catch (\Exception) {
             $this->error('Failed to delete notification');
         }
     }
@@ -141,13 +127,12 @@ class Index extends Component
         }
 
         try {
-            $count = $this->service->deleteMany($this->selectedNotifications);
-            $this->toastSuccess("Deleted {$count} notifications");
+            $count = $this->service->deleteMany(notificationIds: $this->selectedNotifications, actorType: 'admin');
+            $this->toastSuccess("Deleted {$count} notifications successfully");
             $this->dispatch('notifications-deleted');
             $this->selectedNotifications = [];
-            $this->selectAll = false;
-            unset($this->notifications);
-        } catch (\Exception $e) {
+            $this->selectAll             = false;
+        } catch (\Exception) {
             $this->error('Failed to delete selected notifications');
         }
     }
@@ -155,14 +140,12 @@ class Index extends Component
     public function deleteAll(): void
     {
         try {
-            $count = $this->service->deleteAll(null);
-
+            $count = $this->service->deleteAll(actorType: 'admin');
             $this->toastSuccess("Deleted {$count} notifications");
             $this->dispatch('all-notifications-deleted');
             $this->selectedNotifications = [];
-            $this->selectAll = false;
-            unset($this->notifications);
-        } catch (\Exception $e) {
+            $this->selectAll             = false;
+        } catch (\Exception) {
             $this->error('Failed to delete all notifications');
         }
     }
@@ -170,29 +153,41 @@ class Index extends Component
     public function refresh(): void
     {
         $this->resetPage();
-        unset($this->notifications);
         $this->success('Notifications Refreshed');
     }
+
+    /* ═══════════════════════════════════════
+     |  Event Listeners
+     ═══════════════════════════════════════ */
 
     #[On('notification-created')]
     #[On('notification-updated')]
     #[On('notification-received')]
     public function refreshNotifications(): void
     {
-        unset($this->notifications);
+        // render() always fetches fresh data — a re-render is all we need.
     }
 
-    public function getListeners(): array
-    {
-        return [
-            'notification-created' => 'refreshNotifications',
-            'notification-updated' => 'refreshNotifications',
-            'notification-received' => 'refreshNotifications',
-        ];
-    }
+    /* ═══════════════════════════════════════
+     |  Render
+     ═══════════════════════════════════════ */
 
     public function render()
     {
-        return view('livewire.backend.admin.notification-management.notification.index');
+        $notifications = $this->service->getAll(
+            state: $this->filter,
+            type: null,
+            perPage: $this->perPage,
+            actorType: 'admin'
+        );
+
+        $stats       = $this->service->getStats(actorType: 'admin');
+        $unreadCount = $this->service->getUnreadCount(receiverType: 'admin');
+
+        return view('livewire.backend.admin.notification-management.notification.index', [
+            'notifications' => $notifications,
+            'stats'         => $stats,
+            'unreadCount'   => $unreadCount,
+        ]);
     }
 }

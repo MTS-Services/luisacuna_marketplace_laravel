@@ -50,8 +50,8 @@
                             @endif
 
                             {{-- Content Container --}}
-                            <div class="group hover:bg-hover transition-all duration-200 p-4 {{ $isUnread ? 'pl-5' : 'pl-4' }}"
-                                wire:click="markAsRead('{{ encrypt($notification->id) }}')">
+                            <a href="{{ route('admin.notification.show', encrypt($notification->id)) }}" wire:navigate
+                                class="block group hover:bg-hover transition-all duration-200 p-4 {{ $isUnread ? 'pl-5' : 'pl-4' }}">
 
                                 <div class="flex items-start gap-3">
                                     {{-- Icon --}}
@@ -92,19 +92,15 @@
                                             @endif
                                         </div>
 
-                                        {{-- Action Link (if exists) --}}
-                                        @if ($notification->action)
-                                            <a href="{{ $notification->action }}" target="_blank"
-                                                rel="noopener noreferrer"
-                                                class="mt-2 inline-flex items-center gap-1 text-xs text-primary hover:text-primary-hover transition-colors"
-                                                wire:click="markAsRead('{{ encrypt($notification->id) }}')">
-                                                <span>{{ __('View Details') }}</span>
-                                                <flux:icon name="arrow-up-right" class="w-3 h-3" />
-                                            </a>
-                                        @endif
+                                        {{-- Explicit detail link inside card --}}
+                                        <span
+                                            class="mt-2 inline-flex items-center gap-1 text-xs text-primary group-hover:text-primary-hover transition-colors">
+                                            <span>{{ __('View Details') }}</span>
+                                            <flux:icon name="arrow-up-right" class="w-3 h-3" />
+                                        </span>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     @empty
                         {{-- Empty State --}}

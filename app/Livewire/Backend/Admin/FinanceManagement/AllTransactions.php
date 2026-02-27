@@ -69,7 +69,7 @@ class AllTransactions extends Component
             [
                 'key' => 'transaction_id',
                 'label' => 'View',
-                'x_click' => "\$dispatch('transaction-detail-modal-open', { transactionId: '{value}' }); console.log('open');",
+                'x_click' => "\$dispatch('transaction-detail-modal-open', { transactionId: '{value}' });",
 
             ],
         ];

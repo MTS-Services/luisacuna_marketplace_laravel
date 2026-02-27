@@ -57,7 +57,7 @@ class Sidebar extends Component
     {
         try {
             $this->isLoading = true;
-            $this->notifications = $this->service->getRecent(10, true);
+            $this->notifications = $this->service->getRecent(limit: 10, actorType: 'admin');
         } catch (\Exception $e) {
             Log::error('Failed to fetch notifications', [
                 'error' => $e->getMessage(),
@@ -73,7 +73,7 @@ class Sidebar extends Component
     #[Computed()]
     public function unreadCount(): int
     {
-        return $this->service->getUnreadCount(null);
+        return $this->service->getUnreadCount(receiverType: 'admin');
     }
 
     #[On('mark-as-read')]
@@ -81,7 +81,7 @@ class Sidebar extends Component
     {
         $id = decrypt($encryptedId);
         try {
-            $this->service->markAsRead($id);
+            $this->service->markAsRead(notificationId: $id, actorType: 'admin');
             $this->fetchNotifications();
             $this->dispatch('notification-read');
         } catch (\Exception $e) {
@@ -95,7 +95,7 @@ class Sidebar extends Component
     public function markAllAsRead(): void
     {
         try {
-            $count = $this->service->markAllAsRead();
+            $count = $this->service->markAllAsRead(actorType: 'admin');
             $this->fetchNotifications();
             $this->dispatch('all-notifications-read');
             $this->toastSuccess(__('Marked :count notifications as read', ['count' => $count]));
