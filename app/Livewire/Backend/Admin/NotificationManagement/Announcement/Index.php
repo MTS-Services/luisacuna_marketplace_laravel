@@ -3,12 +3,12 @@
 namespace App\Livewire\Backend\Admin\NotificationManagement\Announcement;
 
 use App\Enums\CustomNotificationType;
-use Livewire\Component;
 use App\Services\NotificationService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
-use Livewire\Attributes\On;
 use Illuminate\Support\Str;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 class Index extends Component
 {
@@ -70,8 +70,8 @@ class Index extends Component
             [
                 'key' => 'id',
                 'label' => 'View',
-                'x_click' => 'showAnnouncement({value})',
-                'encrypt' => true
+                'x_click' => "\$dispatch('announcement-detail-modal-open', { encryptedId: '{value}' });",
+                'encrypt' => true,
             ],
 
         ];
@@ -80,7 +80,7 @@ class Index extends Component
             'datas' => $datas,
             'columns' => $columns,
             'actions' => $actions,
-            'statuses' => CustomNotificationType::options()
+            'statuses' => CustomNotificationType::options(),
         ]);
     }
 
@@ -89,8 +89,6 @@ class Index extends Component
         $this->reset(['search', 'statusFilter', 'perPage', 'sortField', 'sortDirection']);
         $this->resetPage();
     }
-
-
 
     protected function getFilters(): array
     {

@@ -11,6 +11,7 @@
             <x-slot name="title">{{ __('Announcement List') }}</x-slot>
             <x-slot name="breadcrumb">{{ __('Announcement List') }}</x-slot>
             <livewire:backend.admin.notification-management.announcement.index />
+            <livewire:backend.admin.notification-management.announcement.show />
     @endswitch
 
     <livewire:backend.admin.notification-management.announcement.send />
