@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend\Product;
 
+use App\Enums\ActiveInactiveEnum;
 use App\Enums\FeedbackType;
 use App\Models\Currency;
 use App\Models\Product;
@@ -160,6 +161,15 @@ class ListLayout extends Component
             return;
         }
 
+        // Ensure the product is still active before proceeding
+        $this->product->refresh();
+
+        if ($this->product->status?->value !== ActiveInactiveEnum::ACTIVE->value) {
+            $this->addError('order', __('This product is no longer available.'));
+
+            return;
+        }
+
         if ((int) $this->product->user_id === (int) user()->id) {
             $this->addError('order', __('You cannot purchase your own product.'));
 
@@ -295,7 +305,7 @@ class ListLayout extends Component
             'sort_direction' => $this->sortDirection,
             'platform_id' => $this->platform_id != null ? decrypt($this->platform_id) : '',
             'game_tag' => $this->game_tag,
-
+            'status' => ActiveInactiveEnum::ACTIVE->value,
         ]);
         $this->datas->load('user.feedbacksReceived', 'game', 'category', 'platform', 'user.wallet');
 
@@ -325,6 +335,7 @@ class ListLayout extends Component
         }
 
         $filters['skipSelf'] = true;
+        $filters['status'] = ActiveInactiveEnum::ACTIVE->value;
 
         $otherSellers = $this->productService->getSellers(11, $filters);
         $otherSellers->load('user.feedbacksReceived');

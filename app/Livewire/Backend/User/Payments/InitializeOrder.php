@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\User\Payments;
 
+use App\Enums\ActiveInactiveEnum;
 use App\Enums\FeedbackType;
 use App\Models\Product;
 use App\Models\User;
@@ -87,6 +88,17 @@ class InitializeOrder extends Component
 
     public function submit()
     {
+        // Ensure the product is still active before initializing checkout
+        if ($this->product) {
+            $this->product->refresh();
+        }
+
+        if (! $this->product || $this->product->status?->value !== ActiveInactiveEnum::ACTIVE->value) {
+            $this->addError('order', __('This product is no longer available.'));
+
+            return null;
+        }
+
         try {
             $defaultCurrency = $this->currencyService->getDefaultCurrency();
 
@@ -157,7 +169,7 @@ class InitializeOrder extends Component
                 'exchange_rate' => $this->exchangeRate,
                 'quantity' => $quantity,
 
-                'notes' => 'Order initiated by ' . user()->username . ', Order ID: ' . $orderId,
+                'notes' => 'Order initiated by '.user()->username.', Order ID: '.$orderId,
                 'display_symbol' => $this->displaySymbol, // Legacy field
 
                 'points' => $totalAmountDefault * env('ORDER_POINTS_MULTIPLAYER', 100),
@@ -231,7 +243,7 @@ class InitializeOrder extends Component
     {
         $total = $this->getDisplayPrice();
 
-        return $this->displaySymbol . number_format($total, 2);
+        return $this->displaySymbol.number_format($total, 2);
     }
 
     public function render()

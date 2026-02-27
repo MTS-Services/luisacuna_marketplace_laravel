@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend\Product;
 
+use App\Enums\ActiveInactiveEnum;
 use App\Services\GameService;
 use App\Services\PlatformService;
 use App\Services\ProductService;
@@ -31,15 +32,16 @@ class GridLayout extends Component
     #[Url('q')]
     public $search = '';
 
-
     public $platform_id = '';
 
     #[Url()]
     public $delivery_timeline = '';
 
     public $category_id = 0;
+
     #[Url()]
     public $min_price = 0;
+
     #[Url()]
     public $max_price = 0;
 
@@ -52,7 +54,9 @@ class GridLayout extends Component
     public $tags = [];
 
     protected PlatformService $platformService;
+
     protected ProductService $productService;
+
     protected GameService $gameService;
 
     public function boot(PlatformService $platformService, ProductService $productService, GameService $gameService)
@@ -64,6 +68,7 @@ class GridLayout extends Component
 
         $this->gameService = $gameService;
     }
+
     public function mount($gameSlug, $categorySlug)
     {
 
@@ -72,7 +77,6 @@ class GridLayout extends Component
         $this->categorySlug = $categorySlug;
 
         $this->game = $this->gameService->findData($gameSlug, 'slug')->load(['gameConfig', 'tags']);
-
 
         $this->delivery_timelines = [
             [
@@ -96,17 +100,14 @@ class GridLayout extends Component
                 'value' => '4 Hour',
             ],
 
-
         ];
 
-
         $this->platforms = $this->platformService->getAllDatas('name', 'asc') ?? [];
-
 
         // Formatting Tags
         $tags = $this->game->tags->pluck('name')->toArray();
         $gameConfigs = $this->game->gameConfig->pluck('dropdown_values')->toArray();
-        $array = collect($gameConfigs)->filter(fn($value) => !is_null($value))->values()->toArray();
+        $array = collect($gameConfigs)->filter(fn ($value) => ! is_null($value))->values()->toArray();
         $platforms = $this->platforms->pluck('name')->toArray();
         $shuffledTags = collect(array_merge($tags, $platforms, array_merge(...$array)))->shuffle()->values()->toArray();
 
@@ -115,13 +116,11 @@ class GridLayout extends Component
 
     public function toggleOnlineFilter()
     {
-        $this->onlineOnly = !$this->onlineOnly;
+        $this->onlineOnly = ! $this->onlineOnly;
     }
-
 
     public function render()
     {
-
 
         $this->datas = $this->productService->getPaginatedData($this->perPage, [
             'gameSlug' => $this->gameSlug,
@@ -136,16 +135,15 @@ class GridLayout extends Component
             'filter_by_tag' => $this->filter_by_tag,
             'sort_direction' => $this->sortDirection,
             'online_only' => $this->onlineOnly,
+            'status' => ActiveInactiveEnum::ACTIVE->value,
         ]);
-
-
 
         $this->datas->load('user');
 
         $this->paginationData($this->datas);
 
         return view('livewire.frontend.product.grid-layout', [
-            'datas' => $this->datas
+            'datas' => $this->datas,
         ]);
     }
 

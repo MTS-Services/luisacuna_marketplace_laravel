@@ -2,14 +2,15 @@
 
 namespace App\Livewire\Backend\User\Profile;
 
+use App\Enums\ActiveInactiveEnum;
 use App\Models\User;
 use App\Services\CategoryService;
 use App\Services\GameService;
 use App\Services\ProductService;
 use App\Traits\WithPaginationData;
 use Livewire\Attributes\Locked;
-use Livewire\Component;
 use Livewire\Attributes\Url;
+use Livewire\Component;
 
 class ProfileCategoryItems extends Component
 {
@@ -23,7 +24,9 @@ class ProfileCategoryItems extends Component
     public $list_type = 'list_grid';
 
     protected GameService $gameService;
+
     protected ProductService $productService;
+
     protected CategoryService $categoryService;
 
     #[Locked]
@@ -49,19 +52,20 @@ class ProfileCategoryItems extends Component
         $games = $this->gameService->randomData(50);
 
         $productsPaginator = $this->productService->getPaginatedData($this->perPage, [
-            'categorySlug'        => $this->categorySlug,
-            'relations'           => ['games'],
-            'user_id'             => $this->userId,
-            'gameSlug'            => $this->gameSlug,
+            'categorySlug' => $this->categorySlug,
+            'relations' => ['games'],
+            'user_id' => $this->userId,
+            'gameSlug' => $this->gameSlug,
             'productTranslations' => function ($query) {
                 $query->where('language_id', get_language_id());
-            }
+            },
+            'status' => ActiveInactiveEnum::ACTIVE->value,
         ]);
 
         $this->paginationData($productsPaginator);
 
         return view('livewire.backend.user.profile.profile-category-items', [
-            'games'    => $games,
+            'games' => $games,
             'products' => $productsPaginator,
         ]);
     }

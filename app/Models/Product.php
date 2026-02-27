@@ -2,18 +2,17 @@
 
 namespace App\Models;
 
-use App\Models\BaseModel;
-use App\Traits\AuditableTrait;
 use App\Enums\ActiveInactiveEnum;
+use App\Traits\AuditableTrait;
 use App\Traits\HasTranslations;
-use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
+use OwenIt\Auditing\Contracts\Auditable;
 
 class Product extends BaseModel implements Auditable
 {
-    use   AuditableTrait, HasTranslations;
+    use AuditableTrait, HasTranslations;
     //
 
     protected $fillable = [
@@ -75,6 +74,7 @@ class Product extends BaseModel implements Auditable
     {
         return $this->belongsTo(Game::class, 'game_id', 'id');
     }
+
     public function game()
     {
         return $this->belongsTo(Game::class, 'game_id', 'id');
@@ -110,9 +110,9 @@ class Product extends BaseModel implements Auditable
 
     public function getTranslationConfig(): array
     {
-       
+
         return [
-            'fields' => ['name', 'description', 'delivery_timeline', 'delivery_method', ],
+            'fields' => ['name', 'description', 'delivery_timeline', 'delivery_method'],
             'relation' => 'productTranslations',
             'model' => ProductTranslation::class,
             'foreign_key' => 'product_id',
@@ -120,11 +120,10 @@ class Product extends BaseModel implements Auditable
                 'name' => 'name',
                 'description' => 'description',
                 'delivery_timeline' => 'delivery_timeline',
-                'delivery_method' => 'delivery_method'
+                'delivery_method' => 'delivery_method',
             ],
         ];
     }
-
 
     public function translatedName($languageIdOrLocale): string
     {
@@ -135,10 +134,12 @@ class Product extends BaseModel implements Auditable
     {
         return $this->getTranslated('description', $languageIdOrLocale) ?? $this->description;
     }
+
     public function translatedDeliveryTimeline($languageIdOrLocale): string
     {
         return $this->getTranslated('delivery_timeline', $languageIdOrLocale) ?? $this->delivery_timeline;
     }
+
     public function translatedDeliveryMethod($languageIdOrLocale): string
     {
         return $this->getTranslated('delivery_method', $languageIdOrLocale) ?? $this->delivery_method;
@@ -173,7 +174,7 @@ class Product extends BaseModel implements Auditable
         $query->when($filters['skipSelf'] ?? null, function ($query, $skipSelf) {
             $query->where('user_id', '!=', user()->id ?? 0);
         });
-    // Platform is slug of Platform table
+        // Platform is slug of Platform table
         $query->when($filters['platform_id'] ?? null, function ($query, $platform_id) {
             $query->where('platform_id', $platform_id);
         });
@@ -183,11 +184,11 @@ class Product extends BaseModel implements Auditable
         });
 
         $query->when($filters['min_price'] ?? null, function ($query, $min_price) {
-            $query->where('price', ">=", $min_price);
+            $query->where('price', '>=', $min_price);
         });
 
         $query->when($filters['max_price'] ?? null, function ($query, $max_price) {
-            $query->where('price', "<=", $max_price);
+            $query->where('price', '<=', $max_price);
         });
 
         $query->when($filters['positive_reviews'] ?? null, function ($query) {
@@ -195,7 +196,7 @@ class Product extends BaseModel implements Auditable
             $query->addSelect([
                 'seller_positive_count' => \App\Models\Feedback::selectRaw('count(*)')
                     ->whereColumn('target_user_id', 'products.user_id')
-                    ->where('type', 'positive')
+                    ->where('type', 'positive'),
             ]);
 
             // 2. Order by that virtual column (highest first, then 0s)
@@ -206,11 +207,11 @@ class Product extends BaseModel implements Auditable
             $query->withCount([
                 'orders as completed_orders_count' => function ($q) {
                     $q->where('status', \App\Enums\OrderStatus::COMPLETED);
-                }
+                },
             ])->orderByDesc('completed_orders_count');
         });
 
-        if (!empty($filters['isStocked'])) {
+        if (! empty($filters['isStocked'])) {
             $query->where('quantity', '>', 0);
         }
 
@@ -218,33 +219,36 @@ class Product extends BaseModel implements Auditable
             $query->where('user_id', $filters['user_id']);
         }
 
-        if($filters['game_tag'] ?? null) {
-             $query->whereHas('game.tags', function ($q) use ($filters) {
-            $q->where('slug', $filters['game_tag']);
-          });
+        if ($filters['game_tag'] ?? null) {
+            $query->whereHas('game.tags', function ($q) use ($filters) {
+                $q->where('slug', $filters['game_tag']);
+            });
         }
 
-        if($filters['filter_by_config'] ?? null) {
+        if ($filters['filter_by_config'] ?? null) {
             $query->whereHas('product_configs', function ($q) use ($filters) {
                 $q->where('value', $filters['filter_by_config']);
             });
         }
 
-       if ($filters['filter_by_tag'] ?? null) {
+        if ($filters['filter_by_tag'] ?? null) {
             $tag = $filters['filter_by_tag'];
 
             $query->where(function (Builder $q) use ($tag) {
                 $q->whereHas('platform', function ($sub) use ($tag) {
-                    $sub->where('name', 'LIKE', '%' . $tag . '%');
+                    $sub->where('name', 'LIKE', '%'.$tag.'%');
                 })->orWhereHas('product_configs', function ($sub) use ($tag) {
-                    $sub->where('value', 'LIKE', '%' . $tag . '%');
+                    $sub->where('value', 'LIKE', '%'.$tag.'%');
                 });
             });
         }
 
-
-
         return $query;
+    }
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('status', ActiveInactiveEnum::ACTIVE->value);
     }
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
@@ -287,7 +291,6 @@ class Product extends BaseModel implements Auditable
                 ->toArray() ?? [],
         ];
     }
-
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 End of RELATIONSHIPS
