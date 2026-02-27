@@ -63,36 +63,39 @@
                     @php
                         $isUnread = !$notification->isRead(encrypt(user()->id), get_class(user()));
                     @endphp
-                    <div wire:key="user-notif-{{ $notification->id }}"
-                        wire:click="markAsRead('{{ encrypt($notification->id) }}')"
-                        class="flex gap-4 p-4 hover:bg-zinc-50 dark:hover:bg-white/5 transition-all cursor-pointer {{ $isUnread ? 'bg-pink-50/30 dark:bg-pink-500/5' : '' }}">
+                    <a href="{{ route('user.notifications.show', encrypt($notification->id)) }}" wire:navigate
+                        class="block"
+                        onclick="$wire.markAsRead('{{ encrypt($notification->id) }}')">
+                        <div wire:key="user-notif-{{ $notification->id }}"
+                            class="flex gap-4 p-4 hover:bg-zinc-50 dark:hover:bg-white/5 transition-all cursor-pointer {{ $isUnread ? 'bg-pink-50/30 dark:bg-pink-500/5' : '' }}">
 
-                        <div class="shrink-0">
-                            <div
-                                class="relative w-10 h-10 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center">
-                                <flux:icon name="{{ $notification->data['icon'] ?? 'bell' }}"
-                                    class="w-5 h-5 text-zinc-500" />
-                                @if ($isUnread)
-                                    <span
-                                        class="absolute top-0 right-0 w-2.5 h-2.5 bg-pink-500 border-2 border-white dark:border-zinc-900 rounded-full"></span>
-                                @endif
+                            <div class="shrink-0">
+                                <div
+                                    class="relative w-10 h-10 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center">
+                                    <flux:icon name="{{ $notification->data['icon'] ?? 'bell' }}"
+                                        class="w-5 h-5 text-zinc-500" />
+                                    @if ($isUnread)
+                                        <span
+                                            class="absolute top-0 right-0 w-2.5 h-2.5 bg-pink-500 border-2 border-white dark:border-zinc-900 rounded-full"></span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="flex-1 min-w-0">
+                                <div class="flex justify-between items-baseline mb-0.5">
+                                    <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate">
+                                        {{ $notification->data['title'] ?? __('Notification') }}
+                                    </h3>
+                                    <span class="text-[10px] text-zinc-400 font-medium shrink-0">
+                                        {{ $notification->created_at->diffForHumans(short: true) }}
+                                    </span>
+                                </div>
+                                <p class="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
+                                    {{ $notification->data['message'] ?? '' }}
+                                </p>
                             </div>
                         </div>
-
-                        <div class="flex-1 min-w-0">
-                            <div class="flex justify-between items-baseline mb-0.5">
-                                <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate">
-                                    {{ $notification->data['title'] ?? __('Notification') }}
-                                </h3>
-                                <span class="text-[10px] text-zinc-400 font-medium shrink-0">
-                                    {{ $notification->created_at->diffForHumans(short: true) }}
-                                </span>
-                            </div>
-                            <p class="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
-                                {{ $notification->data['message'] ?? '' }}
-                            </p>
-                        </div>
-                    </div>
+                    </a>
                 @empty
                     <div x-show="!loading && $wire.initialized"
                         class="flex flex-col items-center justify-center py-20 px-6 text-center">

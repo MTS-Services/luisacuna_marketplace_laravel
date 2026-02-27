@@ -9,6 +9,7 @@ use App\Models\Admin;
 use App\Models\CustomNotification;
 use App\Models\CustomNotificationStatus;
 use App\Models\DeletedCustomNotification;
+use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -22,7 +23,7 @@ class NotificationService
     ) {}
 
     /**
-     * Find notification by ID for current actor
+     * Find notification by ID (with all relations)
      */
     public function find(string $id): ?CustomNotification
     {
@@ -32,27 +33,7 @@ class NotificationService
     }
 
     /**
-     * Check if unread notifications exist
-     */
-    public function unreadExists(
-        ?CustomNotificationType $type = null,
-        ?string $receiverType = null,
-        ?int $receiverId = null
-    ): bool {
-        [$actorId, $actorType] = $this->resolveActor($receiverId, $receiverType);
-
-        return $this->notification
-            ->query()
-            ->forReceiver($actorId, $actorType)
-            ->forActorType($actorType)
-            ->when($type, fn ($q) => $q->where('type', $type))
-            ->unreadForActor($actorId, $actorType)
-            ->notDeletedForActor($actorId, $actorType)
-            ->exists();
-    }
-
-    /**
-     * Get unread count
+     * Get unread count for the resolved actor
      */
     public function getUnreadCount(
         ?CustomNotificationType $type = null,
@@ -65,41 +46,60 @@ class NotificationService
             ->query()
             ->forReceiver($actorId, $actorType)
             ->forActorType($actorType)
-            ->when($type, fn ($q) => $q->where('type', $type))
+            ->when($type, fn($q) => $q->where('type', $type))
             ->unreadForActor($actorId, $actorType)
             ->notDeletedForActor($actorId, $actorType)
             ->count();
     }
 
     /**
-     * Get all notifications with filters
+     * Check if unread notifications exist for the resolved actor
+     */
+    public function unreadExists(
+        ?CustomNotificationType $type = null,
+        ?string $receiverType = null,
+        ?int $receiverId = null
+    ): bool {
+        [$actorId, $actorType] = $this->resolveActor($receiverId, $receiverType);
+
+        return $this->notification
+            ->query()
+            ->forReceiver($actorId, $actorType)
+            ->forActorType($actorType)
+            ->when($type, fn($q) => $q->where('type', $type))
+            ->unreadForActor($actorId, $actorType)
+            ->notDeletedForActor($actorId, $actorType)
+            ->exists();
+    }
+
+    /**
+     * Get paginated notifications with state filter (all / read / unread / deleted)
      */
     public function getAll(
         string $state = 'all',
         ?CustomNotificationType $type = null,
-        int $perPage = 20
+        int $perPage = 20,
+        ?string $actorType = null
     ): LengthAwarePaginator {
-        [$actorId, $actorType] = $this->resolveActor();
+        [$actorId, $actorType] = $this->resolveActor(null, $actorType);
 
         return $this->notification
             ->query()
             ->with(['sender', 'receiver', 'statuses', 'deleteds'])
             ->forReceiver($actorId, $actorType)
             ->forActorType($actorType)
-            ->notDeletedForActor($actorId, $actorType)
-            ->when($type, fn ($q) => $q->where('type', $type))
-            ->byState($state, $actorId, $actorType)
+            ->when($type, fn($q) => $q->where('type', $type))
+            ->byState($state, $actorId, $actorType)   // byState owns notDeleted / deleted scoping
             ->latest()
             ->paginate($perPage);
     }
 
     /**
-     * Get recent notifications
+     * Get recent notifications (used by Sidebar)
      */
-    public function getRecent(int $limit = 10, ?bool $onlyAdmin = false): mixed
+    public function getRecent(int $limit = 10, ?string $actorType = null): mixed
     {
-
-        [$actorId, $actorType] = $this->resolveActor(type: $onlyAdmin ? 'admin' : null);
+        [$actorId, $actorType] = $this->resolveActor(null, $actorType);
 
         return $this->notification
             ->query()
@@ -113,7 +113,7 @@ class NotificationService
     }
 
     /**
-     * Get announcement data with search and filters
+     * Get announcement data with search and filters (for announcement management page)
      */
     public function getAnnouncementDatas(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
@@ -121,55 +121,50 @@ class NotificationService
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
-        $query = $this->notification
+        return $this->notification
             ->query()
             ->announcementType()
-            ->filter($filters);
-
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->whereRaw("JSON_UNQUOTE(JSON_EXTRACT(data, '$.title')) LIKE ?", ["%{$search}%"])
-                    ->orWhereRaw("JSON_UNQUOTE(JSON_EXTRACT(data, '$.message')) LIKE ?", ["%{$search}%"])
-                    ->orWhereRaw("JSON_UNQUOTE(JSON_EXTRACT(data, '$.description')) LIKE ?", ["%{$search}%"])
-                    ->orWhere('type', 'like', "%{$search}%")
-                    ->orWhere('action', 'like', "%{$search}%");
-            });
-        }
-
-        return $query
+            ->filter($filters)
+            ->when($search, function ($q) use ($search) {
+                $q->where(function ($inner) use ($search) {
+                    $inner->whereRaw("JSON_UNQUOTE(JSON_EXTRACT(data, '$.title')) LIKE ?", ["%{$search}%"])
+                        ->orWhereRaw("JSON_UNQUOTE(JSON_EXTRACT(data, '$.message')) LIKE ?", ["%{$search}%"])
+                        ->orWhereRaw("JSON_UNQUOTE(JSON_EXTRACT(data, '$.description')) LIKE ?", ["%{$search}%"])
+                        ->orWhere('type', 'like', "%{$search}%")
+                        ->orWhere('action', 'like', "%{$search}%");
+                });
+            })
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
     }
 
     /**
-     * Create new notification
+     * Create a new notification and broadcast it
      */
     public function create(array $data): CustomNotification
     {
         return DB::transaction(function () use ($data) {
-            $notificationData = [
-                'title' => $data['title'] ?? null,
-                'message' => $data['message'] ?? null,
-                'description' => $data['description'] ?? null,
-                'icon' => $data['icon'] ?? null,
-            ];
-
             $additional = $data['additional'] ?? null;
             if (is_array($additional) && empty($additional)) {
                 $additional = null;
             }
 
             $notification = $this->notification->create([
-                'type' => $data['type'],
-                'action' => $data['action'] ?? null,
-                'sender_id' => $data['sender_id'] ?? null,
-                'sender_type' => $data['sender_type'] ?? null,
-                'receiver_id' => $data['receiver_id'] ?? null,
+                'type'          => $data['type'],
+                'action'        => $data['action'] ?? null,
+                'sender_id'     => $data['sender_id'] ?? null,
+                'sender_type'   => $data['sender_type'] ?? null,
+                'receiver_id'   => $data['receiver_id'] ?? null,
                 'receiver_type' => $data['receiver_type'] ?? null,
-                'is_announced' => $data['is_announced'] ?? false,
-                'data' => $notificationData,
-                'additional' => $additional,
-                'sort_order' => $data['sort_order'] ?? 0,
+                'is_announced'  => $data['is_announced'] ?? false,
+                'sort_order'    => $data['sort_order'] ?? 0,
+                'additional'    => $additional,
+                'data'          => [
+                    'title'       => $data['title'] ?? null,
+                    'message'     => $data['message'] ?? null,
+                    'description' => $data['description'] ?? null,
+                    'icon'        => $data['icon'] ?? null,
+                ],
             ]);
 
             Log::info('Notification created', ['id' => $notification->id]);
@@ -181,7 +176,7 @@ class NotificationService
     }
 
     /**
-     * Update notification
+     * Update an existing notification
      */
     public function update(string $id, array $data): ?CustomNotification
     {
@@ -192,13 +187,15 @@ class NotificationService
                 return null;
             }
 
-            if (isset($data['title']) || isset($data['message']) || isset($data['description']) || isset($data['icon'])) {
-                $notificationData = $notification->data ?? [];
-                $notificationData['title'] = $data['title'] ?? $notificationData['title'] ?? null;
-                $notificationData['message'] = $data['message'] ?? $notificationData['message'] ?? null;
-                $notificationData['description'] = $data['description'] ?? $notificationData['description'] ?? null;
-                $notificationData['icon'] = $data['icon'] ?? $notificationData['icon'] ?? null;
-                $data['data'] = $notificationData;
+            // Merge data-column fields if any were supplied
+            if (array_intersect_key($data, array_flip(['title', 'message', 'description', 'icon']))) {
+                $existing = $notification->data ?? [];
+                $data['data'] = [
+                    'title'       => $data['title']       ?? $existing['title']       ?? null,
+                    'message'     => $data['message']     ?? $existing['message']     ?? null,
+                    'description' => $data['description'] ?? $existing['description'] ?? null,
+                    'icon'        => $data['icon']        ?? $existing['icon']        ?? null,
+                ];
                 unset($data['title'], $data['message'], $data['description'], $data['icon']);
             }
 
@@ -209,61 +206,56 @@ class NotificationService
     }
 
     /**
-     * Mark notification as read
+     * Mark a single notification as read for the current actor
      */
-    public function markAsRead(string $notificationId): bool
+    public function markAsRead(string $notificationId, ?string $actorType = null): bool
     {
-        [$actorId, $actorType] = $this->resolveActor();
+        [$actorId, $actorType] = $this->resolveActor(type: $actorType);
 
-        $notification = $this->find($notificationId);
-
-        if (! $notification) {
+        if (! $this->find($notificationId)) {
             return false;
         }
 
-        return DB::transaction(function () use ($notificationId, $actorId, $actorType) {
-            $this->status->updateOrCreate(
-                [
-                    'notification_id' => $notificationId,
-                    'actor_id' => $actorId,
-                    'actor_type' => $actorType,
-                ],
-                ['read_at' => now()]
-            );
+        $this->status->updateOrCreate(
+            [
+                'notification_id' => $notificationId,
+                'actor_id'        => $actorId,
+                'actor_type'      => $actorType,
+            ],
+            ['read_at' => now()]
+        );
 
-            return true;
-        });
+        return true;
     }
 
     /**
-     * Mark notification as unread
+     * Mark a single notification as unread for the current actor
      */
-    public function markAsUnread(string $notificationId): bool
+    public function markAsUnread(string $notificationId, ?string $actorType = null): bool
     {
-        [$actorId, $actorType] = $this->resolveActor();
+        [$actorId, $actorType] = $this->resolveActor(type: $actorType);
 
-        $updated = $this->status
+        return (bool) $this->status
             ->where('notification_id', $notificationId)
             ->where('actor_id', $actorId)
             ->where('actor_type', $actorType)
             ->update(['read_at' => null]);
-
-        return (bool) $updated;
     }
 
     /**
-     * Mark all notifications as read
+     * Mark all unread notifications as read for the current actor
+     * Uses upsert for a single efficient DB round-trip
      */
-    public function markAllAsRead(?CustomNotificationType $type = null): int
+    public function markAllAsRead(?CustomNotificationType $type = null, ?string $actorType = null): int
     {
-        [$actorId, $actorType] = $this->resolveActor();
+        [$actorId, $actorType] = $this->resolveActor(type: $actorType);
 
         return DB::transaction(function () use ($actorId, $actorType, $type) {
             $notificationIds = $this->notification
                 ->query()
                 ->forReceiver($actorId, $actorType)
                 ->forActorType($actorType)
-                ->when($type, fn ($q) => $q->where('type', $type))
+                ->when($type, fn($q) => $q->where('type', $type))
                 ->unreadForActor($actorId, $actorType)
                 ->notDeletedForActor($actorId, $actorType)
                 ->pluck('id');
@@ -273,88 +265,81 @@ class NotificationService
             }
 
             $now = now();
-            foreach ($notificationIds as $notificationId) {
-                $this->status->updateOrCreate(
-                    [
-                        'notification_id' => $notificationId,
-                        'actor_id' => $actorId,
-                        'actor_type' => $actorType,
-                    ],
-                    ['read_at' => $now]
-                );
-            }
+
+            $this->status->upsert(
+                $notificationIds->map(fn($id) => [
+                    'notification_id' => $id,
+                    'actor_id'        => $actorId,
+                    'actor_type'      => $actorType,
+                    'read_at'         => $now,
+                ])->toArray(),
+                ['notification_id', 'actor_id', 'actor_type'],
+                ['read_at']
+            );
 
             return $notificationIds->count();
         });
     }
 
     /**
-     * Soft delete notification for actor
+     * Soft-delete a notification for the current actor
      */
-    public function delete(string $notificationId): bool
+    public function delete(string $notificationId, ?string $actorType = null): bool
     {
-        [$actorId, $actorType] = $this->resolveActor();
+        [$actorId, $actorType] = $this->resolveActor(type: $actorType);
 
-        $notification = $this->find($notificationId);
-
-        if (! $notification) {
+        if (! $this->find($notificationId)) {
             return false;
         }
 
-        $exists = $this->deleted
-            ->where('notification_id', $notificationId)
-            ->where('actor_id', $actorId)
-            ->where('actor_type', $actorType)
-            ->exists();
-
-        if ($exists) {
-            return true;
-        }
-
-        $created = $this->deleted->create([
+        // insertOrIgnore handles the case where the record already exists
+        $this->deleted->insertOrIgnore([
             'notification_id' => $notificationId,
-            'actor_id' => $actorId,
-            'actor_type' => $actorType,
+            'actor_id'        => $actorId,
+            'actor_type'      => $actorType,
+            'created_at'      => now(),
+            'updated_at'      => now(),
         ]);
 
-        return (bool) $created;
+        return true;
     }
 
     /**
-     * Delete multiple notifications
+     * Soft-delete multiple notifications for the current actor
      */
-    public function deleteMany(array $notificationIds): int
+    public function deleteMany(array $notificationIds, ?string $actorType = null): int
     {
-        [$actorId, $actorType] = $this->resolveActor();
+        [$actorId, $actorType] = $this->resolveActor(type: $actorType);
 
-        return DB::transaction(function () use ($notificationIds, $actorId, $actorType) {
-            $records = collect($notificationIds)->map(fn ($id) => [
-                'notification_id' => $id,
-                'actor_id' => $actorId,
-                'actor_type' => $actorType,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ])->toArray();
+        $now = now();
 
-            $this->deleted->insert($records);
+        $records = collect($notificationIds)->map(fn($id) => [
+            'notification_id' => $id,
+            'actor_id'        => $actorId,
+            'actor_type'      => $actorType,
+            'created_at'      => $now,
+            'updated_at'      => $now,
+        ])->toArray();
 
-            return count($records);
-        });
+        // insertOrIgnore skips duplicates gracefully
+        $this->deleted->insertOrIgnore($records);
+
+        return count($records);
     }
 
     /**
-     * Delete all notifications for actor
+     * Soft-delete all visible notifications for the current actor
      */
-    public function deleteAll(?CustomNotificationType $type = null): int
+    public function deleteAll(?CustomNotificationType $type = null, ?string $actorType = null): int
     {
-        [$actorId, $actorType] = $this->resolveActor();
+        [$actorId, $actorType] = $this->resolveActor(type: $actorType);
 
         return DB::transaction(function () use ($actorId, $actorType, $type) {
             $notificationIds = $this->notification
                 ->query()
                 ->forReceiver($actorId, $actorType)
                 ->forActorType($actorType)
-                ->when($type, fn ($q) => $q->where('type', $type))
+                ->when($type, fn($q) => $q->where('type', $type))
                 ->notDeletedForActor($actorId, $actorType)
                 ->pluck('id');
 
@@ -362,38 +347,38 @@ class NotificationService
                 return 0;
             }
 
-            $records = $notificationIds->map(fn ($id) => [
-                'notification_id' => $id,
-                'actor_id' => $actorId,
-                'actor_type' => $actorType,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ])->toArray();
+            $now = now();
 
-            $this->deleted->insert($records);
+            $this->deleted->insertOrIgnore(
+                $notificationIds->map(fn($id) => [
+                    'notification_id' => $id,
+                    'actor_id'        => $actorId,
+                    'actor_type'      => $actorType,
+                    'created_at'      => $now,
+                    'updated_at'      => $now,
+                ])->toArray()
+            );
 
-            return count($records);
+            return $notificationIds->count();
         });
     }
 
     /**
-     * Restore deleted notification
+     * Restore a soft-deleted notification for the current actor
      */
-    public function restore(string $notificationId): bool
+    public function restore(string $notificationId, ?string $actorType = null): bool
     {
-        [$actorId, $actorType] = $this->resolveActor();
+        [$actorId, $actorType] = $this->resolveActor(type: $actorType);
 
-        $deleted = $this->deleted
+        return (bool) $this->deleted
             ->where('notification_id', $notificationId)
             ->where('actor_id', $actorId)
             ->where('actor_type', $actorType)
             ->delete();
-
-        return (bool) $deleted;
     }
 
     /**
-     * Force delete notification permanently (admin only)
+     * Permanently delete a notification and all its statuses (admin-only operation)
      */
     public function forceDelete(string $notificationId): bool
     {
@@ -412,34 +397,38 @@ class NotificationService
     }
 
     /**
-     * Get notification statistics
+     * Get read / unread / total stats for the current actor
      */
-    public function getStats(?CustomNotificationType $type = null): array
+    public function getStats(?CustomNotificationType $type = null, ?string $actorType = null): array
     {
-        [$actorId, $actorType] = $this->resolveActor();
+        [$actorId, $actorType] = $this->resolveActor(type: $actorType);
 
-        $query = $this->notification
+        $base = $this->notification
             ->query()
             ->forReceiver($actorId, $actorType)
             ->forActorType($actorType)
-            ->when($type, fn ($q) => $q->where('type', $type))
+            ->when($type, fn($q) => $q->where('type', $type))
             ->notDeletedForActor($actorId, $actorType);
 
-        $total = $query->count();
-        $unread = (clone $query)->unreadForActor($actorId, $actorType)->count();
-        $read = (clone $query)->readForActor($actorId, $actorType)->count();
+        $total  = $base->count();
+        $unread = (clone $base)->unreadForActor($actorId, $actorType)->count();
+        $read   = (clone $base)->readForActor($actorId, $actorType)->count();
 
         return compact('total', 'unread', 'read');
     }
 
+    // ─────────────────────────────────────────────────────────────
+    //  Internals
+    // ─────────────────────────────────────────────────────────────
+
     /**
-     * Broadcast notification based on type
+     * Broadcast the notification to the appropriate channel(s)
      */
     protected function broadcastNotification(CustomNotification $notification): void
     {
         match ($notification->type) {
-            CustomNotificationType::USER => broadcast(new UserNotificationSent($notification)),
-            CustomNotificationType::ADMIN => broadcast(new AdminNotificationSent($notification)),
+            CustomNotificationType::USER   => broadcast(new UserNotificationSent($notification)),
+            CustomNotificationType::ADMIN  => broadcast(new AdminNotificationSent($notification)),
             CustomNotificationType::PUBLIC => [
                 broadcast(new UserNotificationSent($notification)),
                 broadcast(new AdminNotificationSent($notification)),
@@ -448,31 +437,49 @@ class NotificationService
         };
 
         Log::info('Notification broadcasted', [
-            'id' => $notification->id,
+            'id'   => $notification->id,
             'type' => $notification->type->value,
         ]);
     }
 
     /**
-     * Resolve current actor (user or admin)
+     * Resolve the currently authenticated actor [id, fully-qualified class name].
+     *
+     * Priority:
+     *   1. Explicit $id + $type arguments
+     *   2. $type === 'admin' shorthand
+     *   3. Admin routes  → admin()
+     *   4. Everything else → user()
+     *
+     * @throws \RuntimeException when no actor can be resolved
      */
     protected function resolveActor(?int $id = null, ?string $type = null): array
     {
+        // Explicit override
         if ($id && $type) {
             return [$id, $type];
         }
-        if ($type == 'admin') {
+
+        // Shorthand for "force admin" (used by getRecent with onlyAdmin=true)
+        if ($type === 'admin') {
             return [admin()->id, Admin::class];
         }
 
-        if (! request()->routeIs('admin.*')) {
-            if ($user = user()) {
-                return [$user->id, get_class($user)];
+        // Shorthand for "force user" (used by getRecent with onlyUser=true)
+        if ($type === 'user') {
+            return [user()->id, User::class];
+        }
+
+        // Admin routes
+        if (request()->routeIs('admin.*')) {
+            if ($admin = admin()) {
+                return [$admin->id, get_class($admin)];
             }
         }
 
-        if (function_exists('admin') && $admin = admin()) {
-            return [$admin->id, get_class($admin)];
+        // User routes
+        if ($user = user()) {
+            return [$user->id, get_class($user)];
         }
 
         throw new \RuntimeException('No authenticated actor found');
