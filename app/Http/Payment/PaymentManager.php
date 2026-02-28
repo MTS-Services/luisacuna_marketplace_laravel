@@ -3,9 +3,10 @@
 namespace App\Http\Payment;
 
 use Illuminate\Support\Collection;
-use App\Http\Payment\Methods\CryptoMethod;
+use App\Http\Payment\Methods\NowPaymentMethod;
 use App\Http\Payment\Methods\WalletMethod;
 use App\Http\Payment\Methods\StripeMethod;
+use App\Http\Payment\Methods\TebexMethod;
 use App\Models\PaymentGateway;
 
 class PaymentManager
@@ -16,7 +17,8 @@ class PaymentManager
     {
         $this->paymentMethods = collect([
             'stripe' => StripeMethod::class,
-            'crypto' => CryptoMethod::class,
+            'tebex' => TebexMethod::class,
+            'crypto' => NowPaymentMethod::class,
             'wallet' => WalletMethod::class
         ]);
     }

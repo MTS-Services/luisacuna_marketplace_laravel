@@ -8,7 +8,6 @@ use App\Http\Controllers\Backend\User\WalletManagement\WalletController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SellerVerificationController;
 use App\Livewire\Backend\User\Payments\Checkout;
-use App\Livewire\Backend\User\Payments\NowPayment;
 use Illuminate\Support\Facades\Route;
 
 // , 'userVerify'
@@ -106,26 +105,6 @@ Route::middleware(['auth', 'userVerify', 'userNotBanned'])->prefix('dashboard')-
             Route::get('/failed', 'paymentFailed')->name('failed');
             Route::get('/gateway/{slug}', 'getGatewayConfig')->name('gateway.config');
         });
-
-    // NOWPayments IPN webhook
-    Route::post('/nowpayments/ipn', [PaymentController::class, 'nowpaymentsWebhook'])->name('nowpayments.webhook');
-    // Route::get('/payment/create/{id}', NowPayment::class)->name('payment.create');
-    // Route::get('/payment/success', function () {
-    //     return view('payment.success');
-    // })->name('payment.success');
-    // Route::get('/payment/cancel', function () {
-    //     return view('payment.cancel');
-    // })->name('payment.cancel');
-
-    // Route::get('/test-nowpayments-config', function () {
-    //     return [
-    //         'api_key' => config('nowpayments.apiKey'),
-    //         'env' => config('nowpayments.env'),
-    //         'base_url' => config('nowpayments.env') === 'live'
-    //             ? 'https://api.nowpayments.io/v1'
-    //             : 'https://api-sandbox.nowpayments.io/v1',
-    //     ];
-    // });
 
     Route::controller(WalletController::class)->name('wallet.')->prefix('wallet')->group(function () {
         Route::get('/', 'wallet')->name('index');

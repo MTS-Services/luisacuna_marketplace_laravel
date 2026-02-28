@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
-class CryptoMethod extends PaymentMethod
+class NowPaymentMethod extends PaymentMethod
 {
     protected $id = 'crypto';
 
@@ -32,9 +32,7 @@ class CryptoMethod extends PaymentMethod
 
     protected $currencyService;
 
-    protected $NOW_PUBLIC_API_KEY;
-
-    protected $NOW_PRIVATE_API_KEY;
+    protected $API_KEY;
 
     protected string $baseUrl;
 
@@ -42,18 +40,20 @@ class CryptoMethod extends PaymentMethod
     {
         parent::__construct($gateway, $conversationService, $achievementService);
         $this->currencyService = app(CurrencyService::class);
-        $this->NOW_PUBLIC_API_KEY = config('services.crypto.public_api_key');
-        $this->NOW_PRIVATE_API_KEY = config('services.crypto.private_api_key');
 
-        $this->baseUrl = config('services.crypto.env') === 'live'
-            ? 'https://api.nowpayments.io/v1'
-            : 'https://api-sandbox.nowpayments.io/v1';
+        $this->API_KEY = $this->gateway?->getCredential('api_key')
+            ?? config('services.crypto.private_api_key');
+
+        $this->baseUrl = $this->gateway?->getCredential('base_url')
+            ?? (($this->gateway?->mode?->value ?? config('services.crypto.env', 'sandbox')) === 'live'
+                ? 'https://api.nowpayments.io/v1'
+                : 'https://api-sandbox.nowpayments.io/v1');
     }
 
     protected function headers(): array
     {
         return [
-            'x-api-key' => $this->NOW_PRIVATE_API_KEY,
+            'x-api-key' => $this->API_KEY,
             'Accept' => 'application/json',
         ];
     }
@@ -116,12 +116,12 @@ class CryptoMethod extends PaymentMethod
 
                 // Set success/cancel URLs
                 if ($isTopUp) {
-                    $successUrl = route('user.payment.success')."?order_id={$order->order_id}";
-                    $cancelUrl = route('user.payment.failed')."?order_id={$order->order_id}";
+                    $successUrl = route('user.payment.success') . "?order_id={$order->order_id}";
+                    $cancelUrl = route('user.payment.failed') . "?order_id={$order->order_id}";
                     $description = "Wallet Top-up for Order #{$order->order_id}";
                 } else {
-                    $successUrl = route('user.payment.success')."?order_id={$order->order_id}";
-                    $cancelUrl = route('user.payment.failed')."?order_id={$order->order_id}";
+                    $successUrl = route('user.payment.success') . "?order_id={$order->order_id}";
+                    $cancelUrl = route('user.payment.failed') . "?order_id={$order->order_id}";
                     $description = "Order ID: {$order->order_id}";
                 }
 
@@ -191,7 +191,7 @@ class CryptoMethod extends PaymentMethod
 
             return [
                 'success' => false,
-                'message' => 'Failed to initialize payment: '.$e->getMessage(),
+                'message' => 'Failed to initialize payment: ' . $e->getMessage(),
             ];
         }
     }
@@ -248,7 +248,7 @@ class CryptoMethod extends PaymentMethod
 
             return [
                 'success' => false,
-                'message' => 'Payment not completed. Status: '.$status,
+                'message' => 'Payment not completed. Status: ' . $status,
             ];
         } catch (Exception $e) {
             Log::error('Payment confirmation failed', [
@@ -258,7 +258,7 @@ class CryptoMethod extends PaymentMethod
 
             return [
                 'success' => false,
-                'message' => 'Payment confirmation failed: '.$e->getMessage(),
+                'message' => 'Payment confirmation failed: ' . $e->getMessage(),
             ];
         }
     }

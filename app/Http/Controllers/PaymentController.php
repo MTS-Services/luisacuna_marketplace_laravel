@@ -186,7 +186,9 @@ class PaymentController extends Controller
     {
         $payload = $request->getContent();
         $sigHeader = $request->header('Stripe-Signature');
-        $webhookSecret = config('services.stripe.webhook_secret');
+        $stripeGateway = PaymentGateway::findBySlugCached('stripe');
+        $webhookSecret = $stripeGateway?->getCredential('webhook_secret')
+            ?? config('services.stripe.webhook_secret');
 
         try {
             // Verify webhook signature
@@ -260,7 +262,9 @@ class PaymentController extends Controller
 
             // Add Stripe-specific config
             if ($gateway->slug === 'stripe') {
-                $config['gateway']['publishable_key'] = config('services.stripe.key');
+                $config['gateway']['publishable_key'] = $gateway->getCredential('api_key')
+                    ?? $gateway->getCredential('public_key')
+                    ?? config('services.stripe.key');
             }
 
             // Add Wallet-specific config

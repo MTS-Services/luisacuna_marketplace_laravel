@@ -313,7 +313,7 @@
                         ],
                     ]" />
 
-                    <x-backend.navlink type="dropdown" icon="radiation" name="Template Management" :page_slug="$active"
+                <x-backend.navlink type="dropdown" icon="radiation" name="Template Management" :page_slug="$active"
                     :items="[
                         [
                             'name' => 'Templates',
@@ -381,6 +381,8 @@
                         ],
                     ]" />
                 <x-sidebar-separator title="System" />
+                <x-backend.navlink type="single" icon="credit-card" name="Payment Gateways" :route="route('admin.gi.pay-g.index')"
+                    active="payment-gateway" :page_slug="$active" />
                 <x-backend.navlink type="dropdown" icon="squares-exclude" name="Withdrawal Management"
                     :page_slug="$active" :items="[
                         [

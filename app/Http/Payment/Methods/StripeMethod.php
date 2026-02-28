@@ -38,7 +38,11 @@ class StripeMethod extends PaymentMethod
     {
         parent::__construct($gateway, $conversationService, $achievementService);
         $this->currencyService = app(CurrencyService::class);
-        Stripe::setApiKey(config('services.stripe.secret'));
+
+        $secretKey = $this->gateway?->getCredential('secret_key')
+            ?? config('services.stripe.secret');
+
+        Stripe::setApiKey($secretKey);
     }
 
     /**
@@ -91,15 +95,15 @@ class StripeMethod extends PaymentMethod
 
                 // Determine success and cancel URLs
                 if ($isTopUp) {
-                    $successUrl = route('user.payment.topup.success').'?session_id={CHECKOUT_SESSION_ID}&order_id='.$order->order_id;
-                    $cancelUrl = route('user.payment.failed').'?order_id='.$order->order_id;
+                    $successUrl = route('user.payment.topup.success') . '?session_id={CHECKOUT_SESSION_ID}&order_id=' . $order->order_id;
+                    $cancelUrl = route('user.payment.failed') . '?order_id=' . $order->order_id;
                     $description = "Wallet Top-up for Order #{$order->order_id}";
                     $productName = 'Wallet Top-Up';
                 } else {
-                    $successUrl = route('user.payment.success').'?session_id={CHECKOUT_SESSION_ID}&order_id='.$order->order_id;
-                    $cancelUrl = route('user.payment.failed').'?order_id='.$order->order_id;
-                    $description = 'Order ID: '.$order->order_id;
-                    $productName = $order->source?->name ?? 'Order #'.$order->order_id;
+                    $successUrl = route('user.payment.success') . '?session_id={CHECKOUT_SESSION_ID}&order_id=' . $order->order_id;
+                    $cancelUrl = route('user.payment.failed') . '?order_id=' . $order->order_id;
+                    $description = 'Order ID: ' . $order->order_id;
+                    $productName = $order->source?->name ?? 'Order #' . $order->order_id;
                 }
 
                 // Create Stripe Checkout Session IN DISPLAY CURRENCY
@@ -170,7 +174,7 @@ class StripeMethod extends PaymentMethod
                 'trace' => $e->getTraceAsString(),
             ]);
 
-            return ['success' => false, 'message' => 'Failed to initialize Stripe payment: '.$e->getMessage()];
+            return ['success' => false, 'message' => 'Failed to initialize Stripe payment: ' . $e->getMessage()];
         }
     }
 
@@ -211,7 +215,7 @@ class StripeMethod extends PaymentMethod
 
             return [
                 'success' => false,
-                'message' => 'Payment not completed. Status: '.$session->payment_status,
+                'message' => 'Payment not completed. Status: ' . $session->payment_status,
             ];
         } catch (Exception $e) {
             Log::error('Payment confirmation failed', [
@@ -222,7 +226,7 @@ class StripeMethod extends PaymentMethod
 
             return [
                 'success' => false,
-                'message' => 'Payment confirmation failed: '.$e->getMessage(),
+                'message' => 'Payment confirmation failed: ' . $e->getMessage(),
             ];
         }
     }

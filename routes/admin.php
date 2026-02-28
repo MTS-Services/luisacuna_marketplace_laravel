@@ -38,7 +38,7 @@ use App\Http\Controllers\Backend\Admin\NotificationManagement\AnnouncementContro
 use App\Http\Controllers\Backend\Admin\NotificationManagement\NotificationController;
 use App\Http\Controllers\Backend\Admin\WithdrawalManagement\WithdrawalMethodController;
 use App\Http\Controllers\Backend\Admin\WithdrawalManagement\WithdrawalRequestController;
-use App\Http\Controllers\Backend\Admin\GatewayAndIntegration\GatewayAndIntegrationController;
+use App\Http\Controllers\Backend\Admin\PaymentGatewayController;
 use App\Http\Controllers\Backend\Admin\ProductManagement\CurrencyController as ProductCurrencyController;
 use App\Models\EmailTemplate;
 
@@ -269,7 +269,7 @@ Route::middleware(['admin', 'adminVerify', 'adminNotBanned'])->name('admin.')->p
     });
 
     Route::group(['as' => 'gi.'], function () {
-        Route::controller(GatewayAndIntegrationController::class)->group(function () {
+        Route::controller(PaymentGatewayController::class)->group(function () {
             Route::group(['prefix' => 'payment-gateway', 'as' => 'pay-g.'], function () {
                 Route::get('/', 'paymentIndex')->name('index');
                 Route::get('/edit/{id}', 'paymentEdit')->name('edit');
