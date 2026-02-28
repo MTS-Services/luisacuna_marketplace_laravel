@@ -47,7 +47,7 @@ class PaymentGatewaySeeder extends Seeder
                     'api_key' => 'RYSKHPP-2VEM33J-NHCEG0Z-2ZCW6HS',
                     'email' => 'akhtaruzzamansumon7@gmail.com',
                     'password' => '',
-                    'callback_url' => 'http://127.0.0.1:8000/nowpayments/callback',
+                    'callback_url' => 'https://swapy.gg/nowpayments/callback',
                     'base_url' => 'https://api-sandbox.nowpayments.io/v1',
                 ],
                 'is_active' => true,
