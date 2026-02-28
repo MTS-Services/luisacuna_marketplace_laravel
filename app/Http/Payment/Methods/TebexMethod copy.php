@@ -45,19 +45,17 @@ class TebexMethod extends PaymentMethod
         parent::__construct($gateway, $conversationService, $achievementService);
         $this->currencyService = app(CurrencyService::class);
 
-        // Project ID = Basic Auth USERNAME
         $this->projectId = $this->gateway?->getCredential('project_id')
-            ?? config('services.tebex.project_id');
+            ?? config('tebex.project_id');
 
-        $this->publicToken = $this->gateway?->getCredential('public_token')
-            ?? config('services.tebex.public_token');
+        $this->publicToken    = $this->gateway?->getCredential('public_token')
+            ?? config('tebex.public_token');
 
-        // Private Key = Basic Auth PASSWORD
         $this->privateKey = $this->gateway?->getCredential('private_key')
-            ?? config('services.tebex.private_key');
+            ?? config('tebex.private_key');
 
         $this->checkoutUrl = $this->gateway?->getCredential('checkout_url')
-            ?? config('services.tebex.checkout_url', 'https://checkout.tebex.io/api');
+            ?? config('tebex.checkout_url', 'https://checkout.tebex.io/api');
     }
 
     // -------------------------------------------------------------------------
@@ -79,16 +77,12 @@ class TebexMethod extends PaymentMethod
     }
 
     // -------------------------------------------------------------------------
-    // Start Payment
+    // Start Payment  (mirrors StripeMethod::startPayment)
     // -------------------------------------------------------------------------
 
     /**
-     * Flow:
-     *  1. Create basket (temp complete_url)          → get $basketIdent
-     *  2. Patch basket complete_url with basket_ident  ← KEY CHANGE
-     *     Result: ?order_id=xxx&basket_ident=yyy       (like session_id / NP_id)
-     *  3. Add package to basket
-     *  4. Return checkout URL to redirect user
+     * Start payment - Create Tebex Basket + add package, then redirect to
+     * Tebex-hosted checkout.  Equivalent to Stripe's "create checkout session".
      */
     public function startPayment(Order $order, array $paymentData = []): array
     {
@@ -97,21 +91,25 @@ class TebexMethod extends PaymentMethod
 
             return DB::transaction(function () use ($order, $paymentData) {
 
-                $isTopUp         = $paymentData['is_topup'] ?? false;
-                $topUpAmount     = $paymentData['top_up_amount'] ?? null;
+                $isTopUp        = $paymentData['is_topup'] ?? false;
+                $topUpAmount    = $paymentData['top_up_amount'] ?? null;
                 $displayCurrency = $paymentData['display_currency'] ?? $order->currency ?? currency_code();
-                $exchangeRate    = $paymentData['exchange_rate'] ?? 1;
+                $exchangeRate   = $paymentData['exchange_rate'] ?? 1;
 
+                // Amount in display currency (what the user sees)
                 $paymentAmount = $isTopUp
                     ? $topUpAmount
                     : ($paymentData['grand_total'] ?? $order->grand_total);
 
+                // Convert to default/store currency for internal records
                 $paymentAmountDefault = $this->currencyService->convertToDefault(
                     $paymentAmount,
                     $displayCurrency
                 );
 
-                $gatewayAmount = $paymentAmount;
+                // Tebex expects the amount in the currency you pass to the basket
+                $gatewayAmount   = $paymentAmount;
+                $gatewayCurrency = strtoupper($displayCurrency);
 
                 // ── Update order to PENDING ───────────────────────────────────
                 $order->update([
@@ -133,8 +131,8 @@ class TebexMethod extends PaymentMethod
                         $topUpAmount,
                         $displayCurrency
                     );
-                    $metadata['top_up_amount']        = $topUpAmount;
-                    $metadata['top_up_amount_default'] = $topUpAmountDefault;
+                    $metadata['top_up_amount']         = $topUpAmount;
+                    $metadata['top_up_amount_default']  = $topUpAmountDefault;
                 }
 
                 // ── Create Payment record ─────────────────────────────────────
@@ -154,19 +152,23 @@ class TebexMethod extends PaymentMethod
                     'metadata'          => $metadata,
                 ]);
 
-                // ── URLs ──────────────────────────────────────────────────────
-                $cancelUrl    = route('user.payment.failed') . '?order_id=' . $order->order_id;
-                $successRoute = $isTopUp ? 'user.payment.topup.success' : 'user.payment.success';
-                $description  = $isTopUp ? "Wallet Top-up for Order #{$order->order_id}" : "Order ID: {$order->order_id}";
-                $productName  = $isTopUp ? 'Wallet Top-Up' : ($order->source?->name ?? 'Order #' . $order->order_id);
-
-                // Temporary complete_url — we update it in STEP 2 once we have the ident
-                $tempSuccessUrl = route($successRoute) . '?order_id=' . $order->order_id;
+                // ── Success / cancel URLs ─────────────────────────────────────
+                if ($isTopUp) {
+                    $successUrl  = route('user.payment.topup.success') . '?order_id=' . $order->order_id;
+                    $cancelUrl   = route('user.payment.failed')        . '?order_id=' . $order->order_id;
+                    $description = "Wallet Top-up for Order #{$order->order_id}";
+                    $productName = 'Wallet Top-Up';
+                } else {
+                    $successUrl  = route('user.payment.success') . '?order_id=' . $order->order_id;
+                    $cancelUrl   = route('user.payment.failed')  . '?order_id=' . $order->order_id;
+                    $description = "Order ID: {$order->order_id}";
+                    $productName = $order->source?->name ?? 'Order #' . $order->order_id;
+                }
 
                 // ── STEP 1: Create Tebex Basket ───────────────────────────────
                 $basketResponse = $this->http()->post("{$this->checkoutUrl}/baskets", [
                     'return_url'             => $cancelUrl,
-                    'complete_url'           => $tempSuccessUrl,
+                    'complete_url'           => $successUrl,
                     'complete_auto_redirect' => true,
                     'first_name'             => $order->user->first_name ?? null,
                     'last_name'              => $order->user->last_name  ?? null,
@@ -179,13 +181,19 @@ class TebexMethod extends PaymentMethod
                         'is_topup'   => $isTopUp,
                     ],
                 ]);
+                Log::info('Tebex basket creation response', [
+                    'order_id' => $order->order_id,
+                    'response' => $basketResponse->json(),
+                ]);
 
                 if ($basketResponse->failed()) {
                     $this->markFailed($payment, $order);
+
                     Log::error('Tebex basket creation failed', [
                         'order_id' => $order->order_id,
                         'response' => $basketResponse->body(),
                     ]);
+
                     return [
                         'success' => false,
                         'message' => 'Failed to create Tebex basket: ' . ($basketResponse->json('message') ?? $basketResponse->body()),
@@ -197,46 +205,14 @@ class TebexMethod extends PaymentMethod
 
                 if (! $basketIdent) {
                     $this->markFailed($payment, $order);
-                    return ['success' => false, 'message' => 'Tebex basket ident missing from response.'];
+
+                    return [
+                        'success' => false,
+                        'message' => 'Tebex basket ident missing from response.',
+                    ];
                 }
 
-                // ── STEP 2: Patch complete_url to inject basket_ident ─────────
-                // Mirrors how Stripe appends {CHECKOUT_SESSION_ID} and
-                // NowPayments appends NP_id to the success URL.
-                //
-                //  Stripe:      ?session_id={CHECKOUT_SESSION_ID}
-                //  NowPayments: ?NP_id=xxx
-                //  Tebex:       ?basket_ident=xxx   ← injected here
-                //
-                $finalSuccessUrl = route($successRoute)
-                    . '?order_id='     . $order->order_id
-                    . '&basket_ident=' . $basketIdent;
-
-                $patchResponse = $this->http()->put(
-                    "{$this->checkoutUrl}/baskets/{$basketIdent}",
-                    [
-                        'complete_url'           => $finalSuccessUrl,
-                        'complete_auto_redirect' => true,
-                    ]
-                );
-
-                if ($patchResponse->failed()) {
-                    // Non-fatal: controller has a DB-fallback, but log it clearly
-                    Log::warning('Tebex basket complete_url patch failed — controller will use DB fallback', [
-                        'order_id'          => $order->order_id,
-                        'basket_ident'      => $basketIdent,
-                        'final_success_url' => $finalSuccessUrl,
-                        'response'          => $patchResponse->body(),
-                    ]);
-                } else {
-                    Log::info('Tebex basket complete_url patched with basket_ident', [
-                        'order_id'          => $order->order_id,
-                        'basket_ident'      => $basketIdent,
-                        'final_success_url' => $finalSuccessUrl,
-                    ]);
-                }
-
-                // ── STEP 3: Add Package to Basket ─────────────────────────────
+                // ── STEP 2: Add Package to Basket ─────────────────────────────
                 $packageResponse = $this->http()->post(
                     "{$this->checkoutUrl}/baskets/{$basketIdent}/packages",
                     [
@@ -255,11 +231,13 @@ class TebexMethod extends PaymentMethod
 
                 if ($packageResponse->failed()) {
                     $this->markFailed($payment, $order);
+
                     Log::error('Tebex add package failed', [
                         'order_id'     => $order->order_id,
                         'basket_ident' => $basketIdent,
                         'response'     => $packageResponse->body(),
                     ]);
+
                     return [
                         'success' => false,
                         'message' => 'Failed to add package to Tebex basket: ' . ($packageResponse->json('message') ?? $packageResponse->body()),
@@ -267,6 +245,7 @@ class TebexMethod extends PaymentMethod
                 }
 
                 // ── Resolve Checkout URL ──────────────────────────────────────
+                // Tebex returns links.checkout in the basket response
                 $checkoutUrl = $basket['links']['checkout']
                     ?? "https://checkout.tebex.io/checkout/{$basketIdent}";
 
@@ -283,14 +262,13 @@ class TebexMethod extends PaymentMethod
                 $order->update(['payment_intent_id' => $basketIdent]);
 
                 Log::info('Tebex basket created', [
-                    'order_id'          => $order->order_id,
-                    'basket_ident'      => $basketIdent,
-                    'payment_id'        => $payment->payment_id,
-                    'is_topup'          => $isTopUp,
-                    'display_amount'    => $paymentAmount,
-                    'display_currency'  => $displayCurrency,
-                    'default_amount'    => $paymentAmountDefault,
-                    'final_success_url' => $finalSuccessUrl,
+                    'order_id'     => $order->order_id,
+                    'basket_ident' => $basketIdent,
+                    'payment_id'   => $payment->payment_id,
+                    'is_topup'     => $isTopUp,
+                    'display_amount'   => $paymentAmount,
+                    'display_currency' => $displayCurrency,
+                    'default_amount'   => $paymentAmountDefault,
                 ]);
 
                 return [
@@ -321,32 +299,32 @@ class TebexMethod extends PaymentMethod
     }
 
     // -------------------------------------------------------------------------
-    // Confirm Payment
+    // Confirm Payment  (mirrors NowPaymentMethod::confirmPayment)
     // -------------------------------------------------------------------------
 
+    /**
+     * Confirm payment using the Tebex basket ident.
+     * Called from the success URL or webhook handler.
+     */
     public function confirmPayment(string $basketIdent, ?string $paymentMethodId = null): array
     {
         try {
+            // Fetch basket from Tebex to verify its status
             $response = $this->http()->get("{$this->checkoutUrl}/baskets/{$basketIdent}");
 
             if ($response->failed()) {
                 throw new Exception('Tebex basket fetch failed: ' . $response->body());
             }
 
-            $basket = $response->json();
-
-            // ✅ Tebex uses 'complete' (bool) NOT 'status' (string)
-            // Also cross-check payment.status as a secondary confirmation
-            $isComplete = ($basket['complete'] ?? false) === true
-                || ($basket['payment']['status'] ?? null) === 'complete';
-
             Log::info('Tebex basket fetch response', [
                 'basket_ident' => $basketIdent,
-                'complete'     => $basket['complete']           ?? null,  // ← actual field
-                'pay_status'   => $basket['payment']['status']  ?? null,
-                'is_complete'  => $isComplete,
+                'response'     => $response->body(),
             ]);
 
+            $basket = $response->json();
+            $status = $basket['status'] ?? null;  // e.g. 'complete'
+
+            // Resolve payment record by basket ident stored in payment_intent_id
             $payment = Payment::where('payment_intent_id', $basketIdent)
                 ->with(['order.user.wallet', 'order.source.user.wallet', 'user'])
                 ->first();
@@ -362,15 +340,17 @@ class TebexMethod extends PaymentMethod
             $order   = $payment->order;
             $isTopUp = $payment->metadata['is_topup'] ?? false;
 
-            if ($isComplete) {
-                return $isTopUp
-                    ? $this->processTopUpPayment($basket, $payment, $order)
-                    : $this->processRegularPayment($basket, $payment, $order);
+            if ($status === 'complete') {
+                if ($isTopUp) {
+                    return $this->processTopUpPayment($basket, $payment, $order);
+                } else {
+                    return $this->processRegularPayment($basket, $payment, $order);
+                }
             }
 
             return [
                 'success' => false,
-                'message' => 'Payment not completed. Tebex basket complete: ' . json_encode($basket['complete'] ?? false),
+                'message' => 'Payment not completed. Tebex basket status: ' . $status,
             ];
         } catch (Exception $e) {
             Log::error('Tebex payment confirmation failed', [
@@ -387,7 +367,7 @@ class TebexMethod extends PaymentMethod
     }
 
     // -------------------------------------------------------------------------
-    // Process Top-Up Payment
+    // Process Top-Up Payment  (mirrors StripeMethod::processTopUpPayment)
     // -------------------------------------------------------------------------
 
     protected function processTopUpPayment($basket, Payment $payment, Order $order): array
@@ -397,14 +377,16 @@ class TebexMethod extends PaymentMethod
             $order->lockForUpdate();
 
             $topUpData = Session::get("topup_order_{$order->order_id}");
+
             if (! $topUpData) {
                 throw new Exception('Top-up session data not found');
             }
 
-            $topUpAmountDisplay = $topUpData['top_up_amount'];
-            $orderTotalDisplay  = $topUpData['order_total'];
-            $displayCurrency    = $payment->metadata['display_currency'] ?? $order->display_currency;
+            $topUpAmountDisplay  = $topUpData['top_up_amount'];
+            $orderTotalDisplay   = $topUpData['order_total'];
+            $displayCurrency     = $payment->metadata['display_currency'] ?? $order->display_currency;
 
+            // Convert amounts to DEFAULT currency for wallet operations
             $topUpAmountDefault = $this->currencyService->convertToDefault($topUpAmountDisplay, $displayCurrency);
             $orderTotalDefault  = $order->default_grand_total
                 ?? $this->currencyService->convertToDefault($orderTotalDisplay, $displayCurrency);
@@ -412,18 +394,18 @@ class TebexMethod extends PaymentMethod
             $buyerWallet = $order->user->wallet ?? Wallet::firstOrCreate(
                 ['user_id' => $order->user_id],
                 [
-                    'currency_code'     => $this->currencyService->getDefaultCurrency()->code,
-                    'balance'           => 0,
-                    'locked_balance'    => 0,
-                    'pending_balance'   => 0,
-                    'total_deposits'    => 0,
-                    'total_withdrawals' => 0,
+                    'currency_code'      => $this->currencyService->getDefaultCurrency()->code,
+                    'balance'            => 0,
+                    'locked_balance'     => 0,
+                    'pending_balance'    => 0,
+                    'total_deposits'     => 0,
+                    'total_withdrawals'  => 0,
                 ]
             );
 
             $buyerWallet->lockForUpdate();
 
-            $correlationId   = Str::uuid();
+            $correlationId  = Str::uuid();
             $defaultCurrency = $this->currencyService->getDefaultCurrency()->code;
 
             $balanceBefore       = $buyerWallet->balance;
@@ -433,29 +415,30 @@ class TebexMethod extends PaymentMethod
             $basketIdent    = $basket['ident'] ?? $payment->payment_intent_id;
             $tebexPaymentId = $basket['payment']['transaction_id'] ?? null;
 
+            // ── STEP 1: TOP-UP Transaction ────────────────────────────────────
             $topUpTransaction = Transaction::create([
-                'transaction_id'         => generate_transaction_id_hybrid(),
-                'correlation_id'         => $correlationId,
-                'user_id'                => $order->user_id,
-                'order_id'               => $order->id,
-                'type'                   => TransactionType::TOPUP->value,
-                'status'                 => TransactionStatus::PAID->value,
-                'calculation_type'       => CalculationType::DEBIT->value,
-                'amount'                 => $topUpAmountDefault,
-                'currency'               => $defaultCurrency,
-                'payment_gateway'        => $this->id,
+                'transaction_id'       => generate_transaction_id_hybrid(),
+                'correlation_id'       => $correlationId,
+                'user_id'              => $order->user_id,
+                'order_id'             => $order->id,
+                'type'                 => TransactionType::TOPUP->value,
+                'status'               => TransactionStatus::PAID->value,
+                'calculation_type'     => CalculationType::DEBIT->value,
+                'amount'               => $topUpAmountDefault,
+                'currency'             => $defaultCurrency,
+                'payment_gateway'      => $this->id,
                 'gateway_transaction_id' => $basketIdent,
-                'source_id'              => $payment->id,
-                'source_type'            => Payment::class,
-                'fee_amount'             => 0,
-                'net_amount'             => $topUpAmountDefault,
-                'balance_snapshot'       => $balanceAfterTopUp,
-                'metadata'               => [
-                    'tebex_basket_ident' => $basketIdent,
-                    'tebex_payment_id'   => $tebexPaymentId,
-                    'display_amount'     => $topUpAmountDisplay,
-                    'display_currency'   => $displayCurrency,
-                    'description'        => "Wallet top-up of {$topUpAmountDisplay} {$displayCurrency} (={$topUpAmountDefault} {$defaultCurrency}) via Tebex",
+                'source_id'            => $payment->id,
+                'source_type'          => Payment::class,
+                'fee_amount'           => 0,
+                'net_amount'           => $topUpAmountDefault,
+                'balance_snapshot'     => $balanceAfterTopUp,
+                'metadata'             => [
+                    'tebex_basket_ident'  => $basketIdent,
+                    'tebex_payment_id'    => $tebexPaymentId,
+                    'display_amount'      => $topUpAmountDisplay,
+                    'display_currency'    => $displayCurrency,
+                    'description'         => "Wallet top-up of {$topUpAmountDisplay} {$displayCurrency} (={$topUpAmountDefault} {$defaultCurrency}) via Tebex",
                 ],
                 'notes'        => "Top-up: +{$topUpAmountDefault} {$defaultCurrency} via Tebex",
                 'processed_at' => now(),
@@ -467,24 +450,25 @@ class TebexMethod extends PaymentMethod
                 'last_deposit_at' => now(),
             ]);
 
+            // ── STEP 2: PAYMENT Transaction ───────────────────────────────────
             $paymentTransaction = Transaction::create([
-                'transaction_id'         => generate_transaction_id_hybrid(),
-                'correlation_id'         => $correlationId,
-                'user_id'                => $order->user_id,
-                'order_id'               => $order->id,
-                'type'                   => TransactionType::PURCHSED->value,
-                'status'                 => TransactionStatus::PAID->value,
-                'calculation_type'       => CalculationType::CREDIT->value,
-                'amount'                 => $orderTotalDefault,
-                'currency'               => $defaultCurrency,
-                'payment_gateway'        => 'wallet',
+                'transaction_id'       => generate_transaction_id_hybrid(),
+                'correlation_id'       => $correlationId,
+                'user_id'              => $order->user_id,
+                'order_id'             => $order->id,
+                'type'                 => TransactionType::PURCHSED->value,
+                'status'               => TransactionStatus::PAID->value,
+                'calculation_type'     => CalculationType::CREDIT->value,
+                'amount'               => $orderTotalDefault,
+                'currency'             => $defaultCurrency,
+                'payment_gateway'      => 'wallet',
                 'gateway_transaction_id' => $topUpTransaction->transaction_id,
-                'source_id'              => $payment->id,
-                'source_type'            => Payment::class,
-                'fee_amount'             => 0,
-                'net_amount'             => $orderTotalDefault,
-                'balance_snapshot'       => $balanceAfterPayment,
-                'metadata'               => [
+                'source_id'            => $payment->id,
+                'source_type'          => Payment::class,
+                'fee_amount'           => 0,
+                'net_amount'           => $orderTotalDefault,
+                'balance_snapshot'     => $balanceAfterPayment,
+                'metadata'             => [
                     'tebex_basket_ident'    => $basketIdent,
                     'description'           => "Order payment for #{$order->order_id}",
                     'top_up_transaction_id' => $topUpTransaction->transaction_id,
@@ -496,21 +480,22 @@ class TebexMethod extends PaymentMethod
             ]);
 
             $buyerWallet->update([
-                'balance'            => $balanceAfterPayment,
-                'total_withdrawals'  => $buyerWallet->total_withdrawals + $orderTotalDefault,
-                'last_withdrawal_at' => now(),
+                'balance'             => $balanceAfterPayment,
+                'total_withdrawals'   => $buyerWallet->total_withdrawals + $orderTotalDefault,
+                'last_withdrawal_at'  => now(),
             ]);
 
+            // ── Update Payment record ─────────────────────────────────────────
             $payment->update([
                 'status'         => PaymentStatus::COMPLETED->value,
                 'transaction_id' => $basketIdent,
                 'paid_at'        => now(),
                 'metadata'       => array_merge($payment->metadata ?? [], [
-                    'tebex_basket_ident'     => $basketIdent,
-                    'tebex_payment_id'       => $tebexPaymentId,
-                    'top_up_transaction_id'  => $topUpTransaction->id,
-                    'payment_transaction_id' => $paymentTransaction->id,
-                    'correlation_id'         => $correlationId,
+                    'tebex_basket_ident'      => $basketIdent,
+                    'tebex_payment_id'        => $tebexPaymentId,
+                    'top_up_transaction_id'   => $topUpTransaction->id,
+                    'payment_transaction_id'  => $paymentTransaction->id,
+                    'correlation_id'          => $correlationId,
                 ]),
             ]);
 
@@ -525,22 +510,28 @@ class TebexMethod extends PaymentMethod
             Session::forget("topup_order_{$order->order_id}");
 
             Log::info('Tebex top-up payment completed', [
-                'order_id'         => $order->order_id,
-                'basket_ident'     => $basketIdent,
-                'correlation_id'   => $correlationId,
-                'display_currency' => $displayCurrency,
-                'final_balance'    => $balanceAfterPayment,
+                'order_id'          => $order->order_id,
+                'basket_ident'      => $basketIdent,
+                'correlation_id'    => $correlationId,
+                'display_currency'  => $displayCurrency,
+                'top_up_display'    => $topUpAmountDisplay,
+                'top_up_default'    => $topUpAmountDefault,
+                'final_balance'     => $balanceAfterPayment,
             ]);
 
             $this->dispatchPaymentNotificationsOnce($payment);
             $this->sendOrderMessage($order);
 
-            return ['success' => true, 'message' => 'Payment completed successfully', 'correlation_id' => $correlationId];
+            return [
+                'success'        => true,
+                'message'        => 'Payment completed successfully',
+                'correlation_id' => $correlationId,
+            ];
         });
     }
 
     // -------------------------------------------------------------------------
-    // Process Regular Payment
+    // Process Regular Payment  (mirrors StripeMethod::processRegularPayment)
     // -------------------------------------------------------------------------
 
     protected function processRegularPayment($basket, Payment $payment, Order $order): array
@@ -566,6 +557,7 @@ class TebexMethod extends PaymentMethod
             $correlationId   = Str::uuid();
             $defaultCurrency = $this->currencyService->getDefaultCurrency()->code;
 
+            // Payment amount is already stored in default currency
             $paymentAmountDefault = $payment->amount;
             $orderTotalDefault    = $order->default_grand_total ?? $order->grand_total;
 
@@ -579,24 +571,25 @@ class TebexMethod extends PaymentMethod
             $basketIdent    = $basket['ident'] ?? $payment->payment_intent_id;
             $tebexPaymentId = $basket['payment']['transaction_id'] ?? null;
 
+            // ── TRANSACTION 1: DEPOSIT ────────────────────────────────────────
             $depositTransaction = Transaction::create([
-                'transaction_id'         => generate_transaction_id_hybrid(),
-                'correlation_id'         => $correlationId,
-                'user_id'                => $payment->user_id,
-                'order_id'               => $order->id,
-                'type'                   => TransactionType::TOPUP->value,
-                'status'                 => TransactionStatus::PAID->value,
-                'calculation_type'       => CalculationType::DEBIT->value,
-                'amount'                 => $paymentAmountDefault,
-                'currency'               => $defaultCurrency,
-                'payment_gateway'        => $this->id,
+                'transaction_id'       => generate_transaction_id_hybrid(),
+                'correlation_id'       => $correlationId,
+                'user_id'              => $payment->user_id,
+                'order_id'             => $order->id,
+                'type'                 => TransactionType::TOPUP->value,
+                'status'               => TransactionStatus::PAID->value,
+                'calculation_type'     => CalculationType::DEBIT->value,
+                'amount'               => $paymentAmountDefault,
+                'currency'             => $defaultCurrency,
+                'payment_gateway'      => $this->id,
                 'gateway_transaction_id' => $basketIdent,
-                'source_id'              => $payment->id,
-                'source_type'            => Payment::class,
-                'fee_amount'             => 0,
-                'net_amount'             => $paymentAmountDefault,
-                'balance_snapshot'       => $balanceAfterDeposit,
-                'metadata'               => [
+                'source_id'            => $payment->id,
+                'source_type'          => Payment::class,
+                'fee_amount'           => 0,
+                'net_amount'           => $paymentAmountDefault,
+                'balance_snapshot'     => $balanceAfterDeposit,
+                'metadata'             => [
                     'tebex_basket_ident' => $basketIdent,
                     'tebex_payment_id'   => $tebexPaymentId,
                     'display_amount'     => $displayAmount,
@@ -613,24 +606,25 @@ class TebexMethod extends PaymentMethod
                 'last_deposit_at' => now(),
             ]);
 
+            // ── TRANSACTION 2: PAYMENT ────────────────────────────────────────
             $paymentTransaction = Transaction::create([
-                'transaction_id'         => generate_transaction_id_hybrid(),
-                'correlation_id'         => $correlationId,
-                'user_id'                => $payment->user_id,
-                'order_id'               => $order->id,
-                'type'                   => TransactionType::PURCHSED->value,
-                'status'                 => TransactionStatus::PAID->value,
-                'calculation_type'       => CalculationType::CREDIT->value,
-                'amount'                 => $orderTotalDefault,
-                'currency'               => $defaultCurrency,
-                'payment_gateway'        => 'wallet',
+                'transaction_id'       => generate_transaction_id_hybrid(),
+                'correlation_id'       => $correlationId,
+                'user_id'              => $payment->user_id,
+                'order_id'             => $order->id,
+                'type'                 => TransactionType::PURCHSED->value,
+                'status'               => TransactionStatus::PAID->value,
+                'calculation_type'     => CalculationType::CREDIT->value,
+                'amount'               => $orderTotalDefault,
+                'currency'             => $defaultCurrency,
+                'payment_gateway'      => 'wallet',
                 'gateway_transaction_id' => $depositTransaction->transaction_id,
-                'source_id'              => $payment->id,
-                'source_type'            => Payment::class,
-                'fee_amount'             => 0,
-                'net_amount'             => $orderTotalDefault,
-                'balance_snapshot'       => $balanceAfterPayment,
-                'metadata'               => [
+                'source_id'            => $payment->id,
+                'source_type'          => Payment::class,
+                'fee_amount'           => 0,
+                'net_amount'           => $orderTotalDefault,
+                'balance_snapshot'     => $balanceAfterPayment,
+                'metadata'             => [
                     'tebex_basket_ident' => $basketIdent,
                     'tebex_payment_id'   => $tebexPaymentId,
                     'description'        => "Payment for Order #{$order->order_id}",
@@ -645,6 +639,7 @@ class TebexMethod extends PaymentMethod
                 'last_withdrawal_at' => now(),
             ]);
 
+            // ── Update Payment record ─────────────────────────────────────────
             $payment->update([
                 'status'         => PaymentStatus::COMPLETED->value,
                 'transaction_id' => $basketIdent,
@@ -665,7 +660,6 @@ class TebexMethod extends PaymentMethod
             ]);
 
             $this->updateUserPoints($order);
-
             Log::info('Tebex regular payment confirmed', [
                 'order_id'         => $order->order_id,
                 'basket_ident'     => $basketIdent,
@@ -675,31 +669,37 @@ class TebexMethod extends PaymentMethod
                 'default_amount'   => $paymentAmountDefault,
                 'default_currency' => $defaultCurrency,
             ]);
-
             $this->dispatchPaymentNotificationsOnce($payment);
             $this->sendOrderMessage($order);
 
-            return ['success' => true, 'message' => 'Payment completed successfully', 'correlation_id' => $correlationId];
+            return [
+                'success'        => true,
+                'message'        => 'Payment completed successfully',
+                'correlation_id' => $correlationId,
+            ];
         });
     }
 
     // -------------------------------------------------------------------------
-    // Webhook
+    // Webhook  (mirrors StripeMethod::handleWebhook)
     // -------------------------------------------------------------------------
 
     public function handleWebhook(array $payload): void
     {
         $type = $payload['type'] ?? null;
+
         Log::info('Processing Tebex webhook', ['event_type' => $type]);
 
         switch ($type) {
             case 'payment.completed':
                 $this->handleCheckoutCompleted($payload['subject'] ?? []);
                 break;
+
             case 'payment.declined':
             case 'payment.refunded':
                 $this->handlePaymentFailed($payload['subject'] ?? []);
                 break;
+
             default:
                 Log::info('Unhandled Tebex webhook event', ['event_type' => $type]);
         }
@@ -708,17 +708,27 @@ class TebexMethod extends PaymentMethod
     protected function handleCheckoutCompleted(array $subject): void
     {
         try {
-            $basketIdent = $subject['basket_ident'] ?? $subject['custom']['basket_ident'] ?? null;
+            // Tebex sends the basket ident in the webhook subject
+            $basketIdent = $subject['basket_ident']
+                ?? $subject['custom']['basket_ident']
+                ?? null;
 
             if (! $basketIdent) {
                 Log::warning('Tebex webhook: basket ident missing', ['subject' => $subject]);
                 return;
             }
 
-            $payment = Payment::where('payment_intent_id', $basketIdent)->with('order')->first();
+            $payment = Payment::where('payment_intent_id', $basketIdent)
+                ->with('order')
+                ->first();
 
-            if (! $payment || $payment->status === PaymentStatus::COMPLETED->value) {
+            if (! $payment) {
+                Log::warning('Tebex webhook: payment record not found', ['basket_ident' => $basketIdent]);
                 return;
+            }
+
+            if ($payment->status === PaymentStatus::COMPLETED->value) {
+                return; // already handled (e.g. success URL arrived first)
             }
 
             $this->confirmPayment($basketIdent);
@@ -733,13 +743,18 @@ class TebexMethod extends PaymentMethod
     {
         try {
             $basketIdent = $subject['basket_ident'] ?? null;
-            if (! $basketIdent) return;
+            if (! $basketIdent) {
+                return;
+            }
 
             $payment = Payment::where('payment_intent_id', $basketIdent)->first();
 
             if ($payment && $payment->status === PaymentStatus::PENDING->value) {
                 $payment->update(['status' => PaymentStatus::FAILED->value]);
-                $payment->order?->update(['status' => OrderStatus::FAILED->value, 'payment_status' => 'failed']);
+                $payment->order?->update([
+                    'status'         => OrderStatus::FAILED->value,
+                    'payment_status' => 'failed',
+                ]);
             }
         } catch (Exception $e) {
             Log::error('Tebex handlePaymentFailed error', ['error' => $e->getMessage()]);
@@ -748,14 +763,24 @@ class TebexMethod extends PaymentMethod
 
     protected function handlePaymentCanceled(array $subject): void {}
 
+    // -------------------------------------------------------------------------
+    // Helpers
+    // -------------------------------------------------------------------------
+
     public function requiresFrontendJs(): bool
     {
         return $this->requiresFrontendJs;
     }
 
+    /**
+     * Mark payment + order as failed (DRY helper used in startPayment).
+     */
     private function markFailed(Payment $payment, Order $order): void
     {
         $payment->update(['status' => PaymentStatus::FAILED->value]);
-        $order->update(['status' => OrderStatus::FAILED->value, 'payment_status' => 'failed']);
+        $order->update([
+            'status'         => OrderStatus::FAILED->value,
+            'payment_status' => 'failed',
+        ]);
     }
 }

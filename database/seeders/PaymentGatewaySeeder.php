@@ -60,12 +60,14 @@ class PaymentGatewaySeeder extends Seeder
                 'icon' => null,
                 'is_active' => true,
                 'live_data' => [
-                    'api_key' => '11lo8-5c79a5f27d3420bd0ea6aec7c07c20724b012474',
+                    'project_id'   => '1754360',
+                    'public_token' => '11lo8-5c79a5f27d3420bd0ea6aec7c07c20724b012474',
                     'private_key' => 'Hqcd4n3CwEmJ6oAltUqQXP3X2EQzstxm',
                     'checkout_url' => 'https://checkout.tebex.io/api',
                 ],
                 'sandbox_data' => [
-                    'api_key' => '11lo8-5c79a5f27d3420bd0ea6aec7c07c20724b012474',
+                    'project_id'   => '1754360',
+                    'public_token' => '11lo8-5c79a5f27d3420bd0ea6aec7c07c20724b012474',
                     'private_key' => 'Hqcd4n3CwEmJ6oAltUqQXP3X2EQzstxm',
                     'checkout_url' => 'https://checkout.tebex.io/api',
                 ],

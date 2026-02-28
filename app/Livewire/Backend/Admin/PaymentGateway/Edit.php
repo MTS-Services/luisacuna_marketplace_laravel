@@ -116,7 +116,8 @@ class Edit extends Component
             ],
             'wallet' => [],
             'tebex' => [
-                ['key' => 'api_key',      'label' => 'API Key',      'type' => 'password'],
+                ['key' => 'project_id',   'label' => 'Project ID',   'type' => 'text'],
+                ['key' => 'public_token', 'label' => 'Public Token', 'type' => 'text'],
                 ['key' => 'private_key',  'label' => 'Private Key',  'type' => 'password'],
                 ['key' => 'checkout_url', 'label' => 'Checkout URL', 'type' => 'text'],
             ],

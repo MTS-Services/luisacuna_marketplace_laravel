@@ -13,9 +13,18 @@ use Illuminate\Support\Facades\Route;
 Route::post('language', [MultiLangController::class, 'langChange'])->name('lang.change');
 
 // Webhook routes (no auth)
-Route::post('/webhook/stripe', [PaymentController::class, 'stripeWebhook'])
-    ->name('webhook.stripe')
-    ->withoutMiddleware([VerifyCsrfToken::class]);
+// Route::post('/webhook/stripe', [PaymentController::class, 'stripeWebhook'])
+//     ->name('webhook.stripe')
+//     ->withoutMiddleware([VerifyCsrfToken::class]);
+// Route::post('/webhooks/tebex', [PaymentController::class, 'tebexWebhook'])
+//     ->name('webhook.tebex')
+//     ->withoutMiddleware([VerifyCsrfToken::class]);
+
+Route::controller(PaymentController::class)->group(function () {
+    Route::post('/webhook/stripe', 'stripeWebhook')->name('webhook.stripe');
+    Route::post('/webhooks/tebex', 'tebexWebhook')->name('webhook.tebex');
+})->withoutMiddleware([VerifyCsrfToken::class]);
+
 
 // Checkout status pages (custom error pages)
 Route::get('/checkout/expired', function () {
@@ -59,7 +68,7 @@ Route::get('/test-redis-connection', function () {
     } catch (\Exception $e) {
         return response()->json([
             'status' => 'error',
-            'message' => 'Redis connection failed: '.$e->getMessage(),
+            'message' => 'Redis connection failed: ' . $e->getMessage(),
         ], 500);
     }
 });
@@ -93,8 +102,8 @@ Route::get('/send-fcm', SendDeviceNotification::class)->name('send-fcm');
 Route::get('/device-manage', DeviceManagement::class)->name('device-manage');
 
 Route::get('/toastDemo', ToastDemo::class)->name('toastDemo');
-require __DIR__.'/auth.php';
-require __DIR__.'/user.php';
-require __DIR__.'/admin.php';
-require __DIR__.'/frontend.php';
-require __DIR__.'/fortify-admin.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/user.php';
+require __DIR__ . '/admin.php';
+require __DIR__ . '/frontend.php';
+require __DIR__ . '/fortify-admin.php';

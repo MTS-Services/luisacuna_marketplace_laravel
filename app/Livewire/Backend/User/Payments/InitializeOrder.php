@@ -179,7 +179,7 @@ class InitializeOrder extends Component
             ]);
 
             // =================================================================
-            // STEP 4: Store in Redis for Checkout
+            // STEP 4: Store in Database for Checkout
             // Lock subtotal in DEFAULT currency for accurate calculations
             // Tax will be added during checkout based on payment method
             // =================================================================
