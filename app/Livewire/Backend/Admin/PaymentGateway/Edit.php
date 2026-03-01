@@ -14,10 +14,6 @@ class Edit extends Component
     use FileManagementTrait;
     use WithFileUploads;
 
-    public bool $modalShow = false;
-
-    public bool $isLoading = false;
-
     public ?int $gatewayId = null;
 
     public string $editName = '';
@@ -37,10 +33,15 @@ class Edit extends Component
     /** @var array<string, string> */
     public array $editSandboxData = [];
 
+    public function mount(?int $gatewayId = null): void
+    {
+        if ($gatewayId !== null) {
+            $this->openEdit($gatewayId);
+        }
+    }
+
     public function openEdit(int $id): void
     {
-        $this->isLoading = true;
-
         $gateway = PaymentGateway::findOrFail($id);
 
         $this->gatewayId = $gateway->id;
@@ -61,18 +62,9 @@ class Edit extends Component
         }
 
         $this->editRemoveIcon = false;
-        $this->isLoading = false;
     }
 
-    public function closeModal(): void
-    {
-        $this->modalShow = false;
-        $this->gatewayId = null;
-        $this->isLoading = false;
-        $this->reset(['editName', 'editMode', 'editIsActive', 'editIcon', 'editRemoveIcon', 'editLiveData', 'editSandboxData']);
-    }
-
-    public function saveGateway(): void
+    public function saveGateway(): mixed
     {
         $this->validate([
             'editName' => 'required|string|max:255',
@@ -101,8 +93,9 @@ class Edit extends Component
             'updated_by' => admin()->id,
         ]);
 
-        $this->closeModal();
         $this->dispatch('notify', type: 'success', message: "{$gateway->name} gateway updated successfully.");
+
+        return $this->redirect(route('admin.gi.pay-g.index'), navigate: true);
     }
 
     #[Computed]

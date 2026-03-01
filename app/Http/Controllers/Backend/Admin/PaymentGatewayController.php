@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\PaymentGateway;
 
 class PaymentGatewayController extends Controller
 {
@@ -12,5 +12,14 @@ class PaymentGatewayController extends Controller
     public function paymentIndex()
     {
         return view($this->masterView);
+    }
+
+    public function paymentEdit(int $id)
+    {
+        $gateway = PaymentGateway::findOrFail($id);
+
+        return view($this->masterView, [
+            'gateway' => $gateway,
+        ]);
     }
 }

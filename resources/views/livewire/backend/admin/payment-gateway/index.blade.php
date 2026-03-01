@@ -123,12 +123,11 @@
                     </div>
 
                     {{-- Configure button --}}
-                    <button
-                        @click="$dispatch('gateway-edit-open', { id: {{ $gateway->id }} })"
+                    <a href="{{ route('admin.gi.pay-g.edit', $gateway->id) }}" wire:navigate
                         class="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-xl text-xs font-semibold border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-text-primary transition-all duration-200 group/btn">
                         <flux:icon name="cog-6-tooth" class="w-3.5 h-3.5 text-text-muted group-hover/btn:rotate-45 transition-transform duration-300" />
                         {{ __('Configure') }}
-                    </button>
+                    </a>
 
                 </div>
             </div>
