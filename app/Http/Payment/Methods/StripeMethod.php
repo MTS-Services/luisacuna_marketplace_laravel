@@ -97,13 +97,13 @@ class StripeMethod extends PaymentMethod
                 if ($isTopUp) {
                     $successUrl = route('user.payment.topup.success') . '?session_id={CHECKOUT_SESSION_ID}&order_id=' . $order->order_id;
                     $cancelUrl = route('user.payment.failed') . '?order_id=' . $order->order_id;
-                    $description = "Wallet Top-up for Order #{$order->order_id}";
-                    $productName = 'Wallet Top-Up';
+                    $description = "Wallet top-up for " . $order->source?->name . " (Order ID: #" . $order->order_id . ")";
+                    $productName = 'Wallet Top-up';
                 } else {
                     $successUrl = route('user.payment.success') . '?session_id={CHECKOUT_SESSION_ID}&order_id=' . $order->order_id;
                     $cancelUrl = route('user.payment.failed') . '?order_id=' . $order->order_id;
-                    $description = 'Order ID: ' . $order->order_id;
-                    $productName = $order->source?->name ?? 'Order #' . $order->order_id;
+                    $description = 'Top-up for ' . $order->source?->name . ' (Order ID: #' . $order->order_id . ')';
+                    $productName = 'Top-up for ' . ($order->source?->name ?? 'Order #' . $order->order_id);
                 }
 
                 // Create Stripe Checkout Session IN DISPLAY CURRENCY

@@ -118,11 +118,11 @@ class NowPaymentMethod extends PaymentMethod
                 if ($isTopUp) {
                     $successUrl = route('user.payment.success') . "?order_id={$order->order_id}";
                     $cancelUrl = route('user.payment.failed') . "?order_id={$order->order_id}";
-                    $description = "Wallet Top-up for Order #{$order->order_id}";
+                    $description = "Wallet top-up for {$order->source?->name} (Order ID: #{$order->order_id})";
                 } else {
                     $successUrl = route('user.payment.success') . "?order_id={$order->order_id}";
                     $cancelUrl = route('user.payment.failed') . "?order_id={$order->order_id}";
-                    $description = "Order ID: {$order->order_id}";
+                    $description = "Top-up for {$order->source?->name} (Order ID: #{$order->order_id})";
                 }
 
                 // Create NOWPayments invoice
