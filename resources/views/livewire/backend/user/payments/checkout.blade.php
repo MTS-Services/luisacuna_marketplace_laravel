@@ -139,7 +139,11 @@
 
                                     <div class="flex items-center justify-between w-full">
                                         <div class="flex items-center gap-3">
-                                            @if ($gatewayItem->slug === 'stripe' || $gatewayItem->slug === 'card')
+                                            @if ($gatewayItem->icon)
+                                                <img src="{{ storage_url($gatewayItem->icon) }}"
+                                                    alt="{{ $gatewayItem->name }}"
+                                                    class="w-5 h-5 object-contain shrink-0" />
+                                            @elseif ($gatewayItem->slug === 'stripe' || $gatewayItem->slug === 'card')
                                                 <svg class="w-5 h-5 text-text-white" fill="none"
                                                     stroke="currentColor" viewBox="0 0 24 24">
                                                     <rect x="2" y="5" width="20" height="14" rx="2"
@@ -147,7 +151,7 @@
                                                     <path d="M2 10h20" stroke-width="2" />
                                                 </svg>
                                             @elseif($gatewayItem->slug === 'crypto')
-                                                <span class="text-text-white text-lg font-bold">₿</span>
+                                                <flux:icon name="bitcoin" class="text-lg font-bold" />
                                             @elseif($gatewayItem->slug === 'wallet')
                                                 <svg class="w-5 h-5 text-text-white" fill="none"
                                                     stroke="currentColor" viewBox="0 0 24 24">
@@ -156,14 +160,11 @@
                                                     <path d="M3 5v14a2 2 0 002 2h16v-5" stroke-width="2" />
                                                     <circle cx="18" cy="12" r="2" />
                                                 </svg>
-                                            @elseif ($gatewayItem->slug === 'now-payment')
-                                                <svg class="w-5 h-5 text-text-white" fill="none"
-                                                    stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path d="M21 12V7H5a2 2 0 01-2-2V4a2 2 0 012-2h14v5"
-                                                        stroke-width="2" />
-                                                    <path d="M3 5v14a2 2 0 002 2h16v-5" stroke-width="2" />
-                                                    <circle cx="18" cy="12" r="2" />
-                                                </svg>
+                                            @elseif ($gatewayItem->slug === 'tebex')
+                                                <flux:icon name="banknotes" class=" text-lg font-bold" />
+                                            @else
+                                                <flux:icon name="credit-card"
+                                                    class="w-5 h-5 text-text-white shrink-0" />
                                             @endif
                                             <span
                                                 class="text-base font-normal text-text-white">{{ $gatewayItem->name }}</span>
@@ -408,7 +409,13 @@
                                     {{ $gatewayItem->slug === $topUpGateway ? 'border-pink-500 bg-pink-500/10 ring-2 ring-pink-500/30' : 'border-zinc-300 dark:border-zinc-700 bg-bg-primary/50 hover:border-zinc-400 dark:hover:border-zinc-600' }}">
 
                                     <div class="flex items-center gap-2.5">
-                                        @if ($gatewayItem->slug === 'stripe' || $gatewayItem->slug === 'card')
+                                        @if ($gatewayItem->icon)
+                                            <div
+                                                class="p-1.5 rounded {{ $gatewayItem->slug === $topUpGateway ? 'bg-pink-500/20' : 'bg-zinc-200 dark:bg-zinc-800' }}">
+                                                <img src="{{ storage_url($gatewayItem->icon) }}"
+                                                    alt="{{ $gatewayItem->name }}" class="w-4 h-4 object-contain" />
+                                            </div>
+                                        @elseif ($gatewayItem->slug === 'stripe' || $gatewayItem->slug === 'card')
                                             <div
                                                 class="p-1.5 rounded {{ $gatewayItem->slug === $topUpGateway ? 'bg-pink-500/20' : 'bg-zinc-200 dark:bg-zinc-800' }}">
                                                 <svg class="w-4 h-4 {{ $gatewayItem->slug === $topUpGateway ? 'text-pink-400' : 'text-text-secondary' }}"
@@ -423,6 +430,12 @@
                                                 class="p-1.5 rounded {{ $gatewayItem->slug === $topUpGateway ? 'bg-pink-500/20' : 'bg-zinc-200 dark:bg-zinc-800' }}">
                                                 <span
                                                     class="text-sm font-bold {{ $gatewayItem->slug === $topUpGateway ? 'text-pink-400' : 'text-text-secondary' }}">₿</span>
+                                            </div>
+                                        @else
+                                            <div
+                                                class="p-1.5 rounded {{ $gatewayItem->slug === $topUpGateway ? 'bg-pink-500/20' : 'bg-zinc-200 dark:bg-zinc-800' }}">
+                                                <flux:icon name="banknotes"
+                                                    class="w-4 h-4 {{ $gatewayItem->slug === $topUpGateway ? 'text-pink-400' : 'text-text-secondary' }}" />
                                             </div>
                                         @endif
                                         <span class="text-text-white font-medium">{{ $gatewayItem->name }}</span>

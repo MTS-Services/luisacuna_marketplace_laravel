@@ -141,7 +141,7 @@ class Checkout extends Component
 
         $this->gateways = PaymentGateway::where('is_active', true)
             ->orderBy('sort_order', 'asc')
-            ->select(['id', 'slug', 'name'])
+            ->select(['id', 'slug', 'name', 'icon'])
             ->get()
             ->filter(fn ($gateway) => $gateway->isSupported());
 

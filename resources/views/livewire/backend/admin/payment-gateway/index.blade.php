@@ -64,9 +64,13 @@
                     {{-- Header --}}
                     <div class="flex items-start justify-between">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl flex items-center justify-center border border-white/10 shrink-0"
+                            <div class="w-10 h-10 rounded-xl flex items-center justify-center border border-white/10 shrink-0 overflow-hidden"
                                 style="background: {{ $meta['color'] }}18">
-                                <flux:icon name="{{ $meta['icon'] }}" class="w-5 h-5" style="color: {{ $meta['color'] }}" />
+                                @if ($gateway->icon)
+                                    <img src="{{ storage_url($gateway->icon) }}" alt="{{ $gateway->name }}" class="w-5 h-5 object-contain" />
+                                @else
+                                    <flux:icon name="{{ $meta['icon'] }}" class="w-5 h-5" style="color: {{ $meta['color'] }}" />
+                                @endif
                             </div>
                             <div>
                                 <h3 class="font-semibold text-text-primary text-sm leading-tight">{{ $gateway->name }}</h3>
@@ -119,12 +123,11 @@
                     </div>
 
                     {{-- Configure button --}}
-                    <button
-                        @click="$dispatch('gateway-edit-open', { id: {{ $gateway->id }} })"
+                    <a href="{{ route('admin.gi.pay-g.edit', $gateway->id) }}" wire:navigate
                         class="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-xl text-xs font-semibold border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-text-primary transition-all duration-200 group/btn">
                         <flux:icon name="cog-6-tooth" class="w-3.5 h-3.5 text-text-muted group-hover/btn:rotate-45 transition-transform duration-300" />
                         {{ __('Configure') }}
-                    </button>
+                    </a>
 
                 </div>
             </div>
