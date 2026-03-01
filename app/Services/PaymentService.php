@@ -22,7 +22,7 @@ class PaymentService
     public function processPayment(Order $order, string $gateway, array $paymentData = []): array
     {
         try {
-            if (! $this->canProcessPayment($order)) {
+            if (!$this->canProcessPayment($order)) {
                 return [
                     'success' => false,
                     'message' => 'Order cannot accept payment at this time.',
@@ -55,7 +55,7 @@ class PaymentService
 
             return [
                 'success' => false,
-                'message' => 'Payment processing failed: '.$e->getMessage(),
+                'message' => 'Payment processing failed: ' . $e->getMessage(),
                 'reason' => 'exception',
             ];
         }
@@ -136,7 +136,7 @@ class PaymentService
 
             return [
                 'success' => false,
-                'message' => 'Top-up payment failed: '.$e->getMessage(),
+                'message' => 'Top-up payment failed: ' . $e->getMessage(),
             ];
         }
     }

@@ -10,7 +10,6 @@ use App\Models\Wallet;
 use App\Services\CurrencyService;
 use App\Services\FeedbackService;
 use App\Services\FeeSettingsService;
-use App\Services\NowPaymentService;
 use App\Services\OrderService;
 use App\Services\PaymentService;
 use App\Services\TaxService;
@@ -529,30 +528,5 @@ class Checkout extends Component
     {
         $this->showTopUpModal = false;
         $this->topUpGateway = null;
-    }
-
-    public function createPayment(NowPaymentService $nowPaymentService)
-    {
-        // $this->validate();
-
-        try {
-            $invoice = $nowPaymentService->createInvoice([
-                'price_amount' => $this->priceAmount,
-                'price_currency' => $this->priceCurrency,
-                'order_id' => 'Order Payment #'.$this->order->order_id,
-                'order_description' => $this->orderDescription ?: 'Cryptocurrency Payment',
-                'ipn_callback_url' => url('/nowpayments/ipn'),
-                'success_url' => route('user.payment.success'),
-                'cancel_url' => route('user.payment.failed'),
-            ]);
-
-            return redirect()->away($invoice['invoice_url']);
-        } catch (\Exception $e) {
-            Log::error('Error creating NowPayments invoice', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
-            session()->flash('error', $e->getMessage());
-        }
     }
 }

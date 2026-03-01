@@ -16,7 +16,7 @@ class PaymentSuccessMail extends Mailable
     use Queueable, SerializesModels;
 
     public string $template;
-    public string $subject;
+    public $subject;
     protected array $replacements;
 
     public function __construct(
