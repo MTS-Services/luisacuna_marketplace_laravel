@@ -42,7 +42,25 @@ class GameService
 
     public function latestData(int $limit = 10, $filters = []): Collection
     {
-        return $this->model->query()->with(['gameTranslations'])->filter($filters)->orderBy('created_at', 'desc')->limit($limit)->get();
+        $categoryId = $this->resolveCategoryIdForProductCount($filters);
+        $with = ['categories', 'gameTranslations' => function ($query) {
+            $query->where('language_id', get_language_id());
+        }];
+        if ($categoryId === null) {
+            $with[] = 'products';
+        }
+
+        $query = $this->model->query()
+            ->filter($filters)
+            ->with($with)
+            ->orderBy('created_at', 'desc')
+            ->limit($limit);
+
+        if ($categoryId !== null) {
+            $query->withCount(['products' => fn ($q) => $q->where('category_id', $categoryId)]);
+        }
+
+        return $query->get();
     }
 
     public function randomData(int $limit = 100, $filters = []): Collection
@@ -67,22 +85,33 @@ class GameService
         $sortField = $filters['sort_field'] ?? 'created_at';
         $sortDirection = $filters['sort_direction'] ?? 'desc';
 
-        if ($search) {
-            // Scout Search
+        $categoryId = $this->resolveCategoryIdForProductCount($filters);
+        $with = ['categories', 'gameTranslations' => function ($query) {
+            $query->where('language_id', get_language_id());
+        }];
+        if ($categoryId === null) {
+            $with[] = 'products';
+        }
 
+        $query = $this->model->query()
+            ->filter($filters)
+            ->with($with)
+            ->orderBy($sortField, $sortDirection);
+
+        if ($categoryId !== null) {
+            $query->withCount(['products' => fn ($q) => $q->where('category_id', $categoryId)]);
+        }
+
+        if ($search) {
             return Game::search($search)
-                ->query(fn ($query) => $query->filter($filters)->orderBy($sortField, $sortDirection))
+                ->query(fn ($builder) => $builder->filter($filters)
+                    ->with($with)
+                    ->orderBy($sortField, $sortDirection)
+                    ->when($categoryId !== null, fn ($q) => $q->withCount(['products' => fn ($q) => $q->where('category_id', $categoryId)])))
                 ->paginate($perPage);
         }
 
-        // // Normal Eloquent Query
-        return $this->model->query()
-            ->filter($filters)
-            ->with(['categories', 'products',  'gameTranslations' => function ($query) {
-                $query->where('language_id', get_language_id());
-            }])
-            ->orderBy($sortField, $sortDirection)
-            ->paginate($perPage);
+        return $query->paginate($perPage);
     }
 
     public function trashedPaginatedDatas(int $perPage = 15, array $filters = []): LengthAwarePaginator
@@ -107,6 +136,23 @@ class GameService
     public function searchData(string $query, string $sortField = 'created_at', $order = 'desc'): Collection
     {
         return $this->model->search($query)->orderBy($sortField, $order)->get();
+    }
+
+    /**
+     * Resolve category ID when product count should be scoped to the current category.
+     * Count = products for this game where product.category_id = category (and game has that category in game_categories).
+     */
+    protected function resolveCategoryIdForProductCount(array $filters): ?int
+    {
+        if (empty($filters['withProductCount']) || empty($filters['categorySlug'] ?? null)) {
+            return null;
+        }
+
+        $id = $this->category->newQuery()
+            ->where('slug', $filters['categorySlug'])
+            ->value('id');
+
+        return $id ? (int) $id : null;
     }
 
     public function getGamesByCategory($fieldValue, $fieldName = 'slug'): Collection

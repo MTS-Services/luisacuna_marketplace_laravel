@@ -664,30 +664,6 @@ if (! function_exists('log_info')) {
     }
 }
 
-if (! function_exists('category_route')) {
-    /**
-     * Get the route URL based on category slug
-     */
-    function category_route(string $slug): string
-    {
-        $routes = [
-            'currency' => 'currency',
-            'gift-card' => 'gift-card',
-            'boosting' => 'boosting',
-            'items' => 'items',
-            'accounts' => 'accounts',
-            'top-up' => 'top-up',
-            'coaching' => 'coaching',
-        ];
-
-        if (isset($routes[$slug])) {
-            return route($routes[$slug]);
-        }
-
-        return route('category.generic', ['categorySlug' => $slug]);
-    }
-}
-
 if (! function_exists('number_shorten')) {
     /**
      * Shorten a number to a human-readable format.

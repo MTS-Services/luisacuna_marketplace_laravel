@@ -1,7 +1,7 @@
 <nav class="hidden xl:flex gap-8 text-sm items-center relative" x-data="{ searchActive: false }" x-cloak>
     <div x-show="!searchActive" class="flex gap-8" x-transition:opacity.duration.300ms>
         @foreach ($categories as $category)
-            <a wire:navigate href="{{ category_route($category->slug) }}"
+            <a wire:navigate href="{{ route('category.generic', ['categorySlug' => $category->slug]) }}"
                 x-on:mouseenter="if (dropdownCloseTimeout) { clearTimeout(dropdownCloseTimeout); dropdownCloseTimeout = null }; if (!dropdownJustClosed) { open = (open == '{{ $category->slug }}' || open == '' || open != '{{ $category->slug }}' ? '{{ $category->slug }}' : '') }"
                 x-on:mouseleave="if (dropdownCloseTimeout) clearTimeout(dropdownCloseTimeout); dropdownCloseTimeout = setTimeout(() => { open = ''; dropdownCloseTimeout = null }, 150)"
                 class="navbar_style group relative"
