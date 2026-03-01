@@ -4,21 +4,35 @@ namespace App\Livewire\Backend\Admin\PaymentGateway;
 
 use App\Enums\MethodModeStatus;
 use App\Models\PaymentGateway;
+use App\Traits\FileManagementTrait;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Edit extends Component
 {
-    public bool  $modalShow     = false;
-    public bool  $isLoading     = false;
-    public ?int  $gatewayId     = null;
+    use FileManagementTrait;
+    use WithFileUploads;
 
-    public string $editName     = '';
-    public string $editMode     = 'sandbox';
-    public bool   $editIsActive = true;
+    public bool $modalShow = false;
+
+    public bool $isLoading = false;
+
+    public ?int $gatewayId = null;
+
+    public string $editName = '';
+
+    public string $editMode = 'sandbox';
+
+    public bool $editIsActive = true;
+
+    /** @var \Illuminate\Http\UploadedFile|null */
+    public $editIcon = null;
+
+    public bool $editRemoveIcon = false;
 
     /** @var array<string, string> */
-    public array $editLiveData    = [];
+    public array $editLiveData = [];
 
     /** @var array<string, string> */
     public array $editSandboxData = [];
@@ -29,51 +43,62 @@ class Edit extends Component
 
         $gateway = PaymentGateway::findOrFail($id);
 
-        $this->gatewayId    = $gateway->id;
-        $this->editName     = $gateway->name;
-        $this->editMode     = $gateway->mode?->value ?? 'sandbox';
+        $this->gatewayId = $gateway->id;
+        $this->editName = $gateway->name;
+        $this->editMode = $gateway->mode?->value ?? 'sandbox';
         $this->editIsActive = $gateway->is_active;
 
-        $fields      = $this->credentialFields()[$gateway->slug] ?? [];
-        $liveData    = $gateway->live_data    ?? [];
+        $fields = $this->credentialFields()[$gateway->slug] ?? [];
+        $liveData = $gateway->live_data ?? [];
         $sandboxData = $gateway->sandbox_data ?? [];
 
-        $this->editLiveData    = [];
+        $this->editLiveData = [];
         $this->editSandboxData = [];
 
         foreach ($fields as $field) {
-            $this->editLiveData[$field['key']]    = $liveData[$field['key']]    ?? '';
+            $this->editLiveData[$field['key']] = $liveData[$field['key']] ?? '';
             $this->editSandboxData[$field['key']] = $sandboxData[$field['key']] ?? '';
         }
 
+        $this->editRemoveIcon = false;
         $this->isLoading = false;
     }
 
     public function closeModal(): void
     {
-        $this->modalShow  = false;
-        $this->gatewayId  = null;
-        $this->isLoading  = false;
-        $this->reset(['editName', 'editMode', 'editIsActive', 'editLiveData', 'editSandboxData']);
+        $this->modalShow = false;
+        $this->gatewayId = null;
+        $this->isLoading = false;
+        $this->reset(['editName', 'editMode', 'editIsActive', 'editIcon', 'editRemoveIcon', 'editLiveData', 'editSandboxData']);
     }
 
     public function saveGateway(): void
     {
         $this->validate([
-            'editName'     => 'required|string|max:255',
-            'editMode'     => 'required|in:live,sandbox',
+            'editName' => 'required|string|max:255',
+            'editMode' => 'required|in:live,sandbox',
             'editIsActive' => 'boolean',
+            'editIcon' => 'nullable|image|max:2048',
+            'editRemoveIcon' => 'nullable|boolean',
         ]);
 
         $gateway = PaymentGateway::findOrFail($this->gatewayId);
 
+        $iconPath = $this->handleSingleFileUpload(
+            newFile: $this->editIcon,
+            oldPath: $gateway->icon,
+            removeKey: $this->editRemoveIcon,
+            folderName: 'payment-gateway-icons'
+        );
+
         $gateway->update([
-            'name'         => $this->editName,
-            'is_active'    => $this->editIsActive,
-            'mode'         => $this->editMode,
-            'live_data'    => array_filter($this->editLiveData,    fn($v) => $v !== ''),
-            'sandbox_data' => array_filter($this->editSandboxData, fn($v) => $v !== ''),
-            'updated_by'   => admin()->id,
+            'name' => $this->editName,
+            'icon' => $iconPath,
+            'is_active' => $this->editIsActive,
+            'mode' => $this->editMode,
+            'live_data' => array_filter($this->editLiveData, fn ($v) => $v !== ''),
+            'sandbox_data' => array_filter($this->editSandboxData, fn ($v) => $v !== ''),
+            'updated_by' => admin()->id,
         ]);
 
         $this->closeModal();
@@ -90,6 +115,7 @@ class Edit extends Component
     public function currentFields(): array
     {
         $gateway = $this->currentGateway;
+
         return $gateway ? ($this->credentialFields()[$gateway->slug] ?? []) : [];
     }
 

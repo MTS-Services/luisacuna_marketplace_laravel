@@ -99,6 +99,19 @@
                             </div>
                         </div>
 
+                        {{-- Gateway Icon --}}
+                        <div class="space-y-1.5">
+                            <x-ui.file-input
+                                wire:model="editIcon"
+                                label="{{ __('Gateway Icon') }}"
+                                accept="image/*"
+                                :existingFiles="$this->currentGateway && $this->currentGateway->icon ? [$this->currentGateway->icon] : []"
+                                removeModel="editRemoveIcon"
+                                :error="$errors->first('editIcon')"
+                                hint="{{ __('Max: 2MB') }}"
+                            />
+                        </div>
+
                         {{-- Mode selector --}}
                         <div class="space-y-1.5">
                             <x-ui.label value="{{ __('Operating Mode') }}" />
@@ -181,8 +194,8 @@
                                 {{-- Normal State --}}
                                 <flux:icon name="check"
                                     class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary"
-                                    wire:loading.remove wire:target="saveGateway, editName, editMode, editIsActive, editLiveData, editSandboxData" />
-                                <span wire:loading.remove wire:target="saveGateway, editName, editMode, editIsActive, editLiveData, editSandboxData"
+                                    wire:loading.remove wire:target="saveGateway, editName, editMode, editIsActive, editIcon, editRemoveIcon, editLiveData, editSandboxData" />
+                                <span wire:loading.remove wire:target="saveGateway, editName, editMode, editIsActive, editIcon, editRemoveIcon, editLiveData, editSandboxData"
                                     class="text-text-btn-primary group-hover:text-text-btn-secondary">
                                     {{ __('Save Changes') }}
                                 </span>
@@ -191,7 +204,7 @@
                                 <flux:icon name="arrow-path"
                                     class="w-4 h-4 animate-spin stroke-text-btn-primary group-hover:stroke-text-btn-secondary"
                                     wire:loading
-                                    wire:target="saveGateway, editName, editMode, editIsActive, editLiveData, editSandboxData" />
+                                    wire:target="saveGateway, editName, editMode, editIsActive, editIcon, editRemoveIcon, editLiveData, editSandboxData" />
                                 <span wire:loading wire:target="saveGateway"
                                     class="text-text-btn-primary group-hover:text-text-btn-secondary">
                                     {{ __('Saving…') }}
@@ -199,7 +212,7 @@
 
                                 {{-- Input Fields Updating State --}}
                                 <span wire:loading
-                                    wire:target="editName, editMode, editIsActive, editLiveData, editSandboxData"
+                                    wire:target="editName, editMode, editIsActive, editIcon, editRemoveIcon, editLiveData, editSandboxData"
                                     class="text-text-btn-primary group-hover:text-text-btn-secondary">
                                     {{ __('Updating...') }}
                                 </span>

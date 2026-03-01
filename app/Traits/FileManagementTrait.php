@@ -25,7 +25,7 @@ trait FileManagementTrait
     //     return $path;
     // }
 
-    public function handleSingleFileUpload($newFile = null, ?string $oldPath = null, bool $removeKey = false, string $folderName = 'uploads', string $disk = 'public'): string
+    public function handleSingleFileUpload($newFile = null, ?string $oldPath = null, bool $removeKey = false, string $folderName = 'uploads', string $disk = 'public'): ?string
     {
         $cloudinaryService = app(CloudinaryService::class);
 

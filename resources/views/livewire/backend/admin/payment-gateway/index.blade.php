@@ -64,9 +64,13 @@
                     {{-- Header --}}
                     <div class="flex items-start justify-between">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl flex items-center justify-center border border-white/10 shrink-0"
+                            <div class="w-10 h-10 rounded-xl flex items-center justify-center border border-white/10 shrink-0 overflow-hidden"
                                 style="background: {{ $meta['color'] }}18">
-                                <flux:icon name="{{ $meta['icon'] }}" class="w-5 h-5" style="color: {{ $meta['color'] }}" />
+                                @if ($gateway->icon)
+                                    <img src="{{ storage_url($gateway->icon) }}" alt="{{ $gateway->name }}" class="w-5 h-5 object-contain" />
+                                @else
+                                    <flux:icon name="{{ $meta['icon'] }}" class="w-5 h-5" style="color: {{ $meta['color'] }}" />
+                                @endif
                             </div>
                             <div>
                                 <h3 class="font-semibold text-text-primary text-sm leading-tight">{{ $gateway->name }}</h3>
