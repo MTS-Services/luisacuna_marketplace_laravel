@@ -8,6 +8,7 @@ enum EmailTemplateEnum: string
     case ORDER_MESSAGE_SELLER = 'order_message_seller';
     case ORDER_MESSAGE_ADMIN = 'order_message_admin';
     case PAYMENT_SUCCESS_BUYER = 'payment_success_buyer';
+    case PAYMENT_SUCCESS_SELLER = 'payment_success_seller';
     case PAYMENT_SUCCESS_SUPER_ADMIN = 'payment_success_super_admin';
     case PAYMENT_CANCELED_BUYER = 'payment_canceled_buyer';
     case WITHDRAWAL_REQUEST_SUBMIT_SELLER = 'withdrawal_request_submit_seller';

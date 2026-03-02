@@ -439,7 +439,7 @@
                             'active' => 'general-settings',
                         ],
                         [
-                            'name' => 'Templates',
+                            'name' => 'Email Templates',
                             'route' => route('admin.email-template.index'),
                             'icon' => 'pen-line',
                             'active' => 'email-template',

@@ -37,7 +37,7 @@ class SendPaymentSuccessEmailJob implements ShouldQueue
     {
         $template = null;
         try {
-            $order = Order::with('user')->findOrFail($this->orderId);
+            $order = Order::with(['user', 'source.user', 'source'])->findOrFail($this->orderId);
             $payment = Payment::findOrFail($this->paymentId);
             $template = EmailTemplate::where('key', EmailTemplateEnum::PAYMENT_SUCCESS_BUYER->value)->first();
 
