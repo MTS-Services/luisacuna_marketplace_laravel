@@ -55,6 +55,7 @@ class PaymentSuccessMail extends Mailable
             '{{date_time}}' => $dateTimeFormatted,
             '{{payment_gateway}}' => $this->payment->payment_gateway,
             '{{payment_id}}' => $this->payment->payment_id,
+            '{{transaction_id}}' => $this->payment->transaction_id,
             '{{order_detail_link}}' => route('user.order.detail', $this->order->order_id),
         ];
 
@@ -80,10 +81,7 @@ class PaymentSuccessMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.payment.payment-success',
-            with: [
-                'template' => $this->template,
-            ],
+            html: $this->template,
         );
     }
 

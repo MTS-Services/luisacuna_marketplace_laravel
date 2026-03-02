@@ -239,11 +239,19 @@ class PaymentController extends Controller
         $orderId = $request->query('order_id');
 
         $order = Order::where('order_id', $orderId)
-            ->with(['latestPayment', 'source'])
+            ->with(['latestPayment', 'source', 'user'])
             ->first();
 
         if ($order && $order->user_id !== Auth::id()) {
             abort(403, __('Unauthorized access'));
+        }
+
+        if ($order && $order->latestPayment && $order->user?->email) {
+            \App\Jobs\Payment\SendPaymentFailedEmailJob::dispatch(
+                $order->id,
+                $order->latestPayment->id,
+                $order->user->email
+            );
         }
 
         return view('payment.failed', compact('order'));
