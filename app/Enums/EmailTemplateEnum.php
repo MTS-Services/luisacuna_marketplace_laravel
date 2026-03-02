@@ -4,28 +4,32 @@ namespace App\Enums;
 
 enum EmailTemplateEnum: string
 {
-    case WELCOME_EMAIL = 'welcome_email';
-    case PASSWORD_RESET = 'password_reset';
-    case ORDER_CONFIRMATION = 'order_confirmation';
-    case ORDER_DISPUTE_UPDATE = 'order_dispute_update';
+    case ORDER_MESSAGE = 'order_message';
+    case NEW_MESSAGE_RECEIVED = 'new_message_received';
+    case ORDER_STATUS_CHANGED = 'order_status_changed';
+    case ORDER_DISPUTE = 'order_dispute';
+    case PAYMENT = 'payment';
+    case WITHDRAWAL = 'withdrawal';
+    case VERIFICATION = 'verification';
+    case BOOSTING_OFFER = 'boosting_offer';
 
     public function label(): string
     {
         return match ($this) {
-            self::WELCOME_EMAIL => __('welcome_email'),
-            self::PASSWORD_RESET => __('password_reset'),
-            self::ORDER_CONFIRMATION => __('order_confirmation'),
-            self::ORDER_DISPUTE_UPDATE => __('order_dispute_update'),
+            self::ORDER_MESSAGE => __('Order Message'),
+            self::NEW_MESSAGE_RECEIVED => __('New Message Received'),
+            self::ORDER_STATUS_CHANGED => __('Order Status Changed'),
+            self::ORDER_DISPUTE => __('Order Dispute'),
+            self::PAYMENT => __('Payment'),
+            self::WITHDRAWAL => __('Withdrawal'),
+            self::VERIFICATION => __('Verification'),
+            self::BOOSTING_OFFER => __('Boosting Offer'),
         };
     }
 
     public function color(): string
     {
-        return match ($this) {
-            self::WELCOME_EMAIL => 'success',
-            self::PASSWORD_RESET => 'success',
-            self::ORDER_CONFIRMATION => 'success',
-        };
+        return 'success';
     }
 
     public static function options(): array

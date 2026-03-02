@@ -3,13 +3,13 @@
 namespace App\Jobs\Payment;
 
 use App\Enums\EmailTemplateEnum;
-use App\Models\Order;
-use App\Models\Payment;
 use App\Mail\Payment\PaymentSuccessMail;
 use App\Models\EmailTemplate;
+use App\Models\Order;
+use App\Models\Payment;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
@@ -20,7 +20,9 @@ class SendPaymentSuccessEmailJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public int $tries = 3;
+
     public int $timeout = 60;
+
     public array $backoff = [10, 30, 60];
 
     public function __construct(
@@ -33,11 +35,21 @@ class SendPaymentSuccessEmailJob implements ShouldQueue
 
     public function handle(): void
     {
+        $template = null;
         try {
             $order = Order::with('user')->findOrFail($this->orderId);
             $payment = Payment::findOrFail($this->paymentId);
-            $template = EmailTemplate::where('key', EmailTemplateEnum::ORDER_CONFIRMATION->value)->first();
-            
+            $template = EmailTemplate::where('key', EmailTemplateEnum::PAYMENT->value)->first();
+
+            if ($template === null) {
+                Log::warning('Payment success email skipped: no template found', [
+                    'order_id' => $this->orderId,
+                    'recipient' => $this->recipientEmail,
+                ]);
+
+                return;
+            }
+
             Mail::to($this->recipientEmail)
                 ->send(new PaymentSuccessMail($order, $payment, $template));
 
@@ -51,7 +63,6 @@ class SendPaymentSuccessEmailJob implements ShouldQueue
                 'order_id' => $this->orderId,
                 'payment_id' => $this->paymentId,
                 'recipient' => $this->recipientEmail,
-                'template' => $template,
                 'error' => $e->getMessage(),
             ]);
 

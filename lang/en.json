@@ -2471,5 +2471,13 @@
     "Only pending withdrawal requests can be updated.": "Only pending withdrawal requests can be updated.",
     "User wallet not found.": "User wallet not found.",
     "Insufficient pending balance for this withdrawal.": "Insufficient pending balance for this withdrawal.",
-    "Admin not found": "Admin not found"
+    "Admin not found": "Admin not found",
+    "Template updated successfully": "Template updated successfully",
+    "Failed to update template": "Failed to update template",
+    "Failed to load template.": "Failed to load template.",
+    "Failed to load template": "Failed to load template",
+    "Order Message": "Order Message",
+    "New Message Received": "New Message Received",
+    "Email subject line": "Email subject line",
+    "Update template": "Update template"
 }

@@ -16,7 +16,9 @@ class PaymentSuccessMail extends Mailable
     use Queueable, SerializesModels;
 
     public string $template;
+
     public $subject;
+
     protected array $replacements;
 
     public function __construct(
@@ -28,15 +30,15 @@ class PaymentSuccessMail extends Mailable
         $this->order->loadMissing('user');
 
         $this->replacements = [
-            '{buyer_name}' => $this->order->user?->full_name ?? $this->order->user?->first_name ?? 'Customer',
-            '{order_id}' => $this->order->order_id,
-            '{payment_gateway}' => $this->payment->payment_gateway,
-            '{currency}' => number_format($this->payment->amount, 2),
-            '{payment_id}' => $this->payment->payment_id,
-            '{paid_at}' => optional($this->payment->paid_at)->format('M d, Y • h:i A') ?? now()->format('M d, Y • h:i A'),
-            '{order_detail_link}' => route('user.order.detail', $this->order->order_id),
-            '{app_name}' => config('app.name'),
-            '{date_time}' => now()->format('M d, Y • h:i A'),
+            '{{buyer_name}}' => $this->order->user?->full_name ?? $this->order->user?->first_name ?? 'Customer',
+            '{{order_id}}' => $this->order->order_id,
+            '{{payment_gateway}}' => $this->payment->payment_gateway,
+            '{{currency}}' => number_format($this->payment->amount, 2),
+            '{{payment_id}}' => $this->payment->payment_id,
+            '{{paid_at}}' => optional($this->payment->paid_at)->format('M d, Y • h:i A') ?? now()->format('M d, Y • h:i A'),
+            '{{order_detail_link}}' => route('user.order.detail', $this->order->order_id),
+            '{{app_name}}' => config('app.name'),
+            '{{date_time}}' => now()->format('M d, Y • h:i A'),
         ];
 
         $this->template = str_replace(array_keys($this->replacements), array_values($this->replacements), $emailTemplate->template);

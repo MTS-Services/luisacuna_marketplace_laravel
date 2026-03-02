@@ -2,52 +2,36 @@
 
 namespace App\Livewire\Backend\Admin\EmailTemplate;
 
+use App\Services\EmailTemplateService;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Services\EmailTemplateService;
 
 class Index extends Component
 {
     use WithPagination;
-   public $selectedIds = [];
-    protected EmailTemplateService $emailTemplate;
-    public function boot(EmailTemplateService $emailTemplate){
-        $this->emailTemplate = $emailTemplate;
+
+    public string $search = '';
+
+    protected EmailTemplateService $emailTemplateService;
+
+    public function boot(EmailTemplateService $emailTemplateService): void
+    {
+        $this->emailTemplateService = $emailTemplateService;
+    }
+
+    public function updatedSearch(): void
+    {
+        $this->resetPage();
     }
 
     public function render()
     {
-        $datas = $this->emailTemplate->paginateDatas(10);
-    
-        $columns = [
+        $templates = $this->emailTemplateService->paginateDatas(12, [
+            'search' => $this->search ?: null,
+        ]);
 
-
-
-            [
-                'key' => 'key',
-                'label' => 'Key',
-            ],
-
-
-            [
-                'key' => 'name',
-                'label' => 'Name',
-            ],
-
-        ];
-
-        $actions = [
-            ['key' => 'id', 'label' => 'View', 'route' => 'admin.email-template.show', 'encrypt' => true],
-            ['key' => 'id', 'label' => 'Edit', 'route' => 'admin.email-template.edit', 'encrypt' => true],
-        ];
-
-        return view('livewire.backend.admin.email-template.index',[
-            'datas' => $datas,
-            'columns' => $columns,
-            'actions' => $actions,
-            'bulkActions' => [],
-            'bulkAction' => [],
-            'statuses' => [],
+        return view('livewire.backend.admin.email-template.index', [
+            'templates' => $templates,
         ]);
     }
 }
