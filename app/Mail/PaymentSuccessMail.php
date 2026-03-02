@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail\Payment;
+namespace App\Mail;
 
 use App\Models\EmailTemplate;
 use App\Models\Order;

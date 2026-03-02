@@ -3,7 +3,7 @@
 namespace App\Jobs\Payment;
 
 use App\Enums\EmailTemplateEnum;
-use App\Mail\Payment\PaymentSuccessMail;
+use App\Mail\PaymentSuccessMail;
 use App\Models\EmailTemplate;
 use App\Models\Order;
 use App\Models\Payment;
