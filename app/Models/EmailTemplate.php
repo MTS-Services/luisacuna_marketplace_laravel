@@ -2,18 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Traits\AuditableTrait;
-use OwenIt\Auditing\Contracts\Auditable;
-
-class EmailTemplate extends AuditBaseModel implements Auditable
+class EmailTemplate extends BaseModel
 {
-    use  AuditableTrait;
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
 
     protected $fillable = [
         'key',
