@@ -26,7 +26,7 @@ class Index extends Component
 
     public function render()
     {
-        $templates = $this->emailTemplateService->paginateDatas(12, [
+        $templates = $this->emailTemplateService->paginateDatas(25, [
             'search' => $this->search ?: null,
         ]);
 
