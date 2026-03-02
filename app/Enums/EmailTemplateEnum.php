@@ -4,26 +4,38 @@ namespace App\Enums;
 
 enum EmailTemplateEnum: string
 {
-    case ORDER_MESSAGE = 'order_message';
-    case NEW_MESSAGE_RECEIVED = 'new_message_received';
-    case ORDER_STATUS_CHANGED = 'order_status_changed';
-    case ORDER_DISPUTE = 'order_dispute';
-    case PAYMENT = 'payment';
-    case WITHDRAWAL = 'withdrawal';
-    case VERIFICATION = 'verification';
-    case BOOSTING_OFFER = 'boosting_offer';
+    case ORDER_MESSAGE_BUYER = 'order_message_buyer';
+    case ORDER_MESSAGE_SELLER = 'order_message_seller';
+    case ORDER_MESSAGE_ADMIN = 'order_message_admin';
+    case PAYMENT_SUCCESS_BUYER = 'payment_success_buyer';
+    case PAYMENT_SUCCESS_SUPER_ADMIN = 'payment_success_super_admin';
+    case PAYMENT_CANCELED_BUYER = 'payment_canceled_buyer';
+    case WITHDRAWAL_REQUEST_SUBMIT_SELLER = 'withdrawal_request_submit_seller';
+    case WITHDRAWAL_REQUEST_SUBMIT_SUPER_ADMIN = 'withdrawal_request_submit_super_admin';
+    case WITHDRAWAL_PROCESS_SUCCESS_SUPER_ADMIN = 'withdrawal_process_success_super_admin';
+    case WITHDRAWAL_PROCESS_SUCCESS_SELLER = 'withdrawal_process_success_seller';
+    case USER_BANNED = 'user_banned';
+    case OTP_VERIFICATION = 'otp_verification';
+    case ORDER_DISPUTE_RESOLVED_BUYER = 'order_dispute_resolved_buyer';
+    case ORDER_DISPUTE_RESOLVED_SELLER = 'order_dispute_resolved_seller';
 
     public function label(): string
     {
         return match ($this) {
-            self::ORDER_MESSAGE => __('Order Message'),
-            self::NEW_MESSAGE_RECEIVED => __('New Message Received'),
-            self::ORDER_STATUS_CHANGED => __('Order Status Changed'),
-            self::ORDER_DISPUTE => __('Order Dispute'),
-            self::PAYMENT => __('Payment'),
-            self::WITHDRAWAL => __('Withdrawal'),
-            self::VERIFICATION => __('Verification'),
-            self::BOOSTING_OFFER => __('Boosting Offer'),
+            self::ORDER_MESSAGE_BUYER => __('Order message to Buyer'),
+            self::ORDER_MESSAGE_SELLER => __('Order message to Seller'),
+            self::ORDER_MESSAGE_ADMIN => __('Order message to Admin'),
+            self::PAYMENT_SUCCESS_BUYER => __('Payment Success to Buyer'),
+            self::PAYMENT_SUCCESS_SUPER_ADMIN => __('Payment Success to Super Admins'),
+            self::PAYMENT_CANCELED_BUYER => __('Payment Canceled to Buyer'),
+            self::WITHDRAWAL_REQUEST_SUBMIT_SELLER => __('Withdrawal Request Submit to Seller'),
+            self::WITHDRAWAL_REQUEST_SUBMIT_SUPER_ADMIN => __('Withdrawal Request Submit to Super Admins'),
+            self::WITHDRAWAL_PROCESS_SUCCESS_SUPER_ADMIN => __('Withdrawal Process Success to Super Admins'),
+            self::WITHDRAWAL_PROCESS_SUCCESS_SELLER => __('Withdrawal Process Success to Seller'),
+            self::USER_BANNED => __('User Banned'),
+            self::OTP_VERIFICATION => __('OTP Verification'),
+            self::ORDER_DISPUTE_RESOLVED_BUYER => __('Order Dispute resolved to Buyer'),
+            self::ORDER_DISPUTE_RESOLVED_SELLER => __('Order Dispute resolved to Seller'),
         };
     }
 

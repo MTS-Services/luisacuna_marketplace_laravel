@@ -263,7 +263,7 @@ class OrderService
             $order->id,
             $order->source?->user->email,
             $order->source?->user->full_name,
-            EmailTemplateEnum::ORDER_DISPUTE->value,
+            EmailTemplateEnum::ORDER_DISPUTE_RESOLVED_SELLER->value,
         );
     }
 

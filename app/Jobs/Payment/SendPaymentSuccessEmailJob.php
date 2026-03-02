@@ -39,7 +39,7 @@ class SendPaymentSuccessEmailJob implements ShouldQueue
         try {
             $order = Order::with('user')->findOrFail($this->orderId);
             $payment = Payment::findOrFail($this->paymentId);
-            $template = EmailTemplate::where('key', EmailTemplateEnum::PAYMENT->value)->first();
+            $template = EmailTemplate::where('key', EmailTemplateEnum::PAYMENT_SUCCESS_BUYER->value)->first();
 
             if ($template === null) {
                 Log::warning('Payment success email skipped: no template found', [
