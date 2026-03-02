@@ -2,19 +2,19 @@
 
 namespace App\Actions\User;
 
-use App\Models\User;
-use Illuminate\Support\Arr;
 use App\Enums\UserAccountStatus;
-use App\Events\User\UserUpdated;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use App\Events\User\AccountStatusChnage;
+use App\Events\User\UserUpdated;
 use App\Mail\User\UserAccountStatusChanged;
+use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Services\Cloudinary\CloudinaryService;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UpdateAction
@@ -34,9 +34,9 @@ class UpdateAction
 
                 $user = $this->interface->find($id);
 
-                if (!$user) {
+                if (! $user) {
                     Log::error('User not found', ['user_id' => $id]);
-                    throw new \Exception('User not found');
+                    throw new \Exception(__('User not found.'));
                 }
 
                 $oldData = $user->getAttributes();
@@ -50,7 +50,7 @@ class UpdateAction
                     // Delete old file permanently (File deletion is non-reversible)
                     if ($oldAvatarPath) {
                         $this->cloudinaryService->delete($oldAvatarPath);
-                     }
+                    }
                     // Store the new file and track path for rollback
 
                     $uploadedAvatar = $this->cloudinaryService->upload($uploadedAvatar, ['folder' => 'users']);
@@ -59,16 +59,16 @@ class UpdateAction
                     $newData['avatar'] = $newSingleAvatarPath;
 
                 } elseif (Arr::get($data, 'remove_file')) {
-                  
+
                     if ($oldAvatarPath) {
                         $this->cloudinaryService->delete($oldAvatarPath);
-                     }
+                    }
 
                     $newData['avatar'] = null;
                 }
 
-                if (!isset($newData['remove_file']) || (!$newData['remove_file'] && !$newSingleAvatarPath)) {
-                    
+                if (! isset($newData['remove_file']) || (! $newData['remove_file'] && ! $newSingleAvatarPath)) {
+
                     $newData['avatar'] = $oldAvatarPath ?? null;
 
                 }
@@ -76,27 +76,22 @@ class UpdateAction
 
                 // --- 2. Password Handling ---
                 $newPassword = Arr::get($data, 'password');
-                if (!empty($newPassword)) {
+                if (! empty($newPassword)) {
                     $newData['password'] = Hash::make($newPassword);
                 } else {
                     unset($newData['password']);
                 }
 
-                
                 $updated = $this->interface->update($id, $newData);
 
-
-                if (!$updated) {
-                    throw new \Exception('Failed to update Data');
+                if (! $updated) {
+                    throw new \Exception(__('Failed to update Data'));
                 }
-
 
                 // --- Track account_status change BEFORE update ---
                 $oldAccountStatus = Arr::get($oldData, 'account_status');
                 $newAccountStatus = Arr::get($data, 'account_status');
                 $reason = Arr::get($data, 'reason');
-
-
 
                 // Status change check and reason not null
                 if ($oldAccountStatus !== $newAccountStatus && $reason) {
@@ -117,11 +112,10 @@ class UpdateAction
                             'user_email' => $user->email,
                             'old_status' => $oldAccountStatus,
                             'new_status' => $newAccountStatus,
-                            'reason' => $reason
+                            'reason' => $reason,
                         ]);
                     }
                 }
-
 
                 // Refresh model and dispatch event
                 $freshData = $user->fresh();
@@ -129,17 +123,18 @@ class UpdateAction
                 $changes = [];
 
                 foreach ($newAttributes as $key => $value) {
-                    if (in_array($key, ['created_at', 'updated_at', 'id'])) continue;
+                    if (in_array($key, ['created_at', 'updated_at', 'id'])) {
+                        continue;
+                    }
                     $oldValue = Arr::get($oldData, $key);
                     if ($oldValue !== $value) {
                         $changes[$key] = ['old' => $oldValue, 'new' => $value];
                     }
                 }
 
-                if (!empty($changes)) {
+                if (! empty($changes)) {
                     event(new UserUpdated($user, $changes));
                 }
-
 
                 $changedDescription = isset($newData['description']) && $newData['description'] !== $oldData['description'];
                 // ---- RE-TRANSLATE IF NAME CHANGED ----
@@ -149,7 +144,7 @@ class UpdateAction
                         'description' => $oldData['description'],
                     ]);
 
-                     $freshData->dispatchTranslation(
+                    $freshData->dispatchTranslation(
                         defaultLanguageLocale: app()->getLocale() ?? 'en',
                         forceTranslation: true,
                         targetLanguageIds: null

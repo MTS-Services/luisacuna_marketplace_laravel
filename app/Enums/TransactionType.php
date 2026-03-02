@@ -13,11 +13,11 @@ enum TransactionType: string
     public function label(): string
     {
         return match ($this) {
-            self::PURCHSED => 'Purchased',
-            self::SALES => 'Sales',
-            self::WITHDRAWAL => 'Withdrawal',
-            self::REFUND => 'Refund',
-            self::TOPUP => 'Top Up',
+            self::PURCHSED => __('Purchased'),
+            self::SALES => __('Sales'),
+            self::WITHDRAWAL => __('Withdrawal'),
+            self::REFUND => __('Refund'),
+            self::TOPUP => __('Top Up'),
         };
     }
 
@@ -35,7 +35,7 @@ enum TransactionType: string
     public static function options(): array
     {
         return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }

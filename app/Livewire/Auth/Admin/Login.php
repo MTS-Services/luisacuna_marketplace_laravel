@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Features;
-use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -27,10 +26,15 @@ class Login extends Component
 
     // Device registration fields
     public string $fcmToken = '';
+
     public string $deviceType = 'web';
+
     public string $deviceName = '';
+
     public string $deviceModel = '';
+
     public string $osVersion = '';
+
     public string $appVersion = '';
 
     /**
@@ -102,7 +106,7 @@ class Login extends Component
             session()->put('device_registration_pending', true);
 
             $deviceData = [
-                'fcm_token' => $this->fcmToken ?: 'web_' . session()->getId(),
+                'fcm_token' => $this->fcmToken ?: 'web_'.session()->getId(),
                 'device_type' => $this->deviceType,
                 'device_name' => $this->deviceName ?: $this->detectBrowser(),
                 'device_model' => $this->deviceModel ?: $this->detectOS(),
@@ -154,7 +158,6 @@ class Login extends Component
         $this->appVersion = $deviceInfo['app_version'] ?? '';
     }
 
-
     /**
      * Validate the admin's credentials.
      */
@@ -169,7 +172,7 @@ class Login extends Component
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
+                'email' => __('These credentials do not match our records.'),
             ]);
         }
 
@@ -190,7 +193,7 @@ class Login extends Component
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => __('auth.throttle', [
+            'email' => __('Too many login attempts. Please try again in :seconds seconds.', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -202,7 +205,7 @@ class Login extends Component
      */
     protected function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->email) . '|' . request()->ip());
+        return Str::transliterate(Str::lower($this->email).'|'.request()->ip());
     }
 
     /**
@@ -212,11 +215,21 @@ class Login extends Component
     {
         $userAgent = request()->userAgent();
 
-        if (str_contains($userAgent, 'Firefox')) return 'Firefox';
-        if (str_contains($userAgent, 'Edg')) return 'Edge';
-        if (str_contains($userAgent, 'Chrome')) return 'Chrome';
-        if (str_contains($userAgent, 'Safari')) return 'Safari';
-        if (str_contains($userAgent, 'Opera') || str_contains($userAgent, 'OPR')) return 'Opera';
+        if (str_contains($userAgent, 'Firefox')) {
+            return 'Firefox';
+        }
+        if (str_contains($userAgent, 'Edg')) {
+            return 'Edge';
+        }
+        if (str_contains($userAgent, 'Chrome')) {
+            return 'Chrome';
+        }
+        if (str_contains($userAgent, 'Safari')) {
+            return 'Safari';
+        }
+        if (str_contains($userAgent, 'Opera') || str_contains($userAgent, 'OPR')) {
+            return 'Opera';
+        }
 
         return 'Unknown Browser';
     }
@@ -228,12 +241,24 @@ class Login extends Component
     {
         $userAgent = request()->userAgent();
 
-        if (str_contains($userAgent, 'Windows NT 10.0')) return 'Windows 10/11';
-        if (str_contains($userAgent, 'Windows')) return 'Windows';
-        if (str_contains($userAgent, 'Macintosh') || str_contains($userAgent, 'Mac OS')) return 'macOS';
-        if (str_contains($userAgent, 'Linux')) return 'Linux';
-        if (str_contains($userAgent, 'Android')) return 'Android';
-        if (str_contains($userAgent, 'iPhone') || str_contains($userAgent, 'iPad')) return 'iOS';
+        if (str_contains($userAgent, 'Windows NT 10.0')) {
+            return 'Windows 10/11';
+        }
+        if (str_contains($userAgent, 'Windows')) {
+            return 'Windows';
+        }
+        if (str_contains($userAgent, 'Macintosh') || str_contains($userAgent, 'Mac OS')) {
+            return 'macOS';
+        }
+        if (str_contains($userAgent, 'Linux')) {
+            return 'Linux';
+        }
+        if (str_contains($userAgent, 'Android')) {
+            return 'Android';
+        }
+        if (str_contains($userAgent, 'iPhone') || str_contains($userAgent, 'iPad')) {
+            return 'iOS';
+        }
 
         return 'Unknown OS';
     }
@@ -247,6 +272,7 @@ class Login extends Component
 
         if (preg_match('/Windows NT ([\d.]+)/', $userAgent, $matches)) {
             $versions = ['10.0' => '10/11', '6.3' => '8.1', '6.2' => '8', '6.1' => '7'];
+
             return $versions[$matches[1]] ?? $matches[1];
         }
 

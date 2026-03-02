@@ -95,15 +95,15 @@ class StripeMethod extends PaymentMethod
 
                 // Determine success and cancel URLs
                 if ($isTopUp) {
-                    $successUrl = route('user.payment.topup.success') . '?session_id={CHECKOUT_SESSION_ID}&order_id=' . $order->order_id;
-                    $cancelUrl = route('user.payment.failed') . '?order_id=' . $order->order_id;
-                    $description = "Wallet top-up for " . $order->source?->name . " (Order ID: #" . $order->order_id . ")";
+                    $successUrl = route('user.payment.topup.success').'?session_id={CHECKOUT_SESSION_ID}&order_id='.$order->order_id;
+                    $cancelUrl = route('user.payment.failed').'?order_id='.$order->order_id;
+                    $description = 'Wallet top-up for '.$order->source?->name.' (Order ID: #'.$order->order_id.')';
                     $productName = 'Wallet Top-up';
                 } else {
-                    $successUrl = route('user.payment.success') . '?session_id={CHECKOUT_SESSION_ID}&order_id=' . $order->order_id;
-                    $cancelUrl = route('user.payment.failed') . '?order_id=' . $order->order_id;
-                    $description = 'Top-up for ' . $order->source?->name . ' (Order ID: #' . $order->order_id . ')';
-                    $productName = 'Top-up for ' . ($order->source?->name ?? 'Order #' . $order->order_id);
+                    $successUrl = route('user.payment.success').'?session_id={CHECKOUT_SESSION_ID}&order_id='.$order->order_id;
+                    $cancelUrl = route('user.payment.failed').'?order_id='.$order->order_id;
+                    $description = 'Top-up for '.$order->source?->name.' (Order ID: #'.$order->order_id.')';
+                    $productName = 'Top-up for '.($order->source?->name ?? 'Order #'.$order->order_id);
                 }
 
                 // Create Stripe Checkout Session IN DISPLAY CURRENCY
@@ -164,7 +164,7 @@ class StripeMethod extends PaymentMethod
                     'checkout_url' => $session->url,
                     'session_id' => $session->id,
                     'payment_id' => $payment->payment_id,
-                    'message' => 'Redirecting to Stripe Checkout...',
+                    'message' => __('Redirecting to Stripe Checkout...'),
                 ];
             });
         } catch (Exception $e) {
@@ -174,7 +174,7 @@ class StripeMethod extends PaymentMethod
                 'trace' => $e->getTraceAsString(),
             ]);
 
-            return ['success' => false, 'message' => 'Failed to initialize Stripe payment: ' . $e->getMessage()];
+            return ['success' => false, 'message' => __('Failed to initialize Stripe payment: :message', ['message' => $e->getMessage()])];
         }
     }
 
@@ -199,7 +199,7 @@ class StripeMethod extends PaymentMethod
             }
 
             if ($payment->status === PaymentStatus::COMPLETED->value) {
-                return ['success' => true, 'message' => 'Payment already processed.'];
+                return ['success' => true, 'message' => __('Payment already processed.')];
             }
 
             $order = $payment->order;
@@ -215,7 +215,7 @@ class StripeMethod extends PaymentMethod
 
             return [
                 'success' => false,
-                'message' => 'Payment not completed. Status: ' . $session->payment_status,
+                'message' => __('Payment not completed. Status: :status', ['status' => $session->payment_status]),
             ];
         } catch (Exception $e) {
             Log::error('Payment confirmation failed', [
@@ -226,7 +226,7 @@ class StripeMethod extends PaymentMethod
 
             return [
                 'success' => false,
-                'message' => 'Payment confirmation failed: ' . $e->getMessage(),
+                'message' => 'Payment confirmation failed: '.$e->getMessage(),
             ];
         }
     }
@@ -392,7 +392,7 @@ class StripeMethod extends PaymentMethod
 
             return [
                 'success' => true,
-                'message' => 'Payment completed successfully',
+                'message' => __('Payment completed successfully'),
                 'correlation_id' => $correlationId,
             ];
         });
@@ -541,7 +541,7 @@ class StripeMethod extends PaymentMethod
 
             return [
                 'success' => true,
-                'message' => 'Payment completed successfully',
+                'message' => __('Payment completed successfully'),
                 'correlation_id' => $correlationId,
             ];
         });

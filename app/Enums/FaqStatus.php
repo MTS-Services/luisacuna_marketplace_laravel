@@ -7,12 +7,11 @@ enum FaqStatus: string
     case ACTIVE = 'active';
     case INACTIVE = 'inactive';
 
-
     public function label(): string
     {
         return match ($this) {
-            self::ACTIVE => 'Active',
-            self::INACTIVE => 'Inactive',
+            self::ACTIVE => __('Active'),
+            self::INACTIVE => __('Inactive'),
         };
     }
 
@@ -26,8 +25,8 @@ enum FaqStatus: string
 
     public static function options(): array
     {
-       return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+        return array_map(
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }

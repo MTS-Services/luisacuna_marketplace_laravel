@@ -3,7 +3,6 @@
 namespace App\Livewire\Backend\User\Chat;
 
 use App\Services\ConversationService;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -71,15 +70,15 @@ class IndexWithBroadCast extends Component
     {
         try {
             $conversations = $this->service->fetchConversationList();
-            
+
             foreach ($conversations as $conversation) {
                 $this->service->markMessagesAsRead($conversation, Auth::id());
             }
 
-            $this->dispatch('success', message: 'All messages marked as read');
+            $this->dispatch('success', message: __('All messages marked as read'));
             $this->refreshConversations();
         } catch (\Exception $e) {
-            $this->dispatch('error', message: 'Failed to mark messages as read');
+            $this->dispatch('error', message: __('Failed to mark messages as read'));
         }
     }
 

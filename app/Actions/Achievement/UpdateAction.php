@@ -3,12 +3,12 @@
 namespace App\Actions\Achievement;
 
 use App\Models\Achievement;
+use App\Repositories\Contracts\AchievementRepositoryInterface;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use App\Repositories\Contracts\AchievementRepositoryInterface;
 
 class UpdateAction
 {
@@ -17,18 +17,17 @@ class UpdateAction
      */
     public function __construct(
         protected AchievementRepositoryInterface $interface
-    )
-    {}
+    ) {}
 
-        public function execute(int $id, array $data): Achievement
+    public function execute(int $id, array $data): Achievement
     {
         return DB::transaction(function () use ($id, $data) {
 
             $model = $this->interface->find($id);
 
-            if (!$model) {
+            if (! $model) {
                 Log::error('Data not found', ['achievement_id' => $id]);
-                throw new \Exception('achievement not found');
+                throw new \Exception(__('achievement not found'));
             }
             $oldData = $model->getAttributes();
             $newData = $data;
@@ -44,8 +43,8 @@ class UpdateAction
                 }
 
                 // Store the new icon and track path for rollback
-                $prefix = uniqid('IMX') . '-' . time() . '-' . uniqid();
-                $fileName = $prefix . '-' . $uploadedAvatar->getClientOriginalName();
+                $prefix = uniqid('IMX').'-'.time().'-'.uniqid();
+                $fileName = $prefix.'-'.$uploadedAvatar->getClientOriginalName();
 
                 $newSingleAvatarPath = Storage::disk('public')->putFileAs('achievements', $uploadedAvatar, $fileName);
                 $newData['icon'] = $newSingleAvatarPath;
@@ -56,19 +55,18 @@ class UpdateAction
                 $newData['icon'] = null;
             }
 
-            if (!$newData['remove_icon'] && !$newSingleAvatarPath) {
+            if (! $newData['remove_icon'] && ! $newSingleAvatarPath) {
                 $newData['icon'] = $oldAvatarPath ?? null;
             }
 
             unset($newData['remove_icon']);
 
-
             // Update Admin
             $updated = $this->interface->update($id, $newData);
 
-            if (!$updated) {
+            if (! $updated) {
                 Log::error('Failed to update Data in repository', ['achievement_id' => $id]);
-                throw new \Exception('Failed to update achievement');
+                throw new \Exception(__('Failed to update achievement'));
             }
 
             // Refresh the achievement model
@@ -77,13 +75,13 @@ class UpdateAction
             $descriptionChanged = isset($newData['description']) && $newData['description'] !== $oldData['description'];
             $freshData = $model->fresh();
 
-            if($titleChanged || $descriptionChanged){
+            if ($titleChanged || $descriptionChanged) {
                 $freshData->dispatchTranslation(
                     defaultLanguageLocale: 'en',
                     targetLanguageIds: null
                 );
             }
-            
+
             return $freshData;
         });
     }

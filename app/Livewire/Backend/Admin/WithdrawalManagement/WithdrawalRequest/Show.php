@@ -72,7 +72,7 @@ class Show extends Component
                     ->find($id);
 
                 if (! $request) {
-                    throw new \Exception('Withdrawal request not found.');
+                    throw new \Exception(__('Withdrawal request not found.'));
                 }
 
                 $fromStatus = $request->current_status;
@@ -88,14 +88,14 @@ class Show extends Component
                     ->first();
 
                 if (! $wallet) {
-                    throw new \Exception('User wallet not found.');
+                    throw new \Exception(__('User wallet not found.'));
                 }
 
                 $finalAmount = (float) $request->final_amount;
 
                 // Validate pending balance
                 if ((float) $wallet->pending_balance < $finalAmount) {
-                    throw new \Exception('Insufficient pending balance for this withdrawal.');
+                    throw new \Exception(__('Insufficient pending balance for this withdrawal.'));
                 }
 
                 if ($toStatus === 'completed') {

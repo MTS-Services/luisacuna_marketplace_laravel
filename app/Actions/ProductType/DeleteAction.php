@@ -2,8 +2,8 @@
 
 namespace App\Actions\ProductType;
 
-use Illuminate\Support\Facades\DB;
 use App\Repositories\Contracts\ProductTypeRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
 class DeleteAction
 {
@@ -12,10 +12,9 @@ class DeleteAction
      */
     public function __construct(
         protected ProductTypeRepositoryInterface $interface
-    )
-    {}
+    ) {}
 
-    public function execute(int $id, bool $forceDelete = false, int $actionerId)
+    public function execute(int $id, bool $forceDelete, int $actionerId)
     {
         return DB::transaction(function () use ($id, $forceDelete, $actionerId) {
             $findData = null;
@@ -26,15 +25,14 @@ class DeleteAction
                 $findData = $this->interface->find($id);
             }
 
-            if (!$findData) {
-                throw new \Exception('Data not found');
+            if (! $findData) {
+                throw new \Exception(__('Data not found'));
             }
 
-
-            
             if ($forceDelete) {
                 return $this->interface->forceDelete($id);
             }
+
             return $this->interface->delete($id, $actionerId);
         });
     }

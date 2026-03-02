@@ -3,12 +3,11 @@
 namespace App\Actions\Game\Category;
 
 use App\Models\Category;
-use App\Jobs\TranslateCategoryJob;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Services\Cloudinary\CloudinaryService;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -25,11 +24,11 @@ class UpdateAction
 
                 $findData = $this->interface->findData($id, 'id', false, false, false);
 
-                if (!$findData) {
+                if (! $findData) {
                     Log::error('Category not found', [
-                        'category_id' => $id
+                        'category_id' => $id,
                     ]);
-                    throw new \Exception('Category not found');
+                    throw new \Exception(__('Category not found'));
                 }
 
                 $oldData = $findData->getAttributes();
@@ -43,10 +42,10 @@ class UpdateAction
                 $uploadedIcon = Arr::get($data, 'icon');
 
                 if ($uploadedIcon instanceof UploadedFile) {
-                   
+
                     if ($oldIconPath) {
                         $this->cloudinaryService->delete($oldIconPath);
-                     }
+                    }
 
                     $uploadedIcon = $this->cloudinaryService->upload($uploadedIcon, ['folder' => 'icons']);
 
@@ -54,7 +53,6 @@ class UpdateAction
 
                     $newData['icon'] = $newSingleIconPath;
 
-                    
                 } elseif (Arr::get($data, 'remove_file')) {
                     // Delete requested file
                     if ($oldIconPath && Storage::disk('public')->exists($oldIconPath)) {
@@ -65,8 +63,8 @@ class UpdateAction
                 }
 
                 // Cleanup icon values
-                if (empty($newData['remove_file']) && !$newSingleIconPath) {
-                    
+                if (empty($newData['remove_file']) && ! $newSingleIconPath) {
+
                     $newData['icon'] = $oldIconPath ?? null;
 
                 }
@@ -75,16 +73,15 @@ class UpdateAction
 
                 // ---- UPDATE ----
 
-              
                 $updated = $this->interface->update($id, $newData);
 
-                if (!$updated) {
+                if (! $updated) {
                     Log::error('Failed to update category', [
                         'category_id' => $id,
-                        'new_data' => $newData
+                        'new_data' => $newData,
                     ]);
 
-                    throw new \Exception('Failed to update category');
+                    throw new \Exception(__('Failed to update category'));
                 }
 
                 $freshData = $findData->fresh();
@@ -94,7 +91,7 @@ class UpdateAction
                     Log::info('Category name changed, dispatching translation job', [
                         'category_id' => $id,
                         'old_name' => $oldData['name'],
-                        'new_name' => $newData['name']
+                        'new_name' => $newData['name'],
                     ]);
 
                     $freshData->dispatchTranslation(
@@ -109,7 +106,7 @@ class UpdateAction
             Log::error('Category update failed', [
                 'category_id' => $id,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
 
             throw $e;

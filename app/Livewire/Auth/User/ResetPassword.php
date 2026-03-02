@@ -21,10 +21,10 @@ class ResetPassword extends Component
 
     #[Locked]
     public string $email = '';
+
     public $password = '';
+
     public $password_confirmation = '';
-
-
 
     /**
      * Mount the component.
@@ -35,9 +35,10 @@ class ResetPassword extends Component
         $data = decrypt($token);
 
         // Validate token structure
-        if (!isset($data['email'], $data['expires_at'])) {
+        if (! isset($data['email'], $data['expires_at'])) {
             $this->error('Invalid password reset link. Please request a new one.');
             $this->redirect(route('password.request'), navigate: true);
+
             return;
         }
 
@@ -45,22 +46,25 @@ class ResetPassword extends Component
         if ($data['expires_at'] < now()->timestamp) {
             $this->error('This password reset link has expired. Please request a new one.');
             $this->redirect(route('password.request'), navigate: true);
+
             return;
         }
 
         // Verify user exists
         $user = User::where('email', $data['email'])->first();
-        if (!$user) {
+        if (! $user) {
             $this->error('Invalid password reset link. Please request a new one.');
             $this->redirect(route('password.request'), navigate: true);
+
             return;
         }
 
         // Verify OTP was actually verified
         $otpVerification = $user->latestOtp(OtpType::PASSWORD_RESET);
-        if (!$otpVerification || !$otpVerification->isVerified()) {
+        if (! $otpVerification || ! $otpVerification->isVerified()) {
             $this->error('Verification required. Please complete the verification process first.');
             $this->redirect(route('password.request'), navigate: true);
+
             return;
         }
 
@@ -78,26 +82,25 @@ class ResetPassword extends Component
                 'password' => ['required', 'string', Rules\Password::defaults()],
             ]);
 
-
             // Find the user by email
             $user = User::where('email', $this->email)->first();
 
-            if (!$user) {
+            if (! $user) {
                 throw new \Exception('User not found');
             }
 
             // Verify OTP is still verified
             $otpVerification = $user->latestOtp(OtpType::PASSWORD_RESET);
-            if (!$otpVerification || !$otpVerification->isVerified()) {
+            if (! $otpVerification || ! $otpVerification->isVerified()) {
                 throw ValidationException::withMessages([
-                    'password' => 'Your verification has expired. Please restart the password reset process.',
+                    'password' => __('Your verification has expired. Please restart the password reset process.'),
                 ]);
             }
 
             // Check if new password is same as current password
             if (Hash::check($this->password, $user->password)) {
                 throw ValidationException::withMessages([
-                    'password' => 'Your new password cannot be the same as your current password. Please choose a different password.',
+                    'password' => __('Your new password cannot be the same as your current password. Please choose a different password.'),
                 ]);
             }
 
@@ -109,7 +112,7 @@ class ResetPassword extends Component
             // Mark OTP as used by deleting it
             $otpVerification->delete();
 
-            Log::info('Password successfully reset for User: ' . $user->email);
+            Log::info('Password successfully reset for User: '.$user->email);
 
             $this->success('Your password has been reset successfully. Please log in with your new password.');
 

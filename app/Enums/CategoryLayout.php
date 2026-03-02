@@ -10,13 +10,13 @@ enum CategoryLayout: string
 
     public function label(): string
     {
-        return match($this) {
-            self::LIST_GRID => 'List Grid',
-            self::GROUP_GIFT_CARD => 'Group Gift Card',
+        return match ($this) {
+            self::LIST_GRID => __('List Grid'),
+            self::GROUP_GIFT_CARD => __('Group Gift Card'),
         };
     }
 
-   public function color(): string
+    public function color(): string
     {
         return match ($this) {
             self::LIST_GRID => 'badge-info',
@@ -26,6 +26,6 @@ enum CategoryLayout: string
 
     public static function options(): array
     {
-        return array_map(fn($case) => ['value' => $case->value, 'label' => $case->label()], self::cases());
+        return array_map(fn ($case) => ['value' => $case->value, 'label' => $case->label()], self::cases());
     }
 }

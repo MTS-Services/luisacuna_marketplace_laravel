@@ -14,12 +14,12 @@ enum TransactionStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::PENDING => 'Pending',
-            self::PROCESSING => 'Processing',
-            self::PAID => 'Paid',
-            self::FAILED => 'Failed',
-            self::CANCELLED => 'Cancelled',
-            self::REVERSED => 'Reversed',
+            self::PENDING => __('Pending'),
+            self::PROCESSING => __('Processing'),
+            self::PAID => __('Paid'),
+            self::FAILED => __('Failed'),
+            self::CANCELLED => __('Cancelled'),
+            self::REVERSED => __('Reversed'),
         };
     }
 
@@ -38,7 +38,7 @@ enum TransactionStatus: string
     public static function options(): array
     {
         return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }

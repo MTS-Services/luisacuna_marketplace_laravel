@@ -2,7 +2,6 @@
 
 namespace App\Actions\Currency;
 
-
 use App\Repositories\Contracts\CurrencyRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 
@@ -10,10 +9,9 @@ class DeleteAction
 {
     public function __construct(
         protected CurrencyRepositoryInterface $interface
-    ) {
-    }
+    ) {}
 
-    public function execute(int $id, bool $forceDelete = false, int $actionerId): bool
+    public function execute(int $id, bool $forceDelete, int $actionerId): bool
     {
         return DB::transaction(function () use ($id, $forceDelete, $actionerId) {
             $findData = null;
@@ -24,12 +22,13 @@ class DeleteAction
                 $findData = $this->interface->find($id);
             }
 
-            if (!$findData) {
-                throw new \Exception('Data not found');
+            if (! $findData) {
+                throw new \Exception(__('Data not found'));
             }
             if ($forceDelete) {
                 return $this->interface->forceDelete($id);
             }
+
             return $this->interface->delete($id, $actionerId);
         });
     }

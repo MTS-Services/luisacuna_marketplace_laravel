@@ -24,17 +24,17 @@
 
             <!-- Header -->
             <div class="text-center">
-                <h2 class="text-2xl lg:text-5xl md:text-4xl font-medium p-4 text-text-white">{{__('Confirm your Gmail')}}</h2>
+                <h2 class="text-2xl lg:text-5xl md:text-4xl font-medium p-4 text-text-white">{{ __('Confirm your Gmail') }}</h2>
                 <p class="text-text-white lg:text-xl text-base">
-                    {{__('We have sent a code in an Email message to ex**@gmaol.co To confirm your account, please enter the
-                    code.')}}
+                    {{ __('We have sent a code in an Email message to ex**@gmaol.co To confirm your account, please enter the
+                    code.') }}
                 </p>
             </div>
 
             <!-- code -->
             <div>
-                <label class="block text-xl font-medium mb-2 text-text-white">{{__('Code')}}</label>
-                <x-ui.input wire:model="form.code" type="text" placeholder="input code"/>
+                <label class="block text-xl font-medium mb-2 text-text-white">{{ __('Code') }}</label>
+                <x-ui.input wire:model="form.code" type="text" placeholder="{{ __('input code') }}"/>
 
                 @error('form.code')
                     <p class="mt-2 text-center text-sm text-red-600 dark:text-red-400">
@@ -74,6 +74,13 @@
 
 <script>
     document.addEventListener('livewire:initialized', () => {
+        const i18n = {
+            didntReceive: @json(__("Didn't receive the code?")),
+            resendCode: @json(__('Resend Code')),
+            sending: @json(__('Sending...')),
+            resendAvailableIn: @json(__('Resend available in')),
+            dontResendAgain: @json(__("Don't resend again. Maximum limit reached."))
+        };
         const STORAGE_KEY = 'admin_otp_resend_countdown_{{ admin()->id }}';
         const STORAGE_TIMESTAMP_KEY = 'admin_otp_resend_timestamp_{{ admin()->id }}';
 
@@ -125,31 +132,31 @@
             if (resendLimitReached) {
                 resendContainer.innerHTML = `
                     <p class="text-sm text-gray-600 dark:text-gray-400">
-                        Didn't receive the code?
+                        ${i18n.didntReceive}
                     </p>
                     <span class="mt-2 inline-block text-sm font-semibold text-red-600 dark:text-red-400">
-                        Don't resend again. Maximum limit reached.
+                        ${i18n.dontResendAgain}
                     </span>
                 `;
             } else if (countdown > 0) {
                 resendContainer.innerHTML = `
                     <p class="text-sm text-gray-600 dark:text-gray-400">
-                        Didn't receive the code?
+                        ${i18n.didntReceive}
                     </p>
                     <span class="mt-2 inline-block text-sm text-gray-600 dark:text-gray-400">
-                        Resend available in <span id="countdown" class="font-semibold text-indigo-600 dark:text-indigo-400">${countdown}</span>s
+                        ${i18n.resendAvailableIn} <span id="countdown" class="font-semibold text-indigo-600 dark:text-indigo-400">${countdown}</span>s
                     </span>
                 `;
                 countdownElement = document.getElementById('countdown');
             } else {
                 resendContainer.innerHTML = `
                     <p class="text-sm text-gray-600 dark:text-gray-400">
-                        Didn't receive the code?
+                        ${i18n.didntReceive}
                     </p>
                     <button type="button" wire:click="resend" wire:loading.attr="disabled"
                         class="mt-2 text-sm font-medium text-indigo-600 hover:text-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed dark:text-indigo-400 dark:hover:text-indigo-300">
-                        <span wire:loading.remove wire:target="resend">Resend Code</span>
-                        <span wire:loading wire:target="resend">Sending...</span>
+                        <span wire:loading.remove wire:target="resend">${i18n.resendCode}</span>
+                        <span wire:loading wire:target="resend">${i18n.sending}</span>
                     </button>
                 `;
             }

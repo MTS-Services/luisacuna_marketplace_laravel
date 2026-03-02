@@ -42,7 +42,7 @@ abstract class PaymentMethod
     {
         return [
             'success' => false,
-            'message' => 'This payment method does not support confirmation.',
+            'message' => __('This payment method does not support confirmation.'),
         ];
     }
 

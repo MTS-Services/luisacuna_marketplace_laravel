@@ -70,11 +70,11 @@ class ValidateSessionExists
                 ->where('user_id', $userId)
                 ->exists();
 
-            if (!$exists) {
+            if (! $exists) {
                 Log::warning('Session does not exist in database - forcing logout', [
                     'guard' => $guard,
                     'user_id' => $userId,
-                    'session_id' => $sessionId
+                    'session_id' => $sessionId,
                 ]);
 
                 // Session was deleted (logged out from another device)
@@ -84,7 +84,7 @@ class ValidateSessionExists
 
                 if ($request->expectsJson() || $request->wantsJson()) {
                     return response()->json([
-                        'message' => 'Your session has been terminated.',
+                        'message' => __('Your session has been terminated.'),
                         'redirect' => route($guard === 'admin' ? 'admin.login' : 'login'),
                     ], 401);
                 }
@@ -92,14 +92,14 @@ class ValidateSessionExists
                 // Handle Livewire requests
                 if ($request->header('X-Livewire')) {
                     return response([
-                        'message' => 'Session terminated',
+                        'message' => __('Session terminated'),
                     ], 401)
                         ->header('X-Livewire-Redirect', route($guard === 'admin' ? 'admin.login' : 'login'));
                 }
 
                 return redirect()
                     ->route($guard === 'admin' ? 'admin.login' : 'login')
-                    ->with('error', 'You have been logged out from another device.');
+                    ->with('error', __('You have been logged out from another device.'));
             }
         }
 
@@ -113,18 +113,18 @@ class ValidateSessionExists
     {
         $user = Auth::guard($guard)->user();
 
-        if (!$user) {
+        if (! $user) {
             return false;
         }
 
         // Check if user has last_login_at column
-        if (!isset($user->last_login_at)) {
+        if (! isset($user->last_login_at)) {
             return false;
         }
 
         $lastLogin = $user->last_login_at;
 
-        if (!$lastLogin) {
+        if (! $lastLogin) {
             return false;
         }
 

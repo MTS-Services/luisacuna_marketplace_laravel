@@ -13,7 +13,7 @@
 
     // Prepare Select2 config as JSON
     $select2Config = json_encode([
-        'placeholder' => $placeholder,
+        'placeholder' => __($placeholder),
         'multiple' => $multiple,
         'tags' => $tags,
         'allowClear' => $allowClear,

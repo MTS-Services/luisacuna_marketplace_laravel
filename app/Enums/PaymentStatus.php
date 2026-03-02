@@ -14,12 +14,12 @@ enum PaymentStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::PENDING => 'Pending',
-            self::COMPLETED => 'Completed',
-            self::FAILED => 'Failed',
-            self::REFUNDED => 'Refunded',
-            self::PARTIALLY_REFUNDED => 'Partially Refunded',
-            self::CANCELLED => 'Cancelled',
+            self::PENDING => __('Pending'),
+            self::COMPLETED => __('Completed'),
+            self::FAILED => __('Failed'),
+            self::REFUNDED => __('Refunded'),
+            self::PARTIALLY_REFUNDED => __('Partially Refunded'),
+            self::CANCELLED => __('Cancelled'),
         };
     }
 
@@ -38,7 +38,7 @@ enum PaymentStatus: string
     public static function options(): array
     {
         return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }

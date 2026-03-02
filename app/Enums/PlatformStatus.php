@@ -10,8 +10,8 @@ enum PlatformStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::ACTIVE => 'Active',
-            self::INACTIVE => 'inactive',
+            self::ACTIVE => __('Active'),
+            self::INACTIVE => __('inactive'),
         };
     }
 
@@ -26,7 +26,7 @@ enum PlatformStatus: string
     public static function options(): array
     {
         return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }

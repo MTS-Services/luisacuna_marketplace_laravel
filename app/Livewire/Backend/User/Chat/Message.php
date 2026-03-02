@@ -17,28 +17,40 @@ class Message extends Component
 {
     use WithFileUploads;
 
-    public ?int $conversationId       = null;
+    public ?int $conversationId = null;
+
     public ?Conversation $conversation = null;
-    public array $messages            = [];
-    public string $message            = '';
-    public $media                     = null;
-    public bool $isLoading            = false;
+
+    public array $messages = [];
+
+    public string $message = '';
+
+    public $media = null;
+
+    public bool $isLoading = false;
+
     public bool $isLoadingConversation = false;
-    public ?int $beforeMessageId      = null;
-    public bool $isUserAtBottom       = true;
-    public ?int $lastPolledMessageId  = null;
-    public bool $hasMoreMessages      = false;
+
+    public ?int $beforeMessageId = null;
+
+    public bool $isUserAtBottom = true;
+
+    public ?int $lastPolledMessageId = null;
+
+    public bool $hasMoreMessages = false;
 
     // Image overlay state
-    public bool $showImageOverlay    = false;
+    public bool $showImageOverlay = false;
+
     public ?string $selectedImageUrl = null;
 
     protected ConversationService $service;
+
     protected CloudinaryService $cloudinaryService;
 
     public function boot(ConversationService $service, CloudinaryService $cloudinaryService)
     {
-        $this->service          = $service;
+        $this->service = $service;
         $this->cloudinaryService = $cloudinaryService;
     }
 
@@ -51,11 +63,11 @@ class Message extends Component
         }
 
         // ✅ Reset state instantly - clears old messages so UI feels snappy
-        $this->conversationId      = $conversationId;
-        $this->messages            = [];
+        $this->conversationId = $conversationId;
+        $this->messages = [];
         $this->lastPolledMessageId = null;
-        $this->beforeMessageId     = null;
-        $this->isUserAtBottom      = true;
+        $this->beforeMessageId = null;
+        $this->isUserAtBottom = true;
         $this->isLoadingConversation = true;
 
         // Dispatch immediately so JS can show skeleton
@@ -73,8 +85,9 @@ class Message extends Component
             }])
             ->find($conversationId);
 
-        if (!$this->conversation) {
+        if (! $this->conversation) {
             $this->isLoadingConversation = false;
+
             return;
         }
 
@@ -83,7 +96,7 @@ class Message extends Component
         $this->isLoadingConversation = false;
 
         // Track last message id for polling
-        if (!empty($this->messages)) {
+        if (! empty($this->messages)) {
             $this->lastPolledMessageId = collect($this->messages)->last()->id ?? null;
         }
 
@@ -92,8 +105,9 @@ class Message extends Component
 
     public function loadMessages()
     {
-        if (!$this->conversation) {
+        if (! $this->conversation) {
             $this->messages = [];
+
             return;
         }
 
@@ -104,9 +118,9 @@ class Message extends Component
         );
 
         if ($result) {
-            $paginator     = $result['messages'];
-            $loaded        = $paginator->reverse()->values()->all();
-            $this->messages       = $loaded;
+            $paginator = $result['messages'];
+            $loaded = $paginator->reverse()->values()->all();
+            $this->messages = $loaded;
             $this->hasMoreMessages = $paginator->hasMorePages();
         }
     }
@@ -116,7 +130,7 @@ class Message extends Component
      */
     public function pollForNewMessages()
     {
-        if (!$this->conversation) {
+        if (! $this->conversation) {
             return ['hasNewMessages' => false];
         }
 
@@ -143,9 +157,9 @@ class Message extends Component
             $this->dispatch('messages-updated');
 
             return [
-                'hasNewMessages'  => true,
+                'hasNewMessages' => true,
                 'newMessageCount' => $newMessages->count(),
-                'senderId'        => $newMessages->last()->sender_id,
+                'senderId' => $newMessages->last()->sender_id,
             ];
         }
 
@@ -157,14 +171,14 @@ class Message extends Component
      */
     public function loadMoreMessages()
     {
-        if (empty($this->messages) || !$this->hasMoreMessages) {
+        if (empty($this->messages) || ! $this->hasMoreMessages) {
             return;
         }
 
-        $oldestMessage     = collect($this->messages)->first();
+        $oldestMessage = collect($this->messages)->first();
         $this->beforeMessageId = $oldestMessage->id ?? null;
 
-        if (!$this->beforeMessageId) {
+        if (! $this->beforeMessageId) {
             return;
         }
 
@@ -175,8 +189,8 @@ class Message extends Component
         );
 
         if ($result && $result['messages']->isNotEmpty()) {
-            $olderMessages        = $result['messages']->reverse()->values()->all();
-            $this->messages       = array_merge($olderMessages, $this->messages);
+            $olderMessages = $result['messages']->reverse()->values()->all();
+            $this->messages = array_merge($olderMessages, $this->messages);
             $this->hasMoreMessages = $result['messages']->hasMorePages();
             $this->dispatch('maintain-scroll-position');
         }
@@ -184,14 +198,15 @@ class Message extends Component
 
     public function sendMessage()
     {
-        if (!$this->conversation) {
-            $this->dispatch('error', message: 'No conversation selected');
+        if (! $this->conversation) {
+            $this->dispatch('error', message: __('No conversation selected'));
+
             return;
         }
 
         $trimmed = trim($this->message);
 
-        if (empty($trimmed) && !$this->media) {
+        if (empty($trimmed) && ! $this->media) {
             return;
         }
 
@@ -207,7 +222,7 @@ class Message extends Component
                 }
             }
 
-            $messageType = !empty($attachments) ? MessageType::IMAGE : MessageType::TEXT;
+            $messageType = ! empty($attachments) ? MessageType::IMAGE : MessageType::TEXT;
 
             $sentMessage = $this->service->sendMessage(
                 conversation: $this->conversation,
@@ -221,20 +236,20 @@ class Message extends Component
                 // Load with relationships for display
                 $sentMessage->load(['sender:id,first_name,last_name,avatar', 'attachments', 'readReceipts']);
 
-                $this->messages[]          = $sentMessage;
+                $this->messages[] = $sentMessage;
                 $this->lastPolledMessageId = $sentMessage->id;
-                $this->message             = '';
-                $this->media               = null;
-                $this->isUserAtBottom      = true;
+                $this->message = '';
+                $this->media = null;
+                $this->isUserAtBottom = true;
 
                 $this->dispatch('refresh-conversations');
                 $this->dispatch('scroll-to-bottom');
                 $this->dispatch('messages-updated');
             } else {
-                $this->dispatch('error', message: 'Failed to send message');
+                $this->dispatch('error', message: __('Failed to send message'));
             }
         } catch (\Exception $e) {
-            $this->dispatch('error', message: 'Error: ' . $e->getMessage());
+            $this->dispatch('error', message: 'Error: '.$e->getMessage());
         } finally {
             $this->isLoading = false;
         }
@@ -242,16 +257,16 @@ class Message extends Component
 
     protected function uploadFile($file): array
     {
-        $uploaded  = $this->cloudinaryService->upload($file, ['folder' => 'chats']);
-        $path      = $uploaded->publicId;
-        $mimeType  = $file->getMimeType();
+        $uploaded = $this->cloudinaryService->upload($file, ['folder' => 'chats']);
+        $path = $uploaded->publicId;
+        $mimeType = $file->getMimeType();
 
         $attachmentType = AttachmentType::FILE;
-        $thumbnailPath  = null;
+        $thumbnailPath = null;
 
         if (str_starts_with($mimeType, 'image/')) {
             $attachmentType = AttachmentType::IMAGE;
-            $thumbnailPath  = $this->createThumbnail($file);
+            $thumbnailPath = $this->createThumbnail($file);
         } elseif (str_starts_with($mimeType, 'video/')) {
             $attachmentType = AttachmentType::VIDEO;
         } elseif (str_starts_with($mimeType, 'audio/')) {
@@ -259,8 +274,8 @@ class Message extends Component
         }
 
         return [
-            'type'      => $attachmentType,
-            'path'      => $path,
+            'type' => $attachmentType,
+            'path' => $path,
             'thumbnail' => $thumbnailPath,
         ];
     }
@@ -269,6 +284,7 @@ class Message extends Component
     {
         try {
             $uploaded = $this->cloudinaryService->upload($file, ['folder' => 'chats/thumbnails']);
+
             return $uploaded->publicId;
         } catch (\Exception $e) {
             return null;
@@ -278,7 +294,7 @@ class Message extends Component
     #[On('new-message-received')]
     public function handleNewMessageReceived($messageData)
     {
-        if (!$this->conversation || $messageData['conversation_id'] != $this->conversationId) {
+        if (! $this->conversation || $messageData['conversation_id'] != $this->conversationId) {
             return;
         }
 
@@ -286,7 +302,7 @@ class Message extends Component
             ->find($messageData['id']);
 
         if ($newMessage) {
-            $this->messages[]          = $newMessage;
+            $this->messages[] = $newMessage;
             $this->lastPolledMessageId = $newMessage->id;
             $this->dispatch('check-scroll-position');
         }
@@ -294,13 +310,13 @@ class Message extends Component
 
     public function markVisibleMessagesAsRead(array $visibleMessageIds)
     {
-        if (!$this->conversation || empty($visibleMessageIds)) {
+        if (! $this->conversation || empty($visibleMessageIds)) {
             return;
         }
 
         $unreadMessages = $this->conversation->messages()
             ->whereIn('id', $visibleMessageIds)
-            ->whereDoesntHave('readReceipts', fn($q) => $q
+            ->whereDoesntHave('readReceipts', fn ($q) => $q
                 ->where('reader_id', Auth::id())
                 ->where('reader_type', \App\Models\User::class))
             ->where('sender_id', '!=', Auth::id())
@@ -322,21 +338,21 @@ class Message extends Component
 
             if ($msg && $this->service->deleteMessage($msg)) {
                 $this->messages = collect($this->messages)
-                    ->reject(fn($m) => $m->id === $messageId)
+                    ->reject(fn ($m) => $m->id === $messageId)
                     ->values()
                     ->all();
-                $this->dispatch('success', message: 'Message deleted');
+                $this->dispatch('success', message: __('Message deleted'));
             } else {
-                $this->dispatch('error', message: 'Failed to delete message');
+                $this->dispatch('error', message: __('Failed to delete message'));
             }
         } catch (\Exception $e) {
-            $this->dispatch('error', message: 'Error deleting message');
+            $this->dispatch('error', message: __('Error deleting message'));
         }
     }
 
     public function showAttachmentImage(string $url)
     {
-        $this->showImageOverlay  = true;
+        $this->showImageOverlay = true;
         $this->selectedImageUrl = $url;
     }
 
@@ -348,7 +364,7 @@ class Message extends Component
 
     public function closeImageOverlay()
     {
-        $this->showImageOverlay  = false;
+        $this->showImageOverlay = false;
         $this->selectedImageUrl = null;
         $this->dispatch('image-overlay-closed');
     }
@@ -366,7 +382,7 @@ class Message extends Component
 
     public function getOtherParticipantProperty()
     {
-        if (!$this->conversation) {
+        if (! $this->conversation) {
             return null;
         }
 

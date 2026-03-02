@@ -1,5 +1,5 @@
 <div class="p-6 bg-white rounded-lg shadow">
-    <h2 class="text-2xl font-bold mb-4">Translation Manager</h2>
+    <h2 class="text-2xl font-bold mb-4">{{ __('Translation Manager') }}</h2>
 
     @if (session()->has('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
@@ -18,7 +18,7 @@
             <p class="text-sm">
                 <strong>API Usage:</strong>
                 {{ number_format($usage['character_count']) }} / {{ number_format($usage['character_limit']) }}
-                characters
+                {{ __('characters') }}
                 ({{ $usage['usage_percentage'] }}%)
             </p>
         </div>
@@ -26,15 +26,15 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div>
-            <label class="block text-sm font-medium mb-2">Source Language (Optional)</label>
-            <input type="text" wire:model="sourceLanguage" placeholder="e.g., EN (auto-detect if empty)"
+            <label class="block text-sm font-medium mb-2">{{ __('Source Language (Optional)') }}</label>
+            <input type="text" wire:model="sourceLanguage" placeholder="{{ __('e.g., EN (auto-detect if empty)') }}"
                 class="w-full border rounded px-3 py-2">
         </div>
 
         <div>
-            <label class="block text-sm font-medium mb-2">Target Language *</label>
+            <label class="block text-sm font-medium mb-2">{{ __('Target Language *') }}</label>
             <select wire:model="targetLanguage" class="w-full border rounded px-3 py-2">
-                <option value="">Select Language</option>
+                <option value="">{{ __('Select Language') }}</option>
                 @foreach ($targetLanguages as $lang)
                     <option value="{{ $lang['code'] }}">{{ $lang['name'] }} ({{ $lang['code'] }})</option>
                 @endforeach
@@ -48,14 +48,14 @@
     <div class="flex gap-4">
         <button wire:click="translate" wire:loading.attr="disabled"
             class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded disabled:opacity-50">
-            <span wire:loading.remove wire:target="translate">Translate</span>
-            <span wire:loading wire:target="translate">Translating...</span>
+            <span wire:loading.remove wire:target="translate">{{ __('Translate') }}</span>
+            <span wire:loading wire:target="translate">{{ __('Translating...') }}</span>
         </button>
     </div>
 
     @if (count($translatedData) > 0)
         <div class="mt-6">
-            <h3 class="text-xl font-semibold mb-3">Translated Content</h3>
+            <h3 class="text-xl font-semibold mb-3">{{ __('Translated Content') }}</h3>
 
             @foreach ($translatedData as $key => $value)
                 <div class="mb-4">
@@ -65,7 +65,7 @@
             @endforeach
 
             <button wire:click="saveTranslation" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">
-                Save Translation
+                {{ __('Save Translation') }}
             </button>
         </div>
     @endif

@@ -27,14 +27,14 @@ class DeleteAction
             }
 
             if (! $findData) {
-                throw new \Exception('Data not found');
+                throw new \Exception(__('Data not found'));
             }
 
             $superAdminRoleId = Role::getSuperAdminRoleId();
             if ((int) $findData->role_id === $superAdminRoleId) {
                 SuperAdminGuard::requireSuperAdmin();
                 if (! $forceDelete && Role::countAdminsWithSuperAdminRole() === 1) {
-                    throw new AuthorizationException('Cannot delete the last Super Admin. Assign the Super Admin role to another admin first.');
+                    throw new AuthorizationException(__('Cannot delete the last Super Admin. Assign the Super Admin role to another admin first.'));
                 }
             }
 

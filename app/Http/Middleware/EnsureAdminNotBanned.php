@@ -23,7 +23,7 @@ class EnsureAdminNotBanned
             if ($admin && $admin->status === AdminStatus::SUSPENDED) {
                 Auth::guard('admin')->logout();
 
-                $message = __('auth.banned_logged_out');
+                $message = __('Your account has been banned. You have been logged out.');
 
                 return redirect()
                     ->route('admin.login')
@@ -34,4 +34,3 @@ class EnsureAdminNotBanned
         return $next($request);
     }
 }
-

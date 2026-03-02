@@ -29,9 +29,7 @@ trait HasCloudinaryUploads
     /**
      * Upload single file to Cloudinary
      *
-     * @param UploadedFile|string $file
-     * @param array $options
-     * @return CloudinaryUploadResult|null
+     * @param  UploadedFile|string  $file
      */
     protected function uploadToCloudinary($file, array $options = []): ?CloudinaryUploadResult
     {
@@ -39,16 +37,13 @@ trait HasCloudinaryUploads
             return $this->cloudinary()->upload($file, $options);
         } catch (\Exception $e) {
             $this->handleCloudinaryError('upload', $e);
+
             return null;
         }
     }
 
     /**
      * Upload multiple files to Cloudinary
-     *
-     * @param array $files
-     * @param array $options
-     * @return array
      */
     protected function uploadMultipleToCloudinary(array $files, array $options = []): array
     {
@@ -57,10 +52,6 @@ trait HasCloudinaryUploads
 
     /**
      * Delete file from Cloudinary
-     *
-     * @param string $publicId
-     * @param string $resourceType
-     * @return bool
      */
     protected function deleteFromCloudinary(string $publicId, string $resourceType = 'image'): bool
     {
@@ -68,16 +59,13 @@ trait HasCloudinaryUploads
             return $this->cloudinary()->delete($publicId, $resourceType);
         } catch (\Exception $e) {
             $this->handleCloudinaryError('delete', $e);
+
             return false;
         }
     }
 
     /**
      * Delete multiple files from Cloudinary
-     *
-     * @param array $publicIds
-     * @param string $resourceType
-     * @return array
      */
     protected function deleteMultipleFromCloudinary(array $publicIds, string $resourceType = 'image'): array
     {
@@ -86,11 +74,6 @@ trait HasCloudinaryUploads
 
     /**
      * Get transformed URL
-     *
-     * @param string $publicId
-     * @param array $transformations
-     * @param string $resourceType
-     * @return string
      */
     protected function getCloudinaryTransformedUrl(string $publicId, array $transformations, string $resourceType = 'image'): string
     {
@@ -99,10 +82,6 @@ trait HasCloudinaryUploads
 
     /**
      * Validate file before upload
-     *
-     * @param UploadedFile $file
-     * @param array $rules
-     * @return bool
      */
     protected function validateCloudinaryFile(UploadedFile $file, array $rules = []): bool
     {
@@ -110,22 +89,19 @@ trait HasCloudinaryUploads
             return $this->cloudinary()->validateFile($file, $rules);
         } catch (\Exception $e) {
             $this->addError('file', $e->getMessage());
+
             return false;
         }
     }
 
     /**
      * Handle Cloudinary errors
-     *
-     * @param string $operation
-     * @param \Exception $e
-     * @return void
      */
     protected function handleCloudinaryError(string $operation, \Exception $e): void
     {
-        Log::error("Cloudinary {$operation} failed in " . get_class($this), [
+        Log::error("Cloudinary {$operation} failed in ".get_class($this), [
             'error' => $e->getMessage(),
-            'trace' => $e->getTraceAsString()
+            'trace' => $e->getTraceAsString(),
         ]);
 
         // Set error message for Livewire
@@ -135,17 +111,13 @@ trait HasCloudinaryUploads
 
         // Set session flash if available
         if (function_exists('session')) {
-            session()->flash('error', "Failed to {$operation} file: " . $e->getMessage());
+            session()->flash('error', __('Failed to :operation file: :message', ['operation' => $operation, 'message' => $e->getMessage()]));
         }
     }
 
     /**
      * Upload and save to database helper
      *
-     * @param UploadedFile $file
-     * @param string $modelClass
-     * @param array $additionalData
-     * @param array $uploadOptions
      * @return mixed|null
      */
     protected function uploadAndSave(
@@ -158,7 +130,7 @@ trait HasCloudinaryUploads
             // Upload to Cloudinary
             $result = $this->uploadToCloudinary($file, $uploadOptions);
 
-            if (!$result) {
+            if (! $result) {
                 return null;
             }
 
@@ -169,6 +141,7 @@ trait HasCloudinaryUploads
             return $modelClass::create($data);
         } catch (\Exception $e) {
             $this->handleCloudinaryError('upload and save', $e);
+
             return null;
         }
     }
@@ -176,8 +149,7 @@ trait HasCloudinaryUploads
     /**
      * Delete file and database record
      *
-     * @param mixed $model Model instance with public_id and resource_type
-     * @return bool
+     * @param  mixed  $model  Model instance with public_id and resource_type
      */
     protected function deleteAndRemove($model): bool
     {
@@ -191,12 +163,14 @@ trait HasCloudinaryUploads
             if ($deleted) {
                 // Delete from database
                 $model->delete();
+
                 return true;
             }
 
             return false;
         } catch (\Exception $e) {
             $this->handleCloudinaryError('delete and remove', $e);
+
             return false;
         }
     }

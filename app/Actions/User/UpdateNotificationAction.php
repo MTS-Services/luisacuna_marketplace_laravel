@@ -2,10 +2,10 @@
 
 namespace App\Actions\User;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Models\UserNotificationSetting;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class UpdateNotificationAction
 {
@@ -18,11 +18,6 @@ class UpdateNotificationAction
 
     /**
      * Execute notification setting update
-     *
-     * @param int $userId
-     * @param string $field
-     * @param bool $value
-     * @return UserNotificationSetting
      */
     public function execute(int $userId, string $field, bool $value): UserNotificationSetting
     {
@@ -32,9 +27,9 @@ class UpdateNotificationAction
                 // Validate user exists
                 $user = $this->interface->find($userId);
 
-                if (!$user) {
+                if (! $user) {
                     Log::error('User not found for notification update', ['user_id' => $userId]);
-                    throw new \Exception('User not found');
+                    throw new \Exception(__('User not found.'));
                 }
 
                 // Validate field
@@ -46,23 +41,23 @@ class UpdateNotificationAction
                     'status_changed',
                     'request_rejected',
                     'dispute_created',
-                    'payment_received'
+                    'payment_received',
                 ];
 
-                if (!in_array($field, $allowedFields)) {
+                if (! in_array($field, $allowedFields)) {
                     Log::error('Invalid notification field', [
                         'user_id' => $userId,
-                        'field' => $field
+                        'field' => $field,
                     ]);
-                    throw new \InvalidArgumentException("Invalid notification field: {$field}");
+                    throw new \InvalidArgumentException(__('Invalid notification field: :field', ['field' => $field]));
                 }
 
                 // Get notification settings (must exist)
                 $notificationSetting = UserNotificationSetting::where('user_id', $userId)->first();
 
-                if (!$notificationSetting) {
+                if (! $notificationSetting) {
                     Log::error('Notification settings not found', ['user_id' => $userId]);
-                    throw new \Exception('Notification settings not found for this user');
+                    throw new \Exception(__('Notification settings not found for this user'));
                 }
 
                 // Store old value for logging
@@ -75,7 +70,7 @@ class UpdateNotificationAction
                     'user_id' => $userId,
                     'field' => $field,
                     'old_value' => $oldValue,
-                    'new_value' => $value
+                    'new_value' => $value,
                 ]);
 
                 return $notificationSetting->fresh();
@@ -86,7 +81,7 @@ class UpdateNotificationAction
                 'field' => $field,
                 'value' => $value,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
 
             throw $e;

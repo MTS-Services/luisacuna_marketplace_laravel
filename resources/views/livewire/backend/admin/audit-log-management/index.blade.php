@@ -19,10 +19,10 @@
         :showBulkActions="true" emptyMessage="No admins found. Create your first admin to get started." />
 
     {{-- Delete Confirmation Modal --}}
-    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this data?'" :message="'Are you absolutely sure you want to remove this data? All associated data will be moved to trash.'" :method="'delete'"
+    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="__('Delete this data?')" :message="__('Are you absolutely sure you want to remove this data? All associated data will be moved to trash.')" :method="'delete'"
         :button-text="'Delete Data'" />
 
     {{-- Bulk Action Confirmation Modal --}}
-    <x-ui.confirmation-modal :show="'showBulkActionModal'" :title="'Confirm Bulk Action'" :message="'Are you sure you want to perform this action on ' . count($selectedIds) . ' selected data(s)?'" :method="'executeBulkAction'"
+    <x-ui.confirmation-modal :show="'showBulkActionModal'" :title="__('Confirm Bulk Action')" :message="__('Are you sure you want to perform this action on :count selected data(s)?', ['count' => count($selectedIds)])" :method="'executeBulkAction'"
         :button-text="'Confirm Action'" />
 </section>

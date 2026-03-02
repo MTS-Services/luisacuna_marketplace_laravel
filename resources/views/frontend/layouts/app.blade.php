@@ -248,7 +248,7 @@
                 sessionStorage.clear();
 
                 // Show message
-                alert('Your session has been terminated. Please login again.');
+                alert({{ \Illuminate\Support\Js::from(__('Your session has been terminated. Please login again.')) }});
 
                 // Force redirect to login (hard reload)
                 window.location.href = '{{ route('login') }}';

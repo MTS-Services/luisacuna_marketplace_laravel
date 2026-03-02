@@ -2,7 +2,7 @@
     <div class="max-w-6xl mx-auto my-12 p-4 md:p-8 bg-white rounded-3xl shadow-2xl border border-gray-100">
 
         <h1 class="text-4xl font-extrabold text-gray-800 mb-10 text-center">
-            Finalizing Order: <span class="text-primary"> #{{ $order->order_id }}</span>
+            {{ __('Finalizing Order:') }} <span class="text-primary"> #{{ $order->order_id }}</span>
         </h1>
 
         @if (session('error'))
@@ -52,7 +52,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.398 16c-.77 1.333.192 3 1.732 3z" />
                                 </svg>
-                                <span>No payment gateways are currently configured.</span>
+                                <span>{{ __('No payment gateways are currently configured.') }}</span>
                             </div>
                         </div>
                     @endforelse

@@ -2,32 +2,39 @@
 
 namespace App\Livewire\Backend\User\Offers;
 
-use Livewire\Component;
-use App\Models\GameConfig;
 use App\Exports\ArrayExport;
-use App\Services\GameService;
-use Livewire\WithFileUploads;
-use App\Services\CategoryService;
-use App\Services\PlatformService;
-use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Jobs\ProcessBulkOfferUploadJob;
+use App\Models\GameConfig;
+use App\Services\CategoryService;
+use App\Services\GameService;
+use App\Services\PlatformService;
 use App\Services\ProductService;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BulkUpload extends Component
 {
     use WithFileUploads;
 
     public $currentStep = 1;
+
     public $gameId;
+
     public $file;
+
     public $games = [];
+
     public $format = 'csv'; // csv | excel
 
     protected GameService $gameService;
+
     protected CategoryService $categoryService;
+
     protected PlatformService $platformService;
+
     protected ProductService $productService;
 
     public function boot(
@@ -52,8 +59,9 @@ class BulkUpload extends Component
 
     public function selectGame()
     {
-        if (!$this->gameId) {
-            $this->addError('gameId', 'Please select a game.');
+        if (! $this->gameId) {
+            $this->addError('gameId', __('Please select a game.'));
+
             return;
         }
         $this->currentStep = 3;
@@ -69,17 +77,18 @@ class BulkUpload extends Component
         $platforms = $this->platformService
             ->getActiveData()
             ->pluck('name', 'id')
-            ->map(fn($name, $id) => "{$id}:{$name}")
+            ->map(fn ($name, $id) => "{$id}:{$name}")
             ->implode(' | ');
 
         $categories = $this->categoryService
             ->getDatas()
             ->pluck('name', 'id')
-            ->map(fn($name, $id) => "{$id}:{$name}")
+            ->map(fn ($name, $id) => "{$id}:{$name}")
             ->implode(' | ');
 
         if ($method === 'csv') {
             $export = new ArrayExport($game, $platforms, $categories);
+
             return response()->streamDownload(function () use ($export) {
                 $handle = fopen('php://output', 'w');
                 fputcsv($handle, $export->headings());
@@ -91,9 +100,8 @@ class BulkUpload extends Component
         }
 
         // Excel
-        return Excel::download(new ArrayExport($game, $platforms, $categories), 'bulk_template_game_' . $this->gameId . '.xlsx');
+        return Excel::download(new ArrayExport($game, $platforms, $categories), 'bulk_template_game_'.$this->gameId.'.xlsx');
     }
-
 
     /**
      * Upload CSV / Excel
@@ -124,7 +132,7 @@ class BulkUpload extends Component
     public function uploadFile()
     {
         $this->validate([
-            'file'   => 'required|mimes:csv,xlsx|max:10240',
+            'file' => 'required|mimes:csv,xlsx|max:10240',
             'gameId' => 'required|integer',
         ]);
 
@@ -153,22 +161,22 @@ class BulkUpload extends Component
                 [$categoryId] = explode(':', $csv['Category'] ?? '');
                 $categoryId = (int) $categoryId;
 
-                if (!$platformId || !$categoryId) {
+                if (! $platformId || ! $categoryId) {
                     continue;
                 }
 
                 $productData = [
-                    'user_id'           => user()->id,
-                    'game_id'           => $this->gameId,
-                    'category_id'       => $categoryId,
-                    'platform_id'       => $platformId,
-                    'name'              => $csv['Product Title'],
-                    'description'       => $csv['Description'],
-                    'quantity'          => (int) $csv['Quantity'],
-                    'price'             => (float) $csv['Price'],
-                    'deliveryMethod'    => trim($csv['Delivery Method']),
+                    'user_id' => user()->id,
+                    'game_id' => $this->gameId,
+                    'category_id' => $categoryId,
+                    'platform_id' => $platformId,
+                    'name' => $csv['Product Title'],
+                    'description' => $csv['Description'],
+                    'quantity' => (int) $csv['Quantity'],
+                    'price' => (float) $csv['Price'],
+                    'deliveryMethod' => trim($csv['Delivery Method']),
                     'delivery_timeline' => trim($csv['Delivery Time']),
-                    'fields'            => [],
+                    'fields' => [],
                 ];
 
                 $configs = GameConfig::where('game_id', $this->gameId)
@@ -176,7 +184,7 @@ class BulkUpload extends Component
                     ->get();
 
                 foreach ($configs as $config) {
-                    if (!empty($csv[$config->field_name])) {
+                    if (! empty($csv[$config->field_name])) {
                         $productData['fields'][$config->id] = [
                             'value' => trim($csv[$config->field_name]),
                         ];
@@ -199,6 +207,7 @@ class BulkUpload extends Component
 
         $this->reset(['file']);
     }
+
     public function render()
     {
         return view('livewire.backend.user.offers.bulk-upload');

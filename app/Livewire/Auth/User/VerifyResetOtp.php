@@ -7,18 +7,21 @@ use App\Livewire\Forms\Auth\Otp\OtpForm;
 use App\Models\User;
 use App\Notifications\UserOtpNotification;
 use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
-use Illuminate\Support\Facades\Log;
 
 class VerifyResetOtp extends Component
 {
     use WithNotification;
 
     public OtpForm $form;
+
     public string $email = '';
+
     public ?int $resendCooldown = null;
+
     public ?int $nextResendTimer = 120;
 
     public function mount()
@@ -26,9 +29,10 @@ class VerifyResetOtp extends Component
         // Get email from session
         $this->email = session('password_reset_email');
 
-        if (!$this->email) {
+        if (! $this->email) {
             $this->error('Session expired. Please start the password reset process again.');
             $this->redirect(route('password.request'), navigate: true);
+
             return;
         }
 
@@ -51,46 +55,46 @@ class VerifyResetOtp extends Component
             $this->form->validate();
 
             $this->ensureIsNotRateLimited();
-            
+
             $user = User::where('email', $this->email)->first();
 
-            if (!$user) {
+            if (! $user) {
                 throw ValidationException::withMessages([
-                    'form.code' => 'Invalid verification code.',
+                    'form.code' => __('Invalid verification code.'),
                 ]);
             }
 
-            $otpVerification = $user->latestOtp(OtpType::PASSWORD_RESET); 
-            if (!$otpVerification) {
+            $otpVerification = $user->latestOtp(OtpType::PASSWORD_RESET);
+            if (! $otpVerification) {
                 throw ValidationException::withMessages([
-                    'form.code' => 'No verification code found. Please request a new one.',
+                    'form.code' => __('No verification code found. Please request a new one.'),
                 ]);
             }
 
             if ($otpVerification->isVerified()) {
                 throw ValidationException::withMessages([
-                    'form.code' => 'This verification code has already been used.',
+                    'form.code' => __('This verification code has already been used.'),
                 ]);
             }
 
             if ($otpVerification->isExpired()) {
                 throw ValidationException::withMessages([
-                    'form.code' => 'The verification code has expired. Please request a new one.',
+                    'form.code' => __('The verification code has expired. Please request a new one.'),
                 ]);
             }
 
             if ($otpVerification->attempts >= 6) {
                 throw ValidationException::withMessages([
-                    'form.code' => 'Too many failed attempts. Please request a new code.',
+                    'form.code' => __('Too many failed attempts. Please request a new code.'),
                 ]);
             }
 
-            if (!verify_otp($user, $this->form->code, OtpType::PASSWORD_RESET)) {
+            if (! verify_otp($user, $this->form->code, OtpType::PASSWORD_RESET)) {
                 RateLimiter::hit($this->throttleKey());
                 $remainingAttempts = 6 - $otpVerification->fresh()->attempts;
 
                 throw ValidationException::withMessages([
-                    'form.code' => "The verification code is incorrect. {$remainingAttempts} attempts remaining.",
+                    'form.code' => __('The verification code is incorrect. :remaining attempts remaining.', ['remaining' => $remainingAttempts]),
                 ]);
             }
 
@@ -125,20 +129,21 @@ class VerifyResetOtp extends Component
 
     public function resendOtp(): void
     {
-        $this->nextResendTimer = 120;     
+        $this->nextResendTimer = 120;
 
         $this->ensureResendIsNotRateLimited();
 
         $user = User::where('email', $this->email)->first();
 
-        if (!$user) {
+        if (! $user) {
             $this->success('If an account exists, a verification code has been sent to your email.');
+
             return;
         }
 
         $otpVerification = create_otp($user, OtpType::PASSWORD_RESET, 10);
 
-        Log::info('Resent Password Reset OTP for User: ' . $user->email . ' - Code: ' . $otpVerification->code);
+        Log::info('Resent Password Reset OTP for User: '.$user->email.' - Code: '.$otpVerification->code);
         $user->notify(new UserOtpNotification($otpVerification->code));
 
         // Set 30 second cooldown
@@ -151,38 +156,38 @@ class VerifyResetOtp extends Component
 
     protected function ensureIsNotRateLimited(): void
     {
-        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 6)) {
+        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 6)) {
             return;
         }
 
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'form.code' => "Too many verification attempts. Please try again in {$seconds} seconds.",
+            'form.code' => __('Too many verification attempts. Please try again in :seconds seconds.', ['seconds' => $seconds]),
         ]);
     }
 
     protected function ensureResendIsNotRateLimited(): void
     {
-        if (!RateLimiter::tooManyAttempts($this->resendThrottleKey(), 1)) {
+        if (! RateLimiter::tooManyAttempts($this->resendThrottleKey(), 1)) {
             return;
         }
 
         $seconds = RateLimiter::availableIn($this->resendThrottleKey());
 
         throw ValidationException::withMessages([
-            'form.code' => "Please wait {$seconds} seconds before requesting a new code.",
+            'form.code' => __('Please wait :seconds seconds before requesting a new code.', ['seconds' => $seconds]),
         ]);
     }
 
     protected function throttleKey(): string
     {
-        return 'password-reset-verify:' . $this->email . ':' . request()->ip();
+        return 'password-reset-verify:'.$this->email.':'.request()->ip();
     }
 
     protected function resendThrottleKey(): string
     {
-        return 'password-reset-resend:' . $this->email . ':' . request()->ip();
+        return 'password-reset-resend:'.$this->email.':'.request()->ip();
     }
 
     public function render()

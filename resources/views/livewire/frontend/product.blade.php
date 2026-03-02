@@ -24,7 +24,7 @@
         <div class="flex items-center justify-between gap-4 mt-3.5 relative">
             <div class="flex-1 w-auto md:min-w-64">
                 <div class="relative">
-                    <input type="text" placeholder="Search" wire:model.live.debounce.300ms="search"
+                    <input type="text" placeholder="{{ __('Search') }}" wire:model.live.debounce.300ms="search"
                         class="w-full bg-bg-transparent rounded-full border border-zinc-700 px-4 py-2 pl-10 focus:outline-none focus:border-zinc-500">
                     <span class="absolute left-3 top-2.5">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -45,9 +45,9 @@
                 </x-ui.custom-select> --}}
 
                 <x-ui.select wire:model.live="sortOrder" class="rounded-full! bg-transparent! border-zinc-500!">
-                    <option value="all">Default</option>
-                    <option value="asc">A-Z</option>
-                    <option value="desc">Z-A</option>
+                    <option value="all">{{ __('Default') }}</option>
+                    <option value="asc">{{ __('A-Z') }}</option>
+                    <option value="desc">{{ __('Z-A') }}</option>
                 </x-ui.select>
 
 

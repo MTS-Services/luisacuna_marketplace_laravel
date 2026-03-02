@@ -93,7 +93,7 @@ class Edit extends Component
             'updated_by' => admin()->id,
         ]);
 
-        $this->dispatch('notify', type: 'success', message: "{$gateway->name} gateway updated successfully.");
+        $this->dispatch('notify', type: 'success', message: __(':name gateway updated successfully.', ['name' => $gateway->name]));
 
         return $this->redirect(route('admin.gi.pay-g.index'), navigate: true);
     }

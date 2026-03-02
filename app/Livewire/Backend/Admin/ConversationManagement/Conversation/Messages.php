@@ -16,23 +16,31 @@ class Messages extends Component
 {
     use WithFileUploads;
 
-    public ?int          $conversationId = null;
-    public ?Conversation $conversation   = null;
-    public array         $messages       = [];
-    public string        $message        = '';
-    public               $media          = null;
-    public bool          $isLoading      = false;
-    public ?int          $beforeMessageId = null;
-    public bool          $hasJoined      = false;
+    public ?int $conversationId = null;
+
+    public ?Conversation $conversation = null;
+
+    public array $messages = [];
+
+    public string $message = '';
+
+    public $media = null;
+
+    public bool $isLoading = false;
+
+    public ?int $beforeMessageId = null;
+
+    public bool $hasJoined = false;
 
     protected ConversationService $service;
-    protected CloudinaryService   $cloudinaryService;
+
+    protected CloudinaryService $cloudinaryService;
 
     protected function rules(): array
     {
         return [
             'message' => 'nullable|string|max:5000',
-            'media'   => 'nullable',
+            'media' => 'nullable',
             'media.*' => [
                 'nullable',
                 'file',
@@ -44,7 +52,7 @@ class Messages extends Component
 
     public function boot(ConversationService $service, CloudinaryService $cloudinaryService): void
     {
-        $this->service           = $service;
+        $this->service = $service;
         $this->cloudinaryService = $cloudinaryService;
     }
 
@@ -89,8 +97,9 @@ class Messages extends Component
 
     public function loadMessages(): void
     {
-        if (!$this->conversation) {
+        if (! $this->conversation) {
             $this->messages = [];
+
             return;
         }
 
@@ -107,7 +116,7 @@ class Messages extends Component
 
     public function joinConversation(): void
     {
-        if (!$this->conversation) {
+        if (! $this->conversation) {
             return;
         }
 
@@ -117,27 +126,28 @@ class Messages extends Component
         if ($participant) {
             $this->hasJoined = true;
             $this->loadMessages();
-            $this->dispatch('success', message: 'You have joined the conversation');
+            $this->dispatch('success', message: __('You have joined the conversation'));
             $this->dispatch('refresh-admin-conversations');
         } else {
-            $this->dispatch('error', message: 'Failed to join conversation');
+            $this->dispatch('error', message: __('Failed to join conversation'));
         }
     }
 
     public function sendMessage(): void
     {
-        if (!$this->conversation) {
-            $this->dispatch('error', message: 'No conversation selected');
+        if (! $this->conversation) {
+            $this->dispatch('error', message: __('No conversation selected'));
+
             return;
         }
 
-        if (!$this->hasJoined) {
+        if (! $this->hasJoined) {
             $this->joinConversation();
         }
 
         $trimmed = trim($this->message);
 
-        if (empty($trimmed) && !$this->media) {
+        if (empty($trimmed) && ! $this->media) {
             return;
         }
 
@@ -147,7 +157,8 @@ class Messages extends Component
                 $this->validate();
             } catch (\Illuminate\Validation\ValidationException $e) {
                 $firstError = collect($e->errors())->flatten()->first();
-                $this->dispatch('error', message: $firstError ?? 'Invalid file');
+                $this->dispatch('error', message: $firstError ?? __('Invalid file'));
+
                 return;
             }
         }
@@ -166,14 +177,14 @@ class Messages extends Component
 
             // Determine message type
             $messageType = MessageType::TEXT;
-            if (!empty($attachments)) {
+            if (! empty($attachments)) {
                 $firstType = $attachments[0]['type'] ?? null;
                 if ($firstType instanceof AttachmentType) {
                     $messageType = match ($firstType) {
                         AttachmentType::IMAGE => MessageType::IMAGE,
                         AttachmentType::VIDEO => MessageType::VIDEO,
                         AttachmentType::AUDIO => MessageType::AUDIO,
-                        default               => MessageType::FILE,
+                        default => MessageType::FILE,
                     };
                 }
             }
@@ -198,17 +209,17 @@ class Messages extends Component
                 ]);
 
                 $this->messages[] = $sentMessage;
-                $this->message    = '';
-                $this->media      = null;
+                $this->message = '';
+                $this->media = null;
 
                 $this->dispatch('refresh-admin-conversations');
                 $this->dispatch('scroll-to-bottom');
                 $this->dispatch('reset-admin-textarea');
             } else {
-                $this->dispatch('error', message: 'Failed to send message');
+                $this->dispatch('error', message: __('Failed to send message'));
             }
         } catch (\Exception $e) {
-            $this->dispatch('error', message: 'Error: ' . $e->getMessage());
+            $this->dispatch('error', message: __('Error: :message', ['message' => $e->getMessage()]));
         } finally {
             $this->isLoading = false;
         }
@@ -217,8 +228,8 @@ class Messages extends Component
     protected function uploadFile($file): array
     {
         $uploaded = $this->cloudinaryService->upload($file, ['folder' => 'chats/admin']);
-        $path     = $uploaded->publicId;
-        $mime     = $file->getMimeType();
+        $path = $uploaded->publicId;
+        $mime = $file->getMimeType();
 
         $type = AttachmentType::FILE;
         if (str_starts_with($mime, 'image/')) {
@@ -235,7 +246,7 @@ class Messages extends Component
     #[On('new-message-received-admin')]
     public function handleNewMessageReceived(array $messageData): void
     {
-        if (!$this->conversation || $messageData['conversation_id'] != $this->conversationId) {
+        if (! $this->conversation || $messageData['conversation_id'] != $this->conversationId) {
             return;
         }
 
@@ -244,7 +255,7 @@ class Messages extends Component
             'sender' => function ($q) {
                 $q->select('id', 'first_name', 'last_name', 'email', 'avatar');
             },
-            'attachments'
+            'attachments',
         ])->find($messageData['id']);
 
         if ($newMessage) {
@@ -284,14 +295,14 @@ class Messages extends Component
 
             if ($message && $message->delete()) {
                 $this->messages = collect($this->messages)
-                    ->reject(fn($msg) => $msg->id === $messageId)
+                    ->reject(fn ($msg) => $msg->id === $messageId)
                     ->values()->all();
-                $this->dispatch('success', message: 'Message deleted');
+                $this->dispatch('success', message: __('Message deleted'));
             } else {
-                $this->dispatch('error', message: 'Failed to delete message');
+                $this->dispatch('error', message: __('Failed to delete message'));
             }
         } catch (\Exception $e) {
-            $this->dispatch('error', message: 'Error deleting message');
+            $this->dispatch('error', message: __('Error deleting message'));
         }
     }
 
@@ -312,7 +323,7 @@ class Messages extends Component
      */
     public function getParticipantsProperty()
     {
-        if (!$this->conversation) {
+        if (! $this->conversation) {
             return collect();
         }
 
@@ -320,17 +331,17 @@ class Messages extends Component
             $p = $participant->participant;
 
             // Build full name from first_name + last_name
-            $fullName = trim(($p?->first_name ?? '') . ' ' . ($p?->last_name ?? ''));
+            $fullName = trim(($p?->first_name ?? '').' '.($p?->last_name ?? ''));
             if (empty($fullName)) {
                 $fullName = $p?->email ?? 'Unknown';
             }
 
             return [
-                'id'       => $participant->participant_id,
-                'type'     => $participant->participant_type,
-                'role'     => $participant->participant_role,
-                'name'     => $fullName,
-                'avatar'   => $p?->avatar,
+                'id' => $participant->participant_id,
+                'type' => $participant->participant_type,
+                'role' => $participant->participant_role,
+                'name' => $fullName,
+                'avatar' => $p?->avatar,
                 'is_admin' => $participant->participant_type === \App\Models\Admin::class,
             ];
         });

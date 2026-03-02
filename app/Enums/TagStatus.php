@@ -2,8 +2,6 @@
 
 namespace App\Enums;
 
-use Spatie\Enum\Laravel\Enum;
-
 enum TagStatus: string
 {
     case ACTIVE = 'active';
@@ -12,8 +10,8 @@ enum TagStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::ACTIVE => 'Active',
-            self::INACTIVE => 'Inactive',
+            self::ACTIVE => __('Active'),
+            self::INACTIVE => __('Inactive'),
         };
     }
 
@@ -28,7 +26,7 @@ enum TagStatus: string
     public static function options(): array
     {
         return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }

@@ -5,26 +5,30 @@ namespace App\Livewire\Backend\Admin\OrderManagement;
 use App\Models\Order;
 use App\Services\OrderService;
 use App\Traits\Livewire\WithNotification;
-use Livewire\Component;
 use Illuminate\Support\Facades\URL;
+use Livewire\Component;
 
 class Detail extends Component
 {
     use WithNotification;
+
     public Order $data;
+
     public ?string $backUrl = null;
 
     public $showDisputeModal = false;
 
-    public $reason; 
+    public $reason;
 
     public $disputeType;
 
     protected OrderService $service;
-    
-    public function boot(OrderService $service) {
+
+    public function boot(OrderService $service)
+    {
         $this->service = $service;
     }
+
     public function mount(Order $data): void
     {
         $this->data = $data;
@@ -54,7 +58,7 @@ class Detail extends Component
         $this->showDisputeModal = true;
         $this->disputeType = 'reject';
     }
-    
+
     public function submitDispute()
     {
         $this->validate([
@@ -63,14 +67,13 @@ class Detail extends Component
 
         $this->service->disputeResolution($this->data->id, $this->disputeType, $this->reason);
 
-
         $this->data->refresh();
         $this->showDisputeModal = false;
 
         $this->reset('reason', 'disputeType');
-        
-        session()->flash('message', 'Dispute has been processed successfully.');
-        
+
+        session()->flash('message', __('Dispute has been processed successfully.'));
+
         $this->redirect(URL::previous());
 
         $this->info('Dispute has been processed successfully.');

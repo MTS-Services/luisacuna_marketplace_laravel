@@ -20,7 +20,7 @@ class UpdateAction
             $findData = $this->interface->find($id);
             if (! $findData) {
                 Log::error('Data not found', ['data_id' => $id]);
-                throw new \Exception('Data not found');
+                throw new \Exception(__('Data not found'));
             }
             if (Role::isSuperAdminRole($findData)) {
                 SuperAdminGuard::requireSuperAdmin();
@@ -28,7 +28,7 @@ class UpdateAction
             $updated = $this->interface->update($id, $data);
             if (! $updated) {
                 Log::error('Failed to update data in repository', ['data_id' => $id]);
-                throw new \Exception('Failed to update data');
+                throw new \Exception(__('Failed to update data'));
             }
 
             return $findData->fresh();

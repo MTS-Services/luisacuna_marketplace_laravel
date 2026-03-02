@@ -199,7 +199,7 @@ class TwoFactorAuthenticatedSessionController extends Controller
             if (! $valid) {
                 return [
                     'valid' => false,
-                    'message' => 'The provided two-factor authentication code was invalid.',
+                    'message' => __('The provided two-factor authentication code was invalid.'),
                 ];
             }
 
@@ -207,7 +207,7 @@ class TwoFactorAuthenticatedSessionController extends Controller
         } catch (\Exception $e) {
             return [
                 'valid' => false,
-                'message' => 'An error occurred while verifying the code.',
+                'message' => __('An error occurred while verifying the code.'),
             ];
         }
     }
@@ -221,7 +221,7 @@ class TwoFactorAuthenticatedSessionController extends Controller
             if (! $user->two_factor_recovery_codes) {
                 return [
                     'valid' => false,
-                    'message' => 'No recovery codes available.',
+                    'message' => __('No recovery codes available.'),
                 ];
             }
 
@@ -243,7 +243,7 @@ class TwoFactorAuthenticatedSessionController extends Controller
 
                 return [
                     'valid' => false,
-                    'message' => 'Recovery codes format is invalid.',
+                    'message' => __('Recovery codes format is invalid.'),
                 ];
             }
 
@@ -269,7 +269,7 @@ class TwoFactorAuthenticatedSessionController extends Controller
 
                 return [
                     'valid' => false,
-                    'message' => 'The provided recovery code was invalid or has already been used.',
+                    'message' => __('The provided recovery code was invalid or has already been used.'),
                 ];
             }
 
@@ -297,7 +297,7 @@ class TwoFactorAuthenticatedSessionController extends Controller
 
             return [
                 'valid' => false,
-                'message' => 'An error occurred while verifying the recovery code.',
+                'message' => __('An error occurred while verifying the recovery code.'),
             ];
         }
     }

@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Auth\User\Socialite;
 
 use App\Enums\UserAccountStatus;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 
 class AppleAuthController extends Controller
 {
@@ -29,19 +28,19 @@ class AppleAuthController extends Controller
                 ->orWhere('email', $appleUser->$this->email)
                 ->first();
 
-            if (!$user) {
+            if (! $user) {
                 // Apple only provides name on first login
                 $name = $appleUser->name ?? 'Apple User';
 
                 $user = User::create([
                     'name' => $name,
-                    'email' => $appleUser->email ?? $appleUser->$this->id . '@privaterelay.appleid.com',
+                    'email' => $appleUser->email ?? $appleUser->$this->id.'@privaterelay.appleid.com',
                     'apple_id' => $appleUser->$this->id,
                     'password' => bcrypt(Str::random(24)), // Random password
                 ]);
             } else {
                 // Update apple_id if user exists with same email
-                if (!$user->apple_id) {
+                if (! $user->apple_id) {
                     $user->update(['apple_id' => $appleUser->$this->id]);
                 }
             }
@@ -54,7 +53,7 @@ class AppleAuthController extends Controller
 
             return redirect()->intended('user/orders/purchased-orders');
         } catch (\Exception $e) {
-            return redirect('/login')->with('error', 'Unable to login with Apple. Please try again.');
+            return redirect('/login')->with('error', __('Unable to login with Apple. Please try again.'));
         }
     }
 }

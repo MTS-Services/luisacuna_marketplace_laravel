@@ -132,7 +132,7 @@ class Offer extends Component
                 'gameId' => 'required',
             ],
             [
-                'gameId.required' => 'Please select a game before continuing.',
+                'gameId.required' => __('Please select a game before continuing.'),
             ]
         );
 
@@ -189,15 +189,15 @@ class Offer extends Component
 
             ],
             [
-                'gameId.required' => 'Please select a game.',
-                'categoryId.required' => 'Category is required.',
-                'platform_id.required' => 'Platform is required.',
-                'price.required' => 'Price is required.',
-                'quantity.required' => 'Stock quantity is required.',
-                'deliveryMethod.required' => 'Delivery method is required.',
-                'name.required' => 'Name is required.',
-                'delivery_timeline' => 'Delivery Timeline is required.',
-                'fields.*.required' => 'This Field must to be filled.',
+                'gameId.required' => __('Please select a game.'),
+                'categoryId.required' => __('Category is required.'),
+                'platform_id.required' => __('Platform is required.'),
+                'price.required' => __('Price is required.'),
+                'quantity.required' => __('Stock quantity is required.'),
+                'deliveryMethod.required' => __('Delivery method is required.'),
+                'name.required' => __('Name is required.'),
+                'delivery_timeline' => __('Delivery Timeline is required.'),
+                'fields.*.required' => __('This Field must to be filled.'),
             ]
 
         );

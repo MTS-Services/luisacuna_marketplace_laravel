@@ -2,29 +2,36 @@
 
 namespace App\Livewire\Backend\User\Chat;
 
-use Livewire\Component;
-use App\Enums\MessageType;
-use Livewire\Attributes\On;
-use App\Models\Conversation;
-use Livewire\Attributes\Url;
 use App\Enums\AttachmentType;
-use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\Auth;
+use App\Enums\MessageType;
+use App\Models\Conversation;
 use App\Services\ConversationService;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class MessageUser extends Component
 {
     use WithFileUploads;
 
     public ?int $conversationId = null;
+
     public ?Conversation $conversation = null;
+
     public $messages = [];
+
     public string $message = '';
+
     public $media = null;
+
     public bool $isLoading = false;
+
     public ?int $beforeMessageId = null;
+
     public bool $isUserAtBottom = true;
+
     public ?int $lastPolledMessageId = null; // Track last polled message
 
     // public $search = '';
@@ -35,7 +42,6 @@ class MessageUser extends Component
     {
         $this->service = $service;
     }
-
 
     #[Url(as: 'search')]
     public ?string $search = null;
@@ -64,7 +70,7 @@ class MessageUser extends Component
         $this->isUserAtBottom = true;
 
         // Set the last polled message ID
-        if (!empty($this->messages)) {
+        if (! empty($this->messages)) {
             $this->lastPolledMessageId = collect($this->messages)->last()->id ?? null;
         }
 
@@ -73,8 +79,9 @@ class MessageUser extends Component
 
     public function loadMessages()
     {
-        if (!$this->conversation) {
+        if (! $this->conversation) {
             $this->messages = [];
+
             return;
         }
 
@@ -95,7 +102,7 @@ class MessageUser extends Component
      */
     public function pollForNewMessages()
     {
-        if (!$this->conversation) {
+        if (! $this->conversation) {
             return ['hasNewMessages' => false];
         }
 
@@ -104,7 +111,7 @@ class MessageUser extends Component
 
         if (empty($this->messages)) {
             $lastMessageId = 0;
-        } elseif (!$lastMessageId) {
+        } elseif (! $lastMessageId) {
             $lastMessageId = collect($this->messages)->last()->id ?? 0;
         }
 
@@ -130,6 +137,7 @@ class MessageUser extends Component
 
             // Return info about new messages
             $lastNewMessage = $newMessages->last();
+
             return [
                 'hasNewMessages' => true,
                 'newMessageCount' => $newMessages->count(),
@@ -142,12 +150,13 @@ class MessageUser extends Component
 
     public function sendMessage()
     {
-        if (!$this->conversation) {
-            $this->dispatch('error', message: 'No conversation selected');
+        if (! $this->conversation) {
+            $this->dispatch('error', message: __('No conversation selected'));
+
             return;
         }
 
-        if (empty(trim($this->message)) && !$this->media) {
+        if (empty(trim($this->message)) && ! $this->media) {
             return;
         }
 
@@ -166,7 +175,7 @@ class MessageUser extends Component
                 }
             }
 
-            $messageType = !empty($attachments) ? MessageType::IMAGE : MessageType::TEXT;
+            $messageType = ! empty($attachments) ? MessageType::IMAGE : MessageType::TEXT;
 
             $sentMessage = $this->service->sendMessage(
                 conversation: $this->conversation,
@@ -189,10 +198,10 @@ class MessageUser extends Component
                 $this->dispatch('scroll-to-bottom');
                 $this->dispatch('messages-updated');
             } else {
-                $this->dispatch('error', message: 'Failed to send message');
+                $this->dispatch('error', message: __('Failed to send message'));
             }
         } catch (\Exception $e) {
-            $this->dispatch('error', message: 'Error: ' . $e->getMessage());
+            $this->dispatch('error', message: __('Error: :message', ['message' => $e->getMessage()]));
         } finally {
             $this->isLoading = false;
         }
@@ -225,8 +234,9 @@ class MessageUser extends Component
     protected function createThumbnail($file): ?string
     {
         try {
-            $thumbnailPath = 'chat/thumbnails/' . uniqid() . '_thumb.jpg';
+            $thumbnailPath = 'chat/thumbnails/'.uniqid().'_thumb.jpg';
             $file->storeAs('public', $thumbnailPath);
+
             return $thumbnailPath;
         } catch (\Exception $e) {
             return null;
@@ -240,7 +250,7 @@ class MessageUser extends Component
     #[On('new-message-received')]
     public function handleNewMessageReceived($messageData)
     {
-        if (!$this->conversation || $messageData['conversation_id'] != $this->conversationId) {
+        if (! $this->conversation || $messageData['conversation_id'] != $this->conversationId) {
             return;
         }
 
@@ -259,7 +269,7 @@ class MessageUser extends Component
 
     public function markVisibleMessagesAsRead(array $visibleMessageIds)
     {
-        if (!$this->conversation || empty($visibleMessageIds)) {
+        if (! $this->conversation || empty($visibleMessageIds)) {
             return;
         }
 
@@ -312,22 +322,22 @@ class MessageUser extends Component
 
             if ($message && $this->service->deleteMessage($message)) {
                 $this->messages = collect($this->messages)
-                    ->reject(fn($msg) => $msg->id === $messageId)
+                    ->reject(fn ($msg) => $msg->id === $messageId)
                     ->values()
                     ->all();
 
-                $this->dispatch('success', message: 'Message deleted');
+                $this->dispatch('success', message: __('Message deleted'));
             } else {
-                $this->dispatch('error', message: 'Failed to delete message');
+                $this->dispatch('error', message: __('Failed to delete message'));
             }
         } catch (\Exception $e) {
-            $this->dispatch('error', message: 'Error deleting message');
+            $this->dispatch('error', message: __('Error deleting message'));
         }
     }
 
     public function getOtherParticipantProperty()
     {
-        if (!$this->conversation) {
+        if (! $this->conversation) {
             return null;
         }
 
@@ -338,6 +348,7 @@ class MessageUser extends Component
 
     // Add these properties
     public $showImageOverlay = false;
+
     public $selectedImageUrl = null;
 
     // Add these methods
@@ -354,7 +365,6 @@ class MessageUser extends Component
         $this->dispatch('image-overlay-closed');
     }
 
-
     public function updatedSearch()
     {
         $conversation = Conversation::find($this->conversationId);
@@ -363,8 +373,6 @@ class MessageUser extends Component
             $this->messages = $this->service->searchMessages($conversation, $this->search) ?? [];
         }
     }
-
-
 
     public function render()
     {

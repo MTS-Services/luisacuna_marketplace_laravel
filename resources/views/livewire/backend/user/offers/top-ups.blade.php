@@ -70,7 +70,7 @@
     </div>
 
     {{-- Delete Confirmation Modal --}}
-    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this data?'" :message="'Are you absolutely sure you want to remove this data? All associated data will be permanently deleted.'" :method="'delete'"
+    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="__('Delete this data?')" :message="__('Are you absolutely sure you want to remove this data? All associated data will be permanently deleted.')" :method="'delete'"
         :button-text="'Delete Data'" />
 
 

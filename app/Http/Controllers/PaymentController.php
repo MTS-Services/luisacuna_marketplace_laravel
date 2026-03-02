@@ -27,15 +27,15 @@ class PaymentController extends Controller
      */
     public function paymentSuccess(Request $request)
     {
-        $orderId     = $request->query('order_id');
-        $sessionId   = $request->query('session_id');    // Stripe
-        $invoiceId   = $request->query('NP_id');          // NowPayments (Crypto)
+        $orderId = $request->query('order_id');
+        $sessionId = $request->query('session_id');    // Stripe
+        $invoiceId = $request->query('NP_id');          // NowPayments (Crypto)
         $basketIdent = $request->query('basket_ident');   // Tebex ← like session_id / NP_i
 
         Log::info('Payment success page', [
-            'order_id'     => $orderId,
-            'session_id'   => $sessionId,
-            'invoice_id'   => $invoiceId,
+            'order_id' => $orderId,
+            'session_id' => $sessionId,
+            'invoice_id' => $invoiceId,
             'basket_ident' => $basketIdent,
         ]);
 
@@ -50,14 +50,14 @@ class PaymentController extends Controller
                     if (! $result['success']) {
                         Log::warning('Stripe payment confirmation failed on success page', [
                             'session_id' => $sessionId,
-                            'order_id'   => $orderId,
-                            'result'     => $result,
+                            'order_id' => $orderId,
+                            'result' => $result,
                         ]);
                     }
                 } catch (\Exception $e) {
                     Log::error('Error confirming Stripe payment on success page', [
                         'session_id' => $sessionId,
-                        'error'      => $e->getMessage(),
+                        'error' => $e->getMessage(),
                     ]);
                 }
             }
@@ -73,21 +73,21 @@ class PaymentController extends Controller
 
                     Log::info('Crypto payment confirmation result', [
                         'invoice_id' => $invoiceId,
-                        'order_id'   => $orderId,
-                        'result'     => $result,
+                        'order_id' => $orderId,
+                        'result' => $result,
                     ]);
 
                     if (! $result['success']) {
                         return view('user.payment.pending', [
                             'order_id' => $orderId,
-                            'message'  => $result['message'] ?? 'Payment is being processed',
+                            'message' => $result['message'] ?? __('Payment is being processed'),
                         ]);
                     }
                 } catch (\Exception $e) {
                     Log::error('Error confirming crypto payment', [
                         'invoice_id' => $invoiceId,
-                        'error'      => $e->getMessage(),
-                        'trace'      => $e->getTraceAsString(),
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString(),
                     ]);
                 }
             }
@@ -105,22 +105,22 @@ class PaymentController extends Controller
 
                     Log::info('Tebex payment confirmation result', [
                         'basket_ident' => $basketIdent,
-                        'order_id'     => $orderId,
-                        'result'       => $result,
+                        'order_id' => $orderId,
+                        'result' => $result,
                     ]);
 
                     if (! $result['success']) {
                         Log::warning('Tebex payment confirmation failed on success page', [
                             'basket_ident' => $basketIdent,
-                            'order_id'     => $orderId,
-                            'message'      => $result['message'] ?? 'Unknown error',
+                            'order_id' => $orderId,
+                            'message' => $result['message'] ?? 'Unknown error',
                         ]);
                     }
                 } catch (\Exception $e) {
                     Log::error('Error confirming Tebex payment on success page', [
                         'basket_ident' => $basketIdent,
-                        'error'        => $e->getMessage(),
-                        'trace'        => $e->getTraceAsString(),
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString(),
                     ]);
                 }
             }
@@ -132,11 +132,11 @@ class PaymentController extends Controller
             ->first();
 
         if (! $order) {
-            abort(404, 'Order not found');
+            abort(404, __('Order not found'));
         }
 
         if ($order->user_id !== Auth::id()) {
-            abort(403, 'Unauthorized access');
+            abort(403, __('Unauthorized access'));
         }
 
         return redirect()->route('user.order.complete', ['orderId' => $orderId]);
@@ -149,8 +149,8 @@ class PaymentController extends Controller
      */
     public function topUpSuccess(Request $request)
     {
-        $orderId     = $request->query('order_id');
-        $sessionId   = $request->query('session_id');    // Stripe top-up
+        $orderId = $request->query('order_id');
+        $sessionId = $request->query('session_id');    // Stripe top-up
         $basketIdent = $request->query('basket_ident');  // Tebex top-up
 
         // ── STRIPE top-up ─────────────────────────────────────────────────────
@@ -164,30 +164,30 @@ class PaymentController extends Controller
                     if ($result['success']) {
                         Log::info('Stripe top-up payment confirmed successfully', [
                             'session_id' => $sessionId,
-                            'order_id'   => $orderId,
+                            'order_id' => $orderId,
                         ]);
 
                         return redirect()->route('user.order.complete', ['orderId' => $orderId])
-                            ->with('success', 'Payment completed successfully! Your wallet has been topped up.');
+                            ->with('success', __('Payment completed successfully! Your wallet has been topped up.'));
                     }
 
                     Log::warning('Stripe top-up payment confirmation failed', [
                         'session_id' => $sessionId,
-                        'order_id'   => $orderId,
-                        'error'      => $result['message'] ?? 'Unknown error',
+                        'order_id' => $orderId,
+                        'error' => $result['message'] ?? 'Unknown error',
                     ]);
 
                     return redirect()->route('user.payment.failed', ['order_id' => $orderId])
-                        ->with('error', $result['message'] ?? 'Payment confirmation failed');
+                        ->with('error', $result['message'] ?? __('Payment confirmation failed'));
                 } catch (\Exception $e) {
                     Log::error('Error confirming Stripe top-up payment', [
                         'session_id' => $sessionId,
-                        'order_id'   => $orderId,
-                        'error'      => $e->getMessage(),
+                        'order_id' => $orderId,
+                        'error' => $e->getMessage(),
                     ]);
 
                     return redirect()->route('user.payment.failed', ['order_id' => $orderId])
-                        ->with('error', 'An error occurred while confirming your payment');
+                        ->with('error', __('An error occurred while confirming your payment'));
                 }
             }
         }
@@ -203,32 +203,32 @@ class PaymentController extends Controller
 
                     Log::info('Tebex top-up confirmation result', [
                         'basket_ident' => $basketIdent,
-                        'order_id'     => $orderId,
-                        'result'       => $result,
+                        'order_id' => $orderId,
+                        'result' => $result,
                     ]);
 
                     if ($result['success']) {
                         return redirect()->route('user.order.complete', ['orderId' => $orderId])
-                            ->with('success', 'Payment completed successfully! Your wallet has been topped up.');
+                            ->with('success', __('Payment completed successfully! Your wallet has been topped up.'));
                     }
 
                     return redirect()->route('user.payment.failed', ['order_id' => $orderId])
-                        ->with('error', $result['message'] ?? 'Tebex top-up confirmation failed');
+                        ->with('error', $result['message'] ?? __('Tebex top-up confirmation failed'));
                 } catch (\Exception $e) {
                     Log::error('Error confirming Tebex top-up payment', [
                         'basket_ident' => $basketIdent,
-                        'order_id'     => $orderId,
-                        'error'        => $e->getMessage(),
+                        'order_id' => $orderId,
+                        'error' => $e->getMessage(),
                     ]);
 
                     return redirect()->route('user.payment.failed', ['order_id' => $orderId])
-                        ->with('error', 'An error occurred while confirming your payment');
+                        ->with('error', __('An error occurred while confirming your payment'));
                 }
             }
         }
 
         return redirect()->route('user.payment.failed', ['order_id' => $orderId])
-            ->with('error', 'Payment gateway not available');
+            ->with('error', __('Payment gateway not available'));
     }
 
     /**
@@ -243,7 +243,7 @@ class PaymentController extends Controller
             ->first();
 
         if ($order && $order->user_id !== Auth::id()) {
-            abort(403, 'Unauthorized access');
+            abort(403, __('Unauthorized access'));
         }
 
         return view('payment.failed', compact('order'));
@@ -254,8 +254,8 @@ class PaymentController extends Controller
      */
     public function stripeWebhook(Request $request)
     {
-        $payload       = $request->getContent();
-        $sigHeader     = $request->header('Stripe-Signature');
+        $payload = $request->getContent();
+        $sigHeader = $request->header('Stripe-Signature');
         $stripeGateway = PaymentGateway::findBySlugCached('stripe');
         $webhookSecret = $stripeGateway?->getCredential('webhook_secret')
             ?? config('services.stripe.webhook_secret');
@@ -269,7 +269,7 @@ class PaymentController extends Controller
 
             Log::info('Stripe webhook received', [
                 'event_type' => $event['type'] ?? 'unknown',
-                'event_id'   => $event['id']   ?? null,
+                'event_id' => $event['id'] ?? null,
             ]);
 
             $gateway = PaymentGateway::where('slug', 'stripe')->first();
@@ -283,9 +283,11 @@ class PaymentController extends Controller
             return response()->json(['status' => 'success']);
         } catch (\Stripe\Exception\SignatureVerificationException $e) {
             Log::error('Stripe webhook signature verification failed', ['error' => $e->getMessage()]);
-            return response()->json(['error' => 'Invalid signature'], 400);
+
+            return response()->json(['error' => __('Invalid signature')], 400);
         } catch (\Exception $e) {
             Log::error('Stripe webhook error', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+
             return response()->json(['error' => $e->getMessage()], 400);
         }
     }
@@ -299,21 +301,22 @@ class PaymentController extends Controller
             $payload = $request->all();
 
             Log::info('Tebex webhook received', [
-                'type'    => $payload['type'] ?? 'unknown',
+                'type' => $payload['type'] ?? 'unknown',
                 'payload' => $payload,
             ]);
 
-            $tebexGateway  = PaymentGateway::where('slug', 'tebex')->first();
+            $tebexGateway = PaymentGateway::where('slug', 'tebex')->first();
             $webhookSecret = $tebexGateway?->getCredential('webhook_secret')
                 ?? config('services.tebex.webhook_secret');
 
             if ($webhookSecret) {
-                $signature   = $request->header('X-Signature');
+                $signature = $request->header('X-Signature');
                 $expectedSig = hash_hmac('sha256', $request->getContent(), $webhookSecret);
 
                 if (! hash_equals($expectedSig, $signature ?? '')) {
                     Log::warning('Tebex webhook: invalid signature');
-                    return response()->json(['error' => 'Invalid signature'], 401);
+
+                    return response()->json(['error' => __('Invalid signature')], 401);
                 }
             }
 
@@ -324,6 +327,7 @@ class PaymentController extends Controller
             return response()->json(['status' => 'ok']);
         } catch (\Exception $e) {
             Log::error('Tebex webhook error', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+
             return response()->json(['error' => $e->getMessage()], 400);
         }
     }
@@ -339,7 +343,7 @@ class PaymentController extends Controller
                 ->first();
 
             if (! $gateway) {
-                return response()->json(['success' => false, 'message' => 'Payment gateway not found.'], 404);
+                return response()->json(['success' => false, 'message' => __('Payment gateway not found.')], 404);
             }
 
             $paymentMethod = $gateway->paymentMethod();
@@ -347,8 +351,8 @@ class PaymentController extends Controller
             $config = [
                 'success' => true,
                 'gateway' => [
-                    'slug'                 => $gateway->slug,
-                    'name'                 => $gateway->name,
+                    'slug' => $gateway->slug,
+                    'name' => $gateway->name,
                     'requires_frontend_js' => method_exists($paymentMethod, 'requiresFrontendJs')
                         ? $paymentMethod->requiresFrontendJs()
                         : false,
@@ -368,14 +372,14 @@ class PaymentController extends Controller
             return response()->json($config);
         } catch (\Exception $e) {
             Log::error('Get gateway config error', [
-                'slug'    => $slug,
+                'slug' => $slug,
                 'user_id' => Auth::id(),
-                'error'   => $e->getMessage(),
+                'error' => $e->getMessage(),
             ]);
 
             return response()->json([
-                'success'       => false,
-                'message'       => 'Error retrieving gateway configuration.',
+                'success' => false,
+                'message' => __('Error retrieving gateway configuration.'),
                 'error_details' => config('app.debug') ? $e->getMessage() : null,
             ], 500);
         }

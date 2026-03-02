@@ -3,29 +3,29 @@
 namespace App\Models;
 
 use App\Enums\OtpType;
-use App\Enums\UserType;
-use App\Enums\UserStatus;
-use App\Enums\userKycStatus;
-use App\Traits\AuditableTrait;
-use Illuminate\Support\Carbon;
-use App\Traits\HasTranslations;
 use App\Enums\UserAccountStatus;
-use App\Traits\HasDeviceManagement;
+use App\Enums\userKycStatus;
+use App\Enums\UserStatus;
+use App\Enums\UserType;
 use App\Observers\UserTwoFAObserver;
-use Illuminate\Notifications\Notifiable;
-use OwenIt\Auditing\Contracts\Auditable;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Fortify\TwoFactorAuthenticatable;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Traits\AuditableTrait;
+use App\Traits\HasDeviceManagement;
+use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use OwenIt\Auditing\Contracts\Auditable;
 
 class User extends AuthBaseModel implements Auditable
 {
-    use TwoFactorAuthenticatable, AuditableTrait, HasTranslations, Notifiable, SoftDeletes, HasDeviceManagement;
+    use AuditableTrait, HasDeviceManagement, HasTranslations, Notifiable, SoftDeletes, TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -57,7 +57,6 @@ class User extends AuthBaseModel implements Auditable
         'reason',
         'banned_reason',
         'banned_at',
-
 
         'email_verified_at',
         'password',
@@ -96,7 +95,6 @@ class User extends AuthBaseModel implements Auditable
         'deleter_id',
         'restorer_id',
         'is_first_verified',
-
 
     ];
 
@@ -197,22 +195,27 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->hasOne(SellerProfile::class, 'user_id', 'id');
     }
+
     public function statistic(): HasOne
     {
         return $this->hasOne(UserStatistic::class, 'user_id', 'id');
     }
+
     public function referral(): HasOne
     {
         return $this->hasOne(UserReferral::class, 'user_id', 'id');
     }
+
     public function userReferral(): HasOne
     {
         return $this->hasOne(UserReferral::class, 'user_id', 'id');
     }
+
     public function sellerProduct(): HasOne
     {
         return $this->hasOne(Product::class, 'user_id', 'id');
     }
+
     public function productReview(): HasOne
     {
         return $this->hasOne(Product::class, 'user_id', 'id');
@@ -222,14 +225,17 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->hasMany(UserBan::class, 'user_id', 'id');
     }
+
     public function bandedBy(): HasMany
     {
         return $this->hasMany(User::class, 'banned_by', 'id');
     }
+
     public function unbandedBy(): HasMany
     {
         return $this->hasMany(User::class, 'unbanned_by', 'id');
     }
+
     public function activeRank(): BelongsToMany
     {
         return $this->belongsToMany(Rank::class, 'user_ranks')
@@ -254,6 +260,7 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->morphMany(Audit::class, 'user');
     }
+
     public function notificationSetting(): HasOne
     {
         return $this->hasOne(UserNotificationSetting::class, 'user_id', 'id');
@@ -270,10 +277,12 @@ class User extends AuthBaseModel implements Auditable
             'user_id'
         );
     }
+
     public function Sender(): HasMany
     {
         return $this->hasMany(Message::class, 'sender_id', 'id');
     }
+
     public function Receiver(): HasMany
     {
         return $this->hasMany(Message::class, 'receiver_id', 'id');
@@ -283,11 +292,11 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->morphMany(ConversationParticipant::class, 'participant_id');
     }
+
     public function messageReadReceipts()
     {
         return $this->hasMany(MessageReadReceipt::class, 'user_id', 'id');
     }
-
 
     public function feedbacks()
     {
@@ -298,6 +307,7 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->hasMany(Feedback::class, 'target_user_id', 'id');
     }
+
     public function AchievementProgress()
     {
         return $this->hasMany(UserAchievementProgress::class, 'user_id', 'id');
@@ -336,12 +346,12 @@ class User extends AuthBaseModel implements Auditable
 
     public function scopeFilter($query, array $filters)
     {
-        $query->when($filters['status'] ?? null, fn($q, $status) => $q->where('status', $status));
-        $query->when($filters['search'] ?? null, fn($q, $search) => $q->search($search));
-        $query->when($filters['user_type'] ?? null, fn($q, $type) => $q->where('user_type', $type));
-        $query->when($filters['account_status'] ?? null, fn($q, $acc) => $q->where('account_status', $acc));
-        $query->when(array_key_exists('banned', $filters), fn($q) => $filters['banned'] ? $q->whereNotNull('banned_at') : $q->whereNull('banned_at'));
-        
+        $query->when($filters['status'] ?? null, fn ($q, $status) => $q->where('status', $status));
+        $query->when($filters['search'] ?? null, fn ($q, $search) => $q->search($search));
+        $query->when($filters['user_type'] ?? null, fn ($q, $type) => $q->where('user_type', $type));
+        $query->when($filters['account_status'] ?? null, fn ($q, $acc) => $q->where('account_status', $acc));
+        $query->when(array_key_exists('banned', $filters), fn ($q) => $filters['banned'] ? $q->whereNotNull('banned_at') : $q->whereNull('banned_at'));
+
         return $query;
     }
 
@@ -389,6 +399,7 @@ class User extends AuthBaseModel implements Auditable
     public function getAvatarUrlAttribute(): string
     {
         $name = $this->display_name ?? $this->full_name ?? $this->username;
+
         return $this->avatar
             ? $this->avatar
             : 'default_avatar';
@@ -430,9 +441,9 @@ class User extends AuthBaseModel implements Auditable
      */
     public function getBannedLoginMessage(): string
     {
-        $msg = __('auth.banned');
+        $msg = __('Your account has been banned.');
         if (! empty($this->banned_reason)) {
-            $msg .= ' ' . __('auth.banned_reason', ['reason' => $this->banned_reason]);
+            $msg .= ' '.__('Reason: :reason', ['reason' => $this->banned_reason]);
         }
 
         return $msg;
@@ -457,7 +468,6 @@ class User extends AuthBaseModel implements Auditable
     /**
      * Get all OTP verifications for the user.
      */
-
     public function otpVerifications()
     {
         return $this->morphMany(OtpVerification::class, 'verifiable');
@@ -535,7 +545,6 @@ class User extends AuthBaseModel implements Auditable
         return $this->getTranslated('description', $languageIdOrLocale) ?? $this->description;
     }
 
-
     public function cloudinaryFiles()
     {
         return $this->hasMany(CloudinaryFile::class);
@@ -546,8 +555,6 @@ class User extends AuthBaseModel implements Auditable
         return $this->cloudinaryFiles()->where('resource_type', 'image');
     }
 
-
-
     public function isOnline(): bool
     {
         return $this->last_seen_at !== null && $this->last_seen_at->gt(now()->subMinutes(2));
@@ -555,12 +562,13 @@ class User extends AuthBaseModel implements Auditable
 
     public function offlineStatus(): string
     {
-        return (!$this->isOnline() && $this->last_seen_at !== null && $this->last_seen_at->diffInMinutes(now()) < 60) ? round($this->last_seen_at->diffInMinutes(now())) . ' min ago' : 'Offline';
+        return (! $this->isOnline() && $this->last_seen_at !== null && $this->last_seen_at->diffInMinutes(now()) < 60) ? round($this->last_seen_at->diffInMinutes(now())).' min ago' : 'Offline';
     }
 
     public function isVerifiedSeller(): bool
     {
         $this->load('seller');
+
         return (bool) ($this->seller?->seller_verified_at !== null || $this->seller?->seller_verified == 1);
     }
 }

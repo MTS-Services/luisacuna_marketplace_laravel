@@ -6,8 +6,8 @@ use App\Services\CurrencyService;
 use App\Services\LanguageService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 
 class MultiLangController extends Controller
 {
@@ -26,16 +26,16 @@ class MultiLangController extends Controller
 
         // Validate Language
         $activeLanguages = $this->languageService->getActiveData();
-        if (!in_array($lang, $activeLanguages->pluck('locale')->toArray())) {
-            abort(400, 'Invalid language');
+        if (! in_array($lang, $activeLanguages->pluck('locale')->toArray())) {
+            abort(400, __('Invalid language'));
         }
 
         // Validate Currency and Retrieve Symbol
         $activeCurrencies = $this->currencyService->getActiveData();
         $currencyData = $activeCurrencies->where('code', $currencyCode)->first();
 
-        if (!$currencyData) {
-            abort(400, 'Invalid currency');
+        if (! $currencyData) {
+            abort(400, __('Invalid currency'));
         }
 
         // Store language, currency code, symbol, and exchange rate in Session
@@ -47,7 +47,7 @@ class MultiLangController extends Controller
         // Apply Locale immediately for the redirect response
         App::setLocale($lang);
 
-        return redirect()->back()->with('success', 'Language and currency updated successfully');
+        return redirect()->back()->with('success', __('Language and currency updated successfully'));
     }
 
     /**
@@ -61,8 +61,8 @@ class MultiLangController extends Controller
         $activeCurrencies = $this->currencyService->getActiveData();
         $currencyData = $activeCurrencies->where('code', $currencyCode)->first();
 
-        if (!$currencyData) {
-            abort(400, 'Invalid currency');
+        if (! $currencyData) {
+            abort(400, __('Invalid currency'));
         }
 
         // Store currency information in Session
@@ -70,7 +70,7 @@ class MultiLangController extends Controller
         Session::put('currency_symbol', $currencyData->symbol);
         Session::put('exchange_rate', $currencyData->exchange_rate);
 
-        return redirect()->back()->with('success', 'Currency updated successfully');
+        return redirect()->back()->with('success', __('Currency updated successfully'));
     }
 
     /**
@@ -82,8 +82,8 @@ class MultiLangController extends Controller
 
         // Validate Language
         $activeLanguages = $this->languageService->getActiveData();
-        if (!in_array($lang, $activeLanguages->pluck('locale')->toArray())) {
-            abort(400, 'Invalid language');
+        if (! in_array($lang, $activeLanguages->pluck('locale')->toArray())) {
+            abort(400, __('Invalid language'));
         }
 
         // Store language in Session
@@ -92,7 +92,7 @@ class MultiLangController extends Controller
         // Apply Locale immediately
         App::setLocale($lang);
 
-        return redirect()->back()->with('success', 'Language updated successfully');
+        return redirect()->back()->with('success', __('Language updated successfully'));
     }
 
     /**

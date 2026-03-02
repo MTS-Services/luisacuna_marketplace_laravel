@@ -177,7 +177,7 @@
                                     <span wire:loading.remove wire:target="submit"
                                         class="text-text-btn-primary group-hover:text-text-btn-secondary">
                                         {{ currency_code() }} {{ currency_exchange($product->price ?? 00) }}
-                                        {{ __(' Buy Now') }}
+                                        {{ __('Buy Now') }}
                                     </span>
                                     <span wire:loading wire:target="submit"
                                         class="text-text-btn-primary group-hover:text-text-btn-secondary">
@@ -192,7 +192,7 @@
                                 ])>
                                     <span class="text-text-white group-hover:text-zinc-500">
                                         {{ currency_code() }} {{ currency_exchange($product->price ?? 00) }}
-                                        {{ ' Buy Now' }}
+                                        {{ __('Buy Now') }}
                                     </span>
                                 </a>
                             @endauth
@@ -209,7 +209,7 @@
                                 <div class="flex items-center gap-3">
                                     <flux:icon name="bolt" class="w-5 h-5 text-yellow-500" />
                                     <p class="text-xs text-text-white font-medium">
-                                        {{ $product->delivery_method == 'instant' ? 'Instant' : 'Manual' }}
+                                        {{ $product->delivery_method == 'instant' ? __('Instant') : __('Manual') }}
                                         {{ __('Delivery Available') }}</p>
                                 </div>
                             @endif

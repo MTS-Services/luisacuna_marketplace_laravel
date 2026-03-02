@@ -10,8 +10,8 @@ enum FeedbackType: string
     public function label(): string
     {
         return match ($this) {
-            self::POSITIVE => 'Positive',
-            self::NEGATIVE => 'Negative',
+            self::POSITIVE => __('Positive'),
+            self::NEGATIVE => __('Negative'),
         };
     }
 
@@ -26,7 +26,7 @@ enum FeedbackType: string
     public static function options(): array
     {
         return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }
@@ -38,6 +38,7 @@ enum FeedbackType: string
             self::NEGATIVE => 'thumbs-down',
         };
     }
+
     public function iconColor()
     {
         return match ($this) {

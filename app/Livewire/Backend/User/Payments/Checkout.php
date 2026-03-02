@@ -298,7 +298,7 @@ class Checkout extends Component
                     'order_user_id' => $this->order->user_id,
                     'requesting_user_id' => user()->id,
                 ]);
-                session()->flash('error', 'Unauthorized access to this order.');
+                session()->flash('error', __('Unauthorized access to this order.'));
 
                 return;
             }
@@ -418,7 +418,7 @@ class Checkout extends Component
                     return redirect()->route('user.order.complete', ['orderId' => $this->order->order_id]);
                 }
             } else {
-                session()->flash('error', $result['message'] ?? 'Payment processing failed');
+                session()->flash('error', $result['message'] ?? __('Payment processing failed'));
             }
         } catch (\Exception $e) {
             Log::error('Payment processing error in Livewire', [
@@ -428,7 +428,7 @@ class Checkout extends Component
                 'trace' => $e->getTraceAsString(),
             ]);
 
-            session()->flash('error', 'An unexpected error occurred. Please try again.');
+            session()->flash('error', __('An unexpected error occurred. Please try again.'));
         } finally {
             $this->processing = false;
         }
@@ -507,7 +507,7 @@ class Checkout extends Component
                     return redirect()->route('user.order.complete', ['orderId' => $this->order->order_id]);
                 }
             } else {
-                session()->flash('error', $result['message'] ?? 'Top-up payment failed');
+                session()->flash('error', $result['message'] ?? __('Top-up payment failed'));
                 $this->closeTopUpModal();
             }
         } catch (\Exception $e) {
@@ -517,7 +517,7 @@ class Checkout extends Component
                 'error' => $e->getMessage(),
             ]);
 
-            session()->flash('error', 'An unexpected error occurred. Please try again.');
+            session()->flash('error', __('An unexpected error occurred. Please try again.'));
             $this->closeTopUpModal();
         } finally {
             $this->processing = false;

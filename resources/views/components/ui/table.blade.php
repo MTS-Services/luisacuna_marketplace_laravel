@@ -76,7 +76,7 @@
             @if ($showSearch)
                 <div class="w-full sm:flex-1 lg:max-w-xs">
                     <x-ui.input type="text" wire:model.live.debounce.300ms="{{ $searchProperty }}"
-                        placeholder="Search..." class="form-input w-full" />
+                        placeholder="{{ __('Search...') }}" class="form-input w-full" />
                 </div>
             @endif
         </div>
@@ -84,8 +84,7 @@
         {{-- Bulk Actions Row --}}
         @if ($showBulkActions && count($selectedIds) > 0)
             <div class="glass-card p-4 rounded-lg flex items-center gap-5">
-                {{ count($selectedIds) }} {{ count($selectedIds) === 1 ? 'item' : 'items' }} {{ __('selected') }}
-                </span>
+                {{ count($selectedIds) }} {{ count($selectedIds) === 1 ? __('item') : __('items') }} {{ __('selected') }}
 
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:flex-1">
                     <select wire:model.live="bulkAction" class="select w-full sm:w-auto min-w-[160px]">
@@ -372,7 +371,7 @@
                             class="px-4 py-12 text-center text-gray-500 dark:text-gray-400">
                             <div class="flex flex-col items-center justify-center gap-2">
                                 <flux:icon icon="inbox" class="w-12 h-12 text-gray-300 dark:text-gray-600" />
-                                <p class="text-lg font-medium">{{ $emptyMessage }}</p>
+                                <p class="text-lg font-medium">{{ __($emptyMessage) }}</p>
                             </div>
                         </td>
                     </tr>
@@ -483,7 +482,7 @@
                     <button type="button" @click="expanded = !expanded"
                         class="w-full px-4 py-3 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-zinc-400/50 transition-colors">
                         <span class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                            x-text="expanded ? 'Show Less' : 'Show More'">
+                            x-text="expanded ? '{{ __('Show Less') }}' : '{{ __('Show More') }}'">
                             {{ __('Show More') }}
                         </span>
                         {{-- <flux:icon icon="chevron-down"
@@ -520,7 +519,7 @@
             <div class="py-12 text-center">
                 <div class="flex flex-col items-center justify-center gap-3">
                     <flux:icon icon="inbox" class="w-16 h-16 text-gray-300 dark:text-gray-600" />
-                    <p class="text-lg font-medium text-gray-500 dark:text-gray-400">{{ $emptyMessage }}</p>
+                    <p class="text-lg font-medium text-gray-500 dark:text-gray-400">{{ __($emptyMessage) }}</p>
                 </div>
             </div>
         @endforelse

@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Enums\CustomNotificationType;
 use App\Events\AdminNotificationSent;
-use Illuminate\Http\Request;
 use App\Events\UserNotificationSent;
 use App\Models\Admin;
 use App\Models\CustomNotification;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class TestController extends Controller
@@ -32,8 +32,8 @@ class TestController extends Controller
                     $receiverType = User::class;
                     if ($userId) {
                         $user = User::find($userId);
-                        if (!$user) {
-                            return redirect()->back()->with('error', 'User not found.');
+                        if (! $user) {
+                            return redirect()->back()->with('error', __('User not found.'));
                         }
                         $receiverId = $user->id;
                     }
@@ -44,8 +44,8 @@ class TestController extends Controller
                     $receiverType = Admin::class;
                     if ($userId) {
                         $admin = Admin::find($userId);
-                        if (!$admin) {
-                            return redirect()->back()->with('error', 'Admin not found.');
+                        if (! $admin) {
+                            return redirect()->back()->with('error', __('Admin not found.'));
                         }
                         $receiverId = $admin->id;
                     }
@@ -74,7 +74,7 @@ class TestController extends Controller
                         'sendTo' => $sendTo,
                     ],
                 ],
-                'action' => route('home')
+                'action' => route('home'),
             ]);
 
             if ($sendTo === 'users') {
@@ -88,9 +88,10 @@ class TestController extends Controller
                 broadcast(new UserNotificationSent($notification));
                 broadcast(new AdminNotificationSent($notification));
             }
-            return redirect()->back()->with('success', 'Notification sent successfully!');
+
+            return redirect()->back()->with('success', __('Notification sent successfully!'));
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to send notification: ' . $e->getMessage());
+            return redirect()->back()->with('error', __('Failed to send notification: :message', ['message' => $e->getMessage()]));
         }
     }
 }

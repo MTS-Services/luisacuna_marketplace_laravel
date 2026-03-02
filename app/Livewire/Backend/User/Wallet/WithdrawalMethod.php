@@ -102,7 +102,7 @@ class WithdrawalMethod extends Component
     {
         $method = $this->resolveWithdrawalMethod();
         if (! $method) {
-            $this->addError('selectedMethodId', 'The selected withdrawal method is unavailable.');
+            $this->addError('selectedMethodId', __('The selected withdrawal method is unavailable.'));
 
             return;
         }
@@ -181,7 +181,7 @@ class WithdrawalMethod extends Component
                 ]);
             });
 
-            $this->toastSuccess('Your withdrawal request has been submitted successfully and is pending approval.');
+            $this->toastSuccess(__('Your withdrawal request has been submitted successfully and is pending approval.'));
             $this->closeWithdrawalModal();
             $this->dispatch('withdrawal-submitted');
 
@@ -190,7 +190,7 @@ class WithdrawalMethod extends Component
             throw $exception;
         } catch (\Throwable $throwable) {
             report($throwable);
-            session()->flash('error', 'We could not process your withdrawal request. Please try again later.');
+            session()->flash('error', __('We could not process your withdrawal request. Please try again later.'));
         }
     }
 
@@ -262,7 +262,7 @@ class WithdrawalMethod extends Component
 
         if (! $currency) {
             throw ValidationException::withMessages([
-                'selectedMethodId' => 'Unable to determine currency for this withdrawal.',
+                'selectedMethodId' => __('Unable to determine currency for this withdrawal.'),
             ]);
         }
 

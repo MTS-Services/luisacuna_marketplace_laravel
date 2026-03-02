@@ -40,7 +40,7 @@ class Index extends Component
         // If UUID provided in URL, resolve to internal id on load
         if ($this->selectedConversationUuid) {
             $conversation = Conversation::where('conversation_uuid', $this->selectedConversationUuid)
-                ->whereHas('participants', fn($q) => $q
+                ->whereHas('participants', fn ($q) => $q
                     ->where('participant_id', Auth::id())
                     ->where('is_active', true))
                 ->select('id', 'conversation_uuid')
@@ -82,18 +82,18 @@ class Index extends Component
     {
         // Look up the real id server-side only
         $conversation = Conversation::where('conversation_uuid', $conversationUuid)
-            ->whereHas('participants', fn($q) => $q
+            ->whereHas('participants', fn ($q) => $q
                 ->where('participant_id', Auth::id())
                 ->where('is_active', true))
             ->select('id', 'conversation_uuid')
             ->first();
 
-        if (!$conversation) {
+        if (! $conversation) {
             return;
         }
 
         $this->selectedConversationUuid = $conversationUuid;
-        $this->selectedConversationId   = $conversation->id;
+        $this->selectedConversationId = $conversation->id;
 
         // Dispatch with internal id (internal only, not in URL)
         $this->dispatch('conversation-selected', conversationId: $conversation->id);
@@ -111,10 +111,12 @@ class Index extends Component
         if ($this->lastConversationHash !== null && $this->lastConversationHash !== $currentHash) {
             unset($this->conversations);
             $this->lastConversationHash = $currentHash;
+
             return ['hasUpdates' => true];
         }
 
         $this->lastConversationHash = $currentHash;
+
         return ['hasUpdates' => false];
     }
 
@@ -124,7 +126,7 @@ class Index extends Component
             return '';
         }
 
-        $data = $conversations->map(fn($c) => implode('|', [
+        $data = $conversations->map(fn ($c) => implode('|', [
             $c->id,
             $c->messages->first()?->id ?? 0,
             $c->messages->first()?->created_at?->timestamp ?? 0,
@@ -171,10 +173,10 @@ class Index extends Component
             foreach ($conversations as $conversation) {
                 $this->service->markMessagesAsRead($conversation, Auth::id());
             }
-            $this->dispatch('success', message: 'All messages marked as read');
+            $this->dispatch('success', message: __('All messages marked as read'));
             $this->refreshConversations();
         } catch (\Exception $e) {
-            $this->dispatch('error', message: 'Failed to mark messages as read');
+            $this->dispatch('error', message: __('Failed to mark messages as read'));
         }
     }
 

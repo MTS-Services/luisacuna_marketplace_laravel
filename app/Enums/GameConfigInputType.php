@@ -6,7 +6,6 @@ enum GameConfigInputType: string
 {
     //
 
-
     case TEXT = 'text';
     case NUMBER = 'number';
     case SELECT_DROPDOWN = 'select_dropdown';
@@ -14,9 +13,9 @@ enum GameConfigInputType: string
     public function label(): string
     {
         return match ($this) {
-            self::TEXT => 'Text',
-            self::NUMBER => 'Number',
-            self::SELECT_DROPDOWN => 'Select Dropdown',
+            self::TEXT => __('Text'),
+            self::NUMBER => __('Number'),
+            self::SELECT_DROPDOWN => __('Select Dropdown'),
         };
     }
 
@@ -31,7 +30,6 @@ enum GameConfigInputType: string
 
     public static function options(): array
     {
-        return array_map(fn($case) => ['value' => $case->value, 'label' => $case->label()], self::cases());
+        return array_map(fn ($case) => ['value' => $case->value, 'label' => $case->label()], self::cases());
     }
-
 }

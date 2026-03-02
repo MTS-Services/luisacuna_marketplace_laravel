@@ -36,7 +36,7 @@ class ValidateDeviceSession
      */
     public function handle(Request $request, Closure $next, ?string $guard = null): Response
     {
-        if (!$guard) {
+        if (! $guard) {
             $guard = $this->detectAuthGuard($request);
         }
         // Skip validation for excluded routes
@@ -77,7 +77,7 @@ class ValidateDeviceSession
             $isValid = $this->isDeviceValid($user, $device);
 
             // If device is invalid, FORCE LOGOUT
-            if (!$isValid) {
+            if (! $isValid) {
                 $reason = $this->getLogoutReason($user, $device);
 
                 Log::warning('Device session invalid - FORCING LOGOUT NOW', [
@@ -132,20 +132,23 @@ class ValidateDeviceSession
         // Default to web
         return 'web';
     }
+
     /**
      * Check if device is valid.
      */
     protected function isDeviceValid($user, $device): bool
     {
         // No device found - invalid
-        if (!$device) {
+        if (! $device) {
             Log::warning('No device found for session');
+
             return false;
         }
 
         // Device is inactive - invalid
-        if (!$device->is_active) {
+        if (! $device->is_active) {
             Log::warning('Device is inactive', ['device_id' => $device->id]);
+
             return false;
         }
 
@@ -158,6 +161,7 @@ class ValidateDeviceSession
                 'device_created' => $device->created_at,
                 'all_logged_out_at' => $user->all_devices_logged_out_at,
             ]);
+
             return false;
         }
 
@@ -182,14 +186,14 @@ class ValidateDeviceSession
         // 2. Delete session from Redis manually
         try {
             $redisKey = config('cache.prefix') ?
-                config('cache.prefix') . ':' . $sessionId :
+                config('cache.prefix').':'.$sessionId :
                 $sessionId;
 
             // Try different possible Redis key formats
             $possibleKeys = [
-                'laravel_session:' . $sessionId,
-                'laravel_database_' . $sessionId,
-                'laravel_cache_' . $sessionId,
+                'laravel_session:'.$sessionId,
+                'laravel_database_'.$sessionId,
+                'laravel_cache_'.$sessionId,
                 $sessionId,
                 $redisKey,
             ];
@@ -224,7 +228,7 @@ class ValidateDeviceSession
         // Return appropriate response based on request type
         if ($request->expectsJson() || $request->wantsJson()) {
             return response()->json([
-                'message' => 'Your session has been terminated. Please login again.',
+                'message' => __('Your session has been terminated. Please login again.'),
                 'reason' => $reason,
                 'redirect' => route($guard === 'admin' ? 'admin.login' : 'login'),
                 'force_reload' => true,
@@ -234,7 +238,7 @@ class ValidateDeviceSession
         // For Livewire requests - return 401 to trigger frontend handling
         if ($request->header('X-Livewire')) {
             return response([
-                'message' => 'Session terminated',
+                'message' => __('Session terminated'),
                 'reason' => $reason,
             ], 401)
                 ->header('X-Livewire-Redirect', route($guard === 'admin' ? 'admin.login' : 'login'));
@@ -243,7 +247,7 @@ class ValidateDeviceSession
         // Regular web request - redirect with message
         return redirect()
             ->route($guard === 'admin' ? 'admin.login' : 'login')
-            ->with('error', 'Your session has been terminated. Please login again.')
+            ->with('error', __('Your session has been terminated. Please login again.'))
             ->with('logout_reason', $reason)
             ->withCookie(cookie()->forget(session()->getName()));
     }
@@ -253,11 +257,11 @@ class ValidateDeviceSession
      */
     protected function getLogoutReason($user, $device): string
     {
-        if (!$device) {
+        if (! $device) {
             return 'device_not_found';
         }
 
-        if (!$device->is_active) {
+        if (! $device->is_active) {
             return 'device_logged_out';
         }
 
@@ -304,7 +308,7 @@ class ValidateDeviceSession
      */
     protected function isWithinGracePeriod($user): bool
     {
-        if (!$user->last_login_at) {
+        if (! $user->last_login_at) {
             return false;
         }
 

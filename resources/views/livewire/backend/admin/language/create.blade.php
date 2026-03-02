@@ -70,13 +70,13 @@
                         <label class="flex items-center gap-1 cursor-pointer text-zinc-500">
                             <input type="radio" class="radio radio-zinc-500 text-zinc-400" name="is_active"
                                 wire:model="form.is_active" value="1" checked>
-                            <span class="text-zinc-400">{{__('Active')}}</span>
+                            <span class="text-zinc-400">{{ __('Active') }}</span>
                         </label>
 
                         <label class="flex items-center gap-1 cursor-pointer text-zinc-500">
                             <input type="radio" class="radio text-zinc-400" name="is_active"
                                 wire:model="form.is_active" value="0">
-                            <span class="text-zinc-400">{{__('Inactive')}}</span>
+                            <span class="text-zinc-400">{{ __('Inactive') }}</span>
                         </label>
                     </div>
 
@@ -92,7 +92,7 @@
                             <input type="radio" class="radio radio-zinc-500 text-zinc-400" name="direction"
                                 wire:model="form.direction" value="{{ $diration['value'] }}"
                                 {{ $diration['value'] === 'ltr' ? 'checked' : '' }}>
-                            <span class="text-zinc-400">{{__('LTR')}}</span>
+                            <span class="text-zinc-400">{{ __('LTR') }}</span>
                         @endforeach
                     </div>
 
@@ -108,8 +108,8 @@
                 </x-ui.button>
 
                 <x-ui.button type="accent" button>
-                    <span wire:loading.remove wire:target="save" class="text-text-btn-primary group-hover:text-text-btn-secondary">{{__('Create User')}}</span>
-                    <span wire:loading wire:target="save" class="text-text-btn-primary group-hover:text-text-btn-secondary">{{__('Creating...')}}</span>
+                    <span wire:loading.remove wire:target="save" class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Create User') }}</span>
+                    <span wire:loading wire:target="save" class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Creating...') }}</span>
                 </x-ui.button>
             </div>
         </form>

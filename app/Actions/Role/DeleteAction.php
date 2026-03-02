@@ -16,14 +16,14 @@ class DeleteAction
     public function execute(int $id, bool $forceDelete, $actionerId): bool
     {
         if ($id === Role::SUPER_ADMIN_ROLE_ID) {
-            throw new AuthorizationException('The Super Admin role cannot be deleted.');
+            throw new AuthorizationException(__('The Super Admin role cannot be deleted.'));
         }
 
         return DB::transaction(function () use ($id, $forceDelete, $actionerId) {
             $data = $this->interface->find($id, 'id', true);
 
             if (! $data) {
-                throw new \Exception('Data not found');
+                throw new \Exception(__('Data not found'));
             }
 
             if ($forceDelete) {

@@ -226,7 +226,7 @@ class UserOffer extends Component
         $offers = $this->service->getPaginatedData();
 
         if ($offers->isEmpty()) {
-            session()->flash('error', 'No data found to download.');
+            session()->flash('error', __('No data found to download.'));
 
             return;
         }

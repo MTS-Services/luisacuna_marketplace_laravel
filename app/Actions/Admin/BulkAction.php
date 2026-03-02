@@ -28,7 +28,7 @@ class BulkAction
                 $adminsToDelete = Admin::whereIn('id', $ids)->get();
                 $superAdminCountInSet = $adminsToDelete->filter(fn (Admin $a) => (int) $a->role_id === $superAdminRoleId)->count();
                 if ($superAdminCountInSet > 0 && Role::countAdminsWithSuperAdminRole() === $superAdminCountInSet) {
-                    throw new AuthorizationException('Cannot delete the last Super Admin. Assign the Super Admin role to another admin first.');
+                    throw new AuthorizationException(__('Cannot delete the last Super Admin. Assign the Super Admin role to another admin first.'));
                 }
             }
         }

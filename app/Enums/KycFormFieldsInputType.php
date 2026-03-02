@@ -1,7 +1,7 @@
 <?php
- 
+
 namespace App\Enums;
- 
+
 enum KycFormFieldsInputType: string
 {
     case TEXT = 'text';
@@ -24,36 +24,34 @@ enum KycFormFieldsInputType: string
     case RANGE = 'range';
     case COLOR = 'color';
 
-
- 
     public function label(): string
     {
-        return match($this) {
-            self::TEXT => 'text',
-            self::NUMBER => 'number',
-            self::EMAIL => 'email',
-            self::PASSWORD => 'password',
-            self::TEL => 'tel',
-            self::DATE => 'date',
-            self::DATETIME_LOCAL => 'datetime-local',
-            self::TIME => 'time',
-            self::URL => 'url',
-            self::SINGLE_FILE => 'single_file',
-            self::MULTIPLE_FILE => 'multiple_file',
-            self::SINGLE_IMAGE => 'single_image',
-            self::MULTIPLE_IMAGE => 'multiple_image',
-            self::SINGLE_SELECT => 'single_select',
-            self::MULTIPLE_SELECT => 'multiple_select',
-            self::RADIO => 'radio',
-            self::CHECKBOX => 'checkbox',
-            self::RANGE => 'range',
-            self::COLOR => 'color',
+        return match ($this) {
+            self::TEXT => __('text'),
+            self::NUMBER => __('number'),
+            self::EMAIL => __('email'),
+            self::PASSWORD => __('password'),
+            self::TEL => __('tel'),
+            self::DATE => __('date'),
+            self::DATETIME_LOCAL => __('datetime-local'),
+            self::TIME => __('time'),
+            self::URL => __('url'),
+            self::SINGLE_FILE => __('single_file'),
+            self::MULTIPLE_FILE => __('multiple_file'),
+            self::SINGLE_IMAGE => __('single_image'),
+            self::MULTIPLE_IMAGE => __('multiple_image'),
+            self::SINGLE_SELECT => __('single_select'),
+            self::MULTIPLE_SELECT => __('multiple_select'),
+            self::RADIO => __('radio'),
+            self::CHECKBOX => __('checkbox'),
+            self::RANGE => __('range'),
+            self::COLOR => __('color'),
         };
     }
- 
+
     public function color(): string
     {
-        return match($this) {
+        return match ($this) {
             self::TEXT => 'badge badge-primary',
             self::NUMBER => 'badge badge-secondary',
             self::EMAIL => 'badge badge-accent',
@@ -75,11 +73,11 @@ enum KycFormFieldsInputType: string
             self::COLOR => 'badge bg-rose-500 text-white',
         };
     }
- 
+
     public static function options(): array
     {
         return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }

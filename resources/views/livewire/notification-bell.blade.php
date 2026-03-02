@@ -26,10 +26,10 @@
 
             <!-- Header -->
             <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gray-50">
-                <h3 class="text-lg font-semibold text-gray-900">Notifications</h3>
+                <h3 class="text-lg font-semibold text-gray-900">{{ __('Notifications') }}</h3>
                 @if ($unreadCount > 0)
                     <button wire:click="markAllAsRead" class="text-sm text-blue-600 hover:text-blue-800 font-medium">
-                        Mark all read
+                        {{ __('Mark all read') }}
                     </button>
                 @endif
             </div>
@@ -105,7 +105,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                         </svg>
-                        <p class="mt-2 text-sm text-gray-500">No notifications yet</p>
+                        <p class="mt-2 text-sm text-gray-500">{{ __('No notifications yet') }}</p>
                     </div>
                 @endforelse
             </div>
@@ -115,7 +115,7 @@
                 <div class="px-4 py-3 bg-gray-50 text-center border-t border-gray-200">
                     <a href="{{ route('notifications.index') }}"
                         class="text-sm text-blue-600 hover:text-blue-800 font-medium">
-                        View all notifications
+                        {{ __('View all notifications') }}
                     </a>
                 </div>
             @endif

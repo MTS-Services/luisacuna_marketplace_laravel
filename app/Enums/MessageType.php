@@ -17,15 +17,15 @@ enum MessageType: string
     public function label(): string
     {
         return match ($this) {
-            self::TEXT => 'Text',
-            self::SYSTEM => 'System',
-            self::IMAGE => 'Image',
-            self::VIDEO => 'Video',
-            self::AUDIO => 'Audio',
-            self::FILE => 'File',
-            self::ORDER_NOTIFICATION => 'Order Notification',
-            self::SUPPORT_NOTIFICATION => 'Support Notification',
-            self::ORDER_STATUS_UPDATED => 'Order Status Updated',
+            self::TEXT => __('Text'),
+            self::SYSTEM => __('System'),
+            self::IMAGE => __('Image'),
+            self::VIDEO => __('Video'),
+            self::AUDIO => __('Audio'),
+            self::FILE => __('File'),
+            self::ORDER_NOTIFICATION => __('Order Notification'),
+            self::SUPPORT_NOTIFICATION => __('Support Notification'),
+            self::ORDER_STATUS_UPDATED => __('Order Status Updated'),
         };
     }
 
@@ -47,7 +47,7 @@ enum MessageType: string
     public static function options(): array
     {
         return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }

@@ -9,7 +9,7 @@
 
     <div class="flex items-center justify-between gap-4 mt-3.5">
         <div class="search w-full">
-            <x-ui.input type="text" wire:model.live.debounce.300ms="search" placeholder="Search..."
+            <x-ui.input type="text" wire:model.live.debounce.300ms="search" placeholder="{{ __('Search...') }}"
                 class="form-input w-full rounded-full! border border-zinc-700" />
         </div>
         <div class="min-w-30 flex items-center justify-between gap-2 relative" x-data={filter:false}>
@@ -24,9 +24,9 @@
                 </svg>
                 <span class="text-text-white text-sm">
                     @if ($sortOrder === 'asc')
-                        {{ __('a-z') }}
+                        {{ __('A-Z') }}
                     @elseif($sortOrder === 'desc')
-                        {{ __('z-a') }}
+                        {{ __('Z-A') }}
                     @else
                         {{ __('Default') }}
                     @endif

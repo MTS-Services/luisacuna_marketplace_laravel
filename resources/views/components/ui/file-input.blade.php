@@ -283,8 +283,8 @@
 
                         <div class="text-center space-y-4">
                             <div class="space-y-1">
-                                <h3 class="text-xl font-extrabold tracking-tight text-gray-900">Uploading Content</h3>
-                                <p class="text-sm font-medium text-gray-400">Securing your files...</p>
+                                <h3 class="text-xl font-extrabold tracking-tight text-gray-900">{{ __('Uploading Content') }}</h3>
+                                <p class="text-sm font-medium text-gray-400">{{ __('Securing your files...') }}</p>
                             </div>
 
                             <div class="relative w-32 h-1.5 bg-gray-100 rounded-full overflow-hidden mx-auto">
@@ -339,7 +339,7 @@
                                             <div class="p-4 text-white w-full">
                                                 <p class="text-sm font-medium truncate" x-text="preview.name"></p>
                                                 <p class="text-xs opacity-90"
-                                                    x-text="preview.size > 0 ? formatSize(preview.size) : 'Existing file'">
+                                                    x-text="preview.size > 0 ? formatSize(preview.size) : '{{ __("Existing file") }}'">
                                                 </p>
                                             </div>
                                         </div>
@@ -386,7 +386,7 @@
                                             <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate"
                                                 x-text="preview.name"></p>
                                             <p class="text-xs text-gray-500 dark:text-gray-400"
-                                                x-text="preview.size > 0 ? formatSize(preview.size) : 'Existing file'">
+                                                x-text="preview.size > 0 ? formatSize(preview.size) : '{{ __("Existing file") }}'">
                                             </p>
                                         </div>
                                         <button type="button" @click="clearFile()"

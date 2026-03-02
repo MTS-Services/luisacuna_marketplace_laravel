@@ -11,14 +11,13 @@ class DeleteAction
         protected PermissionRepositoryInterface $interface
     ) {}
 
-
-    public function execute(int $id, bool $forceDelete = false, $actionerId): bool
+    public function execute(int $id, bool $forceDelete, $actionerId): bool
     {
         return DB::transaction(function () use ($id, $forceDelete, $actionerId) {
             $data = $this->interface->find($id, 'id', true);
-            
-            if (!$data) {
-                throw new \Exception('Data not found');
+
+            if (! $data) {
+                throw new \Exception(__('Data not found'));
             }
 
             if ($forceDelete) {

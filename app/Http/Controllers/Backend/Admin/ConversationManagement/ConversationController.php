@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Backend\Admin\ConversationManagement;
 
 use App\Http\Controllers\Controller;
 use App\Services\ConversationService;
-use Illuminate\Http\Request;
 
 class ConversationController extends Controller
 {
@@ -21,8 +20,8 @@ class ConversationController extends Controller
     {
         $conversation = $this->conversationService->findConversation($conversationUuid);
 
-        if (!$conversation) {
-            abort(404, 'Conversation not found');
+        if (! $conversation) {
+            abort(404, __('Conversation not found'));
         }
 
         return view($this->masterView, compact('conversation'));

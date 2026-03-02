@@ -2,27 +2,30 @@
 
 namespace App\Livewire\Backend\Admin\UserManagement\User;
 
-use App\Models\User;
-use Livewire\Component;
 use App\Enums\PointType;
 use App\Models\PointLog;
+use App\Models\User;
 use App\Models\UserPoint;
-use Livewire\Attributes\On;
-use App\Services\UserService;
 use App\Traits\Livewire\WithNotification;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 class Reward extends Component
 {
-
     use WithNotification;
 
     public bool $isLoading = false;
+
     public bool $pointModalShow = false;
 
     public $user_id;
+
     public $type;
+
     public $points;
+
     public $notes;
+
     public $users;
 
     protected $rules = [
@@ -42,7 +45,7 @@ class Reward extends Component
     {
         $this->user_id = $userId;
         $this->pointModalShow = true;
-        
+
     }
 
     public function submitPoints()
@@ -66,8 +69,6 @@ class Reward extends Component
             $userPoint = UserPoint::firstOrNew(['user_id' => $user->id]);
             $userPoint->points += $pointLog->points;
             $userPoint->save();
-
-
 
             $this->reset(['user_id', 'type', 'points', 'notes']);
             $this->closeModal();

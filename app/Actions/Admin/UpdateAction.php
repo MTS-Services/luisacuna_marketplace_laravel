@@ -36,7 +36,7 @@ class UpdateAction
 
                 if (! $admin) {
                     Log::error('Admin not found', ['admin_id' => $id]);
-                    throw new \Exception('Data not found');
+                    throw new \Exception(__('Data not found'));
                 }
 
                 $superAdminRoleId = Role::getSuperAdminRoleId();
@@ -136,7 +136,7 @@ class UpdateAction
                 $updated = $this->interface->update($id, $newData);
 
                 if (! $updated) {
-                    throw new \Exception('Failed to update Data');
+                    throw new \Exception(__('Failed to update Data'));
                 }
 
                 // Refresh model and dispatch event

@@ -6,6 +6,6 @@
         <input type="text" class="input bg-base-100 dark:bg-zinc-800 w-full max-w-xs"
             placeholder="Enter Notification Title" wire:model="title">
         <textarea class="textarea bg-base-100 dark:bg-zinc-800" placeholder="Enter Notification Body" wire:model="body"></textarea>
-        <button type="submit" class="btn btn-primary">Send Notification</button>
+        <button type="submit" class="btn btn-primary">{{ __('Send Notification') }}</button>
     </form>
 </div>

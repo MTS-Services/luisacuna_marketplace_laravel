@@ -2,25 +2,32 @@
 
 namespace App\Livewire\Backend\Admin;
 
+use App\Enums\LanguageStatus;
+use App\Models\Language;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\Component;
-use Illuminate\Support\Facades\DB;
-use App\Models\Language;
-use App\Enums\LanguageStatus;
-use Illuminate\Support\Facades\Log;
 
 class TranslationManager extends Component
 {
     public bool $showTranslationDetailsModal = false;
+
     public array $languages = [];
+
     public array $allActiveLanguages = [];
+
     public string $selectedLanguage = 'all';
+
     public ?string $modelType = null;
+
     public ?string $modelId = null;
+
     public array $translationConfig = [];
 
     // Track editing states
     public array $editingStates = [];
+
     public array $editingValues = [];
 
     public function render()
@@ -61,11 +68,11 @@ class TranslationManager extends Component
 
         // Fetch model with all translations eagerly loaded (single query)
         $model = $this->modelType::with([
-            $this->getTranslationRelationFromModel()
+            $this->getTranslationRelationFromModel(),
         ])->findOrFail($this->modelId);
 
         // Store translation config
-        $this->translationConfig = $model->getTranslationConfig();  
+        $this->translationConfig = $model->getTranslationConfig();
 
         // Get existing translations WITHOUT triggering additional queries
         $existingTranslations = $this->getTranslatedFieldsOptimized($model, $languageMap);
@@ -161,6 +168,7 @@ class TranslationManager extends Component
                 return strtolower($langData['country_code']);
             }
         }
+
         return strtolower($locale);
     }
 
@@ -190,6 +198,7 @@ class TranslationManager extends Component
                 message: 'Translation cannot be empty',
                 type: 'error'
             );
+
             return;
         }
 
@@ -213,8 +222,8 @@ class TranslationManager extends Component
                 }
             }
 
-            if (!$language) {
-                throw new \Exception('Language not found');
+            if (! $language) {
+                throw new \Exception(__('Language not found'));
             }
 
             // UpdateOrCreate: single query with transaction
@@ -244,11 +253,11 @@ class TranslationManager extends Component
                 type: 'success'
             );
         } catch (\Exception $e) {
-            Log::error('Translation save error: ' . $e->getMessage());
+            Log::error('Translation save error: '.$e->getMessage());
 
             $this->dispatch(
                 'translation-updated',
-                message: 'Failed to save translation: ' . $e->getMessage(),
+                message: 'Failed to save translation: '.$e->getMessage(),
                 type: 'error'
             );
         }
@@ -256,7 +265,8 @@ class TranslationManager extends Component
 
     private function getTranslationRelationFromModel(): string
     {
-        $tempModel = new $this->modelType();
+        $tempModel = new $this->modelType;
+
         return $tempModel->getTranslationConfig()['relation'];
     }
 

@@ -2,7 +2,7 @@
     <section>
         <div class="glass-card rounded-2xl p-6 mb-8">
             <div class="flex items-center justify-center">
-                <h3 class="text-2xl font-bold text-text-primary">{{__('Admin Dashboard')}}</h3>
+                <h3 class="text-2xl font-bold text-text-primary">{{ __('Admin Dashboard') }}</h3>
             </div>
         </div>
 
@@ -26,7 +26,7 @@
                 <h3 class="text-2xl font-bold text-text-primary mb-1" x-text="stats.users.toLocaleString()">
                     12,384</h3>
                 {{-- Adjusted for light/dark mode text --}}
-                <p class="text-text-secondary text-sm">{{__('Total Users')}}</p>
+                <p class="text-text-secondary text-sm">{{ __('Total Users') }}</p>
                 <div class="mt-4 h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
                     <div class="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full progress-bar"
                         style="width: 75%;"></div>
@@ -49,7 +49,7 @@
                 <h3 class="text-2xl font-bold text-text-primary mb-1">$<span
                         x-text="stats.revenue.toLocaleString()">48,392</span></h3>
                 {{-- Adjusted for light/dark mode text --}}
-                <p class="text-text-secondary text-sm">{{__('Total Revenue')}}</p>
+                <p class="text-text-secondary text-sm">{{ __('Total Revenue') }}</p>
                 <div class="mt-4 h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
                     <div class="h-full bg-gradient-to-r from-green-400 to-green-600 rounded-full progress-bar"
                         style="width: 60%;"></div>
@@ -72,7 +72,7 @@
                 <h3 class="text-2xl font-bold text-text-primary mb-1" x-text="stats.orders.toLocaleString()">
                     2,847</h3>
                 {{-- Adjusted for light/dark mode text --}}
-                <p class="text-text-secondary text-sm">{{__('Total Orders')}}</p>
+                <p class="text-text-secondary text-sm">{{ __('Total Orders') }}</p>
                 <div class="mt-4 h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
                     <div class="h-full bg-gradient-to-r from-purple-400 to-purple-600 rounded-full progress-bar"
                         style="width: 45%;"></div>
@@ -95,7 +95,7 @@
                 <h3 class="text-2xl font-bold text-text-primary mb-1" x-text="stats.activeUsers.toLocaleString()">847
                 </h3>
                 {{-- Adjusted for light/dark mode text --}}
-                <p class="text-text-secondary text-sm">{{__('Active Users')}}</p>
+                <p class="text-text-secondary text-sm">{{ __('Active Users') }}</p>
                 <div class="mt-4 h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
                     <div class="h-full bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full pulse-slow progress-bar"
                         style="width: 85%;"></div>
@@ -111,22 +111,22 @@
                 <div class="flex items-center justify-between mb-6">
                     <div>
                         {{-- Adjusted for light/dark mode text --}}
-                        <h3 class="text-xl font-bold text-text-primary mb-1">Revenue Analytics</h3>
-                        <p class="text-text-secondary text-sm">Monthly revenue breakdown</p>
+                        <h3 class="text-xl font-bold text-text-primary mb-1">{{ __('Revenue Analytics') }}</h3>
+                        <p class="text-text-secondary text-sm">{{ __('Monthly revenue breakdown') }}</p>
                     </div>
                     <div class="flex items-center gap-2">
                         {{-- Adjusted for light/dark mode background, text, and border --}}
                         <select
                             class="bg-zinc-100 dark:bg-zinc-800 text-text-primary text-sm px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 outline-none">
-                            <option value="monthly">Monthly</option>
-                            <option value="weekly">Weekly</option>
-                            <option value="daily">Daily</option>
+                            <option value="monthly">{{ __('Monthly') }}</option>
+                            <option value="weekly">{{ __('Weekly') }}</option>
+                            <option value="daily">{{ __('Daily') }}</option>
                         </select>
                         {{-- Adjusted for light/dark mode background, text, and border --}}
                         <button
                             class="bg-accent/10 hover:bg-accent/20 text-accent text-sm px-4 py-2 rounded-xl flex items-center gap-2 border border-accent/20 transition-all">
                             <flux:icon name="arrow-down-tray" class="w-4 h-4" />
-                            Export
+                            {{ __('Export') }}
                         </button>
                     </div>
                 </div>
@@ -139,7 +139,7 @@
                 <div class="glass-card rounded-2xl p-6">
                     <div class="flex items-center justify-between mb-4">
                         {{-- Adjusted for light/dark mode text --}}
-                        <h3 class="text-lg font-bold text-text-primary">Recent Activity</h3>
+                        <h3 class="text-lg font-bold text-text-primary">{{ __('Recent Activity') }}</h3>
                         {{-- Adjusted for light/dark mode text --}}
                         <button class="text-text-secondary hover:text-text-primary transition-colors">
                             <flux:icon name="move-horizontal" class="w-5 h-5" />
@@ -166,25 +166,25 @@
 
                 <div class="glass-card rounded-2xl p-6">
                     {{-- Adjusted for light/dark mode text --}}
-                    <h3 class="text-lg font-bold text-text-primary mb-4">Quick Actions</h3>
+                    <h3 class="text-lg font-bold text-text-primary mb-4">{{ __('Quick Actions') }}</h3>
                     <div class="grid grid-cols-2 gap-3">
                         {{-- Adjusted for light/dark mode button styles --}}
                         <button
                             class="bg-accent/10 hover:bg-accent/20 text-accent text-sm font-medium flex items-center justify-center gap-2 p-3 rounded-xl border border-accent/20 hover:scale-105 transition-all">
                             <flux:icon name="user-plus" class="w-4 h-4" />
-                            Add User
+                            {{ __('Add User') }}
                         </button>
                         {{-- Adjusted for light/dark mode button styles --}}
                         <button
                             class="bg-zinc-100/50 dark:bg-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-800 p-3 rounded-xl text-text-primary text-sm font-medium flex items-center justify-center gap-2 border border-zinc-200 dark:border-zinc-700 hover:scale-105 transition-all">
                             <flux:icon name="envelope" class="w-4 h-4" />
-                            Send Mail
+                            {{ __('Send Mail') }}
                         </button>
                         {{-- Adjusted for light/dark mode button styles --}}
                         <button
                             class="bg-zinc-100/50 dark:bg-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-800 p-3 rounded-xl text-text-primary text-sm font-medium flex items-center justify-center gap-2 border border-zinc-200 dark:border-zinc-700 hover:scale-105 transition-all">
                             <flux:icon name="file-text" class="w-4 h-4" />
-                            Reports
+                            {{ __('Reports') }}
                         </button>
                         {{-- Adjusted for light/dark mode button styles --}}
                         <button

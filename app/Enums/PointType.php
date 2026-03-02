@@ -12,10 +12,10 @@ enum PointType: string
     public function label(): string
     {
         return match ($this) {
-            self::EARNED => 'Earned',
-            self::SPEND => 'Spend',
-            self::REWARD => 'Reward',
-            self::REFUND => 'Refund',
+            self::EARNED => __('Earned'),
+            self::SPEND => __('Spend'),
+            self::REWARD => __('Reward'),
+            self::REFUND => __('Refund'),
         };
     }
 
@@ -32,7 +32,7 @@ enum PointType: string
     public static function options(): array
     {
         return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }

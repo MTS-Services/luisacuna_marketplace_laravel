@@ -11,12 +11,12 @@ class Index extends Component
     {
         $gateway = PaymentGateway::findOrFail($gatewayId);
         $gateway->update([
-            'is_active'  => ! $gateway->is_active,
+            'is_active' => ! $gateway->is_active,
             'updated_by' => admin()->id,
         ]);
 
         $status = $gateway->is_active ? 'activated' : 'deactivated';
-        $this->dispatch('notify', type: 'success', message: "{$gateway->name} gateway {$status}.");
+        $this->dispatch('notify', type: 'success', message: __(':name gateway :status.', ['name' => $gateway->name, 'status' => $status]));
     }
 
     public function render()

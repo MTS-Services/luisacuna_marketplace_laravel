@@ -4,20 +4,17 @@
         <div class="container mx-auto">
             <div class="breadcrumbs text-sm py-4">
                 <ul>
-                    <li><a>Home</a></li>
-                    <li><a>Subscribe-Boostings</a></li>
+                    <li><a>{{ __('Home') }}</a></li>
+                    <li><a>{{ __('Subscribe-Boostings') }}</a></li>
                 </ul>
             </div>
         </div>
         <section class="container mx-auto p-5 sm:p-10 lg:p-20 bg-bg-container1 rounded-2xl">
             <div class=" h-full  w-full py-10">
                 <div class="flex flex-col items-center space-y-4  py-4">
-                    <h1 class="text-4xl dark:text-white text-white">Start selling</h1>
-                    <p class=" text-center fond-bold max-w-lg dark:text-white text-white">Select the services you can
-                        provide to
-                        receive
-                        notifications from the buyers </p>
-                    <h1 class="text-pink-500">How it works</h1>
+                    <h1 class="text-4xl dark:text-white text-white">{{ __('Start selling') }}</h1>
+                    <p class=" text-center fond-bold max-w-lg dark:text-white text-white">{{ __('Select the services you can provide to receive notifications from the buyers') }}</p>
+                    <h1 class="text-pink-500">{{ __('How it works') }}</h1>
                 </div>
             </div>
             {{-- button-1 --}}
@@ -35,7 +32,7 @@
                             </div>
                             <div>
                                 <h2 class="text-xl sm:text-2xl font-semibold text-white">Anime Vanguards</h2>
-                                <p class="text-sm text-text-white/70 text-white">Subscribe 3/6</p>
+                                <p class="text-sm text-text-white/70 text-white">{{ __('Subscribe 3/6') }}</p>
                             </div>
                         </div>
                     </div>
@@ -43,7 +40,7 @@
                     <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                         <div class="space-y-4">
                             <div class="flex justify-between items-center ">
-                                <span class="text-base sm:text-lg font-medium text-white">Unit Obtaining</span>
+                                <span class="text-base sm:text-lg font-medium text-white">{{ __('Unit Obtaining') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -55,7 +52,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2">
-                                <span class="text-base sm:text-lg font-medium text-white">Points & Currency</span>
+                                <span class="text-base sm:text-lg font-medium text-white">{{ __('Points & Currency') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -67,7 +64,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Quests</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Quests') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -79,7 +76,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Stage Carry</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Stage Carry') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -91,7 +88,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Materials Grinding</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Materials Grinding') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -103,7 +100,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Custom Request</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Custom Request') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -130,14 +127,14 @@
                             <div>
                                 <h2 class="text-xl sm:text-2xl font-semibold text-text-white text-white">Albion Online
                                 </h2>
-                                <p class="text-sm text-text-white text-white">Not subscribed</p>
+                                <p class="text-sm text-text-white text-white">{{ __('Not subscribed') }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                         <div class="space-y-4">
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Unit Obtaining</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Unit Obtaining') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -149,7 +146,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Points & Currency</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Points & Currency') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -161,7 +158,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Quests</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Quests') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -173,7 +170,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Stage Carry</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Stage Carry') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -185,7 +182,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Materials Grinding</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Materials Grinding') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -197,7 +194,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Custom Request</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Custom Request') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -224,14 +221,14 @@
                             <div>
                                 <h2 class="text-xl sm:text-2xl font-semibold text-text-white text-white">Apex Legends
                                 </h2>
-                                <p class="text-sm text-text-white text-white">Not subscribed</p>
+                                <p class="text-sm text-text-white text-white">{{ __('Not subscribed') }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                         <div class="space-y-4">
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Unit Obtaining</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Unit Obtaining') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -243,7 +240,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Points & Currency</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Points & Currency') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -255,7 +252,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Quests</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Quests') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -267,7 +264,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Stage Carry</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Stage Carry') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -279,7 +276,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Materials Grinding</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Materials Grinding') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -291,7 +288,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Custom Request</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Custom Request') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -317,14 +314,14 @@
                             </div>
                             <div>
                                 <h2 class="text-xl sm:text-2xl font-semibold">ArcheAge</h2>
-                                <p class="text-sm text-text-white">Not subscribed</p>
+                                <p class="text-sm text-text-white">{{ __('Not subscribed') }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                         <div class="space-y-4">
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Unit Obtaining</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Unit Obtaining') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -336,7 +333,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Points & Currency</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Points & Currency') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -348,7 +345,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Quests</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Quests') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -360,7 +357,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Stage Carry</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Stage Carry') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -372,7 +369,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Materials Grinding</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Materials Grinding') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -384,7 +381,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Custom Request</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Custom Request') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -410,14 +407,14 @@
                             </div>
                             <div>
                                 <h2 class="text-xl sm:text-2xl font-semibold text-white">Black Desert Online</h2>
-                                <p class="text-sm text-text-white text-white">Not subscribed</p>
+                                <p class="text-sm text-text-white text-white">{{ __('Not subscribed') }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                         <div class="space-y-4">
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Unit Obtaining</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Unit Obtaining') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -429,7 +426,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Points & Currency</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Points & Currency') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -441,7 +438,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Quests</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Quests') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -453,7 +450,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Stage Carry</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Stage Carry') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -465,7 +462,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Materials Grinding</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Materials Grinding') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -477,7 +474,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Custom Request</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Custom Request') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -503,14 +500,14 @@
                             </div>
                             <div>
                                 <h2 class="text-xl sm:text-2xl font-semibold ">Call of Duty</h2>
-                                <p class="text-sm text-text-white text-white">Not subscribed</p>
+                                <p class="text-sm text-text-white text-white">{{ __('Not subscribed') }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                         <div class="space-y-4">
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Unit Obtaining</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Unit Obtaining') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -522,7 +519,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Points & Currency</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Points & Currency') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -534,7 +531,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Quests</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Quests') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -546,7 +543,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Stage Carry</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Stage Carry') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -558,7 +555,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Materials Grinding</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Materials Grinding') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -570,7 +567,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Custom Request</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Custom Request') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -596,14 +593,14 @@
                             </div>
                             <div>
                                 <h2 class="text-xl sm:text-2xl font-semibold text-white">Clash Of clans</h2>
-                                <p class="text-sm text-text-white text-white">Not subscribed</p>
+                                <p class="text-sm text-text-white text-white">{{ __('Not subscribed') }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                         <div class="space-y-4">
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Unit Obtaining</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Unit Obtaining') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -615,7 +612,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Points & Currency</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Points & Currency') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -627,7 +624,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Quests</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Quests') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -639,7 +636,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Stage Carry</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Stage Carry') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -651,7 +648,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Materials Grinding</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Materials Grinding') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -663,7 +660,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Custom Request</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Custom Request') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -689,14 +686,14 @@
                             </div>
                             <div>
                                 <h2 class="text-xl sm:text-2xl font-semibold text-white">Clash Royale</h2>
-                                <p class="text-sm text-text-white text-white">Not subscribed</p>
+                                <p class="text-sm text-text-white text-white">{{ __('Not subscribed') }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                         <div class="space-y-4">
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Unit Obtaining</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Unit Obtaining') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -708,7 +705,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Points & Currency</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Points & Currency') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -720,7 +717,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Quests</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Quests') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -732,7 +729,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Stage Carry</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Stage Carry') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -744,7 +741,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Materials Grinding</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Materials Grinding') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -756,7 +753,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Custom Request</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Custom Request') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -782,14 +779,14 @@
                             </div>
                             <div>
                                 <h2 class="text-xl sm:text-2xl font-semibold text-white">Counter-Strike 2</h2>
-                                <p class="text-sm text-text-white text-white">Not subscribed</p>
+                                <p class="text-sm text-text-white text-white">{{ __('Not subscribed') }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                         <div class="space-y-4">
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Unit Obtaining</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Unit Obtaining') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -801,7 +798,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Points & Currency</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Points & Currency') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -813,7 +810,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Quests</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Quests') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -825,7 +822,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Stage Carry</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Stage Carry') }}</span>
 
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
@@ -838,7 +835,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Materials Grinding</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Materials Grinding') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -850,7 +847,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Custom Request</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Custom Request') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -877,14 +874,14 @@
                             </div>
                             <div>
                                 <h2 class="text-xl sm:text-2xl font-semibold text-white">Diablo-4</h2>
-                                <p class="text-sm text-text-white text-white">Not subscribed</p>
+                                <p class="text-sm text-text-white text-white">{{ __('Not subscribed') }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                         <div class="space-y-4">
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Unit Obtaining</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Unit Obtaining') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -896,7 +893,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Points & Currency</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Points & Currency') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -908,7 +905,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Quests</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Quests') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -920,7 +917,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Stage Carry</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Stage Carry') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -932,7 +929,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Materials Grinding</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Materials Grinding') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -944,7 +941,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Custom Request</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Custom Request') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -970,14 +967,14 @@
                             </div>
                             <div>
                                 <h2 class="text-xl sm:text-2xl font-semibold text-white">Dota 2</h2>
-                                <p class="text-sm text-text-white text-white">Not subscribed</p>
+                                <p class="text-sm text-text-white text-white">{{ __('Not subscribed') }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                         <div class="space-y-4">
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Unit Obtaining</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Unit Obtaining') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -989,7 +986,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Points & Currency</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Points & Currency') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1001,7 +998,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Quests</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Quests') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1013,7 +1010,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Stage Carry</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Stage Carry') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1025,7 +1022,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Materials Grinding</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Materials Grinding') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1037,7 +1034,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Custom Request</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Custom Request') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1063,14 +1060,14 @@
                             </div>
                             <div>
                                 <h2 class="text-xl sm:text-2xl font-semibold text-white">EA Sports FC 24</h2>
-                                <p class="text-sm text-text-white text-white">Not subscribed</p>
+                                <p class="text-sm text-text-white text-white">{{ __('Not subscribed') }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                         <div class="space-y-4">
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Unit Obtaining</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Unit Obtaining') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1082,7 +1079,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Points & Currency</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Points & Currency') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1094,7 +1091,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Quests</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Quests') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1106,7 +1103,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Stage Carry</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Stage Carry') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1118,7 +1115,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Materials Grinding</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Materials Grinding') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1130,7 +1127,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Custom Request</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Custom Request') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1156,7 +1153,7 @@
                             </div>
                             <div>
                                 <h2 class="text-xl sm:text-2xl font-semibold text-white">Elden Ring</h2>
-                                <p class="text-sm text-text-white text-white">Not subscribed</p>
+                                <p class="text-sm text-text-white text-white">{{ __('Not subscribed') }}</p>
                             </div>
                         </div>
                     </div>
@@ -1164,7 +1161,7 @@
                     <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                         <div class="space-y-4">
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Unit Obtaining</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Unit Obtaining') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1176,7 +1173,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Points & Currency</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Points & Currency') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1188,7 +1185,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Quests</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Quests') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1200,7 +1197,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Stage Carry</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Stage Carry') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1212,7 +1209,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Materials Grinding</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Materials Grinding') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1224,7 +1221,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Custom Request</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Custom Request') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1250,14 +1247,14 @@
                             </div>
                             <div>
                                 <h2 class="text-xl sm:text-2xl font-semibold text-white">Escape from Tarkov</h2>
-                                <p class="text-sm text-text-white text-white">Not subscribed</p>
+                                <p class="text-sm text-text-white text-white">{{ __('Not subscribed') }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                         <div class="space-y-4">
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Unit Obtaining</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Unit Obtaining') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1269,7 +1266,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Points & Currency</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Points & Currency') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1281,7 +1278,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Quests</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Quests') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1293,7 +1290,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Stage Carry</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Stage Carry') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1305,7 +1302,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Materials Grinding</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Materials Grinding') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1317,7 +1314,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Custom Request</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Custom Request') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1343,14 +1340,14 @@
                             </div>
                             <div>
                                 <h2 class="text-xl sm:text-2xl font-semibold text-white">Eve Online</h2>
-                                <p class="text-sm text-text-white text-white">Not subscribed</p>
+                                <p class="text-sm text-text-white text-white">{{ __('Not subscribed') }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="collapse-content px-6 sm:px-8 pt-0 pb-6">
                         <div class="space-y-4">
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Unit Obtaining</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Unit Obtaining') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1362,7 +1359,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Points & Currency</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Points & Currency') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1374,7 +1371,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Quests</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Quests') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1398,7 +1395,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Materials Grinding</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Materials Grinding') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div
@@ -1410,7 +1407,7 @@
                                 </label>
                             </div>
                             <div class="flex justify-between items-center py-2"><span
-                                    class="text-base sm:text-lg font-medium text-white">Custom Request</span>
+                                    class="text-base sm:text-lg font-medium text-white">{{ __('Custom Request') }}</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" class="sr-only peer ">
                                     <div

@@ -13,9 +13,9 @@ enum CustomNotificationType: string
     public function label(): string
     {
         return match ($this) {
-            self::USER => 'User Announcement',
-            self::ADMIN => 'Admin Announcement',
-            self::PUBLIC => 'Public Announcement',
+            self::USER => __('User Announcement'),
+            self::ADMIN => __('Admin Announcement'),
+            self::PUBLIC => __('Public Announcement'),
         };
     }
 
@@ -31,12 +31,12 @@ enum CustomNotificationType: string
     public static function options(): array
     {
         return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }
 
-    // Scopes 
+    // Scopes
     public function scopeForCurrentUser(Builder $query): Builder
     {
         return $query->where('type', user()->isAdmin() ? self::ADMIN : self::USER);

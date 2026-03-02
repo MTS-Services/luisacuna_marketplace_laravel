@@ -2,8 +2,8 @@
     <!-- Price Section -->
     <div class="bg-bg-primary rounded-lg p-6 mb-6 ">
         <div class="mb-3 flex items-center justify-between border-b border-zinc-500">
-            <p class="text-text-primary text-sm mb-2">{{__('Price')}}</p>
-            <p class="text-3xl ">{{ $product->price }}<span class="text-lg text-text-primary">{{__('/unit')}}</span>
+            <p class="text-text-primary text-sm mb-2">{{ __('Price') }}</p>
+            <p class="text-3xl ">{{ $product->price }}<span class="text-lg text-text-primary">{{ __('/unit') }}</span>
             </p>
         </div>
         {{-- order incriment decriment --}}
@@ -22,8 +22,8 @@
             </div>
 
             <div class="flex justify-between mt-3 text-xs text-gray-400">
-                <span>{{__('Minimum Quantity: 1 unit')}}</span>
-                <span>{{__("In Stock: $product->quantity unit")}}</span>
+                <span>{{ __('Minimum Quantity: 1 unit') }}</span>
+                <span>{{ __('In Stock: :quantity unit', ['quantity' => $product->quantity]) }}</span>
             </div>
         </div>
         <!-- Buy Button -->
@@ -43,8 +43,8 @@
                         clip-rule="evenodd"></path>
                 </svg>
                 <div>
-                    <p class="font-semibold text-sm">{{__('Money-back Guarantee')}}</p>
-                    <p class="text-xs text-gray-400">{{__('Protected by TradeShield')}}</p>
+                    <p class="font-semibold text-sm">{{ __('Money-back Guarantee') }}</p>
+                    <p class="text-xs text-gray-400">{{ __('Protected by TradeShield') }}</p>
                 </div>
             </div>
 
@@ -57,7 +57,7 @@
                     </path>
                 </svg>
                 <div class="flex">
-                    <p class="font-semibold text-sm">{{__('Fast Checkout Options')}}</p>
+                    <p class="font-semibold text-sm">{{ __('Fast Checkout Options') }}</p>
                     <div class="flex gap-0 ">
                         <span class="text-xs   px-2 rounded">
                             <img src="{{ asset('assets/images/GooglePay-Light 1.svg') }}"
@@ -80,8 +80,8 @@
                     </path>
                 </svg>
                 <div>
-                    <p class="font-semibold text-sm">{{__('24/7 Live Support')}}</p>
-                    <p class="text-xs text-gray-400">{{__('We\'re always here to help')}}</p>
+                    <p class="font-semibold text-sm">{{ __('24/7 Live Support') }}</p>
+                    <p class="text-xs text-gray-400">{{ __("We're always here to help") }}</p>
                 </div>
             </div>
         </div>
@@ -89,31 +89,28 @@
 
     <!-- Delivery Instructions -->
     <div class="bg-bg-primary rounded-lg  mb-6 px-4 py-4 ">
-        <h3 class="font-bold mb-4">{{__('Delivery Instructions')}}</h3>
+        <h3 class="font-bold mb-4">{{ __('Delivery Instructions') }}</h3>
         <div class="flex gap-4 mb-4">
-            <button class="text-sm text-purple-400 hover:text-purple-300">{{__('Welcome')}}</button>
-            <button class="text-sm text-gray-400 hover:text-gray-300">{{__('Why choose
-                                        us')}}</button>
+            <button class="text-sm text-purple-400 hover:text-purple-300">{{ __('Welcome') }}</button>
+            <button class="text-sm text-gray-400 hover:text-gray-300">{{ __('Why choose us') }}</button>
         </div>
         <ol class="space-y-2 text-sm text-gray-300">
-            <li><span class="font-semibold">1.</span> {{__('V-BUCKS are safe to hold and
-                                        guaranteed!')}}</li>
-            <li><span class="font-semibold">2.</span> {{__('Fast replies and delivery.')}}</li>
+            <li><span class="font-semibold">1.</span> {{ __('V-BUCKS are safe to hold and guaranteed!') }}</li>
+            <li><span class="font-semibold">2.</span> {{ __('Fast replies and delivery.') }}</li>
         </ol>
         <button
-            class="text-purple-400 hover:text-purple-300 text-sm mt-4 mb-4 font-semibold">{{__('See
-                                    all')}}</button>
+            class="text-purple-400 hover:text-purple-300 text-sm mt-4 mb-4 font-semibold">{{ __('See all') }}</button>
         <!-- Seller Card -->
         <div class="bg-bg-primary  p-4 border-t border-purple-800 ">
             <div class="flex items-center gap-3">
                 <img src="{{ asset('assets/images/Soham (2).png') }}" alt="Soham"
                     class="w-12 h-12 rounded-full border-2 border-purple-500">
                 <div class="flex-1">
-                    <p class="font-bold">{{__('Soham')}}</p>
+                    <p class="font-bold">{{ __('Soham') }}</p>
                     <div class="flex items-center gap-2 text-xs text-gray-400">
                         <span class="text-purple-400">99.3%</span>
-                        <span>2434 reviews</span>
-                        <span>1642 Sold</span>
+                        <span>2434 {{ __('reviews') }}</span>
+                        <span>1642 {{ __('Sold') }}</span>
                     </div>
                 </div>
             </div>

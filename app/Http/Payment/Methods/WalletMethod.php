@@ -85,7 +85,11 @@ class WalletMethod extends PaymentMethod
 
                 return [
                     'success' => false,
-                    'message' => "Insufficient wallet balance. Your balance: {$displaySymbol}".number_format($walletBalanceDisplay, 2)." {$displayCurrency}",
+                    'message' => __('Insufficient wallet balance. Your balance: :symbol :balance :currency', [
+                        'symbol' => $displaySymbol,
+                        'balance' => number_format($walletBalanceDisplay, 2),
+                        'currency' => $displayCurrency,
+                    ]),
                     'current_balance' => $wallet->balance,
                     'current_balance_display' => $walletBalanceDisplay,
                     'required_amount' => $orderAmountDefault,
@@ -217,7 +221,11 @@ class WalletMethod extends PaymentMethod
 
                 return [
                     'success' => true,
-                    'message' => "Payment successful! Amount deducted from your wallet. New balance: {$displaySymbol}".number_format($balanceAfterDisplay, 2)." {$displayCurrency}",
+                    'message' => __('Payment successful! Amount deducted from your wallet. New balance: :symbol :balance :currency', [
+                        'symbol' => $displaySymbol,
+                        'balance' => number_format($balanceAfterDisplay, 2),
+                        'currency' => $displayCurrency,
+                    ]),
                     'payment_id' => $payment->payment_id,
                     'transaction_id' => $paymentTransaction->transaction_id,
                     'correlation_id' => $correlationId,
@@ -242,7 +250,7 @@ class WalletMethod extends PaymentMethod
 
             return [
                 'success' => false,
-                'message' => 'Wallet payment failed: '.$e->getMessage(),
+                'message' => __('Wallet payment failed: :message', ['message' => $e->getMessage()]),
             ];
         }
     }
@@ -254,7 +262,7 @@ class WalletMethod extends PaymentMethod
     {
         return [
             'success' => true,
-            'message' => 'Wallet payment is processed immediately.',
+            'message' => __('Wallet payment is processed immediately.'),
         ];
     }
 
@@ -489,7 +497,7 @@ class WalletMethod extends PaymentMethod
 
                 return [
                     'success' => true,
-                    'message' => 'Funds added successfully',
+                    'message' => __('Funds added successfully'),
                     'transaction_id' => $transaction->transaction_id,
                     'amount' => $amountDefault,
                     'balance_before' => $balanceBefore,
@@ -505,7 +513,7 @@ class WalletMethod extends PaymentMethod
 
             return [
                 'success' => false,
-                'message' => 'Failed to add funds: '.$e->getMessage(),
+                'message' => __('Failed to add funds: :message', ['message' => $e->getMessage()]),
             ];
         }
     }

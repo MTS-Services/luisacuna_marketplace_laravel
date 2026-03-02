@@ -4,7 +4,6 @@ namespace App\Actions\Game;
 
 use App\Models\Game;
 use App\Repositories\Contracts\GameRepositoryInterface;
-use Illuminate\Database\Console\Migrations\FreshCommand;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -54,7 +53,6 @@ class UpdateAction
         //         }
         //     }
 
-
         //     if ($data['banner']) {
         //         $new_data['banner']  = Storage::disk('public')->putFile('banners', $data['banner']);
         //         $old = $old_data['banner'];
@@ -62,7 +60,6 @@ class UpdateAction
         //             Storage::disk('public')->delete($old);
         //         }
         //     }
-
 
         //     if ($data['thumbnail']) {
 
@@ -78,21 +75,19 @@ class UpdateAction
         //     return $this->interface->update($id, $new_data);
         // });
 
-            return DB::transaction(function () use ($id, $data) {
+        return DB::transaction(function () use ($id, $data) {
 
             $findData = $this->interface->find($id);
 
-            if (!$findData) {
+            if (! $findData) {
 
                 Log::error('Data not found', ['data_id' => $id]);
 
-                throw new \Exception('Data not found');
-
+                throw new \Exception(__('Data not found'));
             }
             $file_to_delete = [];
 
             $file_just_uploaded = [];
-
 
             if (! isset($data['slug'])) {
                 $data['slug'] = Str::slug($data['name']);
@@ -100,47 +95,43 @@ class UpdateAction
 
             if (isset($data['logo'])) {
 
-                $data['logo']  = Storage::disk('public')->putFile('logo', $data['logo']);
+                $data['logo'] = Storage::disk('public')->putFile('logo', $data['logo']);
 
                 $file_just_uploaded[] = $data['logo'];
 
-                if($findData->logo !== null){
+                if ($findData->logo !== null) {
                     $file_to_delete[] = $findData->logo;
                 }
             }
 
-
             if (isset($data['banner'])) {
 
-                $data['banner']  = Storage::disk('public')->putFile('banners', $data['banner']);
+                $data['banner'] = Storage::disk('public')->putFile('banners', $data['banner']);
 
-                 $file_just_uploaded[] = $data['banner'];
+                $file_just_uploaded[] = $data['banner'];
 
-                 if($findData->banner !== null){
-                $file_to_delete[] = $findData->banner;
+                if ($findData->banner !== null) {
+                    $file_to_delete[] = $findData->banner;
+                }
             }
-            }
 
+            if (isset($data['thumbnail'])) {
 
-            if ( isset($data['thumbnail'])) {
-
-                $data['thumbnail']  = Storage::disk('public')->putFile('thumbnails', $data['thumbnail']);
+                $data['thumbnail'] = Storage::disk('public')->putFile('thumbnails', $data['thumbnail']);
 
                 $file_just_uploaded[] = $data['thumbnail'];
 
-                if($findData->thumbnail !== null){
+                if ($findData->thumbnail !== null) {
                     $file_to_delete[] = $findData->thumbnail;
                 }
 
             }
 
-
-
             $updated = $this->interface->update($id, $data);
 
-            if (!$updated) {
+            if (! $updated) {
 
-               foreach ($file_just_uploaded as $file) {
+                foreach ($file_just_uploaded as $file) {
                     if (Storage::disk('public')->exists($file)) {
                         Storage::disk('public')->delete($file);
                     }
@@ -148,16 +139,15 @@ class UpdateAction
 
                 Log::error('Failed to update data in repository', ['data_id' => $id]);
 
-                throw new \Exception('Failed to update data');
+                throw new \Exception(__('Failed to update data'));
+            } else {
 
-            }else{
-
-                 foreach ($file_to_delete as $file) {
+                foreach ($file_to_delete as $file) {
 
                     if (Storage::disk('public')->exists($file)) {
                         Storage::disk('public')->delete($file);
                     }
-               }
+                }
             }
 
             $nameChanges = isset($data['name']) && $data['name'] !== $findData->name;
@@ -166,13 +156,13 @@ class UpdateAction
             $metaDescriptionChanges = isset($data['meta_description']) && $data['meta_description'] !== $findData->meta_description;
             $metaKeywordsChanges = isset($data['meta_keywords']) && $data['meta_keywords'] !== $findData->meta_keywords;
             $freshData = $findData->fresh();
-            if($nameChanges || $descriptionChanges || $metaTitleChanges || $metaDescriptionChanges || $metaKeywordsChanges){
+            if ($nameChanges || $descriptionChanges || $metaTitleChanges || $metaDescriptionChanges || $metaKeywordsChanges) {
 
                 $freshData->dispatchTranslation(
-                 defaultLanguageLocale: 'en',
-                 targetLanguageIds: null
+                    defaultLanguageLocale: 'en',
+                    targetLanguageIds: null
 
-            );
+                );
             }
 
             return $freshData;

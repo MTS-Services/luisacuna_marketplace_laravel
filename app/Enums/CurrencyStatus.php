@@ -10,8 +10,8 @@ enum CurrencyStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::ACTIVE => 'Active',
-            self::INACTIVE => 'Inactive',
+            self::ACTIVE => __('Active'),
+            self::INACTIVE => __('Inactive'),
         };
     }
 
@@ -23,11 +23,10 @@ enum CurrencyStatus: string
         };
     }
 
-
     public static function options(): array
     {
         return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }

@@ -35,9 +35,10 @@ class ResetPassword extends Component
         $data = decrypt($token);
 
         // Validate token structure
-        if (!isset($data['email'], $data['expires_at'])) {
+        if (! isset($data['email'], $data['expires_at'])) {
             $this->error('Invalid password reset link. Please request a new one.');
             $this->redirect(route('admin.password.request'), navigate: true);
+
             return;
         }
 
@@ -45,22 +46,25 @@ class ResetPassword extends Component
         if ($data['expires_at'] < now()->timestamp) {
             $this->error('This password reset link has expired. Please request a new one.');
             $this->redirect(route('admin.password.request'), navigate: true);
+
             return;
         }
 
         // Verify admin exists
         $admin = Admin::where('email', $data['email'])->first();
-        if (!$admin) {
+        if (! $admin) {
             $this->error('Invalid password reset link. Please request a new one.');
             $this->redirect(route('admin.password.request'), navigate: true);
+
             return;
         }
 
         // Verify OTP was actually verified
         $otpVerification = $admin->latestOtp(OtpType::PASSWORD_RESET);
-        if (!$otpVerification || !$otpVerification->isVerified()) {
+        if (! $otpVerification || ! $otpVerification->isVerified()) {
             $this->error('Verification required. Please complete the verification process first.');
             $this->redirect(route('admin.password.request'), navigate: true);
+
             return;
         }
 
@@ -81,22 +85,22 @@ class ResetPassword extends Component
             // Find the admin by email
             $admin = Admin::where('email', $this->email)->first();
 
-            if (!$admin) {
-                throw new \Exception('Admin not found');
+            if (! $admin) {
+                throw new \Exception(__('Admin not found'));
             }
 
             // Verify OTP is still verified
             $otpVerification = $admin->latestOtp(OtpType::PASSWORD_RESET);
-            if (!$otpVerification || !$otpVerification->isVerified()) {
+            if (! $otpVerification || ! $otpVerification->isVerified()) {
                 throw ValidationException::withMessages([
-                    'password' => 'Your verification has expired. Please restart the password reset process.',
+                    'password' => __('Your verification has expired. Please restart the password reset process.'),
                 ]);
             }
 
             // Check if new password is same as current password
             if (Hash::check($this->password, $admin->password)) {
                 throw ValidationException::withMessages([
-                    'password' => 'Your new password cannot be the same as your current password. Please choose a different password.',
+                    'password' => __('Your new password cannot be the same as your current password. Please choose a different password.'),
                 ]);
             }
 
@@ -108,10 +112,10 @@ class ResetPassword extends Component
             // Mark OTP as used by deleting it
             $otpVerification->delete();
 
-            Log::info('Password successfully reset for Admin: ' . $admin->email);
+            Log::info('Password successfully reset for Admin: '.$admin->email);
 
             $this->success('Your password has been reset successfully. Please log in with your new password.');
-            
+
             $this->redirect(route('admin.login'), navigate: true);
 
         } catch (ValidationException $e) {

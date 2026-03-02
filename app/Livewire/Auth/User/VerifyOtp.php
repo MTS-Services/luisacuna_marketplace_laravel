@@ -2,35 +2,39 @@
 
 namespace App\Livewire\Auth\User;
 
-use App\Models\User;
 use App\Enums\OtpType;
-use Livewire\Component;
 use App\Enums\PointType;
+use App\Livewire\Forms\Auth\Otp\OtpForm;
 use App\Models\PointLog;
+use App\Models\User;
 use App\Models\UserPoint;
-use Livewire\Attributes\On;
+use App\Notifications\UserOtpNotification;
+use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Livewire\Forms\Auth\Otp\OtpForm;
-use App\Traits\Livewire\WithNotification;
-use App\Notifications\UserOtpNotification;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 class VerifyOtp extends Component
 {
     use WithNotification;
 
     public OtpForm $form;
+
     public ?int $resendCooldown = null;
+
     public int $resendAttempts = 0;
+
     public bool $resendLimitReached = false;
+
     public $email;
 
     public function mount()
     {
         // Redirect if not authenticated
-        if (!user()) {
+        if (! user()) {
             return redirect()->route('login');
         }
 
@@ -39,8 +43,7 @@ class VerifyOtp extends Component
             return redirect()->route('user.order.purchased-orders');
         }
 
-
-         $this->email = user()->email;
+        $this->email = user()->email;
 
         // Load resend attempts from cache
         $this->loadResendAttempts();
@@ -49,14 +52,14 @@ class VerifyOtp extends Component
         $this->updateResendCooldown();
 
         // Generate and send OTP when component loads (only if no cooldown)
-        if ($this->resendCooldown === null && !$this->resendLimitReached) {
+        if ($this->resendCooldown === null && ! $this->resendLimitReached) {
             $this->sendOtp();
         }
     }
 
     protected function loadResendAttempts()
     {
-        $cacheKey = 'otp_resend_attempts:' . user()->id;
+        $cacheKey = 'otp_resend_attempts:'.user()->id;
         $this->resendAttempts = cache()->get($cacheKey, 0);
         $this->resendLimitReached = $this->resendAttempts >= 6;
     }
@@ -64,7 +67,7 @@ class VerifyOtp extends Component
     protected function incrementResendAttempts()
     {
         $this->resendAttempts++;
-        $cacheKey = 'otp_resend_attempts:' . user()->id;
+        $cacheKey = 'otp_resend_attempts:'.user()->id;
         // Store attempts for 1 hour
         cache()->put($cacheKey, $this->resendAttempts, now()->addHour());
         $this->resendLimitReached = $this->resendAttempts >= 6;
@@ -85,12 +88,13 @@ class VerifyOtp extends Component
 
         if (has_valid_otp($user, OtpType::EMAIL_VERIFICATION)) {
             $this->info('A verification code was already sent to your email.');
+
             return;
         }
 
         $otpVerification = create_otp($user, OtpType::EMAIL_VERIFICATION, 10);
 
-        Log::info('OTP Code for User ID ' . $user->id . ': ' . $otpVerification->code);
+        Log::info('OTP Code for User ID '.$user->id.': '.$otpVerification->code);
         $user->notify(new UserOtpNotification($otpVerification->code));
 
         $this->success('Verification code has been sent to your email.');
@@ -107,53 +111,48 @@ class VerifyOtp extends Component
             $user = user();
             $otpVerification = $user->latestOtp(OtpType::EMAIL_VERIFICATION);
 
-            if (!$otpVerification) {
+            if (! $otpVerification) {
                 throw ValidationException::withMessages([
-                    'form.code' => 'No verification code found. Please request a new one.',
+                    'form.code' => __('No verification code found. Please request a new one.'),
                 ]);
             }
 
             if ($otpVerification->isVerified()) {
                 throw ValidationException::withMessages([
-                    'form.code' => 'This verification code has already been used.',
+                    'form.code' => __('This verification code has already been used.'),
                 ]);
             }
 
             if ($otpVerification->isExpired()) {
                 throw ValidationException::withMessages([
-                    'form.code' => 'The verification code has expired. Please request a new one.',
+                    'form.code' => __('The verification code has expired. Please request a new one.'),
                 ]);
             }
 
             if ($otpVerification->attempts >= 6) {
                 throw ValidationException::withMessages([
-                    'form.code' => 'Too many failed attempts. Please request a new code.',
+                    'form.code' => __('Too many failed attempts. Please request a new code.'),
                 ]);
             }
 
-            if (!verify_otp($user, $this->form->code, OtpType::EMAIL_VERIFICATION)) {
+            if (! verify_otp($user, $this->form->code, OtpType::EMAIL_VERIFICATION)) {
                 RateLimiter::hit($this->throttleKey());
                 $remainingAttempts = 6 - $otpVerification->fresh()->attempts;
 
                 throw ValidationException::withMessages([
-                    'form.code' => "The verification code is incorrect. {$remainingAttempts} attempts remaining.",
+                    'form.code' => __('The verification code is incorrect. :remaining attempts remaining.', ['remaining' => $remainingAttempts]),
                 ]);
             }
 
             $user->markEmailAsVerified();
 
-
-
-
-
-
             // Update user's email_verified_at
-            $isUpdated =  $user->update([
-                'email_verified_at' => now()
+            $isUpdated = $user->update([
+                'email_verified_at' => now(),
             ]);
 
             Log::info('Exicute This line');
-            if ($isUpdated && !$user->is_first_verified) {
+            if ($isUpdated && ! $user->is_first_verified) {
 
                 DB::transaction(function () use ($user) {
                     $pointLogs = PointLog::create([
@@ -162,7 +161,7 @@ class VerifyOtp extends Component
                         'source_type' => User::class,
                         'type' => PointType::EARNED->value,
                         'points' => 500,
-                        'notes' => "Points earned for Email Verification",
+                        'notes' => 'Points earned for Email Verification',
                     ]);
 
                     $userPoint = UserPoint::firstOrNew(['user_id' => $user->id]);
@@ -179,12 +178,10 @@ class VerifyOtp extends Component
                 });
             }
 
-
-
             RateLimiter::clear($this->throttleKey());
 
             // Clear resend attempts on successful verification
-            cache()->forget('otp_resend_attempts:' . $user->id);
+            cache()->forget('otp_resend_attempts:'.$user->id);
 
             $this->success('Email verified successfully!');
             $this->dispatch('clear-auth-code');
@@ -208,6 +205,7 @@ class VerifyOtp extends Component
         // Check if limit reached
         if ($this->resendLimitReached) {
             $this->error('Maximum resend limit reached. Please contact support.');
+
             return;
         }
 
@@ -216,7 +214,7 @@ class VerifyOtp extends Component
         $user = user();
         $otpVerification = create_otp($user, OtpType::EMAIL_VERIFICATION, 10);
 
-        Log::info('Resent OTP Code for User ID ' . $user->id . ': ' . $otpVerification->code);
+        Log::info('Resent OTP Code for User ID '.$user->id.': '.$otpVerification->code);
         $user->notify(new UserOtpNotification($otpVerification->code));
 
         // Increment attempts
@@ -232,43 +230,43 @@ class VerifyOtp extends Component
 
     protected function ensureIsNotRateLimited(): void
     {
-        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 6)) {
+        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 6)) {
             return;
         }
 
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'form.code' => "Too many verification attempts. Please try again in {$seconds} seconds.",
+            'form.code' => __('Too many verification attempts. Please try again in :seconds seconds.', ['seconds' => $seconds]),
         ]);
     }
 
     protected function ensureResendIsNotRateLimited(): void
     {
-        if (!RateLimiter::tooManyAttempts($this->resendThrottleKey(), 1)) {
+        if (! RateLimiter::tooManyAttempts($this->resendThrottleKey(), 1)) {
             return;
         }
 
         $seconds = RateLimiter::availableIn($this->resendThrottleKey());
 
         throw ValidationException::withMessages([
-            'form.code' => "Please wait {$seconds} seconds before requesting a new code.",
+            'form.code' => __('Please wait :seconds seconds before requesting a new code.', ['seconds' => $seconds]),
         ]);
     }
 
     protected function throttleKey(): string
     {
-        return 'otp-verify:' . user()->id . ':' . request()->ip();
+        return 'otp-verify:'.user()->id.':'.request()->ip();
     }
 
     protected function resendThrottleKey(): string
     {
-        return 'otp-resend:' . user()->id . ':' . request()->ip();
+        return 'otp-resend:'.user()->id.':'.request()->ip();
     }
 
     public function getMaskedEmail(): string
     {
-        if (!$this->email) {
+        if (! $this->email) {
             return '';
         }
 
@@ -280,10 +278,10 @@ class VerifyOtp extends Component
         if ($nameLength <= 3) {
             $maskedName = str_repeat('*', $nameLength);
         } else {
-            $maskedName = substr($name, 0, 3) . str_repeat('*', $nameLength - 3);
+            $maskedName = substr($name, 0, 3).str_repeat('*', $nameLength - 3);
         }
 
-        return $maskedName . '@' . $domain;
+        return $maskedName.'@'.$domain;
     }
 
     public function render()

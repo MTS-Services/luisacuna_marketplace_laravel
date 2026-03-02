@@ -29,11 +29,11 @@
         :showBulkActions="true" emptyMessage="No Category found. Create your first admin to get started." />
 
     {{-- Delete Confirmation Modal --}}
-    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this Category?'" :message="'Are you absolutely sure you want to remove this Category? All associated data will be permanently deleted.'" :method="'delete'"
+    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="__('Delete this Category?')" :message="__('Are you absolutely sure you want to remove this Category? All associated data will be permanently deleted.')" :method="'delete'"
         :button-text="'Delete Category'" />
 
     {{-- Bulk Action Confirmation Modal --}}
-    <x-ui.confirmation-modal :show="'showBulkActionModal'" :title="'Confirm Bulk Action'" :message="'Are you sure you want to perform this action on ' . count($selectedIds) . ' selected category(ies)?'" :method="'executeBulkAction'"
+    <x-ui.confirmation-modal :show="'showBulkActionModal'" :title="__('Confirm Bulk Action')" :message="__('Are you sure you want to perform this action on :count selected category(ies)?', ['count' => count($selectedIds)])" :method="'executeBulkAction'"
         :button-text="'Confirm Action'" />
 
 

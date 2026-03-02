@@ -4,26 +4,33 @@ namespace App\Livewire;
 
 use App\Models\CloudinaryFile;
 use App\Traits\HasCloudinaryUploads;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
-use Livewire\Attributes\On;
 
 class FileManager extends Component
 {
-    use WithFileUploads, WithPagination, HasCloudinaryUploads;
+    use HasCloudinaryUploads, WithFileUploads, WithPagination;
 
     // Upload properties
     public $file;
+
     public $multipleFiles = [];
+
     public $uploadType = 'auto';
+
     public $isUploading = false;
+
     public $uploadProgress = 0;
 
     // Filter properties
     public $filterType = 'all';
+
     public $searchTerm = '';
+
     public $sortBy = 'created_at';
+
     public $sortDirection = 'desc';
 
     // View mode
@@ -31,16 +38,21 @@ class FileManager extends Component
 
     // Modal properties
     public $showUploadModal = false;
+
     public $showDetailsModal = false;
+
     public $showEditModal = false;
+
     public $selectedFile = null;
 
     // Edit properties
     public $editDescription = '';
+
     public $editTags = '';
 
     // Bulk actions
     public $selectedFiles = [];
+
     public $selectAll = false;
 
     // Files
@@ -87,8 +99,9 @@ class FileManager extends Component
     {
         $this->validate();
 
-        if (!$this->file) {
-            session()->flash('error', 'Please select a file to upload.');
+        if (! $this->file) {
+            session()->flash('error', __('Please select a file to upload.'));
+
             return;
         }
 
@@ -105,7 +118,7 @@ class FileManager extends Component
             if ($this->uploadType !== 'auto') {
                 $options['folder'] = "uploads/{$this->uploadType}s";
             } else {
-                $options['folder'] = "uploads/files";
+                $options['folder'] = 'uploads/files';
             }
 
             // Simulate progress
@@ -122,19 +135,18 @@ class FileManager extends Component
                 ]
             );
 
-
             $this->uploadProgress = 100;
 
             if ($file) {
-                session()->flash('message', 'File uploaded successfully!');
+                session()->flash('message', __('File uploaded successfully!'));
                 $this->reset(['file', 'uploadType']);
                 $this->uploadType = 'auto';
                 $this->loadFiles();
             } else {
-                session()->flash('error', 'Upload failed. Please try again.');
+                session()->flash('error', __('Upload failed. Please try again.'));
             }
         } catch (\Exception $e) {
-            session()->flash('error', 'Upload failed: ' . $e->getMessage());
+            session()->flash('error', __('Upload failed: :message', ['message' => $e->getMessage()]));
         } finally {
             $this->isUploading = false;
             $this->uploadProgress = 0;
@@ -159,18 +171,18 @@ class FileManager extends Component
             ]);
 
             if ($result['success_count'] > 0) {
-                session()->flash('message', "{$result['success_count']} files uploaded successfully!");
+                session()->flash('message', __(':count files uploaded successfully!', ['count' => $result['success_count']]));
                 $this->loadFiles();
             }
 
             if ($result['failed_count'] > 0) {
-                session()->flash('error', "{$result['failed_count']} files failed to upload.");
+                session()->flash('error', __(':count files failed to upload.', ['count' => $result['failed_count']]));
             }
 
             $this->reset('multipleFiles');
             $this->showUploadModal = false;
         } catch (\Exception $e) {
-            session()->flash('error', 'Upload failed: ' . $e->getMessage());
+            session()->flash('error', __('Upload failed: :message', ['message' => $e->getMessage()]));
         } finally {
             $this->isUploading = false;
         }
@@ -184,21 +196,22 @@ class FileManager extends Component
         try {
             $file = CloudinaryFile::find($fileId);
 
-            if (!$file) {
-                session()->flash('error', 'File not found.');
+            if (! $file) {
+                session()->flash('error', __('File not found.'));
+
                 return;
             }
 
             $deleted = $this->deleteAndRemove($file);
 
             if ($deleted) {
-                session()->flash('message', 'File deleted successfully!');
+                session()->flash('message', __('File deleted successfully!'));
                 $this->loadFiles();
             } else {
-                session()->flash('error', 'Failed to delete file.');
+                session()->flash('error', __('Failed to delete file.'));
             }
         } catch (\Exception $e) {
-            session()->flash('error', 'Delete failed: ' . $e->getMessage());
+            session()->flash('error', __('Delete failed: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -208,7 +221,8 @@ class FileManager extends Component
     public function bulkDelete()
     {
         if (empty($this->selectedFiles)) {
-            session()->flash('error', 'No files selected.');
+            session()->flash('error', __('No files selected.'));
+
             return;
         }
 
@@ -217,17 +231,17 @@ class FileManager extends Component
             $result = $this->cloudinaryService->deleteMultiple($files->toArray());
 
             if ($result['success_count'] > 0) {
-                session()->flash('message', "{$result['success_count']} files deleted successfully!");
+                session()->flash('message', __(':count files deleted successfully!', ['count' => $result['success_count']]));
                 $this->loadFiles();
                 $this->selectedFiles = [];
                 $this->selectAll = false;
             }
 
             if ($result['failed_count'] > 0) {
-                session()->flash('error', "{$result['failed_count']} files failed to delete.");
+                session()->flash('error', __(':count files failed to delete.', ['count' => $result['failed_count']]));
             }
         } catch (\Exception $e) {
-            session()->flash('error', 'Bulk delete failed: ' . $e->getMessage());
+            session()->flash('error', __('Bulk delete failed: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -264,15 +278,16 @@ class FileManager extends Component
      */
     public function updateFileMetadata()
     {
-        if (!$this->selectedFile) {
+        if (! $this->selectedFile) {
             return;
         }
 
         try {
             $file = CloudinaryFile::find($this->selectedFile['id']);
 
-            if (!$file) {
-                session()->flash('error', 'File not found.');
+            if (! $file) {
+                session()->flash('error', __('File not found.'));
+
                 return;
             }
 
@@ -285,14 +300,14 @@ class FileManager extends Component
             ]);
 
             if ($updated) {
-                session()->flash('message', 'File metadata updated successfully!');
+                session()->flash('message', __('File metadata updated successfully!'));
                 $this->loadFiles();
                 $this->closeEditModal();
             } else {
-                session()->flash('error', 'Failed to update metadata.');
+                session()->flash('error', __('Failed to update metadata.'));
             }
         } catch (\Exception $e) {
-            session()->flash('error', 'Update failed: ' . $e->getMessage());
+            session()->flash('error', __('Update failed: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -314,7 +329,7 @@ class FileManager extends Component
     #[On('url-copied')]
     public function urlCopied()
     {
-        session()->flash('message', 'URL copied to clipboard!');
+        session()->flash('message', __('URL copied to clipboard!'));
     }
 
     /**
@@ -367,11 +382,11 @@ class FileManager extends Component
         }
 
         // Apply search
-        if (!empty($this->searchTerm)) {
+        if (! empty($this->searchTerm)) {
             $query->where(function ($q) {
-                $q->where('original_filename', 'like', '%' . $this->searchTerm . '%')
-                    ->orWhere('description', 'like', '%' . $this->searchTerm . '%')
-                    ->orWhere('public_id', 'like', '%' . $this->searchTerm . '%');
+                $q->where('original_filename', 'like', '%'.$this->searchTerm.'%')
+                    ->orWhere('description', 'like', '%'.$this->searchTerm.'%')
+                    ->orWhere('public_id', 'like', '%'.$this->searchTerm.'%');
             });
         }
 
@@ -425,7 +440,7 @@ class FileManager extends Component
         $pow = min($pow, count($units) - 1);
         $bytes /= pow(1024, $pow);
 
-        return round($bytes, 2) . ' ' . $units[$pow];
+        return round($bytes, 2).' '.$units[$pow];
     }
 
     public function render()

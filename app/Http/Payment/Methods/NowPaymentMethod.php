@@ -116,12 +116,12 @@ class NowPaymentMethod extends PaymentMethod
 
                 // Set success/cancel URLs
                 if ($isTopUp) {
-                    $successUrl = route('user.payment.success') . "?order_id={$order->order_id}";
-                    $cancelUrl = route('user.payment.failed') . "?order_id={$order->order_id}";
+                    $successUrl = route('user.payment.success')."?order_id={$order->order_id}";
+                    $cancelUrl = route('user.payment.failed')."?order_id={$order->order_id}";
                     $description = "Wallet top-up for {$order->source?->name} (Order ID: #{$order->order_id})";
                 } else {
-                    $successUrl = route('user.payment.success') . "?order_id={$order->order_id}";
-                    $cancelUrl = route('user.payment.failed') . "?order_id={$order->order_id}";
+                    $successUrl = route('user.payment.success')."?order_id={$order->order_id}";
+                    $cancelUrl = route('user.payment.failed')."?order_id={$order->order_id}";
                     $description = "Top-up for {$order->source?->name} (Order ID: #{$order->order_id})";
                 }
 
@@ -146,7 +146,7 @@ class NowPaymentMethod extends PaymentMethod
 
                     return [
                         'success' => false,
-                        'message' => 'Failed to create payment invoice.',
+                        'message' => __('Failed to create payment invoice.'),
                     ];
                 }
 
@@ -155,7 +155,7 @@ class NowPaymentMethod extends PaymentMethod
                 if (! isset($invoice['id'])) {
                     return [
                         'success' => false,
-                        'message' => 'Invoice ID missing from gateway.',
+                        'message' => __('Invoice ID missing from gateway.'),
                     ];
                 }
 
@@ -191,7 +191,7 @@ class NowPaymentMethod extends PaymentMethod
 
             return [
                 'success' => false,
-                'message' => 'Failed to initialize payment: ' . $e->getMessage(),
+                'message' => __('Failed to initialize payment: :message', ['message' => $e->getMessage()]),
             ];
         }
     }
@@ -232,7 +232,7 @@ class NowPaymentMethod extends PaymentMethod
             }
 
             if ($payment->status === PaymentStatus::COMPLETED->value) {
-                return ['success' => true, 'message' => 'Payment already processed.'];
+                return ['success' => true, 'message' => __('Payment already processed.')];
             }
 
             $order = $payment->order;
@@ -248,7 +248,7 @@ class NowPaymentMethod extends PaymentMethod
 
             return [
                 'success' => false,
-                'message' => 'Payment not completed. Status: ' . $status,
+                'message' => __('Payment not completed. Status: :status', ['status' => $status]),
             ];
         } catch (Exception $e) {
             Log::error('Payment confirmation failed', [
@@ -258,7 +258,7 @@ class NowPaymentMethod extends PaymentMethod
 
             return [
                 'success' => false,
-                'message' => 'Payment confirmation failed: ' . $e->getMessage(),
+                'message' => __('Payment confirmation failed: :message', ['message' => $e->getMessage()]),
             ];
         }
     }
@@ -427,7 +427,7 @@ class NowPaymentMethod extends PaymentMethod
 
             return [
                 'success' => true,
-                'message' => 'Payment completed successfully',
+                'message' => __('Payment completed successfully'),
                 'correlation_id' => $correlationId,
             ];
         });
@@ -599,7 +599,7 @@ class NowPaymentMethod extends PaymentMethod
 
             return [
                 'success' => true,
-                'message' => 'Payment completed successfully',
+                'message' => __('Payment completed successfully'),
                 'correlation_id' => $correlationId,
                 'nowpayments_payment_id' => $nowPaymentId,
                 'nowpayments_invoice_id' => $nowInvoiceId,

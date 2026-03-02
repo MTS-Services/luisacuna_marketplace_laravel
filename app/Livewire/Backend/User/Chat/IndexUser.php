@@ -3,9 +3,7 @@
 namespace App\Livewire\Backend\User\Chat;
 
 use App\Services\ConversationService;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
@@ -57,13 +55,13 @@ class IndexUser extends Component
     public function selectConversation(string $conversationUuid)
     {
         $conversation = \App\Models\Conversation::where('conversation_uuid', $conversationUuid)
-            ->whereHas('participants', fn($q) => $q
+            ->whereHas('participants', fn ($q) => $q
                 ->where('participant_id', Auth::id())
                 ->where('is_active', true))
             ->select('id', 'conversation_uuid')
             ->first();
 
-        if (!$conversation) {
+        if (! $conversation) {
             return;
         }
 
@@ -169,10 +167,10 @@ class IndexUser extends Component
                 $this->service->markMessagesAsRead($conversation, Auth::id());
             }
 
-            $this->dispatch('success', message: 'All messages marked as read');
+            $this->dispatch('success', message: __('All messages marked as read'));
             $this->refreshConversations();
         } catch (\Exception $e) {
-            $this->dispatch('error', message: 'Failed to mark messages as read');
+            $this->dispatch('error', message: __('Failed to mark messages as read'));
         }
     }
 
@@ -203,7 +201,7 @@ class IndexUser extends Component
         // If UUID provided in URL, resolve to internal id on load
         if ($this->selectedConversationUuid) {
             $conversation = \App\Models\Conversation::where('conversation_uuid', $this->selectedConversationUuid)
-                ->whereHas('participants', fn($q) => $q
+                ->whereHas('participants', fn ($q) => $q
                     ->where('participant_id', Auth::id())
                     ->where('is_active', true))
                 ->select('id', 'conversation_uuid')

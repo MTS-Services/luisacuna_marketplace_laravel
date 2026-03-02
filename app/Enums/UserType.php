@@ -7,12 +7,13 @@ enum UserType: string
     case BUYER = 'buyer';
     case SELLER = 'seller';
     case BOTH = 'both';
+
     public function label(): string
     {
         return match ($this) {
-            self::BUYER => 'Buyer',
-            self::SELLER => 'Seller',
-            self::BOTH => 'Both',
+            self::BUYER => __('Buyer'),
+            self::SELLER => __('Seller'),
+            self::BOTH => __('Both'),
         };
     }
 
@@ -28,7 +29,7 @@ enum UserType: string
     public static function options(): array
     {
         return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }

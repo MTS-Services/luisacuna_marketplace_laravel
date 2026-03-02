@@ -14,20 +14,20 @@ enum OtpType: string
 
     public function label(): string
     {
-        return match($this) {
-            self::EMAIL => 'Email',
-            self::SMS => 'SMS',
-            self::AUTHENTICATOR_APP => 'Authenticator App',
-            self::EMAIL_VERIFICATION => 'Email Verification',
-            self::PHONE_VERIFICATION => 'Phone Verification',
-            self::PASSWORD_RESET => 'Password Reset',
-            self::LOGIN_VERIFICATION => 'Login Verification',
+        return match ($this) {
+            self::EMAIL => __('Email'),
+            self::SMS => __('SMS'),
+            self::AUTHENTICATOR_APP => __('Authenticator App'),
+            self::EMAIL_VERIFICATION => __('Email Verification'),
+            self::PHONE_VERIFICATION => __('Phone Verification'),
+            self::PASSWORD_RESET => __('Password Reset'),
+            self::LOGIN_VERIFICATION => __('Login Verification'),
         };
     }
 
     public function color(): string
     {
-        return match($this) {
+        return match ($this) {
             self::EMAIL => 'badge-primary',
             self::SMS => 'badge-info',
             self::AUTHENTICATOR_APP => 'badge-success',

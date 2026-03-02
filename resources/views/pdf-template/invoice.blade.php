@@ -5,17 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>{{ __('Invoice') }}</title>
 </head>
 
 <body>
 
 
 
-    <p><strong>Invoice ID:</strong> {{ $invoiceId }}</p>
+    <p><strong>{{ __('Invoice ID') }}:</strong> {{ $invoiceId }}</p>
 
 
-    <p>Date: {{ now()->format('Y-m-d') }}</p>
+    <p>{{ __('Date') }}: {{ now()->format('Y-m-d') }}</p>
 
 
 
@@ -26,14 +26,14 @@
     <table width="100%" cellspacing="0" cellpadding="7" style="border-collapse: collapse; border: 1px solid #000;">
         <thead>
             <tr>
-                <th style="border: 1px solid #000;">Order ID</th>
-                <th style="border: 1px solid #000;">Product</th>
-                <th style="border: 1px solid #000;">Buyer</th>
-                <th style="border: 1px solid #000;">Qty</th>
-                <th style="border: 1px solid #000;">Currency</th>
-                <th style="border: 1px solid #000;">Amount</th>
-                <th style="border: 1px solid #000;">Status</th>
-                <th style="border: 1px solid #000;">Date</th>
+                <th style="border: 1px solid #000;">{{ __('Order ID') }}</th>
+                <th style="border: 1px solid #000;">{{ __('Product') }}</th>
+                <th style="border: 1px solid #000;">{{ __('Buyer') }}</th>
+                <th style="border: 1px solid #000;">{{ __('Qty') }}</th>
+                <th style="border: 1px solid #000;">{{ __('Currency') }}</th>
+                <th style="border: 1px solid #000;">{{ __('Amount') }}</th>
+                <th style="border: 1px solid #000;">{{ __('Status') }}</th>
+                <th style="border: 1px solid #000;">{{ __('Date') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -53,7 +53,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="5" align="right" style="border: 1px solid #000;"><strong>Total Amount</strong></td>
+                <td colspan="5" align="right" style="border: 1px solid #000;"><strong>{{ __('Total Amount') }}</strong></td>
                 <td style="border: 1px solid #000;"><strong>{{ $totalAmount }}</strong></td>
                 <td colspan="2" style="border: 1px solid #000;"></td>
             </tr>
@@ -62,7 +62,7 @@
     </table>
 
 
-    <p style="text-align: center">Generate by automatically</p>
+    <p style="text-align: center">{{ __('Generated automatically') }}</p>
 
 </body>
 

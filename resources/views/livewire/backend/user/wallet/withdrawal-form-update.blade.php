@@ -43,7 +43,7 @@
 
                             @case('select')
                                 <x-ui.select wire:model="account_data.{{ Str::slug($field['name'], '_') }}">
-                                    <option value="">Select option</option>
+                                    <option value="">{{ __('Select option') }}</option>
                                     @foreach (explode(',', $field['options'] ?? '') as $option)
                                         <option value="{{ trim($option) }}">{{ trim($option) }}</option>
                                     @endforeach

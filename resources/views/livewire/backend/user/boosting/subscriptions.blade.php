@@ -627,7 +627,7 @@
                         class="w-12 h-12 rounded-lg object-cover">
                     <div>
                         <h2 class="text-text-white font-semibold text-lg">Apex Legends</h2>
-                        <p class="text-gray-400 text-sm">Not subscribed</p>
+                        <p class="text-gray-400 text-sm">{{ __('Not subscribed') }}</p>
                     </div>
                 </div>
 
@@ -661,7 +661,7 @@
                         class="w-12 h-12 rounded-lg object-cover">
                     <div>
                         <h2 class="text-text-white font-semibold text-lg">ArcheAge</h2>
-                        <p class="text-gray-400 text-sm">Not subscribed</p>
+                        <p class="text-gray-400 text-sm">{{ __('Not subscribed') }}</p>
                     </div>
                 </div>
 
@@ -695,7 +695,7 @@
                         class="w-12 h-12 rounded-lg object-cover">
                     <div>
                         <h2 class="text-text-white font-semibold text-lg">Black Desert Online</h2>
-                        <p class="text-gray-400 text-sm">Not subscribed</p>
+                        <p class="text-gray-400 text-sm">{{ __('Not subscribed') }}</p>
                     </div>
                 </div>
 

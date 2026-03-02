@@ -54,8 +54,11 @@ class GeneralSettings extends Component
 
     // Display Properties
     public array $timezones = [];
+
     public ?string $current_logo = null;
+
     public ?string $current_favicon = null;
+
     public bool $saving = false;
 
     protected SettingsService $settingsService;
@@ -87,7 +90,7 @@ class GeneralSettings extends Component
             $this->timezones = availableTimezones();
         } else {
             $this->timezones = collect(timezone_identifiers_list())
-                ->map(fn($tz) => ['timezone' => $tz, 'name' => str_replace('_', ' ', $tz)])
+                ->map(fn ($tz) => ['timezone' => $tz, 'name' => str_replace('_', ' ', $tz)])
                 ->toArray();
         }
     }
@@ -105,7 +108,7 @@ class GeneralSettings extends Component
             'app_debug',
             'auto_translate',
             'app_logo',
-            'favicon'
+            'favicon',
         ]);
 
         $this->app_name = $settings['app_name'] ?? config('app.name', '');
@@ -115,8 +118,8 @@ class GeneralSettings extends Component
         $this->time_format = $settings['time_format'] ?? ApplicationSetting::TIME_24H;
         $this->theme_mode = $settings['theme_mode'] ?? ApplicationSetting::THEME_SYSTEM;
         $this->environment = $settings['environment'] ?? ApplicationSetting::ENV_LOCAL;
-        $this->app_debug = (string)($settings['app_debug'] ?? '0');
-        $this->auto_translate = (string)($settings['auto_translate'] ?? '0');
+        $this->app_debug = (string) ($settings['app_debug'] ?? '0');
+        $this->auto_translate = (string) ($settings['auto_translate'] ?? '0');
         $this->current_logo = $settings['app_logo'];
         $this->current_favicon = $settings['favicon'];
     }
@@ -137,19 +140,20 @@ class GeneralSettings extends Component
 
             if ($success) {
                 $this->reset(['app_logo', 'favicon']);
+
                 // $this->success(__('Settings saved successfully!'));
                 // session()->flash('success', 'Settings saved successfully!');
                 // $this->redirectIntended(route('admin.as.general-settings'));
-                return redirect()->intended(route('admin.as.general-settings'))->with('success', 'Settings saved successfully!');
+                return redirect()->intended(route('admin.as.general-settings'))->with('success', __('Settings saved successfully!'));
             } else {
                 $this->error(__('Failed to save settings. Please try again.'));
             }
         } catch (\Exception $e) {
             Log::error('General settings save failed', [
                 'message' => $e->getMessage(),
-                'exception' => $e
+                'exception' => $e,
             ]);
-            session()->flash('error', 'Failed to save settings. Please try again.');
+            session()->flash('error', __('Failed to save settings. Please try again.'));
             // $this->error(__('An error occurred. Please try again.'));
         } finally {
             $this->saving = false;
@@ -166,8 +170,8 @@ class GeneralSettings extends Component
             'time_format' => $this->time_format,
             'theme_mode' => $this->theme_mode,
             'environment' => $this->environment,
-            'app_debug' => (int)$this->app_debug,
-            'auto_translate' => (int)$this->auto_translate,
+            'app_debug' => (int) $this->app_debug,
+            'auto_translate' => (int) $this->auto_translate,
         ];
     }
 
@@ -178,17 +182,17 @@ class GeneralSettings extends Component
         $currentProperty = $field === 'app_logo' ? 'current_logo' : 'current_favicon';
 
         // Check if file was uploaded
-        if (!$this->$fileProperty) {
+        if (! $this->$fileProperty) {
             return;
         }
-        
+
         // Upload the new file
         $uploadedPath = $this->settingsService->uploadFile(
             $this->$fileProperty,
             $field
         );
 
-        if (!$uploadedPath) {
+        if (! $uploadedPath) {
             return;
         }
 

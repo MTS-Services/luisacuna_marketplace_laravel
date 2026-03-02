@@ -54,7 +54,7 @@
         </tfoot>
     </table>
 
-    <p style="text-align: center;">Generated automatically</p>
+    <p style="text-align: center;">{{ __('Generated automatically') }}</p>
 
 </body>
 

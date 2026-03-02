@@ -4,30 +4,33 @@ namespace App\Livewire;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\Component;
 
 class DeviceManagement extends Component
 {
     public $devices = [];
-    public $showConfirmModal = false;
-    public $actionType = null;
-    public $selectedDeviceId = null;
-    public $authorized = null;
 
+    public $showConfirmModal = false;
+
+    public $actionType = null;
+
+    public $selectedDeviceId = null;
+
+    public $authorized = null;
 
     public function mount()
     {
         $user = Auth::guard('web')->user();
         $admin = Auth::guard('admin')->user();
-        if (!$user && !$admin) {
+        if (! $user && ! $admin) {
             Log::warning('Unauthorized access to device management. Redirecting to login page.');
+
             return $this->redirectIntended(
                 default: route('login'),
                 navigate: true
             );
         }
-
 
         $this->authorized = $admin ? $admin : $user;
         $this->loadDevices();
@@ -69,39 +72,41 @@ class DeviceManagement extends Component
 
     public function logoutDevice()
     {
-        if (!$this->selectedDeviceId) {
+        if (! $this->selectedDeviceId) {
             return;
         }
 
         $device = $this->authorized->devices()->find($this->selectedDeviceId);
 
-        if (!$device) {
+        if (! $device) {
             $this->dispatch('notify', [
                 'type' => 'error',
-                'message' => 'Device not found.'
+                'message' => __('Device not found.'),
             ]);
+
             return;
         }
 
         if ($device->is_current_device) {
             $this->dispatch('notify', [
                 'type' => 'error',
-                'message' => 'You cannot logout from the current device. Use the main logout button instead.'
+                'message' => __('You cannot logout from the current device. Use the main logout button instead.'),
             ]);
+
             return;
         }
 
         if ($this->authorized->logoutDevice($this->selectedDeviceId)) {
             $this->dispatch('notify', [
                 'type' => 'success',
-                'message' => 'Device logged out successfully.'
+                'message' => __('Device logged out successfully.'),
             ]);
 
             $this->loadDevices();
         } else {
             $this->dispatch('notify', [
                 'type' => 'error',
-                'message' => 'Failed to logout device.'
+                'message' => __('Failed to logout device.'),
             ]);
         }
 
@@ -114,7 +119,7 @@ class DeviceManagement extends Component
 
         $this->dispatch('notify', [
             'type' => 'success',
-            'message' => "Successfully logged out from {$count} device(s)."
+            'message' => "Successfully logged out from {$count} device(s).",
         ]);
 
         $this->loadDevices();
@@ -125,26 +130,28 @@ class DeviceManagement extends Component
     {
         $device = $this->authorized->devices()->find($deviceId);
 
-        if (!$device) {
+        if (! $device) {
             $this->dispatch('notify', [
                 'type' => 'error',
-                'message' => 'Device not found.'
+                'message' => __('Device not found.'),
             ]);
+
             return;
         }
 
         if ($device->is_current_device) {
             $this->dispatch('notify', [
                 'type' => 'error',
-                'message' => 'You cannot remove the current device.'
+                'message' => 'You cannot remove the current device.',
             ]);
+
             return;
         }
 
         if ($this->authorized->removeDevice($deviceId)) {
             $this->dispatch('notify', [
                 'type' => 'success',
-                'message' => 'Device removed successfully.'
+                'message' => 'Device removed successfully.',
             ]);
 
             $this->loadDevices();

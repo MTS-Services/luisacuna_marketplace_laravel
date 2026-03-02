@@ -178,7 +178,7 @@
         x-transition:enter="transition ease-out duration-100"
         class="absolute  top-18 right-0 w-full h-screen bg-bg-primary dark:bg-bg-secondary backdrop:blure-md z-100  md:rounded-lg transition-all duration-300  p-4 shadow-lg overflow-y-auto ">
         <div class="flex justify-between items-center bg-bg-hover p-2 rounded-lg mb-2">
-            <h2 class="text-lg font-semibold">Category</h2>
+            <h2 class="text-lg font-semibold">{{ __('Category') }}</h2>
             <button @click="mobileMenuOpen = false">
                 <flux:icon name="x-mark" class="w-5 h-5 stroke-current hover:stroke-pink-600" />
             </button>

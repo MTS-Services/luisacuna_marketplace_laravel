@@ -16,8 +16,8 @@ class DeleteAction
         return DB::transaction(function () use ($id, $forceDelete) {
             $data = $this->auditInterface->find($id);
 
-            if (!$data) {
-                throw new \Exception('Data not found');
+            if (! $data) {
+                throw new \Exception(__('Data not found'));
             }
 
             if ($forceDelete) {

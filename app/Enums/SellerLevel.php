@@ -10,25 +10,23 @@ enum SellerLevel: string
     case PLATINUM = 'platinum';
     case DIAMOND = 'diamond';
 
-
     public function label(): string
     {
         return match ($this) {
-            self::BRONZE => 'Bronze',
-            self::SILVER => 'Silver',
-            self::GOLD => 'Gold',
-            self::PLATINUM => 'Platinum',
-            self::DIAMOND => 'Diamond',
+            self::BRONZE => __('Bronze'),
+            self::SILVER => __('Silver'),
+            self::GOLD => __('Gold'),
+            self::PLATINUM => __('Platinum'),
+            self::DIAMOND => __('Diamond'),
         };
     }
-
 
     public function color(): string
     {
         return match ($this) {
             self::BRONZE => 'badge badge-warning',
             self::SILVER => 'badge badge-secondary',
-            self::GOLD => 'badge badge-primary', 
+            self::GOLD => 'badge badge-primary',
             self::PLATINUM => 'badge badge-info',
             self::DIAMOND => 'badge badge-success',
         };
@@ -37,7 +35,7 @@ enum SellerLevel: string
     public static function options(): array
     {
         return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }

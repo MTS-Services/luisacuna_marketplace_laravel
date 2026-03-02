@@ -173,7 +173,7 @@
                                                 $wire.set('form.additional', temp);
                                             "
                                             class="flex-shrink-0 p-2.5 bg-red-100 hover:bg-red-200 dark:bg-red-900/20 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 rounded-lg transition-colors duration-200 mt-0.5"
-                                            title="Remove field">
+                                            title="{{ __('Remove field') }}">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

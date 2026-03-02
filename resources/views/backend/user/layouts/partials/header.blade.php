@@ -59,7 +59,7 @@
                     class="flex items-center p-1 sm:p-1.5 rounded-lg text-text-white transition-all focus:outline-none">
                     <div class="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full shadow-lg overflow-hidden">
                         <img src="{{ auth_storage_url(user()->avatar) }}" class="w-full h-full object-cover"
-                            alt="{{ user()->full_name ?? 'User Avatar' }}">
+                            alt="{{ user()->full_name ?? __('User Avatar') }}">
                     </div>
                 </button>
 

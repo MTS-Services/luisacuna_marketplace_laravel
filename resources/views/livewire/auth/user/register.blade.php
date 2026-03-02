@@ -3,8 +3,8 @@
         <div class="w-full  max-w-lg bg-gradient-to-br bg-bg-primary rounded-2xl  px-8 py-22 shadow-2xl ">
             <!-- Header -->
             <div class="text-center mb-8">
-                <h1 class="text-4xl font-medium text-white mb-4">Create Password </h1>
-                <p class="text-gray-300">Hi! Welcome back, you've been missed</p>
+                <h1 class="text-4xl font-medium text-white mb-4">{{ __('Create Password') }}</h1>
+                <p class="text-gray-300">{{ __("Hi! Welcome back, you've been missed") }}</p>
             </div>
 
 
@@ -12,10 +12,10 @@
               <form class="space-y-6">
             <!-- Password Input -->
             <div>
-                <label class="block text-white font-medium mb-2">Password</label>
+                <label class="block text-white font-medium mb-2">{{ __('Password') }}</label>
                 <input
                     type="password"
-                    placeholder="••••••••"
+                    placeholder="{{ __('Password') }}"
                     id="password"
                     class="w-full bg-purple-300/10 bg-opacity-50 text-white placeholder-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
                 >
@@ -23,10 +23,10 @@
 
             <!-- Confirm Password Input -->
             <div>
-                <label class="block text-white font-medium mb-2">Confirm password</label>
+                <label class="block text-white font-medium mb-2">{{ __('Confirm password') }}</label>
                 <input
                     type="password"
-                    placeholder="••••••••"
+                    placeholder="{{ __('Confirm password') }}"
                     id="confirmPassword"
                     class="w-full bg-purple-300/10 bg-opacity-50 text-white placeholder-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
                 >
@@ -39,13 +39,13 @@
                     id="showPassword"
                     class="w-4 h-4 rounded accent-purple-500 cursor-pointer"
                 >
-                <label for="showPassword" class="text-white font-medium cursor-pointer">Show password</label>
+                <label for="showPassword" class="text-white font-medium cursor-pointer">{{ __('Show password') }}</label>
             </div>
 
             <!-- Sign In Button -->
                 <button type="submit"
                     class="w-full bg-gradient-to-r  text-white font-medium py-3 mt-4 rounded-full bg-zinc-700 transition shadow-lg">
-                    Sign up
+                    {{ __('Sign up') }}
                 </button>
 
         </form>
@@ -54,7 +54,7 @@
             <!-- Divider -->
             <div class="my-8 flex items-center">
                 <div class="flex-1 border-t "></div>
-                <p class="px-3 text-text-white text-sm">Or sign in with</p>
+                <p class="px-3 text-text-white text-sm">{{ __('Or sign in with') }}</p>
                 <div class="flex-1 border-t "></div>
             </div>
 
@@ -105,7 +105,7 @@
             <!-- Sign Up Link -->
             <p class="text-center text-text-white">
                 Have an account already?
-                <a href="{{ route('login') }}" class="text-purple-700 transition font-medium">Sign in</a>
+                <a href="{{ route('login') }}" class="text-purple-700 transition font-medium">{{ __('Sign in') }}</a>
             </p>
         </div>
     </div>

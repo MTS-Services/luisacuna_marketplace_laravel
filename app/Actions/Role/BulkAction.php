@@ -15,7 +15,7 @@ class BulkAction
     public function execute(array $ids, string $action, ?int $actionerId)
     {
         if (in_array(Role::SUPER_ADMIN_ROLE_ID, $ids, true) && in_array($action, ['delete', 'forceDelete'], true)) {
-            throw new AuthorizationException('The Super Admin role cannot be deleted.');
+            throw new AuthorizationException(__('The Super Admin role cannot be deleted.'));
         }
 
         $roles = Role::withTrashed()->whereIn('id', $ids)->get();

@@ -16,12 +16,19 @@ class MessageWithBroadCast extends Component
     use WithFileUploads;
 
     public ?int $conversationId = null;
+
     public ?Conversation $conversation = null;
+
     public $messages = [];
+
     public string $message = '';
+
     public $media = null;
+
     public bool $isLoading = false;
+
     public ?int $beforeMessageId = null;
+
     public bool $isUserAtBottom = true; // Track if user is at bottom
 
     protected ConversationService $service;
@@ -62,8 +69,9 @@ class MessageWithBroadCast extends Component
 
     public function loadMessages()
     {
-        if (!$this->conversation) {
+        if (! $this->conversation) {
             $this->messages = [];
+
             return;
         }
 
@@ -80,12 +88,13 @@ class MessageWithBroadCast extends Component
 
     public function sendMessage()
     {
-        if (!$this->conversation) {
-            $this->dispatch('error', message: 'No conversation selected');
+        if (! $this->conversation) {
+            $this->dispatch('error', message: __('No conversation selected'));
+
             return;
         }
 
-        if (empty(trim($this->message)) && !$this->media) {
+        if (empty(trim($this->message)) && ! $this->media) {
             return;
         }
 
@@ -105,7 +114,7 @@ class MessageWithBroadCast extends Component
                 }
             }
 
-            $messageType = !empty($attachments) ? MessageType::IMAGE : MessageType::TEXT;
+            $messageType = ! empty($attachments) ? MessageType::IMAGE : MessageType::TEXT;
 
             // Send the message
             $sentMessage = $this->service->sendMessage(
@@ -133,7 +142,7 @@ class MessageWithBroadCast extends Component
                 $this->dispatch('error', message: 'Failed to send message');
             }
         } catch (\Exception $e) {
-            $this->dispatch('error', message: 'Error: ' . $e->getMessage());
+            $this->dispatch('error', message: __('Error: :message', ['message' => $e->getMessage()]));
         } finally {
             $this->isLoading = false;
         }
@@ -167,8 +176,9 @@ class MessageWithBroadCast extends Component
     protected function createThumbnail($file): ?string
     {
         try {
-            $thumbnailPath = 'chat/thumbnails/' . uniqid() . '_thumb.jpg';
+            $thumbnailPath = 'chat/thumbnails/'.uniqid().'_thumb.jpg';
             $file->storeAs('public', $thumbnailPath);
+
             return $thumbnailPath;
         } catch (\Exception $e) {
             return null;
@@ -178,7 +188,7 @@ class MessageWithBroadCast extends Component
     #[On('new-message-received')]
     public function handleNewMessageReceived($messageData)
     {
-        if (!$this->conversation || $messageData['conversation_id'] != $this->conversationId) {
+        if (! $this->conversation || $messageData['conversation_id'] != $this->conversationId) {
             return;
         }
 
@@ -197,7 +207,7 @@ class MessageWithBroadCast extends Component
     #[On('mark-visible-as-read')]
     public function markVisibleMessagesAsRead(array $visibleMessageIds)
     {
-        if (!$this->conversation || empty($visibleMessageIds)) {
+        if (! $this->conversation || empty($visibleMessageIds)) {
             return;
         }
 
@@ -258,22 +268,22 @@ class MessageWithBroadCast extends Component
             if ($message && $this->service->deleteMessage($message)) {
                 // Remove from local array
                 $this->messages = collect($this->messages)
-                    ->reject(fn($msg) => $msg->id === $messageId)
+                    ->reject(fn ($msg) => $msg->id === $messageId)
                     ->values()
                     ->all();
 
-                $this->dispatch('success', message: 'Message deleted');
+                $this->dispatch('success', message: __('Message deleted'));
             } else {
                 $this->dispatch('error', message: 'Failed to delete message');
             }
         } catch (\Exception $e) {
-            $this->dispatch('error', message: 'Error deleting message');
+            $this->dispatch('error', message: __('Error deleting message'));
         }
     }
 
     public function getOtherParticipantProperty()
     {
-        if (!$this->conversation) {
+        if (! $this->conversation) {
             return null;
         }
 

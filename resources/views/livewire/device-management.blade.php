@@ -2,15 +2,15 @@
     <!-- Header -->
     <div class="flex items-center justify-between">
         <div>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Device Management</h2>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('Device Management') }}</h2>
             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Manage devices that have access to your account
+                {{ __('Manage devices that have access to your account') }}
             </p>
         </div>
 
         <button wire:click="confirmLogoutAllDevices"
             class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-            Logout All Devices
+            {{ __('Logout All Devices') }}
         </button>
     </div>
 
@@ -57,19 +57,19 @@
                                     @if ($device['is_current'])
                                         <span
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                                            Current Device
+                                            {{ __('Current Device') }}
                                         </span>
                                     @endif
 
                                     @if ($device['is_active'])
                                         <span
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                                            Active
+                                            {{ __('Active') }}
                                         </span>
                                     @else
                                         <span
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
-                                            Inactive
+                                            {{ __('Inactive') }}
                                         </span>
                                     @endif
                                 </div>
@@ -79,11 +79,11 @@
                                         <span class="font-medium">IP:</span> {{ $device['ip_address'] ?? 'Unknown' }}
                                     </p>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">
-                                        <span class="font-medium">Last active:</span>
+                                        <span class="font-medium">{{ __('Last active') }}:</span>
                                         {{ $device['last_used_at'] ?? 'Never' }}
                                     </p>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">
-                                        <span class="font-medium">Added:</span> {{ $device['created_at'] }}
+                                        <span class="font-medium">{{ __('Added') }}:</span> {{ $device['created_at'] }}
                                     </p>
                                 </div>
                             </div>
@@ -95,14 +95,14 @@
                                 @if ($device['is_active'])
                                     <button wire:click="confirmLogoutDevice({{ $device['id'] }})"
                                         class="px-3 py-1.5 text-sm font-medium text-red-700 bg-red-100 rounded-md hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 dark:bg-red-900 dark:text-red-200 dark:hover:bg-red-800">
-                                        Logout
+                                        {{ __('Logout') }}
                                     </button>
                                 @endif
 
                                 <button wire:click="removeDevice({{ $device['id'] }})"
-                                    wire:confirm="Are you sure you want to remove this device?"
+                                    wire:confirm="{{ __('Are you sure you want to remove this device?') }}"
                                     class="px-3 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600">
-                                    Remove
+                                    {{ __('Remove') }}
                                 </button>
                             </div>
                         @endif
@@ -115,9 +115,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                     </svg>
-                    <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No devices found</h3>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">No devices are currently registered to your
-                        account.</p>
+                    <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('No devices found') }}</h3>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ __('No devices are currently registered to your account.') }}</p>
                 </div>
             @endforelse
         </div>

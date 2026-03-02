@@ -30,16 +30,16 @@
         :showBulkActions="true" emptyMessage="No users found. Create your first user to get started." />
 
     {{-- Delete Confirmation Modal --}}
-    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="'Delete this User?'" :message="'Are you absolutely sure you want to remove this user? All associated data will be permanently deleted.'" :method="'delete'"
-        :button-text="'Delete User'" />
+    <x-ui.confirmation-modal :show="'showDeleteModal'" :title="__('Delete this User?')" :message="__('Are you absolutely sure you want to remove this user? All associated data will be permanently deleted.')" :method="'delete'"
+        :button-text="__('Delete User')" />
 
     {{-- Bulk Action Confirmation Modal --}}
-    <x-ui.confirmation-modal :show="'showBulkActionModal'" :title="'Confirm Bulk Action'" :message="'Are you sure you want to perform this action on ' . count($selectedIds) . ' selected user(s)?'" :method="'executeBulkAction'"
-        :button-text="'Confirm Action'" />
+    <x-ui.confirmation-modal :show="'showBulkActionModal'" :title="__('Confirm Bulk Action')" :message="__('Are you sure you want to perform this action on :count selected user(s)?', ['count' => count($selectedIds)])" :method="'executeBulkAction'"
+        :button-text="__('Confirm Action')" />
 
     {{-- Band User Confirmation Modal --}}
-    <x-ui.confirmation-modal :show="'showBandUserModal'" :title="'Band this User?'" :message="'Are you sure you want to band this user?'" :method="'bandUser'"
-        :button-text="'Confirm Band User'" :inputs="[
+    <x-ui.confirmation-modal :show="'showBandUserModal'" :title="__('Band this User?')" :message="__('Are you sure you want to band this user?')" :method="'bandUser'"
+        :button-text="__('Confirm Band User')" :inputs="[
             ['model' => 'bandReason', 'placeholder' => 'Enter band reason', 'required' => true, 'type' => 'text'],
         ]" />
 </section>

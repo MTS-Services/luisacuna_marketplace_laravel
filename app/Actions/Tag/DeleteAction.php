@@ -2,20 +2,15 @@
 
 namespace App\Actions\Tag;
 
-use Illuminate\Support\Facades\DB;
 use App\Repositories\Contracts\TagRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class DeleteAction
 {
+    public function __construct(protected TagRepositoryInterface $interface) {}
 
-    public function __construct(protected TagRepositoryInterface $interface)
-    {
-    }
-
-
-
-    public function execute(int $id, bool $forceDelete = false, int $actionerId): bool
+    public function execute(int $id, bool $forceDelete, int $actionerId): bool
     {
         return DB::transaction(function () use ($id, $forceDelete, $actionerId) {
             $findData = null;
@@ -26,15 +21,17 @@ class DeleteAction
                 $findData = $this->interface->find($id);
             }
 
-            if (!$findData) {
-                throw new \Exception('Data not found');
+            if (! $findData) {
+                throw new \Exception(__('Data not found'));
             }
             if ($forceDelete) {
                 if ($findData->icon) {
                     Storage::disk('public')->delete($findData->icon);
                 }
+
                 return $this->interface->forceDelete($id);
             }
+
             return $this->interface->delete($id, $actionerId);
         });
     }

@@ -7,17 +7,19 @@ use App\Livewire\Forms\Auth\Otp\OtpForm;
 use App\Models\Admin;
 use App\Notifications\AdminOtpNotification;
 use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
-use Illuminate\Support\Facades\Log;
 
 class VerifyResetOtp extends Component
 {
     use WithNotification;
 
     public OtpForm $form;
+
     public string $email = '';
+
     public ?int $resendCooldown = null;
 
     public function mount()
@@ -25,9 +27,10 @@ class VerifyResetOtp extends Component
         // Get email from session
         $this->email = session('password_reset_email');
 
-        if (!$this->email) {
+        if (! $this->email) {
             $this->error('Session expired. Please start the password reset process again.');
             $this->redirect(route('admin.password.request'), navigate: true);
+
             return;
         }
 
@@ -50,46 +53,46 @@ class VerifyResetOtp extends Component
             $this->form->validate();
 
             $this->ensureIsNotRateLimited();
-            
+
             $admin = Admin::where('email', $this->email)->first();
 
-            if (!$admin) {
+            if (! $admin) {
                 throw ValidationException::withMessages([
-                    'form.code' => 'Invalid verification code.',
+                    'form.code' => __('Invalid verification code.'),
                 ]);
             }
 
-            $otpVerification = $admin->latestOtp(OtpType::PASSWORD_RESET); 
-            if (!$otpVerification) {
+            $otpVerification = $admin->latestOtp(OtpType::PASSWORD_RESET);
+            if (! $otpVerification) {
                 throw ValidationException::withMessages([
-                    'form.code' => 'No verification code found. Please request a new one.',
+                    'form.code' => __('No verification code found. Please request a new one.'),
                 ]);
             }
 
             if ($otpVerification->isVerified()) {
                 throw ValidationException::withMessages([
-                    'form.code' => 'This verification code has already been used.',
+                    'form.code' => __('This verification code has already been used.'),
                 ]);
             }
 
             if ($otpVerification->isExpired()) {
                 throw ValidationException::withMessages([
-                    'form.code' => 'The verification code has expired. Please request a new one.',
+                    'form.code' => __('The verification code has expired. Please request a new one.'),
                 ]);
             }
 
             if ($otpVerification->attempts >= 5) {
                 throw ValidationException::withMessages([
-                    'form.code' => 'Too many failed attempts. Please request a new code.',
+                    'form.code' => __('Too many failed attempts. Please request a new code.'),
                 ]);
             }
 
-            if (!verify_otp($admin, $this->form->code, OtpType::PASSWORD_RESET)) {
+            if (! verify_otp($admin, $this->form->code, OtpType::PASSWORD_RESET)) {
                 RateLimiter::hit($this->throttleKey());
                 $remainingAttempts = 5 - $otpVerification->fresh()->attempts;
 
                 throw ValidationException::withMessages([
-                    'form.code' => "The verification code is incorrect. {$remainingAttempts} attempts remaining.",
+                    'form.code' => __('The verification code is incorrect. :remaining attempts remaining.', ['remaining' => $remainingAttempts]),
                 ]);
             }
 
@@ -128,14 +131,15 @@ class VerifyResetOtp extends Component
 
         $admin = Admin::where('email', $this->email)->first();
 
-        if (!$admin) {
+        if (! $admin) {
             $this->success('If an account exists, a verification code has been sent to your email.');
+
             return;
         }
 
         $otpVerification = create_otp($admin, OtpType::PASSWORD_RESET, 10);
 
-        Log::info('Resent Password Reset OTP for Admin: ' . $admin->email . ' - Code: ' . $otpVerification->code);
+        Log::info('Resent Password Reset OTP for Admin: '.$admin->email.' - Code: '.$otpVerification->code);
         $admin->notify(new AdminOtpNotification($otpVerification->code));
 
         // Set 30 second cooldown
@@ -148,38 +152,38 @@ class VerifyResetOtp extends Component
 
     protected function ensureIsNotRateLimited(): void
     {
-        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
 
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'form.code' => "Too many verification attempts. Please try again in {$seconds} seconds.",
+            'form.code' => __('Too many verification attempts. Please try again in :seconds seconds.', ['seconds' => $seconds]),
         ]);
     }
 
     protected function ensureResendIsNotRateLimited(): void
     {
-        if (!RateLimiter::tooManyAttempts($this->resendThrottleKey(), 1)) {
+        if (! RateLimiter::tooManyAttempts($this->resendThrottleKey(), 1)) {
             return;
         }
 
         $seconds = RateLimiter::availableIn($this->resendThrottleKey());
 
         throw ValidationException::withMessages([
-            'form.code' => "Please wait {$seconds} seconds before requesting a new code.",
+            'form.code' => __('Please wait :seconds seconds before requesting a new code.', ['seconds' => $seconds]),
         ]);
     }
 
     protected function throttleKey(): string
     {
-        return 'password-reset-verify:' . $this->email . ':' . request()->ip();
+        return 'password-reset-verify:'.$this->email.':'.request()->ip();
     }
 
     protected function resendThrottleKey(): string
     {
-        return 'password-reset-resend:' . $this->email . ':' . request()->ip();
+        return 'password-reset-resend:'.$this->email.':'.request()->ip();
     }
 
     public function render()

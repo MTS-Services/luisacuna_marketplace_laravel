@@ -288,7 +288,7 @@
                                         <div class="p-4 text-white w-full">
                                             <p class="text-sm font-medium truncate" x-text="preview.name"></p>
                                             <p class="text-xs opacity-90"
-                                                x-text="preview.size > 0 ? formatSize(preview.size) : 'Existing file'">
+                                                x-text="preview.size > 0 ? formatSize(preview.size) : '{{ __("Existing file") }}'">
                                             </p>
                                         </div>
                                     </div>
@@ -333,7 +333,7 @@
                                         <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate"
                                             x-text="preview.name"></p>
                                         <p class="text-xs text-gray-500 dark:text-gray-400"
-                                            x-text="preview.size > 0 ? formatSize(preview.size) : 'Existing file'"></p>
+                                            x-text="preview.size > 0 ? formatSize(preview.size) : '{{ __("Existing file") }}'"></p>
                                     </div>
                                     <button type="button" @click="clearFile()"
                                         class="flex-shrink-0 p-2 bg-red-500 hover:bg-red-600 text-white rounded-lg">

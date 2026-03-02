@@ -3,11 +3,11 @@
 namespace App\Actions\Language;
 
 use App\Models\Language;
+use App\Repositories\Contracts\LanguageRepositoryInterface;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use App\Repositories\Contracts\LanguageRepositoryInterface;
 
 class UpdateAction
 {
@@ -22,9 +22,9 @@ class UpdateAction
             // Fetch Language
             $findData = $this->interface->find($id);
 
-            if (!$findData) {
+            if (! $findData) {
                 Log::error('Data not found', ['language_id' => $id]);
-                throw new \Exception('Language not found');
+                throw new \Exception(__('Language not found'));
             }
 
             // --- 1. CSV Handling ---
@@ -38,8 +38,8 @@ class UpdateAction
                 }
 
                 $sanitizedName = strtolower(str_replace(' ', '_', $data['locale']));
-                $prefix = $sanitizedName . '-' . time() . '-' . uniqid();
-                $fileName = $prefix . '-' . $uploadedFile->getClientOriginalName();
+                $prefix = $sanitizedName.'-'.time().'-'.uniqid();
+                $fileName = $prefix.'-'.$uploadedFile->getClientOriginalName();
 
                 $filePath = Storage::disk('public')->putFileAs('languages', $uploadedFile, $fileName);
 
@@ -55,15 +55,14 @@ class UpdateAction
 
             unset($data['remove_file']);
 
-
             $oldData = $findData->getAttributes();
 
             // Update Language
             $updated = $this->interface->update($id, $data);
 
-            if (!$updated) {
+            if (! $updated) {
                 Log::error('Failed to update Data', ['language_id' => $id]);
-                throw new \Exception('Failed to update Data');
+                throw new \Exception(__('Failed to update Data'));
             }
 
             // Refresh model
@@ -75,7 +74,7 @@ class UpdateAction
                 if (isset($oldData[$key]) && $oldData[$key] != $value) {
                     $changes[$key] = [
                         'old' => $oldData[$key],
-                        'new' => $value
+                        'new' => $value,
                     ];
                 }
             }

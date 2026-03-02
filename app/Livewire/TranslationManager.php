@@ -2,17 +2,21 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use App\Services\DeepLTranslationService;
-use App\Models\Post;
+use Livewire\Component;
 
 class TranslationManager extends Component
 {
     public $modelId;
+
     public $modelType;
+
     public $targetLanguage = '';
+
     public $sourceLanguage = null;
+
     public $translatedData = [];
+
     public $isTranslating = false;
 
     protected $rules = [
@@ -29,12 +33,13 @@ class TranslationManager extends Component
     {
         $this->validate();
         $this->isTranslating = true;
-        
+
         try {
             $model = $this->getModel();
-            
-            if (!$model) {
-                session()->flash('error', 'Model not found');
+
+            if (! $model) {
+                session()->flash('error', __('Model not found'));
+
                 return;
             }
 
@@ -44,9 +49,9 @@ class TranslationManager extends Component
                 $this->sourceLanguage ? strtoupper($this->sourceLanguage) : null
             );
 
-            session()->flash('success', 'Translation completed successfully!');
+            session()->flash('success', __('Translation completed successfully!'));
         } catch (\Exception $e) {
-            session()->flash('error', 'Translation failed: ' . $e->getMessage());
+            session()->flash('error', __('Translation failed: :message', ['message' => $e->getMessage()]));
         } finally {
             $this->isTranslating = false;
         }
@@ -56,30 +61,30 @@ class TranslationManager extends Component
     {
         try {
             $model = $this->getModel();
-            
+
             foreach ($this->translatedData as $key => $value) {
                 $model->$key = $value;
             }
-            
+
             $model->language = strtoupper($this->targetLanguage);
             $model->save();
 
-            session()->flash('success', 'Translation saved successfully!');
+            session()->flash('success', __('Translation saved successfully!'));
             $this->translatedData = [];
         } catch (\Exception $e) {
-            session()->flash('error', 'Failed to save: ' . $e->getMessage());
+            session()->flash('error', __('Failed to save: :message', ['message' => $e->getMessage()]));
         }
     }
 
     protected function getModel()
     {
-        if (!$this->modelType || !$this->modelId) {
+        if (! $this->modelType || ! $this->modelId) {
             return null;
         }
 
-        $class = "App\\Models\\" . $this->modelType;
-        
-        if (!class_exists($class)) {
+        $class = 'App\\Models\\'.$this->modelType;
+
+        if (! class_exists($class)) {
             return null;
         }
 
@@ -94,7 +99,7 @@ class TranslationManager extends Component
 
         return view('livewire.translation-manager', [
             'targetLanguages' => $targetLanguages,
-            'usage' => $usage
+            'usage' => $usage,
         ]);
     }
 }

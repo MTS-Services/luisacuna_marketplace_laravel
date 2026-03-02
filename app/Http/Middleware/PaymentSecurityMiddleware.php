@@ -19,24 +19,24 @@ class PaymentSecurityMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         // 1. Rate limiting - prevent abuse
-        $key = 'payment-attempts:' . $request->ip() . ':' . Auth::id();
+        $key = 'payment-attempts:'.$request->ip().':'.Auth::id();
 
         if (RateLimiter::tooManyAttempts($key, 10)) { // 10 attempts per minute
             $seconds = RateLimiter::availableIn($key);
 
             return response()->json([
                 'success' => false,
-                'message' => "Too many payment attempts. Please try again in {$seconds} seconds.",
+                'message' => __('Too many payment attempts. Please try again in :seconds seconds.', ['seconds' => $seconds]),
             ], 429);
         }
 
         RateLimiter::hit($key, 60); // 60 seconds decay
 
         // 2. Verify user is authenticated
-        if (!auth()->guard('web')->check()) {
+        if (! auth()->guard('web')->check()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Authentication required.',
+                'message' => __('Authentication required.'),
             ], 401);
         }
 
@@ -44,7 +44,7 @@ class PaymentSecurityMiddleware
         if (Auth::guard('web')->user()->email_verified_at === null && config('auth.email_verification_required', true)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Email verification required before making payments.',
+                'message' => __('Email verification required before making payments.'),
             ], 403);
         }
 
@@ -59,7 +59,7 @@ class PaymentSecurityMiddleware
         // 5. Validate CSRF token for state-changing requests
         if (in_array($request->method(), ['POST', 'PUT', 'PATCH', 'DELETE'])) {
             // Laravel automatically handles CSRF, but we can add extra checks
-            if (!$request->hasValidSignature() && !$request->session()->token()) {
+            if (! $request->hasValidSignature() && ! $request->session()->token()) {
                 Log::warning('Invalid CSRF token in payment request', [
                     'user_id' => Auth::id(),
                     'ip' => $request->ip(),

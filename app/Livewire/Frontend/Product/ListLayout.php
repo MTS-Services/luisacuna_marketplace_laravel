@@ -286,7 +286,7 @@ class ListLayout extends Component
                 'trace' => $e->getTraceAsString(),
             ]);
 
-            $this->addError('order', 'Failed to initialize order. Please try again.');
+            $this->addError('order', __('Failed to initialize order. Please try again.'));
 
             return null;
         }

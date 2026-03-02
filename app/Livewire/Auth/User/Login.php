@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Features;
-use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -29,11 +28,17 @@ class Login extends Component
 
     // Device registration fields
     public string $fcmToken = '';
+
     public string $deviceType = 'web';
+
     public string $deviceName = '';
+
     public string $deviceModel = '';
+
     public string $osVersion = '';
+
     public string $appVersion = '';
+
     public string $deviceFingerprint = ''; // Add fingerprint field
 
     /**
@@ -109,7 +114,7 @@ class Login extends Component
     {
         try {
             $deviceData = [
-                'fcm_token' => $this->fcmToken ?: 'web_' . session()->getId(),
+                'fcm_token' => $this->fcmToken ?: 'web_'.session()->getId(),
                 'device_type' => $this->deviceType,
                 'device_name' => $this->deviceName ?: $this->detectBrowser(),
                 'device_model' => $this->deviceModel ?: $this->detectOS(),
@@ -151,7 +156,7 @@ class Login extends Component
 
         Log::info('Device info received from frontend', [
             'fingerprint' => $this->deviceFingerprint,
-            'has_fcm_token' => !empty($this->fcmToken),
+            'has_fcm_token' => ! empty($this->fcmToken),
         ]);
     }
 
@@ -166,7 +171,7 @@ class Login extends Component
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
+                'email' => __('These credentials do not match our records.'),
             ]);
         }
 
@@ -195,7 +200,7 @@ class Login extends Component
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => __('auth.throttle', [
+            'email' => __('Too many login attempts. Please try again in :seconds seconds.', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -207,7 +212,7 @@ class Login extends Component
      */
     protected function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->email) . '|' . request()->ip());
+        return Str::transliterate(Str::lower($this->email).'|'.request()->ip());
     }
 
     /**
@@ -271,6 +276,7 @@ class Login extends Component
                 '6.2' => '8',
                 '6.1' => '7',
             ];
+
             return $versions[$matches[1]] ?? $matches[1];
         }
 

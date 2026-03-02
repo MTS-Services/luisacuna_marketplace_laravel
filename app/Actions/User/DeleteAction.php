@@ -17,10 +17,9 @@ class DeleteAction
         return DB::transaction(function () use ($userId, $forceDelete) {
             $user = $this->interface->find($userId);
 
-            if (!$user) {
-                throw new \Exception('User not found');
+            if (! $user) {
+                throw new \Exception(__('User not found.'));
             }
-
 
             if ($forceDelete) {
                 // Delete avatar

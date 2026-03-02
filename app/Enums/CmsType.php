@@ -12,18 +12,16 @@ enum CmsType: string
     case HOW_TO_SELL = 'how_to_sell';
     case SELLER_PROTECTION = 'seller_protection';
 
-
-
     public function label(): string
     {
         return match ($this) {
-            self::TERMS_CONDITION => 'Terms & Condition',
-            self::REFUND_POLICY => 'Refund Policy',
-            self::PRIVACY_POLICY => 'Privacy Policy',
-            self::HOW_TO_BUY => 'How to Buy',
-            self::BUYER_PROTECTION => 'Buyer Protection',
-            self::HOW_TO_SELL => 'How to Sell',
-            self::SELLER_PROTECTION => 'Seller Protection',
+            self::TERMS_CONDITION => __('Terms & Condition'),
+            self::REFUND_POLICY => __('Refund Policy'),
+            self::PRIVACY_POLICY => __('Privacy Policy'),
+            self::HOW_TO_BUY => __('How to Buy'),
+            self::BUYER_PROTECTION => __('Buyer Protection'),
+            self::HOW_TO_SELL => __('How to Sell'),
+            self::SELLER_PROTECTION => __('Seller Protection'),
         };
     }
 
@@ -43,7 +41,7 @@ enum CmsType: string
     public static function options(): array
     {
         return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }

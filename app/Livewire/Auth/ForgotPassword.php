@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Auth;
 
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -20,7 +19,6 @@ class ForgotPassword extends Component
         $this->validate([
             'email' => ['required', 'string', 'email'],
         ]);
-
 
         Password::sendResetLink($this->only('email'));
 

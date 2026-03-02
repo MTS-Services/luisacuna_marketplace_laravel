@@ -10,13 +10,13 @@ enum CategoryStatus: string
 
     public function label(): string
     {
-        return match($this) {
-            self::ACTIVE => 'Active',
-            self::INACTIVE => 'Inactive',
+        return match ($this) {
+            self::ACTIVE => __('Active'),
+            self::INACTIVE => __('Inactive'),
         };
     }
 
-   public function color(): string
+    public function color(): string
     {
         return match ($this) {
             self::ACTIVE => 'badge-success',
@@ -24,8 +24,8 @@ enum CategoryStatus: string
         };
     }
 
-    public static function options(): array 
+    public static function options(): array
     {
-        return array_map(fn($case) => ['value' => $case->value, 'label' => $case->label()], self::cases());
+        return array_map(fn ($case) => ['value' => $case->value, 'label' => $case->label()], self::cases());
     }
 }

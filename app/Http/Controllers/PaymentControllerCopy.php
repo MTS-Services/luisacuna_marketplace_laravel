@@ -8,7 +8,6 @@ use App\Models\PaymentGateway;
 use App\Services\ConversationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 
 class PaymentControllerCopy extends Controller
@@ -31,7 +30,7 @@ class PaymentControllerCopy extends Controller
                     $paymentMethod = $gateway->paymentMethod();
                     $result = $paymentMethod->confirmPayment($sessionId);
 
-                    if (!$result['success']) {
+                    if (! $result['success']) {
                         Log::warning('Payment confirmation failed on success page', [
                             'session_id' => $sessionId,
                             'order_id' => $orderId,
@@ -50,13 +49,13 @@ class PaymentControllerCopy extends Controller
             ->with(['latestPayment', 'source', 'user'])
             ->first();
 
-        if (!$order) {
-            abort(404, 'Order not found');
+        if (! $order) {
+            abort(404, __('Order not found'));
         }
 
         // Security: Verify order belongs to authenticated user
         if ($order->user_id !== Auth::id()) {
-            abort(403, 'Unauthorized access');
+            abort(403, __('Unauthorized access'));
         }
 
         return redirect()->route('user.order.complete', ['orderId' => $orderId]);
@@ -75,7 +74,7 @@ class PaymentControllerCopy extends Controller
 
         // Security: Verify order belongs to authenticated user if order exists
         if ($order && $order->user_id !== Auth::id()) {
-            abort(403, 'Unauthorized access');
+            abort(403, __('Unauthorized access'));
         }
 
         return view('payment.failed', compact('order'));
@@ -120,12 +119,14 @@ class PaymentControllerCopy extends Controller
             Log::error('Stripe webhook signature verification failed', [
                 'error' => $e->getMessage(),
             ]);
-            return response()->json(['error' => 'Invalid signature'], 400);
+
+            return response()->json(['error' => __('Invalid signature')], 400);
         } catch (\Exception $e) {
             Log::error('Stripe webhook error', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
+
             return response()->json(['error' => $e->getMessage()], 400);
         }
     }
@@ -140,10 +141,10 @@ class PaymentControllerCopy extends Controller
                 ->where('is_active', true)
                 ->first();
 
-            if (!$gateway) {
+            if (! $gateway) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Payment gateway not found.',
+                    'message' => __('Payment gateway not found.'),
                 ], 404);
             }
 
@@ -181,7 +182,7 @@ class PaymentControllerCopy extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Error retrieving gateway configuration.',
+                'message' => __('Error retrieving gateway configuration.'),
                 'error_details' => config('app.debug') ? $e->getMessage() : null,
             ], 500);
         }

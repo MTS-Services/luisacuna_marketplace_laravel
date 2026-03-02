@@ -10,8 +10,8 @@ enum MethodModeStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::LIVE => 'Live',
-            self::SANDBOX => 'Sandbox',
+            self::LIVE => __('Live'),
+            self::SANDBOX => __('Sandbox'),
         };
     }
 
@@ -26,7 +26,7 @@ enum MethodModeStatus: string
     public static function options(): array
     {
         return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }

@@ -20,18 +20,18 @@ enum OrderStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::INITIALIZED => 'Initialized',
-            self::PENDING => 'Pending',
-            self::PENDING_PAYMENT => 'Pending Payment',
-            self::PARTIALLY_PAID => 'Partially Paid',
-            self::PAID => 'Progress',
-            self::PROCESSING => 'Processing',
-            self::DELIVERED => 'Delivered',
-            self::COMPLETED => 'Completed',
-            self::CANCELLED => 'Cancelled',
-            self::REFUNDED => 'Refunded',
-            self::PARTIALLY_REFUNDED => 'Partially Refunded',
-            self::FAILED => 'Failed',
+            self::INITIALIZED => __('Initialized'),
+            self::PENDING => __('Pending'),
+            self::PENDING_PAYMENT => __('Pending Payment'),
+            self::PARTIALLY_PAID => __('Partially Paid'),
+            self::PAID => __('Progress'),
+            self::PROCESSING => __('Processing'),
+            self::DELIVERED => __('Delivered'),
+            self::COMPLETED => __('Completed'),
+            self::CANCELLED => __('Cancelled'),
+            self::REFUNDED => __('Refunded'),
+            self::PARTIALLY_REFUNDED => __('Partially Refunded'),
+            self::FAILED => __('Failed'),
         };
     }
 
@@ -56,7 +56,7 @@ enum OrderStatus: string
     public static function options(): array
     {
         return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }

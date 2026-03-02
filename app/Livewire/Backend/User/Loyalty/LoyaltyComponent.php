@@ -92,7 +92,7 @@ class LoyaltyComponent extends Component
         $redeemed = $this->rankService->redeemUserPoints($user);
 
         if (! $redeemed) {
-            session()->flash('error', 'You do not have enough points to redeem.');
+            session()->flash('error', __('You do not have enough points to redeem.'));
 
             return;
         }

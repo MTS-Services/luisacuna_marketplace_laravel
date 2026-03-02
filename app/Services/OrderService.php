@@ -5,18 +5,16 @@ namespace App\Services;
 use App\Enums\CustomNotificationType;
 use App\Enums\EmailTemplateEnum;
 use App\Enums\MessageType;
-use App\Models\Order;
-use App\Models\Product;
-use App\Models\UserPoint;
 use App\Enums\OrderStatus;
 use App\Jobs\Order\DisputeResolutionEmailJob;
 use App\Models\Achievement;
 use App\Models\Admin;
 use App\Models\DisputeOrder;
-use App\Models\EmailTemplate;
+use App\Models\Order;
+use App\Models\Product;
 use App\Models\User;
-
 use App\Models\UserAchievementProgress;
+use App\Models\UserPoint;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Validation\ValidationException;
@@ -44,6 +42,7 @@ class OrderService
     public function findData($column_value, string $column_name = 'id'): ?Order
     {
         $model = $this->model;
+
         return $model->with(['source', 'user'])
             ->where($column_name, $column_value)
             ->first();
@@ -60,6 +59,7 @@ class OrderService
             ->filter($filters)
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
+
         return $orders;
     }
 
@@ -79,7 +79,6 @@ class OrderService
         return $this->model->count($filters);
     }
 
-
     // OrderService.
     public function getAllOrdersForSeller(array $filters)
     {
@@ -92,16 +91,16 @@ class OrderService
             ->where('status', '!=', OrderStatus::INITIALIZED->value)
             ->when(
                 $filters['status'] ?? null,
-                fn($q, $status) => $q->where('status', $status)
+                fn ($q, $status) => $q->where('status', $status)
             )
             ->when(
                 $filters['search'] ?? null,
-                fn($q, $search) => $q->where('order_id', 'like', "%{$search}%")
+                fn ($q, $search) => $q->where('order_id', 'like', "%{$search}%")
             )
             ->when($filters['order_date'] ?? null, function ($q, $date) {
                 match ($date) {
                     'today' => $q->whereDate('created_at', today()),
-                    'week'  => $q->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]),
+                    'week' => $q->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]),
                     'month' => $q->whereMonth('created_at', now()->month),
                 };
             })
@@ -112,15 +111,15 @@ class OrderService
     public function disputeOrder(array $datas): Order
     {
         $order = Order::find($datas['order_id']);
-        if (!$order) abort(404, 'Order not found');
+        if (! $order) {
+            abort(404, __('Order not found'));
+        }
         $order->load('payments');
 
         $order->is_disputed = true;
         $order->save();
 
         $this->disputedOrder->create($datas);
-
-
 
         // Create in-app notification
         $this->notificationService->create([
@@ -160,27 +159,29 @@ class OrderService
             ],
         ]);
 
-        return  $order->fresh();
+        return $order->fresh();
     }
 
     public function disputeResolution($order_id, $disputeType, $reason)
     {
 
         $order = Order::find($order_id);
-        if (!$order) abort(404, 'Order not found');
-        $order->load(['payments', 'messages', 'disputes', 'source.user',]);
+        if (! $order) {
+            abort(404, __('Order not found'));
+        }
+        $order->load(['payments', 'messages', 'disputes', 'source.user']);
 
         if ($disputeType == 'accept') {
 
             $order->disputes()->update([
-                'resolution' => $reason
+                'resolution' => $reason,
             ]);
             $order->update(['status' => OrderStatus::CANCELLED->value]);
         }
 
         if ($disputeType == 'reject') {
             $order->disputes()->update([
-                'resolution' => $reason
+                'resolution' => $reason,
             ]);
             $order->update(['status' => OrderStatus::COMPLETED->value]);
         }
@@ -241,9 +242,7 @@ class OrderService
             ],
         ]);
 
-
         $conversation_id = $order->messages()->first()->conversation_id;
-
 
         $conversation = $this->conversationService->findConversation($conversation_id, 'id');
 
@@ -260,8 +259,6 @@ class OrderService
         //     $order->user->full_name
         // );
 
-
-
         DisputeResolutionEmailJob::dispatch(
             $order->id,
             $order->source?->user->email,
@@ -269,7 +266,6 @@ class OrderService
             EmailTemplateEnum::ORDER_DISPUTE_UPDATE->value,
         );
     }
-
 
     public function calculateMonthlyTotal(Collection $orders): float
     {
@@ -289,7 +285,6 @@ class OrderService
     // {
     //     return $this->model->create($data);
     // }
-
 
     // public function createData(array $data)
     // {
@@ -366,7 +361,6 @@ class OrderService
     //     return $product;
     // }
 
-
     public function createData(array $data)
     {
         if (isset($data['source_type']) && $data['source_type'] === Product::class && isset($data['source_id'], $data['user_id'])) {
@@ -421,14 +415,11 @@ class OrderService
         return $product;
     }
 
-
-
-
     // Manage Function According to your need
     public function updateData(int $id, array $data): Order
     {
         //  return $this->updateAction->execute($id, $data);
-        return new Order();
+        return new Order;
     }
 
     public function deleteData(int $id, bool $forceDelete = false, ?int $actionerId = null): bool
@@ -450,11 +441,13 @@ class OrderService
         return true;
         //  return $this->restoreAction->execute($id, $actionerId);
     }
+
     public function bulkRestoreData(array $ids, ?int $actionerId = null): int
     {
         if ($actionerId == null) {
             $actionerId = admin()->id;
         }
+
         return 0;
         //  return $this->bulkAction->execute(ids: $ids, action: 'restore', status: null, actionerId: $actionerId);
     }
@@ -464,6 +457,7 @@ class OrderService
         if ($actionerId == null) {
             $actionerId = admin()->id;
         }
+
         return 0;
         //  return $this->bulkAction->execute(ids: $ids, action: 'forceDelete', status: null, actionerId: $actionerId);
     }
@@ -473,6 +467,7 @@ class OrderService
         if ($actionerId == null) {
             $actionerId = admin()->id;
         }
+
         return 0;
         //  return $this->bulkAction->execute(ids: $ids, action: 'delete', status: null, actionerId: $actionerId);
     }

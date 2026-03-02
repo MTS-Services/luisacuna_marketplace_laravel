@@ -1,8 +1,8 @@
 <div class="max-w-7xl mx-auto p-6">
     <!-- Header -->
     <div class="mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">File Manager</h1>
-        <p class="text-gray-600 mt-2">Upload and manage your files with Cloudinary</p>
+        <h1 class="text-3xl font-bold text-gray-900">{{ __('File Manager') }}</h1>
+        <p class="text-gray-600 mt-2">{{ __('Upload and manage your files with Cloudinary') }}</p>
     </div>
 
     <!-- Flash Messages -->
@@ -34,34 +34,34 @@
 
     <!-- Upload Section -->
     <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-        <h2 class="text-xl font-semibold mb-4">Upload New File</h2>
+        <h2 class="text-xl font-semibold mb-4">{{ __('Upload New File') }}</h2>
 
         <form wire:submit.prevent="uploadFile">
             <!-- Upload Type Selector -->
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                    Upload Type
+                    {{ __('Upload Type') }}
                 </label>
                 <div class="flex flex-wrap gap-2">
                     <button type="button" wire:click="$set('uploadType', 'auto')"
                         class="px-4 py-2 rounded-lg {{ $uploadType === 'auto' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700' }}">
-                        Auto Detect
+                        {{ __('Auto Detect') }}
                     </button>
                     <button type="button" wire:click="$set('uploadType', 'image')"
                         class="px-4 py-2 rounded-lg {{ $uploadType === 'image' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700' }}">
-                        📷 Image
+                        📷 {{ __('Image') }}
                     </button>
                     <button type="button" wire:click="$set('uploadType', 'video')"
                         class="px-4 py-2 rounded-lg {{ $uploadType === 'video' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700' }}">
-                        🎥 Video
+                        🎥 {{ __('Video') }}
                     </button>
                     <button type="button" wire:click="$set('uploadType', 'document')"
                         class="px-4 py-2 rounded-lg {{ $uploadType === 'document' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700' }}">
-                        📄 Document
+                        📄 {{ __('Document') }}
                     </button>
                     <button type="button" wire:click="$set('uploadType', 'audio')"
                         class="px-4 py-2 rounded-lg {{ $uploadType === 'audio' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700' }}">
-                        🎵 Audio
+                        🎵 {{ __('Audio') }}
                     </button>
                 </div>
             </div>
@@ -69,7 +69,7 @@
             <!-- File Input -->
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                    Select File
+                    {{ __('Select File') }}
                 </label>
                 <div class="flex items-center justify-center w-full">
                     <label
@@ -80,8 +80,8 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                             </svg>
-                            <p class="pt-1 text-sm text-gray-500">Click to upload or drag and drop</p>
-                            <p class="text-xs text-gray-400">Max size: 100MB</p>
+                            <p class="pt-1 text-sm text-gray-500">{{ __('Click to upload or drag and drop') }}</p>
+                            <p class="text-xs text-gray-400">{{ __('Max size: 100MB') }}</p>
                         </div>
                         <input type="file" wire:model="file" class="hidden" />
                     </label>
@@ -94,7 +94,7 @@
             <!-- File Preview -->
             @if ($file)
                 <div class="mb-4 p-4 bg-gray-50 rounded-lg">
-                    <h3 class="text-sm font-medium text-gray-700 mb-2">Selected File:</h3>
+                    <h3 class="text-sm font-medium text-gray-700 mb-2">{{ __('Selected File:') }}</h3>
                     <div class="flex items-center space-x-4">
                         @if (str_starts_with($file->getMimeType(), 'image/'))
                             <img src="{{ $file->temporaryUrl() }}" class="w-20 h-20 object-cover rounded">
@@ -176,14 +176,14 @@
                         <div class="aspect-square bg-gray-100 flex items-center justify-center overflow-hidden">
                             @if ($uploadedFile['resource_type'] === 'image')
                                 <img src="{{ $uploadedFile['public_id'] }}" 
-                                    alt="attachment" class="rounded" />
+                                    alt="{{ __('attachment') }}" class="rounded" />
 
                                 
                             @elseif ($uploadedFile['resource_type'] === 'video')
                                 <img src="{{ storage_url('cld-sample-5') }}" 
-                                    alt="Uploaded File" class="rounded" />
+                                    alt="{{ __('Uploaded File') }}" class="rounded" />
                                 <x-cloudinary::video public-id="{{ $uploadedFile['public_id'] }}" width="250"
-                                    height="300" alt="Uploaded File" class="rounded" controls />
+                                    height="300" alt="{{ __('Uploaded File') }}" class="rounded" controls />
                             @else
                                 <div class="text-center p-4">
                                     <div class="text-6xl mb-2">📄</div>
@@ -232,8 +232,8 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                 </svg>
-                <h3 class="text-lg font-medium text-gray-900 mb-2">No files uploaded yet</h3>
-                <p class="text-gray-500">Upload your first file to get started</p>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">{{ __('No files uploaded yet') }}</h3>
+                <p class="text-gray-500">{{ __('Upload your first file to get started') }}</p>
             </div>
         @endif
     </div>

@@ -10,8 +10,8 @@ enum GameDeliveryMethod: string
     public function label(): string
     {
         return match ($this) {
-            self::INSTANT_DELIVERY => 'Instant Delivery',
-            self::MANUAL_DELIVERY => 'Manual Delivery',
+            self::INSTANT_DELIVERY => __('Instant Delivery'),
+            self::MANUAL_DELIVERY => __('Manual Delivery'),
         };
     }
 
@@ -26,7 +26,7 @@ enum GameDeliveryMethod: string
     public static function options(): array
     {
         return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }

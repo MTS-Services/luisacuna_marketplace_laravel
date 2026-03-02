@@ -2,15 +2,14 @@
 
 namespace App\Actions\User;
 
+use App\Events\User\UserCreated;
 use App\Models\Rank;
 use App\Models\User;
 use App\Models\UserPoint;
-use App\Events\User\UserCreated;
 use App\Models\UserRank;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Services\Cloudinary\CloudinaryService;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class CreateAction
@@ -30,7 +29,6 @@ class CreateAction
                 $data['avatar'] = $uploadedAvatar->publicId;
             }
 
-
             // Create user
 
             $newData = $this->interface->create($data);
@@ -41,7 +39,7 @@ class CreateAction
                 ['user_id' => $newData->id],
                 [
                     'points' => 0,
-                    'note' => 'New User Created',
+                    'note' => __('New User Created'),
                 ]
             );
             UserRank::create([
@@ -53,13 +51,12 @@ class CreateAction
 
             event(new UserCreated($newData));
 
-
             $freshData = $newData->fresh();
 
             // Dispatch translation job in background
             // Assuming the source language is English (EN)
             // Dispatch translation job (English is default, will be saved but not translated)
-            Log::info('Dispatching TranslateModelJob for userId: ' . $freshData->id);
+            Log::info('Dispatching TranslateModelJob for userId: '.$freshData->id);
 
             // $freshData->dispatchTranslation(
             //     defaultLanguageLocale: 'en',
@@ -72,8 +69,6 @@ class CreateAction
                 forceTranslation: true,
                 targetLanguageIds: null
             );
-
-
 
             return $freshData;
         });

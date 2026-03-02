@@ -11,16 +11,20 @@ class Currency extends Component
     use WithPagination;
 
     public $showDeleteModal = false;
+
     public $deleteItemId = null;
+
     public $perPage = 7;
 
     public $itemStatuses = [];
 
     protected GameService $gameService;
+
     public function boot(GameService $gameService)
     {
         $this->gameService = $gameService;
     }
+
     public function mount()
     {
         $this->itemStatuses = [
@@ -120,7 +124,7 @@ class Currency extends Component
                 'status' => $this->itemStatuses[8] ?? 0,
                 'delivery_time' => '1 h',
             ],
-        ])->map(fn($item) => (object)$item);
+        ])->map(fn ($item) => (object) $item);
 
         $currentPage = $this->getPage();
         $items = $allItems->slice(($currentPage - 1) * $this->perPage, $this->perPage)->values();
@@ -140,7 +144,7 @@ class Currency extends Component
                 'key' => 'name',
                 'label' => 'Game',
                 'sortable' => true,
-                'format' => fn($item) => '<div class="flex items-center gap-3"><img src="' . storage_url($item->game_image) . '" class="w-10 h-10 rounded-lg object-cover" alt="' . ($item->name ?? 'Game') . '"><span class="font-semibold text-text-white">' . ($item->name ?? '-') . '</span></div>'
+                'format' => fn ($item) => '<div class="flex items-center gap-3"><img src="'.storage_url($item->game_image).'" class="w-10 h-10 rounded-lg object-cover" alt="'.($item->name ?? 'Game').'"><span class="font-semibold text-text-white">'.($item->name ?? '-').'</span></div>',
             ],
             [
                 'key' => 'quantity',
@@ -158,7 +162,7 @@ class Currency extends Component
                 'key' => 'status',
                 'label' => 'Status',
                 'badge' => true,
-                'format' => fn($item) => '<span class="px-2 py-1 rounded-full text-xs text-white ' . ($item->status === 1 ? 'bg-pink-500' : 'bg-status-paused') . '">' . ($item->status === 1 ? 'Active' : 'Paused') . '</span>'
+                'format' => fn ($item) => '<span class="px-2 py-1 rounded-full text-xs text-white '.($item->status === 1 ? 'bg-pink-500' : 'bg-status-paused').'">'.($item->status === 1 ? 'Active' : 'Paused').'</span>',
             ],
             [
                 'key' => 'delivery_time',
@@ -170,13 +174,13 @@ class Currency extends Component
                 'icon' => 'pause-fill',
                 'method' => 'pauseItem',
                 'label' => 'Pause',
-                'condition' => fn($item) => $item->status === 1,
+                'condition' => fn ($item) => $item->status === 1,
             ],
             [
                 'icon' => 'play-fill',
                 'method' => 'resumeItem',
                 'label' => 'Resume',
-                'condition' => fn($item) => $item->status === 0,
+                'condition' => fn ($item) => $item->status === 0,
             ],
             [
                 'icon' => 'link-fill',
@@ -184,7 +188,7 @@ class Currency extends Component
                 'label' => 'Link',
                 'alpine' => true,
                 'click' => "
-                        navigator.clipboard.writeText('" . route('user.currency', ['id' => '{id}']) . "')
+                        navigator.clipboard.writeText('".route('user.currency', ['id' => '{id}'])."')
                             .then(() => {
                                 \$dispatch('notify', {type: 'success', message: 'Link copied!'})
                             })
@@ -217,7 +221,7 @@ class Currency extends Component
 
         $this->dispatch('notify', [
             'type' => 'success',
-            'message' => "Item #{$id} paused successfully"
+            'message' => __('Item #:id paused successfully', ['id' => $id]),
         ]);
     }
 
@@ -227,7 +231,7 @@ class Currency extends Component
 
         $this->dispatch('notify', [
             'type' => 'success',
-            'message' => "Item #{$id} resumed successfully"
+            'message' => __('Item #:id resumed successfully', ['id' => $id]),
         ]);
     }
 
@@ -245,7 +249,7 @@ class Currency extends Component
 
     public function deleteItem()
     {
-        if (!$this->deleteItemId) {
+        if (! $this->deleteItemId) {
             return;
         }
 
@@ -254,25 +258,24 @@ class Currency extends Component
         $this->showDeleteModal = false;
         $this->dispatch('notify', [
             'type' => 'success',
-            'message' => "Item deleted successfully"
+            'message' => __('Item deleted successfully'),
         ]);
 
         $this->deleteItemId = null;
     }
 
-
     public function copyItemLink($id)
     {
-        $url = route('user.currency') . '?id=' . $id;
+        $url = route('user.currency').'?id='.$id;
 
         $this->dispatch('copyToClipboard', [
-            'url' => $url
+            'url' => $url,
         ]);
 
         // Success message
         $this->dispatch('notify', [
             'type' => 'success',
-            'message' => 'Link copied to clipboard!'
+            'message' => __('Link copied to clipboard!'),
         ]);
     }
 }

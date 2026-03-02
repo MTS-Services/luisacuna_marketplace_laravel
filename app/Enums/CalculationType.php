@@ -10,8 +10,8 @@ enum CalculationType: string
     public function label(): string
     {
         return match ($this) {
-            self::CREDIT => 'Credit',
-            self::DEBIT => 'Debit',
+            self::CREDIT => __('Credit'),
+            self::DEBIT => __('Debit'),
         };
     }
 
@@ -39,11 +39,10 @@ enum CalculationType: string
         };
     }
 
-
     public static function options(): array
     {
         return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }

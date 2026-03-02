@@ -24,7 +24,7 @@ class DeleteAction
             }
 
             if (! $findData) {
-                throw new \Exception('Data not found');
+                throw new \Exception(__('Data not found'));
             }
 
             if ($forceDelete) {

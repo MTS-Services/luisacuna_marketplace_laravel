@@ -68,7 +68,7 @@
                 <div class="absolute top-4 right-4">
                     <button @click="localShow = false" wire:click="$set('{{ $show }}', false)"
                         class="text-gray-400 hover:text-gray-600 transition-colors duration-150 rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-gray-200">
-                        <span class="sr-only">Close</span>
+                        <span class="sr-only">{{ __('Close') }}</span>
                         <flux:icon icon="x-mark" class="w-6 h-6" />
                     </button>
                 </div>
@@ -87,7 +87,7 @@
 
                     {{-- Description --}}
                     <p class="text-base text-gray-600 mb-6">
-                        {!! __($message) !!} {{-- Use {!! !!} to allow for bolding or links in the message if needed --}}
+                        {!! __($message) !!}
                     </p>
 
                     {{-- Input Fields --}}

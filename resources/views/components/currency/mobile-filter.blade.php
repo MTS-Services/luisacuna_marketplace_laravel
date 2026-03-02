@@ -2,7 +2,7 @@
     class="glass-card bg-bg-primary text-text-white p-6 rounded-lg w-full absolute top-16 right-0 z-10 md:hidden">
     <!-- Header -->
     <div class="flex justify-between items-center border-b border-gray-700 pb-4 mb-4">
-        <h2 class="text-lg font-semibold">Seller list</h2>
+        <h2 class="text-lg font-semibold">{{ __('Seller list') }}</h2>
     </div>
 
     <!-- Toggle Buttons -->
@@ -17,7 +17,7 @@
 
             <div class="flex justify-between rounded-full border border-zinc-700 bg-bg-primary items-center w-auto px-3 py-2 cursor-pointer"
                 @click="open = !open">
-                <span x-text="selectedOption || '{{ __('Recomendation') }}'"></span>
+                <span x-text="selectedOption || '{{ __('Recommendation') }}'"></span>
                 <flux:icon name="chevron-down" class="w-5 h-5 transition-transform duration-200"
                     x-bind:class="open ? 'rotate-180' : ''" />
             </div>
@@ -35,12 +35,12 @@
                             {{ __('Platform') }}
                         </li>
                         <li class="py-3 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                            @click="selectedOption = 'Device 1'; selectedValue = 'device1'; $wire.selectedPlatform = 'device1'; open = false; $wire.call('serachFilter')">
-                            Device 1
+                            @click="selectedOption = '{{ __('Device 1') }}'; selectedValue = 'device1'; $wire.selectedPlatform = 'device1'; open = false; $wire.call('serachFilter')">
+                            {{ __('Device 1') }}
                         </li>
                         <li class="py-3 px-4 text-text-primary bg-bg-secondary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                            @click="selectedOption = 'Device 2'; selectedValue = 'device2'; $wire.selectedPlatform = 'device2'; open = false; $wire.call('serachFilter')">
-                            Device 2
+                            @click="selectedOption = '{{ __('Device 2') }}'; selectedValue = 'device2'; $wire.selectedPlatform = 'device2'; open = false; $wire.call('serachFilter')">
+                            {{ __('Device 2') }}
                         </li>
                     </ol>
                 </div>
@@ -50,7 +50,7 @@
         <button
             class="xs:px-2 px-5 py-2 rounded-full bg-bg-secondary/70 text-text-white font-semibold flex items-center gap-2">
             <span class="w-4 h-4 bg-green rounded-full"></span>
-            <span>Online Seller</span>
+            <span>{{ __('Online Seller') }}</span>
         </button>
 
 
@@ -60,7 +60,7 @@
     {{-- <div class="space-y-4 h-[calc(100vh-360px)] overflow-y-auto"> --}}
     <div class="space-y-4 h-[calc(100vh-360px)] overflow-x-hidden">
         <div>
-            <label class="text-sm text-gray-400">Platform</label>
+            <label class="text-sm text-gray-400">{{ __('Platform') }}</label>
             <div class="flex-nowrap w-full gap-5 mt-2 relative flex md:hidden" x-data="{ open: false, selectedOption: '', selectedValue: '' }"
                 @click.away="open = false">
 
@@ -89,12 +89,12 @@
                                 {{ __('Platform') }}
                             </li>
                             <li class="py-3 px-1 text-text-primary bg-bg-primary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                                @click="selectedOption = 'Device 1'; selectedValue = 'device1'; $wire.selectedPlatform = 'device1'; open = false; $wire.call('serachFilter')">
-                                Device 1
+                                @click="selectedOption = '{{ __('Device 1') }}'; selectedValue = 'device1'; $wire.selectedPlatform = 'device1'; open = false; $wire.call('serachFilter')">
+                                {{ __('Device 1') }}
                             </li>
                             <li class="py-3 px-1 text-text-primary bg-bg-primary cursor-pointer hover:text-text-secondary hover:bg-bg-hover rounded transition-colors duration-150"
-                                @click="selectedOption = 'Device 2'; selectedValue = 'device2'; $wire.selectedPlatform = 'device2'; open = false; $wire.call('serachFilter')">
-                                Device 2
+                                @click="selectedOption = '{{ __('Device 2') }}'; selectedValue = 'device2'; $wire.selectedPlatform = 'device2'; open = false; $wire.call('serachFilter')">
+                                {{ __('Device 2') }}
                             </li>
                         </ol>
                     </div>
@@ -103,12 +103,12 @@
         </div>
 
         <div>
-            <label class="text-sm text-gray-400">Price</label>
+            <label class="text-sm text-gray-400">{{ __('Price') }}</label>
             <div class="flex-nowrap gap-5 relative flex md:hidden" x-data="{ open: false, selectedMin: '', selectedMax: '' }" @click.away="open = false">
 
                 <div class="price-input flex justify-between border-b border-zinc-700 bg-bg-primary items-center w-full py-2 cursor-pointer"
                     @click="open = !open">
-                    <span x-text="selectedMin && selectedMax ? `$${selectedMin} - $${selectedMax}` : 'Price'"></span>
+                    <span x-text="selectedMin && selectedMax ? `$${selectedMin} - $${selectedMax}` : '{{ __('Price') }}'"></span>
                     <flux:icon name="chevron-down" class="w-5 h-5 transition-transform duration-200"
                         x-bind:class="open ? 'rotate-180' : ''" />
                 </div>
@@ -124,13 +124,13 @@
                             <div class="relative flex-1">
                                 <span
                                     class="absolute left-3 top-1/2 -translate-y-1/2 text-text-primary pointer-events-none">$</span>
-                                <x-ui.input type="text" placeholder="Min" wire:model="minPrice"
+                                <x-ui.input type="text" placeholder="{{ __('Min') }}" wire:model="minPrice"
                                     class="border-zinc-700 pl-7" x-model="selectedMin" />
                             </div>
                             <div class="relative flex-1">
                                 <span
                                     class="absolute left-3 top-1/2 -translate-y-1/2 text-text-primary pointer-events-none">$</span>
-                                <x-ui.input type="text" placeholder="Max" wire:model="maxPrice"
+                                <x-ui.input type="text" placeholder="{{ __('Max') }}" wire:model="maxPrice"
                                     class="border-zinc-700 pl-7" x-model="selectedMax" />
                             </div>
                             <x-ui.button class="py-2! px-3! w-auto! rounded! flex md:hidden bg-transparent!"
@@ -158,7 +158,7 @@
         </div>
 
         <div>
-            <label class="text-sm text-gray-400">Delivery Time</label>
+            <label class="text-sm text-gray-400">{{ __('Delivery Time') }}</label>
             <div class="flex-nowrap gap-5 relative flex md:hidden" x-data="{ open: false, selectedOption: '', selectedValue: '' }"
                 @click.away="open = false">
 

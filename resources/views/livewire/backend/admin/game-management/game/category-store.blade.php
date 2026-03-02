@@ -134,7 +134,7 @@
     </div>
 
     <!-- Remove Confirmation Modal -->
-    <x-ui.confirmation-modal :show="'showRemoveModal'" :title="'Remove Category?'" :message="'Are you sure you want to remove this category from the game? This action can be reversed later.'" :method="'removeCategory'" :button-text="'Remove Category'"
+    <x-ui.confirmation-modal :show="'showRemoveModal'" :title="__('Remove Category?')" :message="__('Are you sure you want to remove this category from the game? This action can be reversed later.')" :method="'removeCategory'" :button-text="__('Remove Category')"
         button-variant="danger" icon-name="exclamation-triangle" />
 
     <!-- Config Modal Component -->

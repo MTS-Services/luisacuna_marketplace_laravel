@@ -6,12 +6,9 @@ use App\Enums\UserAccountStatus;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
-use Exception;
-
+use Laravel\Socialite\Facades\Socialite;
 
 class GoogleAuthController extends Controller
 {
@@ -31,7 +28,7 @@ class GoogleAuthController extends Controller
 
             if ($user) {
                 // Update google_id if user exists but doesn't have it
-                if (!$user->google_id) {
+                if (! $user->google_id) {
                     $user->update(['google_id' => $googleUser->id]);
                 }
             } else {
@@ -64,7 +61,7 @@ class GoogleAuthController extends Controller
 
             return redirect()->route('profile', $user->username);
         } catch (\Exception $e) {
-            return redirect('/login')->with('error', 'Failed to login with Google');
+            return redirect('/login')->with('error', __('Failed to login with Google'));
         }
     }
 
@@ -82,7 +79,7 @@ class GoogleAuthController extends Controller
 
         // Check if username exists and add number if needed
         while (User::where('username', $username)->exists()) {
-            $username = $baseUsername . $counter;
+            $username = $baseUsername.$counter;
             $counter++;
         }
 
