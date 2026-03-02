@@ -15,7 +15,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
-class SendPaymentReceivedEmailJob implements ShouldQueue
+class SendPaymentFailedEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -40,12 +40,34 @@ class SendPaymentReceivedEmailJob implements ShouldQueue
         try {
             $order = Order::with(['user', 'source.user', 'source'])->findOrFail($this->orderId);
             $payment = Payment::findOrFail($this->paymentId);
-            $template = EmailTemplate::where('key', EmailTemplateEnum::PAYMENT_SUCCESS_SELLER->value)->first();
+
+            // Only send for failed or cancelled payments
+            if (! $payment->status?->value || ! in_array($payment->status->value, ['failed', 'cancelled'], true)) {
+                Log::info('Payment failed email skipped: payment not failed/cancelled', [
+                    'order_id' => $this->orderId,
+                    'payment_status' => $payment->status?->value,
+                ]);
+
+                return;
+            }
+
+            $template = EmailTemplate::where('key', EmailTemplateEnum::PAYMENT_CANCELED_BUYER->value)->first();
 
             if ($template === null) {
-                Log::warning('Payment received email skipped: no seller template found', [
+                Log::warning('Payment failed email skipped: no template found', [
                     'order_id' => $this->orderId,
                     'recipient' => $this->recipientEmail,
+                ]);
+
+                return;
+            }
+
+            // Ensure we only send once per payment
+            $metadata = $payment->metadata ?? [];
+            if (! empty($metadata['failed_email_sent'])) {
+                Log::info('Payment failed email already sent, skipping', [
+                    'order_id' => $this->orderId,
+                    'payment_id' => $this->paymentId,
                 ]);
 
                 return;
@@ -54,13 +76,17 @@ class SendPaymentReceivedEmailJob implements ShouldQueue
             Mail::to($this->recipientEmail)
                 ->send(new PaymentSuccessMail($order, $payment, $template));
 
-            Log::info('Payment received email sent', [
+            $metadata['failed_email_sent'] = true;
+            $payment->metadata = $metadata;
+            $payment->save();
+
+            Log::info('Payment failed email sent', [
                 'order_id' => $order->order_id,
                 'payment_id' => $payment->payment_id,
                 'recipient' => $this->recipientEmail,
             ]);
         } catch (\Exception $e) {
-            Log::error('Failed to send payment received email', [
+            Log::error('Failed to send payment failed email', [
                 'order_id' => $this->orderId,
                 'payment_id' => $this->paymentId,
                 'recipient' => $this->recipientEmail,
@@ -73,7 +99,7 @@ class SendPaymentReceivedEmailJob implements ShouldQueue
 
     public function failed(\Throwable $exception): void
     {
-        Log::error('SendPaymentReceivedEmailJob failed permanently', [
+        Log::error('SendPaymentFailedEmailJob failed permanently', [
             'order_id' => $this->orderId,
             'payment_id' => $this->paymentId,
             'recipient' => $this->recipientEmail,
