@@ -181,10 +181,10 @@
             </div>
 
             <div class="relative">
-                <x-loading-animation :target="'search, platform_id, min_price, max_price, restPrice, delivery_timeline, resetAllFilters, filter_by_tag, toggleOnlineFilter, sortDirection'" />
+                <x-loading-animation :target="'search, platform_id, min_price, max_price, restPrice, delivery_timeline, resetAllFilters, filter_by_tag, toggleOnlineFilter, sortDirection, gotoPage, nextPage, previousPage'" />
 
                 <div wire:loading.remove
-                    wire:target="search, platform_id, min_price, max_price, restPrice, delivery_timeline, resetAllFilters, filter_by_tag, toggleOnlineFilter, sortDirection, gotoPage, nextPage, previousPage"
+                    wire:target="search, platform_id, min_price, max_price, restPrice, delivery_timeline, resetAllFilters, filter_by_tag, toggleOnlineFilter, sortDirection, gotoPage, nextPage, previousPage, datas"
                     x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
                     x-transition:enter-end="opacity-100"
                     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 w-full">
