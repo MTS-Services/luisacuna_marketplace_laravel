@@ -19,26 +19,19 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         $faker = Faker::create();
+        $name = ucfirst($faker->unique()->word());
+
         return [
             'sort_order' => $faker->numberBetween(1, 1000),
-            'name' => $name = ucfirst($faker->unique()->word()),
+            'name' => $name,
             'slug' => Str::slug($name . '-' . $faker->unique()->word()),
-            'description' => $faker->sentence(),
+            'icon' => null,
+            'status' => CategoryStatus::ACTIVE->value,
+            'layout' => 'list_grid',
             'meta_title' => $faker->sentence(3),
             'meta_description' => $faker->paragraph(),
-            'icon' => null,
-            'is_featured' => $faker->boolean(),
-            'status' => CategoryStatus::ACTIVE->value,
-
-            'created_by' => 1,
-            'updated_by' => 1,
-            'deleted_by' => null,
-            'restored_by' => null,
-            'restored_at' => null,
-
             'created_at' => now(),
             'updated_at' => now(),
-            'deleted_at' => null,
         ];
     }
 }
