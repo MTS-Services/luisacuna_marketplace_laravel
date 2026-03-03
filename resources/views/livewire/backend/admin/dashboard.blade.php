@@ -1,202 +1,709 @@
 <main>
     <section>
-        <div class="glass-card rounded-2xl p-6 mb-8">
-            <div class="flex items-center justify-center">
-                <h3 class="text-2xl font-bold text-text-primary">{{ __('Admin Dashboard') }}</h3>
-            </div>
-        </div>
+        {{-- ============================================================
+            Filter Bar
+        ============================================================ --}}
+        <div class="glass-card rounded-2xl p-6 mb-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-2xl font-bold text-text-primary">{{ __('Admin Dashboard') }}</h3>
+                    @if ($filter === 'real_time')
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="relative flex h-2 w-2">
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                            </span>
+                            <p class="text-text-muted text-sm">{{ __('Live — updating every 5s') }}</p>
+                        </div>
+                    @endif
+                </div>
+                <div class="flex flex-wrap items-center gap-3">
+                    <flux:select wire:model.live="filter" class="w-auto! min-w-[160px]">
+                        <flux:select.option value="real_time">{{ __('Real Time') }}</flux:select.option>
+                        <flux:select.option value="current_week">{{ __('Current Week') }}</flux:select.option>
+                        <flux:select.option value="current_month">{{ __('Current Month') }}</flux:select.option>
+                        <flux:select.option value="current_year">{{ __('Current Year') }}</flux:select.option>
+                        <flux:select.option value="custom_range">{{ __('Custom Range') }}</flux:select.option>
+                    </flux:select>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6"
-            x-transition:enter="transition-all duration-500" x-transition:enter-start="opacity-0 translate-y-8"
-            x-transition:enter-end="opacity-100 translate-y-0">
-
-            {{-- Card 1: Users --}}
-            <div class="glass-card rounded-2xl p-6 card-hover float" style="animation-delay: 0s;"
-                @click="showDetails('users')">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
-                        <flux:icon name="users" class="w-6 h-6 text-blue-400" />
-                    </div>
-                    <div class="text-green-400 text-sm font-medium flex items-center gap-1">
-                        <flux:icon name="arrow-trending-up" class="w-3 h-3" />
-                        +12%
-                    </div>
-                </div>
-                {{-- Adjusted for light/dark mode text --}}
-                <h3 class="text-2xl font-bold text-text-primary mb-1" x-text="stats.users.toLocaleString()">
-                    12,384</h3>
-                {{-- Adjusted for light/dark mode text --}}
-                <p class="text-text-secondary text-sm">{{ __('Total Users') }}</p>
-                <div class="mt-4 h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full progress-bar"
-                        style="width: 75%;"></div>
-                </div>
-            </div>
-
-            {{-- Card 2: Revenue --}}
-            <div class="glass-card rounded-2xl p-6 card-hover float" style="animation-delay: 0.2s;"
-                @click="showDetails('revenue')">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
-                        <flux:icon name="banknotes" class="w-6 h-6 text-green-400" />
-                    </div>
-                    <div class="text-green-400 text-sm font-medium flex items-center gap-1">
-                        <flux:icon name="arrow-trending-up" class="w-3 h-3" />
-                        +23%
-                    </div>
-                </div>
-                {{-- Adjusted for light/dark mode text --}}
-                <h3 class="text-2xl font-bold text-text-primary mb-1">$<span
-                        x-text="stats.revenue.toLocaleString()">48,392</span></h3>
-                {{-- Adjusted for light/dark mode text --}}
-                <p class="text-text-secondary text-sm">{{ __('Total Revenue') }}</p>
-                <div class="mt-4 h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-green-400 to-green-600 rounded-full progress-bar"
-                        style="width: 60%;"></div>
-                </div>
-            </div>
-
-            {{-- Card 3: Orders --}}
-            <div class="glass-card rounded-2xl p-6 card-hover float" style="animation-delay: 0.4s;"
-                @click="showDetails('orders')">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
-                        <flux:icon name="shopping-bag" class="w-6 h-6 text-purple-400" />
-                    </div>
-                    <div class="text-red-400 text-sm font-medium flex items-center gap-1">
-                        <flux:icon name="arrow-trending-down" class="w-3 h-3" />
-                        -5%
-                    </div>
-                </div>
-                {{-- Adjusted for light/dark mode text --}}
-                <h3 class="text-2xl font-bold text-text-primary mb-1" x-text="stats.orders.toLocaleString()">
-                    2,847</h3>
-                {{-- Adjusted for light/dark mode text --}}
-                <p class="text-text-secondary text-sm">{{ __('Total Orders') }}</p>
-                <div class="mt-4 h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-purple-400 to-purple-600 rounded-full progress-bar"
-                        style="width: 45%;"></div>
-                </div>
-            </div>
-
-            {{-- Card 4: Active Users --}}
-            <div class="glass-card rounded-2xl p-6 card-hover float" style="animation-delay: 0.6s;"
-                @click="showDetails('active')">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center">
-                        <flux:icon name="activity" class="w-6 h-6 text-yellow-400" />
-                    </div>
-                    <div class="text-yellow-400 text-sm font-medium flex items-center gap-1">
-                        <div class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
-                        {{ __('Live') }}
-                    </div>
-                </div>
-                {{-- Adjusted for light/dark mode text --}}
-                <h3 class="text-2xl font-bold text-text-primary mb-1" x-text="stats.activeUsers.toLocaleString()">847
-                </h3>
-                {{-- Adjusted for light/dark mode text --}}
-                <p class="text-text-secondary text-sm">{{ __('Active Users') }}</p>
-                <div class="mt-4 h-1 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full pulse-slow progress-bar"
-                        style="width: 85%;"></div>
+                    @if ($filter === 'custom_range')
+                        <flux:input type="date" wire:model.live.debounce.500ms="startDate" class="w-auto!" />
+                        <flux:input type="date" wire:model.live.debounce.500ms="endDate" class="w-auto!" />
+                    @endif
                 </div>
             </div>
         </div>
 
-      <!--  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-5"
-            x-transition:enter="transition-all duration-500 delay-200"
-            x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
+        {{-- ============================================================
+            Loading Skeleton — shown only if fetch takes > 200ms
+        ============================================================ --}}
+        <div wire:loading.delay wire:target="filter,startDate,endDate,refreshData,resetFilter">
+            <x-ui.dashboard-skeleton />
+        </div>
 
-            <div class="lg:col-span-2 glass-card rounded-2xl p-6 card-hover">
-                <div class="flex items-center justify-between mb-6">
-                    <div>
-                        {{-- Adjusted for light/dark mode text --}}
-                        <h3 class="text-xl font-bold text-text-primary mb-1">{{ __('Revenue Analytics') }}</h3>
-                        <p class="text-text-secondary text-sm">{{ __('Monthly revenue breakdown') }}</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        {{-- Adjusted for light/dark mode background, text, and border --}}
-                        <select
-                            class="bg-zinc-100 dark:bg-zinc-800 text-text-primary text-sm px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 outline-none">
-                            <option value="monthly">{{ __('Monthly') }}</option>
-                            <option value="weekly">{{ __('Weekly') }}</option>
-                            <option value="daily">{{ __('Daily') }}</option>
-                        </select>
-                        {{-- Adjusted for light/dark mode background, text, and border --}}
-                        <button
-                            class="bg-accent/10 hover:bg-accent/20 text-accent text-sm px-4 py-2 rounded-xl flex items-center gap-2 border border-accent/20 transition-all">
-                            <flux:icon name="arrow-down-tray" class="w-4 h-4" />
-                            {{ __('Export') }}
-                        </button>
-                    </div>
+        {{-- ============================================================
+            Main Content — conditional polling when real_time
+        ============================================================ --}}
+        <div wire:loading.delay.remove wire:target="filter,startDate,endDate,refreshData,resetFilter"
+            @if ($filter === 'real_time') wire:poll.5s="refreshData" @endif>
+            @if ($isEmpty)
+                <x-ui.empty-state icon="chart-bar" :title="__('No Data Available')" :message="__(
+                    'There is no data for the selected time range. Try changing the filter or resetting to the default.',
+                )">
+                    <x-slot:action>
+                        <flux:button wire:click="resetFilter" variant="primary" icon="arrow-path">
+                            {{ __('Reset Filter') }}
+                        </flux:button>
+                    </x-slot:action>
+                </x-ui.empty-state>
+            @else
+                {{-- ========== Stat Cards ========== --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6">
+                    <x-ui.stat-card icon="users" :label="__('Total Users')" :value="$stats['total_users'] ?? 0" :growth="$stats['users_growth'] ?? 0" color="blue"
+                        :progress="min(($stats['total_users'] ?? 0) > 0 ? 75 : 0, 100)" />
+                    <x-ui.stat-card icon="banknotes" :label="__('Total Revenue')" :value="$stats['total_revenue'] ?? 0" prefix="$"
+                        :growth="$stats['revenue_growth'] ?? 0" color="green" :progress="min(($stats['total_revenue'] ?? 0) > 0 ? 60 : 0, 100)" />
+                    <x-ui.stat-card icon="shopping-bag" :label="__('Total Orders')" :value="$stats['total_orders'] ?? 0" :growth="$stats['orders_growth'] ?? 0"
+                        color="purple" :progress="min(($stats['total_orders'] ?? 0) > 0 ? 55 : 0, 100)" />
+                    <x-ui.stat-card icon="user-group" :label="__('Total Sellers')" :value="$stats['total_sellers'] ?? 0" :growth="$stats['sellers_growth'] ?? 0"
+                        color="yellow" :progress="min(($stats['total_sellers'] ?? 0) > 0 ? 40 : 0, 100)" />
                 </div>
-                <div class="h-64 relative">
-                    <canvas id="revenueChart" class="w-full h-full"></canvas>
-                </div>
-            </div>
 
-            <div class="space-y-6">
-                <div class="glass-card rounded-2xl p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        {{-- Adjusted for light/dark mode text --}}
-                        <h3 class="text-lg font-bold text-text-primary">{{ __('Recent Activity') }}</h3>
-                        {{-- Adjusted for light/dark mode text --}}
-                        <button class="text-text-secondary hover:text-text-primary transition-colors">
-                            <flux:icon name="move-horizontal" class="w-5 h-5" />
-                        </button>
-                    </div>
-                    <div class="space-y-4">
-                        <template x-for="activity in recentActivity" :key="activity.id">
-                            {{-- Adjusted for light/dark mode hover state --}}
-                            <div
-                                class="flex items-center gap-3 p-3 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
-                                <div class="w-8 h-8 rounded-lg flex items-center justify-center"
-                                    :class="activity.iconBg">
-                                    <flux:icon name="activity" class="w-4 h-4" x-bind:class="activity.iconColor" />
-                                </div>
-                                <div class="flex-1">
-                                    {{-- Adjusted for light/dark mode text --}}
-                                    <p class="text-text-primary text-sm font-medium" x-text="activity.title"></p>
-                                    <p class="text-text-secondary text-xs" x-text="activity.time"></p>
-                                </div>
+                {{-- ========== CHART 1: Financial Flow (Area) ========== --}}
+                <div class="glass-card rounded-2xl p-6 mb-6" wire:ignore>
+                    <div x-data="financialFlowChart(@js($financialFlowData))" x-init="init()">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-2">
+                            <div>
+                                <h3 class="text-xl font-bold text-text-primary mb-1">{{ __('Financial Flow') }}</h3>
+                                <p class="text-text-muted text-sm">
+                                    {{ __('Payments received vs seller payouts — the gap is your float') }}</p>
                             </div>
-                        </template>
+                            <div class="flex items-center gap-3">
+                                <span class="inline-flex items-center gap-1.5 text-xs text-text-muted">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#10B981]"></span> {{ __('Payments In') }}
+                                </span>
+                                <span class="inline-flex items-center gap-1.5 text-xs text-text-muted">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#F59E0B]"></span> {{ __('Payouts') }}
+                                </span>
+                            </div>
+                        </div>
+                        <div x-ref="chart" class="w-full" style="min-height: 320px;"></div>
                     </div>
                 </div>
 
-                <div class="glass-card rounded-2xl p-6">
-                    {{-- Adjusted for light/dark mode text --}}
-                    <h3 class="text-lg font-bold text-text-primary mb-4">{{ __('Quick Actions') }}</h3>
-                    <div class="grid grid-cols-2 gap-3">
-                        {{-- Adjusted for light/dark mode button styles --}}
-                        <button
-                            class="bg-accent/10 hover:bg-accent/20 text-accent text-sm font-medium flex items-center justify-center gap-2 p-3 rounded-xl border border-accent/20 hover:scale-105 transition-all">
-                            <flux:icon name="user-plus" class="w-4 h-4" />
-                            {{ __('Add User') }}
-                        </button>
-                        {{-- Adjusted for light/dark mode button styles --}}
-                        <button
-                            class="bg-zinc-100/50 dark:bg-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-800 p-3 rounded-xl text-text-primary text-sm font-medium flex items-center justify-center gap-2 border border-zinc-200 dark:border-zinc-700 hover:scale-105 transition-all">
-                            <flux:icon name="envelope" class="w-4 h-4" />
-                            {{ __('Send Mail') }}
-                        </button>
-                        {{-- Adjusted for light/dark mode button styles --}}
-                        <button
-                            class="bg-zinc-100/50 dark:bg-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-800 p-3 rounded-xl text-text-primary text-sm font-medium flex items-center justify-center gap-2 border border-zinc-200 dark:border-zinc-700 hover:scale-105 transition-all">
-                            <flux:icon name="file-text" class="w-4 h-4" />
-                            {{ __('Reports') }}
-                        </button>
-                        {{-- Adjusted for light/dark mode button styles --}}
-                        <button
-                            class="bg-zinc-100/50 dark:bg-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-800 p-3 rounded-xl text-text-primary text-sm font-medium flex items-center justify-center gap-2 border border-zinc-200 dark:border-zinc-700 hover:scale-105 transition-all">
-                            <flux:icon name="cog-8-tooth" class="w-4 h-4" />
-                            Settings
-                        </button>
+                {{-- ========== ROW 2: Order Lifecycle + Revenue by Game ========== --}}
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    {{-- CHART 2: Order Lifecycle (Donut) --}}
+                    <div class="glass-card rounded-2xl p-6" wire:ignore>
+                        <div x-data="orderLifecycleChart(@js($orderLifecycleData))" x-init="init()">
+                            <h3 class="text-xl font-bold text-text-primary mb-1">{{ __('Order Lifecycle') }}</h3>
+                            <p class="text-text-muted text-sm mb-6">{{ __('Escrowed, delivered & cancelled orders') }}
+                            </p>
+                            <div x-ref="chart" class="w-full" style="min-height: 300px;"></div>
+                        </div>
+                    </div>
+
+                    {{-- CHART 3: Revenue by Game (Horizontal Bar) --}}
+                    <div class="glass-card rounded-2xl p-6" wire:ignore>
+                        <div x-data="revenueByGameChart(@js($revenueByGameData))" x-init="init()">
+                            <h3 class="text-xl font-bold text-text-primary mb-1">{{ __('Revenue by Game') }}</h3>
+                            <p class="text-text-muted text-sm mb-6">{{ __('Top games by total revenue') }}</p>
+                            <div x-ref="chart" class="w-full" style="min-height: 300px;"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
+
+                {{-- ========== ROW 3: Revenue by Category + Profit & Commission ========== --}}
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    {{-- CHART 4: Revenue by Game Category (Horizontal Bar) --}}
+                    <div class="glass-card rounded-2xl p-6" wire:ignore>
+                        <div x-data="revenueByGameCategoryChart(@js($revenueByGameCategoryData))" x-init="init()">
+                            <h3 class="text-xl font-bold text-text-primary mb-1">{{ __('Revenue by Category') }}</h3>
+                            <p class="text-text-muted text-sm mb-6">{{ __('Top categories by total revenue') }}</p>
+                            <div x-ref="chart" class="w-full" style="min-height: 300px;"></div>
+                        </div>
+                    </div>
+
+                    {{-- CHART 6: Withdrawal Queue (Bar) --}}
+                    <div class="glass-card rounded-2xl p-6" wire:ignore>
+                        <div x-data="withdrawalQueueChart(@js($withdrawalQueueData))" x-init="init()">
+                            <h3 class="text-xl font-bold text-text-primary mb-1">{{ __('Withdrawal Queue') }}</h3>
+                            <p class="text-text-muted text-sm mb-6">{{ __('Seller payout requests by status') }}</p>
+                            <div x-ref="chart" class="w-full" style="min-height: 300px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- ========== CHART 5: Profit & Commission (Column — full width) ========== --}}
+                <div class="glass-card rounded-2xl p-6 mb-6" wire:ignore>
+                    <div x-data="profitCommissionChart(@js($profitCommissionData))" x-init="init()">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-2">
+                            <div>
+                                <h3 class="text-xl font-bold text-text-primary mb-1">{{ __('Profit & Commission') }}
+                                </h3>
+                                <p class="text-text-muted text-sm">
+                                    {{ __('Total sales volume vs your platform commission') }}</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="inline-flex items-center gap-1.5 text-xs text-text-muted">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#8B5CF6]"></span>
+                                    {{ __('Sales Volume') }}
+                                </span>
+                                <span class="inline-flex items-center gap-1.5 text-xs text-text-muted">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#10B981]"></span>
+                                    {{ __('Platform Profit') }}
+                                </span>
+                            </div>
+                        </div>
+                        <div x-ref="chart" class="w-full" style="min-height: 320px;"></div>
+                    </div>
+                </div>
+
+                {{-- ========== CHART 7: Seller Engagement (Line — full width) ========== --}}
+                <div class="glass-card rounded-2xl p-6" wire:ignore>
+                    <div x-data="sellerEngagementChart(@js($sellerEngagementData))" x-init="init()">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-2">
+                            <div>
+                                <h3 class="text-xl font-bold text-text-primary mb-1">{{ __('Seller Engagement') }}
+                                </h3>
+                                <p class="text-text-muted text-sm">
+                                    {{ __('New product listings vs new seller sign-ups') }}</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="inline-flex items-center gap-1.5 text-xs text-text-muted">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#8B5CF6]"></span> {{ __('Listings') }}
+                                </span>
+                                <span class="inline-flex items-center gap-1.5 text-xs text-text-muted">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#EC4899]"></span> {{ __('Sellers') }}
+                                </span>
+                            </div>
+                        </div>
+                        <div x-ref="chart" class="w-full" style="min-height: 300px;"></div>
+                    </div>
+                </div>
+            @endif
         </div>
-    -->
     </section>
-
 </main>
+
+@script
+    <script>
+        const isDark = () => document.documentElement.classList.contains('dark') ||
+            document.body.classList.contains('dark') ||
+            window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        const theme = () => ({
+            fg: isDark() ? '#9ca3af' : '#64748b',
+            grid: isDark() ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)',
+            tip: isDark() ? 'dark' : 'light',
+            track: isDark() ? '#1f1f2e' : '#f1f5f9',
+        });
+
+        const baseChart = (extra = {}) => ({
+            fontFamily: 'Inter, sans-serif',
+            toolbar: {
+                show: false
+            },
+            foreColor: theme().fg,
+            background: 'transparent',
+            ...extra,
+        });
+
+        const noData = (text) => ({
+            text,
+            align: 'center',
+            verticalAlign: 'middle',
+            style: {
+                fontSize: '14px'
+            }
+        });
+
+        const destroyChart = (instance) => {
+            if (instance) {
+                instance.destroy();
+            }
+            return null;
+        };
+
+        const listenUpdate = (ctx, key) => {
+            Livewire.on('charts-updated', ([p]) => {
+                if (ctx.chart && p[key]) {
+                    ctx.data = p[key];
+                    if (p[key].labels) {
+                        ctx.chart.updateOptions({
+                            xaxis: {
+                                categories: p[key].labels
+                            },
+                            labels: p[key].labels
+                        });
+                    }
+                    ctx.chart.updateSeries(p[key].series ?? p[key]);
+                }
+            });
+        };
+
+        /* ==========================================================
+         *  CHART 1: Financial Flow (Area)
+         * ========================================================== */
+        Alpine.data('financialFlowChart', (initial) => ({
+            chart: null,
+            data: initial,
+            init() {
+                if (typeof ApexCharts === 'undefined') return;
+                const t = theme();
+                this.chart = new ApexCharts(this.$refs.chart, {
+                    chart: baseChart({
+                        type: 'area',
+                        height: 320
+                    }),
+                    series: this.data.series,
+                    xaxis: {
+                        categories: this.data.labels,
+                        axisBorder: {
+                            show: false
+                        },
+                        axisTicks: {
+                            show: false
+                        }
+                    },
+                    yaxis: {
+                        labels: {
+                            formatter: v => '$' + Number(v).toLocaleString()
+                        }
+                    },
+                    colors: ['#10B981', '#F59E0B'],
+                    fill: {
+                        type: 'gradient',
+                        gradient: {
+                            shadeIntensity: 1,
+                            opacityFrom: 0.4,
+                            opacityTo: 0.05,
+                            stops: [0, 100]
+                        }
+                    },
+                    stroke: {
+                        curve: 'smooth',
+                        width: 2.5
+                    },
+                    grid: {
+                        borderColor: t.grid,
+                        strokeDashArray: 4
+                    },
+                    tooltip: {
+                        theme: t.tip,
+                        shared: true,
+                        intersect: false,
+                        y: {
+                            formatter: v => '$' + Number(v).toLocaleString()
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    legend: {
+                        show: false
+                    },
+                    noData: noData('No financial data'),
+                });
+                this.chart.render();
+                listenUpdate(this, 'financialFlow');
+            },
+            destroy() {
+                this.chart = destroyChart(this.chart);
+            },
+        }));
+
+        /* ==========================================================
+         *  CHART 2: Order Lifecycle (Donut)
+         * ========================================================== */
+        Alpine.data('orderLifecycleChart', (initial) => ({
+            chart: null,
+            data: initial,
+            init() {
+                if (typeof ApexCharts === 'undefined') return;
+                const t = theme();
+                this.chart = new ApexCharts(this.$refs.chart, {
+                    chart: baseChart({
+                        type: 'donut',
+                        height: 300
+                    }),
+                    series: this.data.series,
+                    labels: this.data.labels,
+                    colors: ['#F59E0B', '#10B981', '#EF4444'],
+                    stroke: {
+                        width: 0
+                    },
+                    plotOptions: {
+                        pie: {
+                            donut: {
+                                size: '70%',
+                                labels: {
+                                    show: true,
+                                    total: {
+                                        show: true,
+                                        label: 'Total',
+                                        fontWeight: 700
+                                    }
+                                }
+                            }
+                        },
+                    },
+                    legend: {
+                        position: 'bottom',
+                        fontFamily: 'Inter, sans-serif'
+                    },
+                    tooltip: {
+                        theme: t.tip
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    noData: noData('No order data'),
+                });
+                this.chart.render();
+                Livewire.on('charts-updated', ([p]) => {
+                    if (this.chart && p.orderLifecycle) {
+                        this.data = p.orderLifecycle;
+                        this.chart.updateOptions({
+                            labels: p.orderLifecycle.labels
+                        });
+                        this.chart.updateSeries(p.orderLifecycle.series);
+                    }
+                });
+            },
+            destroy() {
+                this.chart = destroyChart(this.chart);
+            },
+        }));
+
+        /* ==========================================================
+         *  CHART 3: Revenue by Game (Horizontal Bar)
+         * ========================================================== */
+        Alpine.data('revenueByGameChart', (initial) => ({
+            chart: null,
+            data: initial,
+            init() {
+                if (typeof ApexCharts === 'undefined') return;
+                const t = theme();
+                this.chart = new ApexCharts(this.$refs.chart, {
+                    chart: baseChart({
+                        type: 'bar',
+                        height: 300
+                    }),
+                    series: [{
+                        name: 'Revenue',
+                        data: this.data.series
+                    }],
+                    xaxis: {
+                        categories: this.data.labels
+                    },
+                    plotOptions: {
+                        bar: {
+                            horizontal: true,
+                            borderRadius: 4,
+                            barHeight: '60%'
+                        }
+                    },
+                    colors: ['#8B5CF6'],
+                    grid: {
+                        borderColor: t.grid,
+                        strokeDashArray: 4
+                    },
+                    tooltip: {
+                        theme: t.tip,
+                        y: {
+                            formatter: v => '$' + Number(v).toLocaleString()
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    noData: noData('No game revenue data'),
+                });
+                this.chart.render();
+                Livewire.on('charts-updated', ([p]) => {
+                    if (this.chart && p.revenueByGame) {
+                        this.data = p.revenueByGame;
+                        this.chart.updateOptions({
+                            xaxis: {
+                                categories: p.revenueByGame.labels
+                            }
+                        });
+                        this.chart.updateSeries([{
+                            name: 'Revenue',
+                            data: p.revenueByGame.series
+                        }]);
+                    }
+                });
+            },
+            destroy() {
+                this.chart = destroyChart(this.chart);
+            },
+        }));
+
+        /* ==========================================================
+         *  CHART 4: Revenue by Game Category (Horizontal Bar)
+         * ========================================================== */
+        Alpine.data('revenueByGameCategoryChart', (initial) => ({
+            chart: null,
+            data: initial,
+            init() {
+                if (typeof ApexCharts === 'undefined') return;
+                const t = theme();
+                this.chart = new ApexCharts(this.$refs.chart, {
+                    chart: baseChart({
+                        type: 'bar',
+                        height: 300
+                    }),
+                    series: [{
+                        name: 'Revenue',
+                        data: this.data.series
+                    }],
+                    xaxis: {
+                        categories: this.data.labels
+                    },
+                    plotOptions: {
+                        bar: {
+                            horizontal: true,
+                            borderRadius: 4,
+                            barHeight: '60%'
+                        }
+                    },
+                    colors: ['#EC4899'],
+                    grid: {
+                        borderColor: t.grid,
+                        strokeDashArray: 4
+                    },
+                    tooltip: {
+                        theme: t.tip,
+                        y: {
+                            formatter: v => '$' + Number(v).toLocaleString()
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    noData: noData('No category revenue data'),
+                });
+                this.chart.render();
+                Livewire.on('charts-updated', ([p]) => {
+                    if (this.chart && p.revenueByGameCategory) {
+                        this.data = p.revenueByGameCategory;
+                        this.chart.updateOptions({
+                            xaxis: {
+                                categories: p.revenueByGameCategory.labels
+                            }
+                        });
+                        this.chart.updateSeries([{
+                            name: 'Revenue',
+                            data: p.revenueByGameCategory.series
+                        }]);
+                    }
+                });
+            },
+            destroy() {
+                this.chart = destroyChart(this.chart);
+            },
+        }));
+
+        /* ==========================================================
+         *  CHART 5: Profit & Commission (Grouped Column)
+         * ========================================================== */
+        Alpine.data('profitCommissionChart', (initial) => ({
+            chart: null,
+            data: initial,
+            init() {
+                if (typeof ApexCharts === 'undefined') return;
+                const t = theme();
+                this.chart = new ApexCharts(this.$refs.chart, {
+                    chart: baseChart({
+                        type: 'bar',
+                        height: 320
+                    }),
+                    series: this.data.series,
+                    xaxis: {
+                        categories: this.data.labels,
+                        axisBorder: {
+                            show: false
+                        },
+                        axisTicks: {
+                            show: false
+                        }
+                    },
+                    yaxis: {
+                        labels: {
+                            formatter: v => '$' + Number(v).toLocaleString()
+                        }
+                    },
+                    plotOptions: {
+                        bar: {
+                            columnWidth: '55%',
+                            borderRadius: 4
+                        }
+                    },
+                    colors: ['#8B5CF6', '#10B981'],
+                    grid: {
+                        borderColor: t.grid,
+                        strokeDashArray: 4
+                    },
+                    tooltip: {
+                        theme: t.tip,
+                        shared: true,
+                        intersect: false,
+                        y: {
+                            formatter: v => '$' + Number(v).toLocaleString()
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    legend: {
+                        show: false
+                    },
+                    noData: noData('No transaction data'),
+                });
+                this.chart.render();
+                listenUpdate(this, 'profitCommission');
+            },
+            destroy() {
+                this.chart = destroyChart(this.chart);
+            },
+        }));
+
+        /* ==========================================================
+         *  CHART 6: Withdrawal Queue (Bar)
+         * ========================================================== */
+        Alpine.data('withdrawalQueueChart', (initial) => ({
+            chart: null,
+            data: initial,
+            init() {
+                if (typeof ApexCharts === 'undefined') return;
+                const t = theme();
+                this.chart = new ApexCharts(this.$refs.chart, {
+                    chart: baseChart({
+                        type: 'bar',
+                        height: 300
+                    }),
+                    series: [{
+                        name: 'Requests',
+                        data: this.data.series
+                    }],
+                    xaxis: {
+                        categories: this.data.labels
+                    },
+                    plotOptions: {
+                        bar: {
+                            distributed: true,
+                            columnWidth: '50%',
+                            borderRadius: 6
+                        }
+                    },
+                    colors: this.data.colors || ['#F59E0B', '#3B82F6', '#10B981', '#EF4444'],
+                    grid: {
+                        borderColor: t.grid,
+                        strokeDashArray: 4
+                    },
+                    tooltip: {
+                        theme: t.tip
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 700,
+                            colors: ['#fff']
+                        }
+                    },
+                    legend: {
+                        show: false
+                    },
+                    noData: noData('No withdrawal data'),
+                });
+                this.chart.render();
+                Livewire.on('charts-updated', ([p]) => {
+                    if (this.chart && p.withdrawalQueue) {
+                        this.data = p.withdrawalQueue;
+                        this.chart.updateOptions({
+                            xaxis: {
+                                categories: p.withdrawalQueue.labels
+                            },
+                            colors: p.withdrawalQueue.colors || ['#F59E0B', '#3B82F6',
+                                '#10B981', '#EF4444'
+                            ],
+                        });
+                        this.chart.updateSeries([{
+                            name: 'Requests',
+                            data: p.withdrawalQueue.series
+                        }]);
+                    }
+                });
+            },
+            destroy() {
+                this.chart = destroyChart(this.chart);
+            },
+        }));
+
+        /* ==========================================================
+         *  CHART 7: Seller Engagement (Line)
+         * ========================================================== */
+        Alpine.data('sellerEngagementChart', (initial) => ({
+            chart: null,
+            data: initial,
+            init() {
+                if (typeof ApexCharts === 'undefined') return;
+                const t = theme();
+                this.chart = new ApexCharts(this.$refs.chart, {
+                    chart: baseChart({
+                        type: 'line',
+                        height: 300
+                    }),
+                    series: this.data.series,
+                    xaxis: {
+                        categories: this.data.labels,
+                        axisBorder: {
+                            show: false
+                        },
+                        axisTicks: {
+                            show: false
+                        }
+                    },
+                    yaxis: {
+                        labels: {
+                            formatter: v => Math.round(v)
+                        }
+                    },
+                    colors: ['#8B5CF6', '#EC4899'],
+                    stroke: {
+                        curve: 'smooth',
+                        width: 2.5
+                    },
+                    markers: {
+                        size: 4,
+                        strokeWidth: 0
+                    },
+                    grid: {
+                        borderColor: t.grid,
+                        strokeDashArray: 4
+                    },
+                    tooltip: {
+                        theme: t.tip,
+                        shared: true,
+                        intersect: false
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    legend: {
+                        show: false
+                    },
+                    noData: noData('No engagement data'),
+                });
+                this.chart.render();
+                listenUpdate(this, 'sellerEngagement');
+            },
+            destroy() {
+                this.chart = destroyChart(this.chart);
+            },
+        }));
+    </script>
+@endscript
