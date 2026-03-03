@@ -8,7 +8,9 @@ use App\Enums\TransactionType;
 use App\Enums\UserType;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Transaction;
 use App\Models\User;
+use App\Models\WithdrawalRequest;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\DB;
@@ -180,8 +182,7 @@ class DashboardService
         $groupFormat = $this->getGroupFormat($filter);
 
         // ── Payments In: all completed purchase transactions ──────────
-        $payments = DB::table('transactions')
-            ->where('type', TransactionType::PURCHSED->value)
+        $payments = Transaction::where('type', TransactionType::PURCHSED->value)
             ->where('status', TransactionStatus::PAID->value)
             ->whereBetween('created_at', [$start, $end])
             ->selectRaw('DATE_FORMAT(created_at, ?) as period', [$groupFormat])
@@ -192,9 +193,8 @@ class DashboardService
             ->keyBy('period');
 
         // ── Payouts Out: accepted/completed withdrawal requests ───────
-        $withdrawals = DB::table('withdrawal_requests')
-            ->join(
-                DB::raw('(
+        $withdrawals =  WithdrawalRequest::join(
+            DB::raw('(
                     SELECT wsh1.withdrawal_request_id, wsh1.to_status
                     FROM withdrawal_status_histories wsh1
                     INNER JOIN (
@@ -204,10 +204,10 @@ class DashboardService
                         GROUP BY withdrawal_request_id
                     ) wsh2 ON wsh1.id = wsh2.max_id
                 ) as ls'),
-                'withdrawal_requests.id',
-                '=',
-                'ls.withdrawal_request_id'
-            )
+            'withdrawal_requests.id',
+            '=',
+            'ls.withdrawal_request_id'
+        )
             ->whereIn('ls.to_status', ['accepted', 'completed'])
             ->whereBetween('withdrawal_requests.created_at', [$start, $end])
             ->whereNull('withdrawal_requests.deleted_at')
@@ -247,11 +247,8 @@ class DashboardService
 
     public function computeOrderLifecycleData(Carbon $start, Carbon $end): array
     {
-        $escrowedStatuses = [
+        $paidStatuses = [
             OrderStatus::PAID->value,
-            OrderStatus::PROCESSING->value,
-            OrderStatus::PENDING_PAYMENT->value,
-            OrderStatus::PARTIALLY_PAID->value,
         ];
         $deliveredStatuses = [
             OrderStatus::DELIVERED->value,
@@ -259,31 +256,35 @@ class DashboardService
         ];
         $cancelledStatuses = [
             OrderStatus::CANCELLED->value,
-            OrderStatus::REFUNDED->value,
-            OrderStatus::PARTIALLY_REFUNDED->value,
             OrderStatus::FAILED->value,
         ];
+        $refundedStatuses = [
+            OrderStatus::REFUNDED->value,
+            OrderStatus::PARTIALLY_REFUNDED->value,
+        ];
 
-        $allStatuses = [...$escrowedStatuses, ...$deliveredStatuses, ...$cancelledStatuses];
+        $allStatuses = [...$paidStatuses, ...$deliveredStatuses, ...$cancelledStatuses, ...$refundedStatuses];
         $ph          = fn(array $v) => implode(',', array_fill(0, count($v), '?'));
 
         $counts = Order::whereBetween('created_at', [$start, $end])
             ->whereNotIn('status', [OrderStatus::INITIALIZED->value, OrderStatus::PENDING->value])
             ->selectRaw('
-                SUM(CASE WHEN status IN (' . $ph($escrowedStatuses) . ') THEN 1 ELSE 0 END) as escrowed,
+                SUM(CASE WHEN status IN (' . $ph($paidStatuses) . ') THEN 1 ELSE 0 END) as paid,
                 SUM(CASE WHEN status IN (' . $ph($deliveredStatuses) . ') THEN 1 ELSE 0 END) as delivered,
-                SUM(CASE WHEN status IN (' . $ph($cancelledStatuses) . ') THEN 1 ELSE 0 END) as cancelled
+                SUM(CASE WHEN status IN (' . $ph($cancelledStatuses) . ') THEN 1 ELSE 0 END) as cancelled,
+                SUM(CASE WHEN status IN (' . $ph($refundedStatuses) . ') THEN 1 ELSE 0 END) as refunded
             ', $allStatuses)
             ->first();
 
         $series  = [
-            (int) ($counts?->escrowed ?? 0),
+            (int) ($counts?->paid ?? 0),
             (int) ($counts?->delivered ?? 0),
             (int) ($counts?->cancelled ?? 0),
+            (int) ($counts?->refunded ?? 0),
         ];
 
         return [
-            'labels'  => [__('Escrowed'), __('Delivered'), __('Cancelled')],
+            'labels'  => [__('Paid'), __('Delivered'), __('Cancelled'), __('Refunded')],
             'series'  => $series,
             'hasData' => array_sum($series) > 0,
         ];

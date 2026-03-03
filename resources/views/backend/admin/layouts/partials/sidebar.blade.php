@@ -108,13 +108,13 @@
                             'active' => 'game-category',
                             'permission' => 'category-list',
                         ],
-                        [
-                            'name' => 'Tags',
-                            'route' => route('admin.gm.tag.index'),
-                            'icon' => 'joystick',
-                            'active' => 'tag',
-                            'permission' => 'tag-list',
-                        ],
+                        // [
+                        //     'name' => 'Tags',
+                        //     'route' => route('admin.gm.tag.index'),
+                        //     'icon' => 'joystick',
+                        //     'active' => 'tag',
+                        //     'permission' => 'tag-list',
+                        // ],
                         [
                             'name' => 'Platforms',
                             'route' => route('admin.gm.platform.index'),

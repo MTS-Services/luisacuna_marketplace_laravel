@@ -4,13 +4,11 @@
         <div class="flex gap-4 items-center py-10">
             <x-phosphor name="less-than" variant="regular" class="w-4 h-4 text-zinc-400" />
             @if ($isVisitSeller)
-                <a wire:navigate href="{{ route('user.order.purchased-orders') }}"
-                    class="text-text-white text-base">
+                <a wire:navigate href="{{ route('user.order.purchased-orders') }}" class="text-text-white text-base">
                     {{ __('All Orders') }}
                 </a>
             @else
-                <a wire:navigate href="{{ route('user.order.sold-orders') }}"
-                    class="text-text-white text-base">
+                <a wire:navigate href="{{ route('user.order.sold-orders') }}" class="text-text-white text-base">
                     {{ __('All Orders') }}
                 </a>
             @endif
@@ -297,8 +295,9 @@
                         <x-ui.button class="w-fit! py-3! px-6!" wire:navigate
                             href="{{ route('user.order.detail', ['orderId' => $order->order_id]) }}">
                             {{ __('View full description') }}
-                            <x-phosphor-arrow-right-light
-                                class="w-5 h-5 stroke-text-btn-secondary group-hover:stroke-text-primary" /></x-ui.button>
+                            <flux:icon name="arrow-right"
+                                class="w-5 h-5 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
+                        </x-ui.button>
                     </div>
                 </div>
             </div>

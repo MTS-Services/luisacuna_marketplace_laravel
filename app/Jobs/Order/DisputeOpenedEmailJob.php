@@ -12,50 +12,52 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-class DisputeResolutionEmailJob implements ShouldQueue
+
+class DisputeOpenedEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * Create a new job instance.
-     */
-    public function __construct(public int $orderId, public string $recipientEmail, public string $userName, public string $email_template_key)
-    {
+    public function __construct(
+        public int $orderId,
+        public string $recipientEmail,
+        public string $userName,
+        public string $emailTemplateKey
+    ) {
         $this->onQueue('emails');
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
-
-
         try {
             $order = Order::with(['user', 'source.user', 'disputes'])->findOrFail($this->orderId);
-            Log::info('Order found', ['order' => $order]);
 
-            $emailTemplate = EmailTemplate::where('key', $this->email_template_key)->first();
-            Log::info('Email template found', ['email_template' => $emailTemplate]);
+            $emailTemplate = EmailTemplate::where('key', $this->emailTemplateKey)->firstOrFail();
 
             Mail::to($this->recipientEmail)
                 ->send(new DisputeEmail($order, $this->userName, $emailTemplate));
-            Log::info('Dispute notification email sent');
-        } catch (\Exception $e) {
-            Log::error('Dispute notification email', [
-                'order_id' => $this->orderId ?? 'unknown',
+
+            Log::info('Dispute opened email sent', [
+                'order_id' => $this->orderId,
                 'recipient' => $this->recipientEmail,
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Failed to send dispute opened email', [
+                'order_id' => $this->orderId ?? 'unknown',
+                'recipient' => $this->recipientEmail ?? 'unknown',
                 'error' => $e->getMessage(),
             ]);
+
             throw $e;
         }
     }
+
     public function failed(\Throwable $exception): void
     {
-        Log::error('DisputeResolutionEmailJob failed permanently', [
+        Log::error('DisputeOpenedEmailJob failed permanently', [
             'order_id' => $this->orderId,
             'recipient' => $this->recipientEmail,
             'error' => $exception->getMessage(),
         ]);
     }
 }
+

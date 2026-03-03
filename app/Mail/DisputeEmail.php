@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class DisputeResolutionEmail extends Mailable
+class DisputeEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
