@@ -71,7 +71,7 @@ class Game extends AuditBaseModel implements Auditable
             'game_categories',
             'game_id',
             'category_id'
-        )->withTimestamps();
+        )->withPivot('is_popular')->withTimestamps();
     }
 
     public function gameCategories(): HasMany

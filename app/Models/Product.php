@@ -33,6 +33,10 @@ class Product extends BaseModel implements Auditable
         'delivery_timeline',
         'delivery_method',
 
+        'sales_count_30d',
+        'average_rating',
+        'is_top_selling',
+
         'creater_id',
         'creater_type',
         'updater_id',
@@ -49,6 +53,9 @@ class Product extends BaseModel implements Auditable
 
     protected $casts = [
         'status' => ActiveInactiveEnum::class,
+        'sales_count_30d' => 'integer',
+        'average_rating' => 'decimal:2',
+        'is_top_selling' => 'boolean',
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
@@ -236,9 +243,9 @@ class Product extends BaseModel implements Auditable
 
             $query->where(function (Builder $q) use ($tag) {
                 $q->whereHas('platform', function ($sub) use ($tag) {
-                    $sub->where('name', 'LIKE', '%'.$tag.'%');
+                    $sub->where('name', 'LIKE', '%' . $tag . '%');
                 })->orWhereHas('product_configs', function ($sub) use ($tag) {
-                    $sub->where('value', 'LIKE', '%'.$tag.'%');
+                    $sub->where('value', 'LIKE', '%' . $tag . '%');
                 });
             });
         }

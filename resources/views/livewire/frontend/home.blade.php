@@ -23,9 +23,6 @@
 
     </div>
 
-
-    {{-- <img src="{{ storage_url('default_avatar', ['width' => 1920, 'height' => 1080]) }}" alt="default_avatar"> --}}
-
     <section class="mt-10 sm:mt-20" id="popular-games">
         {{-- New Bosting Games Section --}}
         <section class="container mx-auto">
@@ -36,93 +33,105 @@
                     </h2>
                 </div>
 
-                <div wire:ignore class="swiper new-boosting">
-                    <div class="swiper-wrapper">
-                        @foreach ($new_bostings as $index => $boosting)
-                            <div class="swiper-slide">
-                                <x-game-card :data="$boosting" :categorySlug="'boosting'" />
-                            </div>
-                        @endforeach
-                    </div>
+                @if (!$new_bostings->isEmpty())
+                    <div wire:ignore class="swiper new-boosting">
+                        <div class="swiper-wrapper">
+                            @foreach ($new_bostings as $index => $boosting)
+                                <div class="swiper-slide">
+                                    <x-game-card :data="$boosting" :categorySlug="'boosting'" />
+                                </div>
+                            @endforeach
+                        </div>
 
-                    <!-- Add Pagination and Navigation -->
-                    <div class="mt-12">
-                        <div class="swiper-pagination"></div>
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
+                        <!-- Add Pagination and Navigation -->
+                        <div class="mt-12">
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
                     </div>
-                </div>
+                @else
+                    <div>
+                        <x-ui.empty-state :title="__('No Active Boostings')" :message="__('There are no active boostings at the moment.')">
+                        </x-ui.empty-state>
+                    </div>
+                @endif
             </div>
         </section>
 
-        {{-- New Boosting Ends --}}
-
         {{-- Popular Games Section --}}
-        <section class="container mx-auto mt-10 sm:mt-20">
+        <section class="container mx-auto mt-10">
             <div class="mx-0 sm:mx-5 md:mx-10 lg:mx-14 xl:mx-20">
                 <div class="title mb-5 sm:mb-10">
                     <h2 class="text-2xl sm:text-40px font-semibold text-text-white">
                         {{ __('Popular Games') }}
                     </h2>
                 </div>
-                <div wire:ignore class="swiper popular-games">
-                    <div class="swiper-wrapper ">
-                        @foreach ($popular_games as $game)
-                            <div class="swiper-slide">
-                                <x-game-card :data="$game" />
-                            </div>
-                        @endforeach
-                    </div>
+                @if (!$popular_games->isEmpty())
+                    <div wire:ignore class="swiper popular-games">
+                        <div class="swiper-wrapper ">
+                            @foreach ($popular_games as $game)
+                                <div class="swiper-slide">
+                                    <x-game-card :data="$game" />
+                                </div>
+                            @endforeach
+                        </div>
 
-                    <!-- Add Pagination and Navigation -->
-                    <div class="mt-12">
-                        <div class="swiper-pagination"></div>
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
+                        <!-- Add Pagination and Navigation -->
+                        <div class="mt-12">
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
                     </div>
-                </div>
+                @else
+                    <div>
+                        <x-ui.empty-state :title="__('No Popular Games')" :message="__('There are no popular games at the moment.')">
+                        </x-ui.empty-state>
+                    </div>
+                @endif
             </div>
         </section>
 
-        {{-- Popular Games Ends --}}
-
-
         {{-- Top selling  Section --}}
-        <section class="container mx-auto mt-10 sm:mt-20">
+        <section class="container mx-auto mt-10">
             <div class="mx-0 sm:mx-5 md:mx-10 lg:mx-14 xl:mx-20">
                 <div class="title mb-5 sm:mb-10">
                     <h2 class="text-2xl sm:text-40px font-semibold text-text-white">
                         {{ __('Top-Selling Offers') }}
                     </h2>
                 </div>
-                <div wire:ignore class="swiper top-sellings">
-                    <div class="swiper-wrapper py-0">
-                        @foreach ($top_selling_products as $product)
-                            <div class="swiper-slide">
-                                <x-ui.shop-card :gameSlug="$product?->game?->slug ?? ''" :categorySlug="$product?->category?->slug ?? ''" :data="$product"
-                                    :game="$product?->game" />
-                            </div>
-                        @endforeach
-                    </div>
+                @if (!$top_selling_products->isEmpty())
+                    <div wire:ignore class="swiper top-sellings">
+                        <div class="swiper-wrapper py-0">
+                            @foreach ($top_selling_products as $product)
+                                <div class="swiper-slide">
+                                    <x-ui.shop-card :gameSlug="$product?->game?->slug ?? ''" :categorySlug="$product?->category?->slug ?? ''" :data="$product"
+                                        :game="$product?->game" />
+                                </div>
+                            @endforeach
+                        </div>
 
-                    <!-- Add Pagination and Navigation -->
-                    <div class="mt-12">
-                        <div class="swiper-pagination"></div>
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
+                        <!-- Add Pagination and Navigation -->
+                        <div class="mt-12">
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
                     </div>
-                </div>
+                @else
+                    <div>
+                        <x-ui.empty-state :title="__('No Top-Selling Offers')" :message="__('There are no top-selling offers at the moment.')">
+                        </x-ui.empty-state>
+                    </div>
+                @endif
             </div>
         </section>
-        {{--  --}}
-        {{-- Top Selling Ends --}}
-
-
 
     </section>
 
     <!-- How It Works Section -->
-    <section class="mt-10 sm:mt-20">
+    <section class="mt-10">
         <div class="container mx-auto">
             <div class="mx-0 sm:mx-5 md:mx-10 lg:mx-14 xl:mx-20">
                 <div class="text-center mb-5 sm:mb-10">
@@ -177,7 +186,7 @@
 
     <!-- About Us Section -->
     <section
-        class="container mt-10 sm:mt-20 p-5 md:p-10 xl:p-20 bg-gradient-to-r from-zinc-900
+        class="container mt-10 p-5 md:p-10 xl:p-20 bg-gradient-to-r from-zinc-900
          via-zinc-900 via-30%  to-pink-950/90">
         <div class="">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -205,8 +214,7 @@
     <!-- FAQ Section -->
     <livewire:frontend.partials.faq />
 
-    <div class="mt-20"></div>
-
+    <div class="py-10"></div>
 
     @push('scripts')
         <script>
@@ -243,8 +251,12 @@
                         disableOnInteraction: false,
                     },
                     breakpoints: {
-                        640: { slidesPerView: 2 },
-                        1024: { slidesPerView: 3 },
+                        640: {
+                            slidesPerView: 2
+                        },
+                        1024: {
+                            slidesPerView: 3
+                        },
                     },
                 });
 
@@ -269,8 +281,12 @@
                         disableOnInteraction: false,
                     },
                     breakpoints: {
-                        640: { slidesPerView: 2 },
-                        1024: { slidesPerView: 3 },
+                        640: {
+                            slidesPerView: 2
+                        },
+                        1024: {
+                            slidesPerView: 3
+                        },
                     },
                 });
 
@@ -291,9 +307,15 @@
                         disableOnInteraction: false,
                     },
                     breakpoints: {
-                        640: { slidesPerView: 2 },
-                        1024: { slidesPerView: 3 },
-                        1280: { slidesPerView: 4 },
+                        640: {
+                            slidesPerView: 2
+                        },
+                        1024: {
+                            slidesPerView: 3
+                        },
+                        1280: {
+                            slidesPerView: 4
+                        },
                     },
                 });
 

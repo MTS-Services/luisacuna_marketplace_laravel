@@ -13,6 +13,7 @@ class GameCategory extends BaseModel implements Auditable
     protected $fillable = [
         'game_id',
         'category_id',
+        'is_popular',
 
         'created-at',
         'updated_at',
@@ -22,7 +23,9 @@ class GameCategory extends BaseModel implements Auditable
         'id'
     ];
 
-    protected $casts = [];
+    protected $casts = [
+        'is_popular' => 'boolean',
+    ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
                 Start of RELATIONSHIPS

@@ -9,6 +9,7 @@ use App\Models\GamePlatform;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Factory as Faker;
 use Illuminate\Support\Str;
+
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Game>
  */
@@ -19,19 +20,18 @@ class GameFactory extends Factory
      *
      * @return array<string, mixed>
      */
-   protected $model =  Game::class;
+    protected $model = Game::class;
+
     public function definition(): array
     {
-        $faker = Faker::create();
-        $name =$faker->unique()->name();
+        $name = fake()->unique()->words(3, true);
+
         return [
-            'game_category_id' => GameCategory::inRandomOrder()->value('id'),
-            'sort_order' => $faker->numberBetween(1, 1000),
-            'name' => $name, 
-            // 'platform' =>json_encode(array(GamePlatform::inRandomOrder()->value('id'))), 
-            'slug' => Str::slug($name) ,            
-            'description' => $faker->sentence(),            
-            'status' => GameStatus::ACTIVE->value,  
+            'sort_order' => fake()->numberBetween(1, 1000),
+            'name' => $name,
+            'slug' => Str::slug($name . '-' . fake()->unique()->randomNumber(5)),
+            'description' => fake()->sentence(),
+            'status' => GameStatus::ACTIVE->value,
         ];
     }
 }

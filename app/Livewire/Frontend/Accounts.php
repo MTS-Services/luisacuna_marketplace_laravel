@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend;
 
+use App\Models\Game;
 use App\Services\GameService;
 use Livewire\Component;
 
@@ -20,12 +21,12 @@ class Accounts extends Component
     {
         $this->game_service = $game_service;
     }
-    
+
     public function sortBy($order)
     {
         $this->sortOrder = $order;
     }
-    
+
     public function render()
     {
         if ($this->allGamesCache === null) {
@@ -38,14 +39,23 @@ class Accounts extends Component
             $accounts = $this->allGamesCache;
         }
 
-        $popular_accounts = $this->allGamesCache->filter(function ($game) {
-            return $game->tags->contains('slug', 'popular');
-        });
+        $popular_accounts = Game::query()
+            ->active()
+            ->whereHas(
+                'categories',
+                fn($q) => $q
+                    ->where('categories.slug', 'accounts')
+                    ->where('game_categories.is_popular', true)
+            )
+            ->with(['categories', 'gameTranslations' => fn($q) => $q->where('language_id', get_language_id())])
+            ->orderBy('name', 'asc')
+            ->limit(10)
+            ->get();
 
         $accounts = $this->applySorting($accounts);
-        
+
         $pagination = $this->getPaginationData($accounts);
-        
+
         $accounts = $accounts->forPage($this->currentPage, $this->perPage);
 
         return view('livewire.frontend.accounts', [
@@ -84,12 +94,12 @@ class Accounts extends Component
             $this->allGamesCache = $this->game_service->getGamesByCategory('accounts');
         }
 
-        $accountsCollection = !empty($this->search) 
+        $accountsCollection = !empty($this->search)
             ? $this->game_service->searchGamesByCategory('accounts', $this->search)
             : $this->allGamesCache;
 
         $pagination = $this->getPaginationData($accountsCollection);
-        
+
         if ($this->currentPage < $pagination['last_page']) {
             $this->currentPage++;
         }

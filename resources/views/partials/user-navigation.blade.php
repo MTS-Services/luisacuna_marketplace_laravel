@@ -57,100 +57,11 @@
 
             {{-- Popular Categories --}}
             <div class="px-4 py-3 flex-1 overflow-y-auto">
-                {{-- <h3 class="text-xs font-semibold text-text-white/70 uppercase tracking-wider mb-2 pt-1 px-2.5">
-                    {{ __('POPULAR CATEGORIES') }}
-                </h3> --}}
+
                 <div class="space-y-1 pb-4">
-                    {{-- @php
-                        $popularCategories = [
-                            [
-                                'name' => 'New World Coins Currency',
-                                'categorySlug' => 'currency',
-                                'icon' => 'Frame 100.png',
-                                'slug' => 'new-world-coins',
-                            ],
-                            [
-                                'name' => 'Worldforge Legends Currency',
 
-                                'categorySlug' => 'currency',
-                                'icon' => 'Frame 94.png',
-                                'slug' => 'worldforge-legends',
-                            ],
-                            [
-                                'name' => 'Exilecon Official Trailer Accounts',
-                                'categorySlug' => 'accounts',
-                                'icon' => 'Frame 93.png',
-                                'slug' => 'exilecon-official-trailer',
-                            ],
-                            [
-                                'name' => 'Echoes of the Terra Currency',
-                                'categorySlug' => 'currency',
-                                'icon' => 'Frame 96.png',
-                                'slug' => 'echoes-of-the-terra',
-                            ],
-                            [
-                                'name' => 'Path of Exile 2 Currency',
-                                'categorySlug' => 'currency',
-                                'icon' => 'Frame 103.png',
-                                'slug' => 'path-of-exile-2-currency',
-                            ],
-                            [
-                                'name' => 'Epochs of Gaia Top-Ups',
-                                'categorySlug' => 'top-ups',
-                                'icon' => 'Frame 102.png',
-                                'slug' => 'epochs-of-gaia',
-                            ],
-                            [
-                                'name' => 'Throne and Liberty Lucent Currency',
-                                'categorySlug' => 'currency',
-                                'icon' => 'Frame 105.png',
-                                'slug' => 'throne-and-liberty-lucent',
-                            ],
-                            [
-                                'name' => 'Titan Realms Top-Ups',
-                                'categorySlug' => 'top-ups',
-                                'icon' => 'Frame 98.png',
-                                'slug' => 'titan-realms',
-                            ],
-                            [
-                                'name' => 'Blade Ball Tokens Currency',
-                                'categorySlug' => 'currency',
-                                'icon' => 'Frame 97.png',
-                                'slug' => 'blade-ball-tokens',
-                            ],
-                            [
-                                'name' => 'Kingdoms Across Skies Currency',
-                                'categorySlug' => 'currency',
-                                'icon' => 'Frame 99.png',
-                                'slug' => 'kingdoms-across-skies',
-                            ],
-                            [
-                                'name' => 'EA Sports FC Currency',
-                                'categorySlug' => 'currency',
-                                'icon' => 'Frame1001.png',
-                                'slug' => 'ea-sports-fc-coins',
-                            ],
-                            [
-                                'name' => 'Realmwalker: New Dawn Accounts',
-                                'categorySlug' => 'accounts',
-                                'icon' => 'Frame 111.png',
-                                'slug' => 'realmwalker-new-dawn',
-                            ],
-                        ];
-                    @endphp --}}
 
-                    {{-- @foreach ($popular_games as $item)
-                        <a href="{{ route('game.index', ['gameSlug' => $item['slug'], 'categorySlug' => $item['categorySlug']]) }}"
-                            wire:navigate
-                            class="flex items-center gap-3 p-2 hover:bg-purple-500/10 rounded-lg transition cursor-pointer"></a>
-                        <a href="" wire:navigate class="flex items-center gap-3 p-2 hover:bg-purple-500/10 rounded-lg transition cursor-pointer">
-                            <div class="w-6 h-6 flex items-center justify-center">
-                                <img src="{{ storage_url($item->logo) }}" alt="{{ $item['name'] }}"
-                                    class="w-full h-full object-contain">
-                            </div>
-                            <p class="text-base lg:text-lg font-normal text-text-white">{{ $item['name'] }}</p>
-                        </a>
-                    @endforeach --}}
+
 
                     <div class="px-4 py-3 flex-1 overflow-y-auto">
                         @if (empty($search))
@@ -159,7 +70,7 @@
                                 {{ __('POPULAR CATEGORIES') }}
                             </h3>
                             <div class="space-y-1 pb-4">
-                                @foreach ($popular_games as $item)
+                                @forelse ($popular_games as $item)
                                     <a href="{{ route('game.index', ['gameSlug' => $item->slug, 'categorySlug' => $category->slug]) }}"
                                         wire:navigate
                                         class="flex items-center gap-3 p-2 hover:bg-purple-500/10 rounded-lg transition cursor-pointer">
@@ -171,7 +82,11 @@
                                             {{ $item->translatedName(app()->getLocale()) }}
                                         </p>
                                     </a>
-                                @endforeach
+                                @empty
+                                    <div class="text-center py-8">
+                                        <p class="text-text-white/50">{{ __('No popular games found') }}</p>
+                                    </div>
+                                @endforelse
                             </div>
                         @else
                             <h3

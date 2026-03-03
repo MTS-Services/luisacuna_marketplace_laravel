@@ -43,7 +43,6 @@ class HeaderDropdown extends Component
 
         $query = Game::query()
             ->with([
-                'tags',
                 'categories',
                 'gameTranslations' => function ($query) {
                     $query->where('language_id', get_language_id());
@@ -56,8 +55,9 @@ class HeaderDropdown extends Component
             ->orderBy('name', 'asc');
 
         $popularGames = (clone $query)
-            ->whereHas('tags', function ($query) {
-                $query->where('tags.slug', 'popular');
+            ->whereHas('categories', function ($query) use ($category) {
+                $query->where('categories.id', $category->id)
+                    ->where('game_categories.is_popular', true);
             })
             ->take(12)
             ->get();
@@ -67,10 +67,10 @@ class HeaderDropdown extends Component
                 $search = $this->search;
 
                 $query->where(function ($query) use ($search) {
-                    $query->where('name', 'like', '%'.$search.'%')
+                    $query->where('name', 'like', '%' . $search . '%')
                         ->orWhereHas('gameTranslations', function ($query) use ($search) {
                             $query->where('language_id', get_language_id())
-                                ->where('name', 'like', '%'.$search.'%');
+                                ->where('name', 'like', '%' . $search . '%');
                         });
                 });
             })
@@ -80,7 +80,6 @@ class HeaderDropdown extends Component
             'popular' => $popularGames,
             'all' => $allGames,
         ];
-
     }
 
     public function render()

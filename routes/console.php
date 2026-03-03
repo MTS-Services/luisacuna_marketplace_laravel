@@ -9,3 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('app:user-loyalty-point-allocation')->daily();
+Schedule::command('app:refresh-marketplace-metrics')->dailyAt('00:00');

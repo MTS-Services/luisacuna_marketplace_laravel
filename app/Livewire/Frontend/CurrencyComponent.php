@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend;
 
+use App\Models\Game;
 use Livewire\Component;
 use App\Services\GameService;
 
@@ -38,19 +39,26 @@ class CurrencyComponent extends Component
     {
         $this->games =  $this->game_service->paginateDatas($this->perPage, [
 
-                'category' => $this->categorySlug,
+            'category' => $this->categorySlug,
 
-                'relations' => ['tags', 'categories']
+            'relations' => ['tags', 'categories']
         ]);
-       
 
-        $popular_games = $this->game_service->getAllDatas( [
-        'category' => $this->categorySlug,
-        'tag' => 'popular', 
-        'relations' => ['tags', 'categories']
-         ]);
 
-     
+        $popular_games = Game::query()
+            ->active()
+            ->whereHas(
+                'categories',
+                fn($q) => $q
+                    ->where('categories.slug', $this->categorySlug)
+                    ->where('game_categories.is_popular', true)
+            )
+            ->with(['categories', 'gameTranslations' => fn($q) => $q->where('language_id', get_language_id())])
+            ->orderBy('name', 'asc')
+            ->limit(10)
+            ->get();
+
+
         // Search logic
         if (!empty($this->search)) {
             $games = $this->game_service->searchGamesByCategory('currency', $this->search);
@@ -58,7 +66,7 @@ class CurrencyComponent extends Component
             $games = $this->allGamesCache;
         }
 
-      
+
 
         // Sorting apply
         // $games = $this->applySorting($games);
@@ -70,11 +78,11 @@ class CurrencyComponent extends Component
         // $games = $games->forPage($this->currentPage, $this->perPage);
 
         return view('livewire.frontend.currency-component', [
-           
+
             'games' => $this->games,
             'popular_games' => $popular_games,
             'categorySlug' => $this->categorySlug,
-            
+
         ]);
     }
 
@@ -103,18 +111,18 @@ class CurrencyComponent extends Component
 
     public function nextPage()
     {
-       
+
         if ($this->allGamesCache === null) {
             $this->allGamesCache = $this->game_service->getGamesByCategory('currency');
         }
 
-        
-        $gamesCollection = !empty($this->search) 
+
+        $gamesCollection = !empty($this->search)
             ? $this->game_service->searchGamesByCategory('currency', $this->search)
             : $this->allGamesCache;
 
         $pagination = $this->getPaginationData($gamesCollection);
-        
+
         if ($this->currentPage < $pagination['last_page']) {
             $this->currentPage++;
         }

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend;
 
+use App\Models\Game;
 use App\Services\GameService;
 use Livewire\Component;
 
@@ -41,24 +42,26 @@ class Items extends Component
 
         if (!empty($this->search)) {
             $items = $this->game_service->searchGamesByCategory('items', $this->search);
-
-            if ($this->allGamesCache === null) {
-                $this->allGamesCache = $this->game_service->getGamesByCategory('items');
-            }
-
-            $popular_items = $this->allGamesCache->filter(function ($game) {
-                return $game->tags->contains('slug', 'popular');
-            });
         } else {
             if ($this->allGamesCache === null) {
                 $this->allGamesCache = $this->game_service->getGamesByCategory('items');
             }
 
             $items = $this->allGamesCache;
-            $popular_items = $this->allGamesCache->filter(function ($game) {
-                return $game->tags->contains('slug', 'popular');
-            });
         }
+
+        $popular_items = Game::query()
+            ->active()
+            ->whereHas(
+                'categories',
+                fn($q) => $q
+                    ->where('categories.slug', 'items')
+                    ->where('game_categories.is_popular', true)
+            )
+            ->with(['categories', 'gameTranslations' => fn($q) => $q->where('language_id', get_language_id())])
+            ->orderBy('name', 'asc')
+            ->limit(10)
+            ->get();
 
         $items = $this->applySorting($items);
 
