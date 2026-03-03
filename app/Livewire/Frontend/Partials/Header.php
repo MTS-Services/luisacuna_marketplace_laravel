@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Frontend\Partials;
 
-use App\Models\Category;
 use App\Services\CategoryService;
 use App\Services\ConversationService;
 use App\Services\CurrencyService;
@@ -34,10 +33,6 @@ class Header extends Component
     public ?Collection $languages = null;
 
     protected GameService $game_service;
-
-    protected $popularGamesCache = null;
-
-    protected $allGamesCache = null;
 
     protected CategoryService $categoryService;
 
@@ -95,17 +90,14 @@ class Header extends Component
     {
         $this->popular_games = collect();
 
-        if (! empty($this->search)) {
-            if ($this->allGamesCache === null) {
-                $this->allGamesCache = $this->game_service->getAllDatas([], $this->sortField = 'name', $this->order = 'asc');
-            }
-        } else {
-            if ($this->allGamesCache === null) {
-                $this->allGamesCache = $this->game_service->getAllDatas([], $this->sortField = 'name', $this->order = 'asc');
-            }
-            $this->popular_games = $this->allGamesCache->filter(function ($game) {
-                return $game->tags->contains('slug', 'popular');
-            });
+        if (empty($this->search)) {
+            $this->popular_games = \App\Models\Game::query()
+                ->active()
+                ->whereHas('categories', fn($q) => $q->where('game_categories.is_popular', true))
+                ->with(['gameTranslations' => fn($q) => $q->where('language_id', get_language_id())])
+                ->orderBy('name', 'asc')
+                ->limit(12)
+                ->get();
         }
     }
 

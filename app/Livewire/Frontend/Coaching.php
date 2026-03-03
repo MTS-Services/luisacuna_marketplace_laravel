@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend;
 
+use App\Models\Game;
 use App\Services\GameService;
 use Livewire\Component;
 
@@ -32,7 +33,6 @@ class Coaching extends Component
 
         if (!empty($this->search)) {
             $allCoachings = $this->game_service->getGamesByCategory('coaching');
-            $popular_coachings = $allCoachings->filter(fn($game) => $game->tags->contains('slug', 'popular'));
             $newly_coachings = $allCoachings->filter(fn($game) => $game->tags->contains('slug', 'newly'));
 
             $coachings = $this->game_service->searchGamesByCategory('coaching', $this->search);
@@ -40,9 +40,21 @@ class Coaching extends Component
             $allCoachings = $this->game_service->getGamesByCategory('coaching');
 
             $coachings = $allCoachings;
-            $popular_coachings = $allCoachings->filter(fn($game) => $game->tags->contains('slug', 'popular'));
             $newly_coachings = $allCoachings->filter(fn($game) => $game->tags->contains('slug', 'newly'));
         }
+
+        $popular_coachings = Game::query()
+            ->active()
+            ->whereHas(
+                'categories',
+                fn($q) => $q
+                    ->where('categories.slug', 'coaching')
+                    ->where('game_categories.is_popular', true)
+            )
+            ->with(['categories', 'gameTranslations' => fn($q) => $q->where('language_id', get_language_id())])
+            ->orderBy('name', 'asc')
+            ->limit(10)
+            ->get();
 
         $coachings = $this->applySorting($coachings);
         // Pagination apply

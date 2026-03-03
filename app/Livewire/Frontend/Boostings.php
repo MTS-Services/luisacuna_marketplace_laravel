@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend;
 
+use App\Models\Game;
 use App\Services\GameService;
 use Livewire\Component;
 
@@ -30,7 +31,6 @@ class Boostings extends Component
 
         if (!empty($this->search)) {
             $allBoostings = $this->game_service->getGamesByCategory('boosting');
-            $popular_boostings = $allBoostings->filter(fn($game) => $game->tags->contains('slug', 'popular'));
             $newly_boostings = $allBoostings->filter(fn($game) => $game->tags->contains('slug', 'newly'));
 
             $boostings = $this->game_service->searchGamesByCategory('boosting', $this->search);
@@ -38,9 +38,21 @@ class Boostings extends Component
             $allBoostings = $this->game_service->getGamesByCategory('boosting');
 
             $boostings = $allBoostings;
-            $popular_boostings = $allBoostings->filter(fn($game) => $game->tags->contains('slug', 'popular'));
             $newly_boostings = $allBoostings->filter(fn($game) => $game->tags->contains('slug', 'newly'));
         }
+
+        $popular_boostings = Game::query()
+            ->active()
+            ->whereHas(
+                'categories',
+                fn($q) => $q
+                    ->where('categories.slug', 'boosting')
+                    ->where('game_categories.is_popular', true)
+            )
+            ->with(['categories', 'gameTranslations' => fn($q) => $q->where('language_id', get_language_id())])
+            ->orderBy('name', 'asc')
+            ->limit(10)
+            ->get();
 
         $boostings = $this->applySorting($boostings);
         // Pagination apply

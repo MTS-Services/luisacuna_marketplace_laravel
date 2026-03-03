@@ -2,16 +2,14 @@
 
 namespace App\Livewire\Frontend;
 
-use App\Enums\ActiveInactiveEnum;
+use App\Models\Game;
+use App\Models\Product;
 use App\Services\GameService;
 use App\Services\HeroService;
-use App\Services\ProductService;
 use Livewire\Component;
 
 class Home extends Component
 {
-    public $perPage = 10;
-
     public $categorySlug;
 
     public $gameSlug;
@@ -20,14 +18,10 @@ class Home extends Component
 
     protected HeroService $heroService;
 
-    protected ProductService $productService;
-
-    public function boot(GameService $gameService, HeroService $heroService, ProductService $productService)
+    public function boot(GameService $gameService, HeroService $heroService)
     {
-
         $this->gameService = $gameService;
         $this->heroService = $heroService;
-        $this->productService = $productService;
     }
 
     public function mount($gameSlug = null, $categorySlug = null)
@@ -38,27 +32,28 @@ class Home extends Component
 
     public function render()
     {
-
         $heros = $this->heroService->latestData(6);
 
-        $popular_games = $this->gameService->latestData(10, [
-            'tag' => 'popular',
-        ]);
-        $popular_games->load(['tags', 'categories']);
+        $popular_games = Game::query()
+            ->active()
+            ->whereHas('categories', fn($q) => $q->where('game_categories.is_popular', true))
+            ->with([
+                'categories',
+                'gameTranslations' => fn($q) => $q->where('language_id', get_language_id()),
+            ])
+            ->limit(10)
+            ->get();
 
-        // Only Paginate 12 Datas
         $new_bostings = $this->gameService->latestData(10, [
             'categorySlug' => 'boosting',
         ]);
         $new_bostings->load(['categories']);
 
-        $topSelling = $this->productService->getPaginatedData($this->perPage, [
-            'gameSlug' => $this->gameSlug,
-            'categorySlug' => $this->categorySlug,
-            'skipSelf' => true,
-            'status' => ActiveInactiveEnum::ACTIVE->value,
-        ]);
-        $topSelling->load(['game', 'category', 'platform', 'user.feedbacksReceived']);
+        $topSelling = Product::query()
+            ->where('is_top_selling', true)
+            ->with(['game', 'category', 'platform', 'user.feedbacksReceived'])
+            ->limit(10)
+            ->get();
 
         return view('livewire.frontend.home', [
             'popular_games' => $popular_games,

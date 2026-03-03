@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend;
 
+use App\Models\Game;
 use App\Services\GameService;
 use Livewire\Component;
 
@@ -28,7 +29,6 @@ class TopUp extends Component
     {
         if (!empty($this->search)) {
             $allTopUps = $this->game_service->getGamesByCategory('topUp');
-            $popular_topUps = $allTopUps->filter(fn($game) => $game->tags->contains('slug', 'popular'));
             $newly_topUps = $allTopUps->filter(fn($game) => $game->tags->contains('slug', 'newly'));
 
             $topUpsCollection = $this->game_service->searchGamesByCategory('topUp', $this->search);
@@ -36,9 +36,21 @@ class TopUp extends Component
             $allTopUps = $this->game_service->getGamesByCategory('topUp');
 
             $topUpsCollection = $allTopUps;
-            $popular_topUps = $allTopUps->filter(fn($game) => $game->tags->contains('slug', 'popular'));
             $newly_topUps = $allTopUps->filter(fn($game) => $game->tags->contains('slug', 'newly'));
         }
+
+        $popular_topUps = Game::query()
+            ->active()
+            ->whereHas(
+                'categories',
+                fn($q) => $q
+                    ->where('categories.slug', 'top-up')
+                    ->where('game_categories.is_popular', true)
+            )
+            ->with(['categories', 'gameTranslations' => fn($q) => $q->where('language_id', get_language_id())])
+            ->orderBy('name', 'asc')
+            ->limit(10)
+            ->get();
         // $topUps = $this->applySorting($topUps);
 
         // Sorting apply

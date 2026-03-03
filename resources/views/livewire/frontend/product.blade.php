@@ -5,18 +5,18 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-6 mb-13 mt-15">
             <div>
                 <h2 class="font-semibold text-4xl pb-3">
-                    {{ $category?->categoryTranslations->first()->name ?? $category?->name ?? ucfirst(str_replace('-', ' ', $categorySlug)) }}
+                    {{ $category?->categoryTranslations->first()->name ?? ($category?->name ?? ucfirst(str_replace('-', ' ', $categorySlug))) }}
                 </h2>
                 @if ($categorySlug == 'top-up')
                     <p class="text-base lg:text-xl text-text-white font-light pb-3 ">
-                       {{ __("Different from gift cards or vouchers, U7BUY provides a Top Up service with which you can add funds directly to your balance. It contains a large variety, including mobile games, live streaming, shopping, entertainment, etc.") }}
+                        {{ __('Different from gift cards or vouchers, U7BUY provides a Top Up service with which you can add funds directly to your balance. It contains a large variety, including mobile games, live streaming, shopping, entertainment, etc.') }}
                     </p>
                 @endif
             </div>
             @if ($categorySlug == 'top-up')
                 <div class="h-40 md:h-80 w-full rounded-2xl overflow-hidden bg-bg-secondary col-span-2">
-                    <img src="{{ storage_url('top-up-default', ['height' => 320, 'width' => 'auto' , 'crop' => 'scale']) }}" alt="category banner"
-                        class="w-full h-full object-cover rounded-lg">
+                    <img src="{{ storage_url('top-up-default', ['height' => 320, 'width' => 'auto', 'crop' => 'scale']) }}"
+                        alt="category banner" class="w-full h-full object-cover rounded-lg">
                 </div>
             @endif
         </div>
@@ -37,12 +37,6 @@
             </div>
 
             <div class="min-w-30 flex items-center justify-center gap-2 relative" x-data="{ filter: false }">
-                {{-- Filter Button --}}
-                {{-- <x-ui.custom-select label="Filter" wire-model="sortOrder" :wire-live="true" class="w-full sm:w-70">
-                    <x-ui.custom-option label="Default" value="all" />
-                    <x-ui.custom-option label="A-Z" value="asc" />
-                    <x-ui.custom-option label="Z-A" value="desc" />
-                </x-ui.custom-select> --}}
 
                 <x-ui.select wire:model.live="sortOrder" class="rounded-full! bg-transparent! border-zinc-500!">
                     <option value="all">{{ __('Default') }}</option>
@@ -50,42 +44,6 @@
                     <option value="desc">{{ __('Z-A') }}</option>
                 </x-ui.select>
 
-
-
-
-                {{-- <button @click="filter = !filter"
-                    class="flex items-center gap-2 px-4 py-2.5 bg-bg-transparent rounded-full border border-zinc-700 relative z-10">
-
-                    <span class="text-text-white text-sm">
-                        @if ($sortOrder === 'asc')
-                            {{ __('a-z') }}
-                        @elseif($sortOrder === 'desc')
-                            {{ __('z-a') }}
-                        @else
-                            {{ __('Filter') }}
-                        @endif
-                    </span>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
-                        </path>
-                    </svg>
-                </button>
-
-                <div class="absolute top-full mt-2 right-0 shadow-glass-card min-w-31 z-50" x-show="filter" x-transition
-                    x-cloak @click.outside="filter = false">
-                    <div class="bg-bg-primary rounded-md p-4 border border-zinc-700">
-                        <div class="flex flex-col gap-2">
-                            <button wire:click="sortBy('asc')" @click="setTimeout(() => filter = false, 50)"
-                                class="text-left px-3 py-2 rounded transition {{ $sortOrder === 'asc' ? 'bg-bg-hover' : 'hover:bg-bg-hover' }}">
-                                {{ __('A-Z') }}
-                            </button>
-                            <button wire:click="sortBy('desc')" @click="setTimeout(() => filter = false, 50)"
-                                class="text-left px-3 py-2 rounded transition {{ $sortOrder === 'desc' ? 'bg-bg-hover' : 'hover:bg-bg-hover' }}">
-                                {{ __('Z-A') }}
-                            </button>
-                        </div>
-                    </div>
-                </div> --}}
             </div>
         </div>
     </section>
@@ -101,28 +59,28 @@
                         {{ $categorySlug == 'top-up' || $categorySlug == 'coaching' ? 'Now' : ucfirst(str_replace('-', ' ', $categorySlug)) }}
                     </h2>
                 </div>
-                <div wire:ignore class="swiper popular-currency">
-                    <div class="swiper-wrapper pt-10">
-                        @forelse ($popular_games as $popular_game)
-                            <div class="swiper-slide">
-                                <x-product-card :data="$popular_game" :categorySlug="$categorySlug" />
-                            </div>
-                        @empty
-                            <div class="w-full py-10 text-center text-text-white/60">
-                                {{ __('No popular games available for this category yet.') }}
-                            </div>
-                        @endforelse
-                    </div>
-
-                    @if ($popular_games->count())
+                @if (!$popular_games->isEmpty())
+                    <div wire:ignore class="swiper popular-currency">
+                        <div class="swiper-wrapper pt-10">
+                            @foreach ($popular_games as $popular_game)
+                                <div class="swiper-slide">
+                                    <x-product-card :data="$popular_game" :categorySlug="$categorySlug" />
+                                </div>
+                            @endforeach
+                        </div>
                         <!-- Add Pagination and Navigation -->
                         <div class="mt-12">
                             <div class="swiper-pagination"></div>
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
                         </div>
-                    @endif
-                </div>
+                    </div>
+                @else
+                    <div class="mt-5">
+                        <x-ui.empty-state title="{{ __('No popular games found') }}"
+                            message="{{ __('No popular games found for this category yet.') }}" />
+                    </div>
+                @endif
             </section>
         @endif
 
@@ -134,28 +92,29 @@
                         {{ $categorySlug == 'top-up' || $categorySlug == 'coaching' ? 'Launched' : ucfirst(str_replace('-', ' ', $categorySlug)) }}
                     </h2>
                 </div>
-                <div wire:ignore class="swiper new-boosting">
-                    <div class="swiper-wrapper pt-10">
-                        @forelse ($new_boosting as $index => $boosting_game)
-                            <div class="swiper-slide">
-                                <x-product-card :data="$boosting_game" :categorySlug="$categorySlug" />
-                            </div>
-                        @empty
-                            <div class="w-full py-10 text-center text-text-white/60">
-                                {{ __('No new games available for this category yet.') }}
-                            </div>
-                        @endforelse
-                    </div>
+                @if (!$new_boosting->isEmpty())
+                    <div wire:ignore class="swiper new-boosting">
+                        <div class="swiper-wrapper pt-10">
+                            @foreach ($new_boosting as $index => $boosting_game)
+                                <div class="swiper-slide">
+                                    <x-product-card :data="$boosting_game" :categorySlug="$categorySlug" />
+                                </div>
+                            @endforeach
+                        </div>
 
-                    @if ($new_boosting->count())
                         <!-- Add Pagination and Navigation -->
                         <div class="mt-12">
                             <div class="swiper-pagination"></div>
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
                         </div>
-                    @endif
-                </div>
+                    </div>
+                @else
+                    <div class="mt-5">
+                        <x-ui.empty-state title="{{ __('No games found') }}"
+                            message="{{ __('No new games found for this category yet.') }}" />
+                    </div>
+                @endif
             </section>
         @endif
 
@@ -176,8 +135,9 @@
                 @forelse ($games as $game)
                     <x-product-card :data="$game" :categorySlug="$categorySlug" />
                 @empty
-                    <div class="col-span-full py-10 text-center text-text-white/60">
-                        {{ __('No games configured for this category yet.') }}
+                    <div class="mt-5">
+                        <x-ui.empty-state title="{{ __('No games found') }}"
+                            message="{{ __('No games found for this category yet.') }}" />
                     </div>
                 @endforelse
             </div>
@@ -208,8 +168,12 @@
                         disableOnInteraction: false,
                     },
                     breakpoints: {
-                        640: { slidesPerView: 2 },
-                        1024: { slidesPerView: 3 },
+                        640: {
+                            slidesPerView: 2
+                        },
+                        1024: {
+                            slidesPerView: 3
+                        },
                     },
                 });
 
@@ -233,8 +197,12 @@
                         disableOnInteraction: false,
                     },
                     breakpoints: {
-                        640: { slidesPerView: 2 },
-                        1024: { slidesPerView: 3 },
+                        640: {
+                            slidesPerView: 2
+                        },
+                        1024: {
+                            slidesPerView: 3
+                        },
                     },
                 });
 

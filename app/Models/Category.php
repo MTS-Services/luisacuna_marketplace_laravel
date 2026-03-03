@@ -77,7 +77,7 @@ class Category extends AuditBaseModel implements Auditable
     public function games(): BelongsToMany
     {
         return $this->belongsToMany(Game::class, 'game_categories')
-            ->withTimestamps();
+            ->withPivot('is_popular')->withTimestamps();
     }
 
     public function gameCategories(): HasMany

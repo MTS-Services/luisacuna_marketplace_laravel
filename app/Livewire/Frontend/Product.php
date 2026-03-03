@@ -3,6 +3,7 @@
 namespace App\Livewire\Frontend;
 
 use App\Enums\GameStatus;
+use App\Models\Game;
 use App\Services\CategoryService;
 use App\Services\GameService;
 use App\Traits\WithPaginationData;
@@ -41,22 +42,30 @@ class Product extends Component
 
     public function render()
     {
-
         $games = $this->getGames();
 
         $category = $this->categoryService->findData($this->categorySlug, 'slug');
 
         $this->paginationData($games);
 
-        $popular_games = $this->game_service->latestData(10, [
-            'categorySlug' => $this->categorySlug,
-            'tag' => 'popular',
-            'relations' => ['tags', 'categories'],
-            'sort_field' => 'name',
-            'sort_direction' => 'asc',
-            'withProductCount' => true,
-            'status' => GameStatus::ACTIVE,
-        ]);
+        $popular_games = Game::query()
+            ->active()
+            ->whereHas(
+                'categories',
+                fn($q) => $q
+                    ->where('categories.slug', $this->categorySlug)
+                    ->where('game_categories.is_popular', true)
+            )
+            ->with([
+                'categories',
+                'gameTranslations' => fn($q) => $q->where('language_id', get_language_id()),
+            ])
+            ->when($category, fn($q) => $q->withCount([
+                'products' => fn($q) => $q->where('category_id', $category->id),
+            ]))
+            ->orderBy('name', 'asc')
+            ->limit(10)
+            ->get();
 
         if ($this->categorySlug == 'boosting' || $this->categorySlug == 'coaching' || $this->categorySlug == 'top-up') {
             $new_boosting = $this->game_service->latestData(10, [
@@ -100,9 +109,8 @@ class Product extends Component
             $games = $this->game_service->paginateDatas($this->perPage, $params);
 
             return $games;
-
         } catch (\Exception $e) {
-            Log::error('Error fetching games: '.$e->getMessage());
+            Log::error('Error fetching games: ' . $e->getMessage());
 
             return collect([]);
         }
