@@ -614,8 +614,9 @@
                 this.chart = safeDestroy(this.chart);
                 this.$nextTick(() => {
                     this.chart = mkChart(this.$refs.chart,
-                        donutOpts(this.data.series, this.data.labels, ['#F59E0B', '#10B981',
-                            '#EF4444'
+                        donutOpts(this.data.series, this.data.labels, [
+                            '#F59E0B', '#10B981',
+                            '#EF4444', '#8B5CF6'
                         ], theme()));
                 });
                 this._off = makeUpdater(this, 'orderLifecycle', (chart, d) => {

@@ -115,9 +115,14 @@ class Order extends AuditBaseModel implements Auditable
         return $this->hasMany(Transaction::class, 'order_id');
     }
 
-    public function disputes():HasOne
+    public function disputes(): HasOne
     {
         return $this->hasOne(DisputeOrder::class, 'order_id', 'id');
+    }
+
+    public function dispute(): HasOne
+    {
+        return $this->hasOne(Dispute::class, 'order_id', 'id');
     }
 
     public function latestPayment()

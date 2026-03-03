@@ -134,6 +134,14 @@ class EmailTemplateSeeder extends Seeder
                 'variables' => ['seller_name', 'buyer_name', 'order_id', 'product_name', 'paid_at', 'app_name', 'date_time', 'order_detail_link'],
                 'sort_order' => 15,
             ],
+            [
+                'key' => EmailTemplateEnum::ORDER_DISPUTE_OPENED_SELLER->value,
+                'name' => 'Order Dispute opened to Seller',
+                'subject' => 'Dispute opened - Order {{order_id}}',
+                'template' => '<p>Hello {{seller_name}},</p><p>You have a new dispute for order {{order_id}}.</p><p>Buyer: {{buyer_name}}</p><p>Product: {{product_name}}</p><p>Paid at: {{paid_at}}</p><p><a href="{{order_detail_link}}">View order details</a></p><p>{{app_name}} - {{date_time}}</p>',
+                'variables' => ['seller_name', 'buyer_name', 'order_id', 'product_name', 'paid_at', 'app_name', 'date_time', 'order_detail_link'],
+                'sort_order' => 16,
+            ],
         ];
 
         EmailTemplate::query()->delete();

@@ -6,6 +6,7 @@ use App\Enums\CustomNotificationType;
 use App\Enums\EmailTemplateEnum;
 use App\Enums\MessageType;
 use App\Enums\OrderStatus;
+use App\Jobs\Order\DisputeOpenedEmailJob;
 use App\Jobs\Order\DisputeResolutionEmailJob;
 use App\Models\Achievement;
 use App\Models\Admin;
@@ -114,7 +115,7 @@ class OrderService
         if (! $order) {
             abort(404, __('Order not found'));
         }
-        $order->load('payments');
+        $order->load(['payments', 'source.user']);
 
         $order->is_disputed = true;
         $order->save();
@@ -158,6 +159,16 @@ class OrderService
                 'amount' => $order->amount,
             ],
         ]);
+
+        $seller = $order->source?->user;
+        if ($seller && $seller->email) {
+            DisputeOpenedEmailJob::dispatch(
+                $order->id,
+                $seller->email,
+                $seller->full_name ?? $seller->username,
+                EmailTemplateEnum::ORDER_DISPUTE_OPENED_SELLER->value,
+            );
+        }
 
         return $order->fresh();
     }

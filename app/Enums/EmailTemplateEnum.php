@@ -19,6 +19,7 @@ enum EmailTemplateEnum: string
     case OTP_VERIFICATION = 'otp_verification';
     case ORDER_DISPUTE_RESOLVED_BUYER = 'order_dispute_resolved_buyer';
     case ORDER_DISPUTE_RESOLVED_SELLER = 'order_dispute_resolved_seller';
+    case ORDER_DISPUTE_OPENED_SELLER = 'order_dispute_opened_seller';
 
     public function label(): string
     {
@@ -37,6 +38,7 @@ enum EmailTemplateEnum: string
             self::OTP_VERIFICATION => __('OTP Verification'),
             self::ORDER_DISPUTE_RESOLVED_BUYER => __('Order Dispute resolved to Buyer'),
             self::ORDER_DISPUTE_RESOLVED_SELLER => __('Order Dispute resolved to Seller'),
+            self::ORDER_DISPUTE_OPENED_SELLER => __('Order Dispute opened to Seller'),
         };
     }
 
