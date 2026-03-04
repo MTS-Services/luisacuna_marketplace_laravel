@@ -1,4 +1,4 @@
 <x-frontend::app>
-     <x-slot name="pageSlug">{{ __('subscriptions') }}</x-slot>
+     <x-slot name="pageSlug">subscriptions</x-slot>
     <livewire:backend.user.boosting.subscriptions />
 </x-frontend::app>

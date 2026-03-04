@@ -1,5 +1,5 @@
 <x-admin::app>
-    <x-slot name="pageSlug">{{ __('language') }}</x-slot>
+    <x-slot name="pageSlug">language</x-slot>
 
     @switch(Route::currentRouteName())
         {{-- @case('admin.as.language.create')

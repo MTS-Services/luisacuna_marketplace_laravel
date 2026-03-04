@@ -1,5 +1,5 @@
 <x-admin::app>
-    <x-slot name="pageSlug">{{ __('game') }}</x-slot>
+    <x-slot name="pageSlug">game</x-slot>
 
     @switch(Route::currentRouteName())
         @case('admin.gm.game.create')

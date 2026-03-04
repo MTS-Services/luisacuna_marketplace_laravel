@@ -1,7 +1,7 @@
 <x-admin::app>
     <div>
         <x-slot name="title">{{ __('Withdrawal Requests') }}</x-slot>
-        <x-slot name="pageSlug">{{ __('withdrawal-request') }}</x-slot>
+        <x-slot name="pageSlug">withdrawal-request</x-slot>
         @switch(Route::currentRouteName())
             @case('admin.wm.request.view')
                 <x-slot name="breadcrumb">{{ __('Withdrawal Management / Withdrawal Request Details') }}</x-slot>

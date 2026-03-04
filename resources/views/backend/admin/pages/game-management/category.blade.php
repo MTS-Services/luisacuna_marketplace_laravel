@@ -1,5 +1,5 @@
 <x-admin::app>
-    <x-slot name="pageSlug">{{ __('game-category') }}</x-slot>
+    <x-slot name="pageSlug">game-category</x-slot>
     @switch(Route::currentRouteName())
         @case('admin.gm.category.create')
             <x-slot name="title">{{ __('Category Create') }}</x-slot>

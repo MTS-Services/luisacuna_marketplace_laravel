@@ -1,5 +1,5 @@
 <x-admin::app>
-    <x-slot name="pageSlug">{{__('auditing')}}</x-slot>
+    <x-slot name="pageSlug">auditing</x-slot>
 
     @switch(Route::currentRouteName())
 

@@ -1,5 +1,5 @@
 <x-admin::app>
-    <x-slot name="pageSlug">{{ __('announcement') }}</x-slot>
+    <x-slot name="pageSlug">announcement</x-slot>
     @switch(Route::currentRouteName())
         @case('admin.announcement.view')
             <x-slot name="title">{{ __('Announcement Details') }}</x-slot>
