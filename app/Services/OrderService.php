@@ -109,6 +109,31 @@ class OrderService
             ->get();
     }
 
+    public function getAllOrdersForBuyer(array $filters)
+    {
+        return Order::query()
+            ->with(['source.user', 'user', 'source.game'])
+            ->where('user_id', $filters['user_id'] ?? user()->id)
+            ->where('status', '!=', OrderStatus::INITIALIZED->value)
+            ->when(
+                $filters['status'] ?? null,
+                fn ($q, $status) => $q->where('status', $status)
+            )
+            ->when(
+                $filters['search'] ?? null,
+                fn ($q, $search) => $q->where('order_id', 'like', "%{$search}%")
+            )
+            ->when($filters['order_date'] ?? null, function ($q, $date) {
+                match ($date) {
+                    'today' => $q->whereDate('created_at', today()),
+                    'week' => $q->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]),
+                    'month' => $q->whereMonth('created_at', now()->month),
+                };
+            })
+            ->latest()
+            ->get();
+    }
+
     public function disputeOrder(array $datas): Order
     {
         $order = Order::find($datas['order_id']);

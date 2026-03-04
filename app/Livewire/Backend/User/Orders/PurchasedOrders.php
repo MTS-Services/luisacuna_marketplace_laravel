@@ -2,26 +2,31 @@
 
 namespace App\Livewire\Backend\User\Orders;
 
-use Livewire\Component;
 use App\Enums\OrderStatus;
-use Livewire\WithPagination;
 use App\Services\OrderService;
 use App\Traits\WithPaginationData;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class PurchasedOrders extends Component
 {
     use WithPaginationData;
 
     public $showDeleteModal = false;
+
     public $deleteItemId = null;
+
     // public $perPage = 2;
     public $status = null;
-    public $order_date = null;
-    public $search = null;
-    public $sortField = 'created_at';
-    public $sortDirection = 'desc';
-    
 
+    public $order_date = null;
+
+    public $search = null;
+
+    public $sortField = 'created_at';
+
+    public $sortDirection = 'desc';
 
     protected OrderService $service;
 
@@ -39,72 +44,96 @@ class PurchasedOrders extends Component
             [
                 'key' => 'id',
                 'label' => 'Order Name',
-                'format' => fn($order) => '
+                'format' => fn ($order) => '
                 <div class="flex items-center gap-3">
-                    <div class="w-15 h-15  rounded-lg flex-shrink-0">
-                        <img src="' . storage_url($order?->source?->game?->logo) . '"
-                            alt="' . $order->source->translatedName(app()->getLocale()) . '" 
+                    <div class="w-15 h-15  rounded-lg shrink-0">
+                        <img src="'.storage_url($order?->source?->game?->logo).'"
+                            alt="'.$order->source->translatedName(app()->getLocale()).'" 
                             class="w-full h-full rounded-lg object-cover" />
                     </div>
                     <div class="min-w-0">
                         <h3 class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">'
-                    . $order->source->translatedName(app()->getLocale()) .
+                    .$order->source->translatedName(app()->getLocale()).
                     '</h3>
                         <p class="text-xs text-text-primary/80 truncate xxs:block py-1">'
-                    . $order?->source?->translatedName(app()->getLocale()) .
+                    .$order?->source?->translatedName(app()->getLocale()).
                     '</p>
-                        <a href="' . ($order->status->value === OrderStatus::CANCELLED
+                        <a href="'.($order->status->value === OrderStatus::CANCELLED
                         ? route('user.order.cancel', ['orderId' => $order->order_id])
                         : route('user.order.complete', ['orderId' => $order->order_id])
-                    ) . '"
+                    ).'"
                         class="text-bg-pink-500 text-xs">
                             View Details 
                             <flux:icon name="arrow-right" class="w-4 h-4" />
                         </a>
                     </div>
                 </div>
-        '
+        ',
             ],
 
             [
                 'key' => 'source_id',
                 'label' => 'Seller',
-                'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->source->user->username]) . ' " target="_blank"><span class="text-zinc-500 text-xs xxs:text-sm md:text-base truncate">' . $order->source->user->full_name . '</span></a>'
+                'format' => fn ($order) => '<a href="'.route('profile', ['username' => $order->source->user->username]).' " target="_blank"><span class="text-zinc-500 text-xs xxs:text-sm md:text-base truncate">'.$order->source->user->full_name.'</span></a>',
             ],
             [
                 'key' => 'created_at',
                 'label' => 'Ordered date',
                 'format' => function ($data) {
                     return $data->created_at_formatted;
-                }
+                },
             ],
 
             [
                 'key' => 'status',
                 'label' => 'Order status',
                 'format' => function ($data) {
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full border-0 text-xs font-medium badge ' . $data->status->color() . '">' .
-                        $data->status->label() .
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full border-0 text-xs font-medium badge '.$data->status->color().'">'.
+                        $data->status->label().
                         '</span>';
-                }
+                },
             ],
             [
                 'key' => 'quantity',
                 'label' => 'Quantity',
-                'format' => fn($order) => $order?->quantity
+                'format' => fn ($order) => $order?->quantity,
             ],
             [
                 'key' => 'grand_total',
                 'label' => 'Price',
-                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">' .  currency_symbol() . currency_exchange($order->total_amount) . '</span>'
+                'format' => fn ($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">'.currency_symbol().currency_exchange($order->total_amount).'</span>',
             ],
         ];
 
         $this->paginationData($datas);
+
+        $statuses = [
+            [
+                'label' => 'Processing',
+                'value' => OrderStatus::PAID->value,
+            ],
+            [
+                'label' => 'Delivered',
+                'value' => OrderStatus::DELIVERED->value,
+            ],
+            [
+                'label' => 'Cancelled',
+                'value' => OrderStatus::CANCELLED->value,
+            ],
+            [
+                'label' => 'Refunded',
+                'value' => OrderStatus::REFUNDED->value,
+            ],
+            [
+                'label' => 'Failed',
+                'value' => OrderStatus::FAILED->value,
+            ],
+        ];
+
         return view('livewire.backend.user.orders.purchased-orders', [
             'datas' => $datas,
             'columns' => $columns,
-            'statuses' => OrderStatus::options(),
+            'statuses' => $statuses,
         ]);
     }
 
@@ -114,9 +143,36 @@ class PurchasedOrders extends Component
             'search' => $this->search,
             'status' => $this->status,
             'exclude_status' => OrderStatus::INITIALIZED,
-            'order_date' => $this->order_date ,
+            'order_date' => $this->order_date,
             'sort_field' => $this->sortField,
             'sort_direction' => $this->sortDirection,
+            'user_id' => user()->id,
         ];
+    }
+
+    public function downloadInvoice()
+    {
+        $orders = $this->service->getAllOrdersForBuyer(
+            $this->getFilters()
+        );
+
+        if ($orders->isEmpty()) {
+            session()->flash('error', __('No data found to download.'));
+
+            return;
+        }
+
+        $invoiceId = 'INV-'.strtoupper(uniqid());
+        $pdf = Pdf::loadView('pdf-template.invoice', [
+            'orders' => $orders,
+            'buyer' => Auth::user(),
+            'date' => now()->format('d M Y'),
+            'invoiceId' => $invoiceId,
+        ]);
+
+        return response()->streamDownload(
+            fn () => print ($pdf->output()),
+            'purchased-orders-invoice-'.now()->format('Y-m-d').'.pdf'
+        );
     }
 }
