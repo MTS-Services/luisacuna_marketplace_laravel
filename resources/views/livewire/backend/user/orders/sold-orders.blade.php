@@ -38,14 +38,15 @@
     </div>
 
     <div>
-        <div wire:loading.remove wire:target="status,order_date,search,page,perPage,sortField,sortDirection">
+        <div>
             <x-ui.user-table :data="$datas" :columns="$columns"
                 emptyMessage="No data found. Add your first data to get started." class="rounded-lg overflow-hidden" />
+            
+            <x-frontend.pagination-ui :pagination="$pagination" />
         </div>
 
-        <div wire:loading wire:target="status,order_date,search,page,perPage,sortField,sortDirection"
+        {{-- <div wire:loading wire:target="status,order_date,search,page,perPage,sortField,sortDirection"
             class="rounded-lg border border-zinc-800 bg-zinc-900/40">
-            {{-- Loading Effect For Table --}}
             <svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="10"
                     stroke-dasharray="220" stroke-dashoffset="0" transform="rotate(-90 50 50)">
@@ -53,6 +54,6 @@
                         values="0;220;160" keyTimes="0;0.33;1" />
                 </circle>
             </svg>
-        </div>
+        </div> --}}
     </div>
 </div>

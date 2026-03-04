@@ -7,13 +7,12 @@ use App\Services\OrderService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class SoldOrders extends Component
 {
-    use WithPagination;
-
     public $perPage = 7;
+
+    public $pagination = [];
 
     public $status;
 
@@ -34,6 +33,15 @@ class SoldOrders extends Component
             perPage: $this->perPage,
             filters: $this->getFilters(),
         );
+
+        $this->pagination = [
+            'current_page' => $datas->currentPage(),
+            'last_page' => $datas->lastPage(),
+            'per_page' => $datas->perPage(),
+            'total' => $datas->total(),
+            'from' => $datas->firstItem(),
+            'to' => $datas->lastItem(),
+        ];
 
         $columns = [
             [
