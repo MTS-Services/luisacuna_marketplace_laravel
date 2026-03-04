@@ -47,7 +47,7 @@ class LanguageForm extends Form
             ? 'required|string|size:2|unique:languages,country_code,' . $this->id
             : 'required|string|size:2|unique:languages,country_code';
 
-        $fileRule = 'required|file|mimes:csv|max:2048';
+        // $fileRule = 'nullable|file|mimes:csv|max:2048';
 
         if ($this->isUpdating()) {
             if ($this->existing_file && !$this->remove_file) {
