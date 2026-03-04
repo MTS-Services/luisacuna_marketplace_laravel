@@ -94,14 +94,14 @@ class LanguageSeeder extends Seeder
             // ],
             [
                 'sort_order' => 8,
-                'locale' => 'br',
+                'locale' => 'pt',
                 'name' => 'Portuguese',
                 'native_name' => 'Português',
                 'status' => LanguageStatus::ACTIVE->value,
                 'is_default' => false,
                 'direction' => LanguageDirection::LTR->value,
-                'country_code' => 'br',
-                'flag_icon' => 'br.svg',
+                'country_code' => 'pt',
+                'flag_icon' => 'pt.svg',
             ],
         ]);
     }
