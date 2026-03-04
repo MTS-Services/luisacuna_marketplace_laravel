@@ -41,7 +41,7 @@ class SoldOrders extends Component
                 'label' => 'Order Name',
                 'format' => fn ($order) => '
                 <div class="flex items-center gap-3">
-                    <div class="w-15 h-15  rounded-lg flex-shrink-0">
+                    <div class="w-15 h-15  rounded-lg shrink-0">
                         <img src="'.storage_url($order?->source?->game?->logo).'"
                             alt="'.$order->source->name.'" 
                             class="w-full h-full rounded-lg object-cover" />
@@ -101,7 +101,28 @@ class SoldOrders extends Component
         return view('livewire.backend.user.orders.sold-orders', [
             'datas' => $datas,
             'columns' => $columns,
-            'statuses' => OrderStatus::options(),
+            'statuses' => [
+                [
+                    'label' => 'Processing',
+                    'value' => OrderStatus::PAID->value,
+                ],
+                [
+                    'label' => 'Delivered',
+                    'value' => OrderStatus::DELIVERED->value,
+                ],
+                [
+                    'label' => 'Cancelled',
+                    'value' => OrderStatus::CANCELLED->value,
+                ],
+                [
+                    'label' => 'Refunded',
+                    'value' => OrderStatus::REFUNDED->value,
+                ],
+                [
+                    'label' => 'Failed',
+                    'value' => OrderStatus::FAILED->value,
+                ],
+            ],
         ]);
     }
 
