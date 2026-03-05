@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\Enums\OtpType;
 use App\Enums\UserAccountStatus;
+use App\Enums\UserBanType;
 use App\Enums\userKycStatus;
 use App\Enums\UserStatus;
 use App\Enums\UserType;
+use App\Models\UserBan;
 use App\Observers\UserTwoFAObserver;
 use App\Traits\AuditableTrait;
 use App\Traits\HasDeviceManagement;
@@ -437,11 +439,119 @@ class User extends AuthBaseModel implements Auditable
     }
 
     /**
+     * Get the active ban for the user, automatically lifting expired temporary bans.
+     */
+    public function currentBan(): ?UserBan
+    {
+        /** @var UserBan|null $ban */
+        $ban = $this->userBans()
+            ->whereNull('unbanned_at')
+            ->latest('id')
+            ->first();
+
+        if (! $ban) {
+            return null;
+        }
+
+        if ($ban->type === UserBanType::TEMPORARY && $ban->expires_at instanceof Carbon && $ban->expires_at->isPast()) {
+            // Auto-lift expired temporary bans on access
+            $this->liftBan(__('Ban expired automatically.'));
+
+            return null;
+        }
+
+        return $ban;
+    }
+
+    /**
+     * Determine if the user is currently banned.
+     */
+    public function isCurrentlyBanned(): bool
+    {
+        return $this->currentBan() !== null;
+    }
+
+    /**
+     * Apply a new ban to the user.
+     */
+    public function applyBan(
+        UserBanType $type,
+        string $reason,
+        ?Carbon $expiresAt = null,
+        ?int $bannedById = null,
+    ): void {
+        // Close any existing active ban
+        $activeBan = $this->userBans()
+            ->whereNull('unbanned_at')
+            ->latest('id')
+            ->first();
+
+        if ($activeBan) {
+            $activeBan->update([
+                'unbanned_at' => now(),
+                'unbanned_by' => $bannedById,
+                'unban_reason' => $activeBan->unban_reason,
+            ]);
+        }
+
+        // Update user ban fields
+        $this->account_status = UserAccountStatus::BANNED;
+        $this->banned_reason = $reason;
+        $this->banned_at = now();
+        $this->save();
+
+        // Create new ban record
+        $this->userBans()->create([
+            'banned_by' => $bannedById,
+            'reason' => $reason,
+            'type' => $type,
+            'expires_at' => $type === UserBanType::TEMPORARY ? $expiresAt : null,
+        ]);
+    }
+
+    /**
+     * Lift the current ban for the user.
+     */
+    public function liftBan(?string $reason = null, ?int $unbannedById = null): void
+    {
+        /** @var UserBan|null $ban */
+        $ban = $this->userBans()
+            ->whereNull('unbanned_at')
+            ->latest('id')
+            ->first();
+
+        if ($ban) {
+            $ban->unbanned_by = $unbannedById;
+            $ban->unbanned_at = now();
+            if ($reason) {
+                $ban->unban_reason = $reason;
+            }
+            $ban->save();
+        }
+
+        $this->account_status = UserAccountStatus::ACTIVE;
+        $this->banned_reason = null;
+        $this->banned_at = null;
+        $this->save();
+    }
+
+    /**
      * Get the message to show when a banned user attempts to log in.
      */
     public function getBannedLoginMessage(): string
     {
-        $msg = __('Your account has been banned.');
+        $ban = $this->currentBan();
+
+        if ($ban && $ban->type === UserBanType::TEMPORARY && $ban->expires_at instanceof Carbon) {
+            $msg = __('Your account has been temporarily banned until :date.', [
+                'date' => $ban->expires_at->toDayDateTimeString(),
+            ]);
+        } elseif ($ban && $ban->type === UserBanType::PERMANENT) {
+            $msg = __('Your account has been permanently banned.');
+        } else {
+            $msg = __('Your account has been banned.');
+        }
+
         if (! empty($this->banned_reason)) {
             $msg .= ' '.__('Reason: :reason', ['reason' => $this->banned_reason]);
         }

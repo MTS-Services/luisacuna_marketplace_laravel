@@ -2,22 +2,24 @@
 
 namespace App\Services;
 
-use App\Models\User;
 use App\Enums\PointType;
-use App\Models\PointLog;
-use App\Models\UserPoint;
+use App\Enums\UserBanType;
 use App\Actions\User\BulkAction;
-use App\Enums\UserAccountStatus;
 use App\Actions\User\CreateAction;
-use App\Actions\User\DeleteAction;
 use App\Actions\User\UpdateAction;
+use App\Actions\User\DeleteAction;
 use App\Actions\User\RestoreAction;
-use Illuminate\Support\Facades\Log;
-use App\Models\UserNotificationSetting;
-use Illuminate\Database\Eloquent\Collection;
 use App\Actions\User\UpdateNotificationAction;
-use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Enums\UserAccountStatus;
+use App\Models\PointLog;
+use App\Models\User;
+use App\Models\UserNotificationSetting;
+use App\Models\UserPoint;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
+use App\Repositories\Contracts\UserRepositoryInterface;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class UserService
 {
@@ -199,24 +201,48 @@ class UserService
         );
     }
 
+    /**
+     * Backwards-compatible wrapper for legacy calls.
+     */
     public function bandUser(int $userId, $banned_reason = null): void
     {
-        $user = User::findOrFail($userId);
-        $user->account_status = UserAccountStatus::BANNED->value;
-        $user->banned_reason = $banned_reason;
-        $user->banned_at = now();
-        $user->save();
-        return;
+        $this->banUser(
+            userId: $userId,
+            reason: (string) $banned_reason,
+            type: UserBanType::PERMANENT,
+            expiresAt: null,
+        );
     }
 
-    public function unbanUser(int $userId): void
+    /**
+     * Apply a ban to the given user.
+     */
+    public function banUser(
+        int $userId,
+        string $reason,
+        UserBanType $type,
+        ?Carbon $expiresAt = null,
+        ?int $bannedById = null,
+    ): void {
+        $user = User::findOrFail($userId);
+
+        if ($bannedById === null && function_exists('admin') && admin()) {
+            $bannedById = admin()->id;
+        }
+
+        $user->applyBan($type, $reason, $expiresAt, $bannedById);
+    }
+
+    public function unbanUser(int $userId, ?string $reason = null): void
     {
         $user = User::findOrFail($userId);
-        $user->account_status = UserAccountStatus::ACTIVE->value;
-        $user->banned_reason = null;
-        $user->banned_at = null;
-        $user->save();
-        return;
+
+        $unbannedById = null;
+        if (function_exists('admin') && admin()) {
+            $unbannedById = admin()->id;
+        }
+
+        $user->liftBan($reason, $unbannedById);
     }
 
 

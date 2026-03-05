@@ -119,6 +119,16 @@ class UserController extends Controller implements HasMiddleware
             'user' => $user
         ]);
     }
+    public function banHistory($id)
+    {
+        $user = $this->service->getDataById($id);
+        if (!$user) {
+            abort(404);
+        }
+        return view($this->masterView, [
+            'user' => $user
+        ]);
+    }
     public function referral($id)
     {
         $user = $this->service->getDataById($id);

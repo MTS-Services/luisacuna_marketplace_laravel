@@ -92,11 +92,43 @@
 
                     {{-- Input Fields --}}
                     @if (!empty($inputs))
-                        <div class="mb-6 space-y-4">
+                        <div class="mb-6 space-y-4 text-left">
                             @foreach ($inputs as $input)
-                                <input type="{{ $input['type'] ?? 'text' }}" wire:model.defer="{{ $input['model'] }}"
-                                    placeholder="{{ $input['placeholder'] ?? '' }}"
-                                    class="w-full rounded-lg border border-gray-600 px-4 py-2 placeholder:text-zinc-800 text-zinc-900 focus:outline-none focus:ring-zinc-500!" autofocus />
+                                @php
+                                    $type = $input['type'] ?? 'text';
+                                    $model = $input['model'] ?? '';
+                                    $label = $input['label'] ?? null;
+                                    $placeholder = $input['placeholder'] ?? '';
+                                    $dependsOn = $input['depends_on'] ?? null;
+                                    $disableWhenTrue = $input['disable_when_true'] ?? false;
+                                    $disabledExpr = 'false';
+
+                                    if ($dependsOn) {
+                                        // Build an Alpine/Livewire expression that reads the Livewire property via $wire
+                                        $base = "\$wire.get('{$dependsOn}')";
+                                        $disabledExpr = $disableWhenTrue ? "({$base} === true)" : "({$base} === false)";
+                                    }
+                                @endphp
+
+                                <div class="space-y-1">
+                                    @if ($label)
+                                        <label class="block text-sm font-medium text-gray-700">
+                                            {{ $label }}
+                                        </label>
+                                    @endif
+
+                                    @if ($type === 'checkbox')
+                                        <label class="inline-flex items-center gap-2 text-sm text-gray-700">
+                                            <input type="checkbox" wire:model.defer="{{ $model }}"
+                                                class="rounded border-gray-300 text-zinc-600 focus:ring-zinc-500" />
+                                            <span>{{ $placeholder ?: $label }}</span>
+                                        </label>
+                                    @else
+                                        <input type="{{ $type }}" wire:model.defer="{{ $model }}"
+                                            placeholder="{{ $placeholder }}" x-bind:disabled="{{ $disabledExpr }}"
+                                            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm placeholder:text-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:border-zinc-500" />
+                                    @endif
+                                </div>
                             @endforeach
                         </div>
                     @endif

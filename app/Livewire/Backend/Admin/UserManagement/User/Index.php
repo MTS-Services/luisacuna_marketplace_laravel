@@ -2,12 +2,14 @@
 
 namespace App\Livewire\Backend\Admin\UserManagement\User;
 
+use App\Enums\UserAccountStatus;
+use App\Enums\UserBanType;
+use App\Services\UserService;
 use App\Models\User;
 use App\Enums\UserType;
-use Livewire\Component;
-use App\Services\UserService;
-use App\Enums\UserAccountStatus;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
+use Livewire\Component;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
 
@@ -26,7 +28,11 @@ class Index extends Component
 
     public $bandUserId;
     public $showBandUserModal = false;
-    public $bandReason = '';
+
+    public string $banReason = '';
+    public bool $banPermanent = false;
+    public ?string $banDate = null;
+    public ?string $banTime = null;
     public $userId;
 
     public function boot(UserService $service)
@@ -82,6 +88,11 @@ class Index extends Component
                 'route' => 'admin.um.user.profileInfo'
             ],
             [
+                'key' => 'id',
+                'label' => 'Ban History',
+                'route' => 'admin.um.user.ban-history'
+            ],
+            [
                 'key' => 'username',
                 'label' => 'View Account',
                 'route' => 'profile',
@@ -135,22 +146,56 @@ class Index extends Component
     {
         $this->bandUserId = $userId;
         $this->showBandUserModal = true;
+        $this->banReason = '';
+        $this->banPermanent = false;
+        $this->banDate = null;
+        $this->banTime = null;
     }
 
     public function bandUser(): void
     {
         try {
-            $this->service->bandUser($this->bandUserId, $this->bandReason);
+            $rules = [
+                'banReason' => 'required|string|max:1000',
+                'banPermanent' => 'boolean',
+            ];
+
+            if (! $this->banPermanent) {
+                $rules['banDate'] = 'required|date|after_or_equal:today';
+                $rules['banTime'] = 'required|date_format:H:i';
+            }
+
+            $this->validate($rules);
+
+            $type = $this->banPermanent ? UserBanType::PERMANENT : UserBanType::TEMPORARY;
+            $expiresAt = null;
+
+            if (! $this->banPermanent && $this->banDate && $this->banTime) {
+                $expiresAt = Carbon::parse($this->banDate . ' ' . $this->banTime);
+            }
+
+            $this->service->banUser(
+                userId: $this->bandUserId,
+                reason: $this->banReason,
+                type: $type,
+                expiresAt: $expiresAt,
+            );
             $this->success('User band successfully');
 
             $this->showBandUserModal = false;
             $this->bandUserId = null;
-            $this->bandReason = '';
+            $this->banReason = '';
+            $this->banPermanent = false;
+            $this->banDate = null;
+            $this->banTime = null;
         } catch (\Exception $e) {
             $this->error('Failed to band User: ' . $e->getMessage());
             $this->showBandUserModal = false;
             $this->bandUserId = null;
-            $this->bandReason = '';
+            $this->banReason = '';
+            $this->banPermanent = false;
+            $this->banDate = null;
+            $this->banTime = null;
         }
     }
 

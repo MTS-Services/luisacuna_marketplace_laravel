@@ -88,6 +88,11 @@ class BannedUser extends Component
             ],
             [
                 'key' => 'id',
+                'label' => 'Ban History',
+                'route' => 'admin.um.user.ban-history'
+            ],
+            [
+                'key' => 'id',
                 'label' => 'Unban User',
                 'method' => 'confirmUnbanUser'
             ],
