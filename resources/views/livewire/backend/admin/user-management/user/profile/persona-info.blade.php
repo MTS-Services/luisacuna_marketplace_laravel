@@ -1,331 +1,657 @@
-<div>
-    <div class="glass-card rounded-2xl p-4 lg:p-6 mb-6">
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <h2 class="text-xl lg:text-2xl font-bold text-text-primary">
-                {{ __('User Profile') }}
-            </h2>
+<div class="max-w-[1600px] mx-auto p-4 lg:p-8 space-y-8">
 
-            <div class="flex items-center gap-2">
-                    <x-ui.button
-                            x-on:click="$dispatch('show-translation-modal', {
-                                modelId: '{{ encrypt($user->id) }}',
-                                modelType: '{{ base64_encode(\App\Models\User::class) }}'
-                            })"
-                            variant="secondary" class="w-auto py-2! text-nowrap">
-                            <flux:icon name="arrows-pointing-out"
-                                class="w-4 h-4 stroke-text-btn-secondary group-hover:stroke-text-btn-primary" />
-                            {{ __('Manage Translations') }}
-                        </x-ui.button>
-                <x-ui.button href="{{ route('admin.um.user.index') }}" class="w-auto! py-2!">
-                    <flux:icon name="arrow-left"
-                        class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary" />
-                    {{ __('Back') }}
-                </x-ui.button>
+    {{-- ══════════════════════════════════════════════════════
+         TOP: User Identity Banner
+    ══════════════════════════════════════════════════════ --}}
+    <div
+        class="glass-card rounded-[2rem] border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900/60 shadow-xl overflow-hidden">
+        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 p-6 sm:p-8">
+
+            {{-- Avatar --}}
+            <div
+                class="shrink-0 w-24 h-24 rounded-[1.5rem] overflow-hidden border-4 border-white dark:border-zinc-700 shadow-xl bg-zinc-100 flex items-center justify-center">
+                @if ($user->avatar)
+                    <img src="{{ auth_storage_url($user->avatar) }}" class="w-full h-full object-cover">
+                @else
+                    <div
+                        class="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-500 to-indigo-600">
+                        <span
+                            class="text-2xl font-black text-white">{{ strtoupper(substr($user->username, 0, 2)) }}</span>
+                    </div>
+                @endif
+            </div>
+
+            {{-- Identity --}}
+            <div class="flex-1 min-w-0 text-center sm:text-left">
+                <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1">
+                    <h2 class="text-2xl font-black text-zinc-900 dark:text-white truncate">{{ $user->full_name }}</h2>
+                    <span
+                        class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase border {{ $user->account_status->color() }}">
+                        {{ $user->account_status->label() }}
+                    </span>
+                    @if ($user->isVerifiedSeller())
+                        <span
+                            class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase border border-emerald-500 text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40">
+                            ✓ Verified Seller
+                        </span>
+                    @endif
+                </div>
+                <p class="text-sm text-primary-500 font-bold">{{ '@' . $user->username }}</p>
+                <p class="text-xs text-zinc-500 mt-1 font-mono break-all">{{ $user->uuid }}</p>
+            </div>
+
+            {{-- Quick Metrics --}}
+            <div class="shrink-0 flex gap-4 text-center">
+                <div
+                    class="p-4 rounded-2xl bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 min-w-[90px]">
+                    <p class="text-[10px] font-black uppercase text-zinc-400">Wallet</p>
+                    <p class="text-lg font-black text-emerald-600 mt-1">
+                        {{ number_format($user->wallet->balance ?? 0, 2) }}</p>
+                </div>
+                <div
+                    class="p-4 rounded-2xl bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 min-w-[90px]">
+                    <p class="text-[10px] font-black uppercase text-zinc-400">Points</p>
+                    <p class="text-lg font-black text-primary-600 mt-1">{{ $user->userPoint->points ?? 0 }}</p>
+                </div>
+                @if ($activeRank)
+                    <div
+                        class="p-4 rounded-2xl bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 min-w-[90px]">
+                        <p class="text-[10px] font-black uppercase text-zinc-400">Rank</p>
+                        <p class="text-sm font-black text-amber-600 mt-1">{{ $activeRank->name }}</p>
+                    </div>
+                @endif
             </div>
         </div>
+
+        {{-- ── Tab Navigation ── --}}
+        <div class="border-t border-zinc-100 dark:border-white/10 flex overflow-x-auto">
+            <button wire:click="setTab('personal')"
+                class="relative flex-1 min-w-[120px] px-6 py-4 text-[11px] font-black uppercase tracking-widest transition-all
+                       {{ $activeTab === 'personal' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-950/30' : 'text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-white/5' }}">
+                @if ($activeTab === 'personal')
+                    <span class="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 rounded-full"></span>
+                @endif
+                <flux:icon name="user" class="w-4 h-4 mx-auto mb-1" />
+                Personal
+            </button>
+
+            <button wire:click="setTab('buyer')"
+                class="relative flex-1 min-w-[120px] px-6 py-4 text-[11px] font-black uppercase tracking-widest transition-all
+                       {{ $activeTab === 'buyer' ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/30' : 'text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-white/5' }}">
+                @if ($activeTab === 'buyer')
+                    <span class="absolute inset-x-0 bottom-0 h-0.5 bg-indigo-500 rounded-full"></span>
+                @endif
+                <flux:icon name="shopping-bag" class="w-4 h-4 mx-auto mb-1" />
+                Buyer History
+            </button>
+
+            @if ($user->isVerifiedSeller())
+                <button wire:click="setTab('seller')"
+                    class="relative flex-1 min-w-[120px] px-6 py-4 text-[11px] font-black uppercase tracking-widest transition-all
+                           {{ $activeTab === 'seller' ? 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30' : 'text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-white/5' }}">
+                    @if ($activeTab === 'seller')
+                        <span class="absolute inset-x-0 bottom-0 h-0.5 bg-amber-500 rounded-full"></span>
+                    @endif
+                    <flux:icon name="store" class="w-4 h-4 mx-auto mb-1" />
+                    Seller History
+                </button>
+            @endif
+        </div>
     </div>
-    <div class="max-w-[1600px] mx-auto p-4 lg:p-8 space-y-8 animate-in fade-in duration-700">
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {{-- Left Sidebar: Identity Card --}}
-            <div class="lg:col-span-3 space-y-6">
-                <div
-                    class="glass-card rounded-[2.5rem] p-8 border border-zinc-200 dark:border-white/10 bg-white/50 dark:bg-zinc-900/30 shadow-2xl relative overflow-hidden">
-                    <div class="absolute -top-24 -right-24 w-48 h-48 bg-primary-500/10 rounded-full blur-3xl"></div>
+    {{-- ══════════════════════════════════════════════════════
+         TAB: PERSONAL
+    ══════════════════════════════════════════════════════ --}}
+    @if ($activeTab === 'personal')
+        <div class="space-y-8" wire:key="tab-personal">
 
-                    <div class="relative flex flex-col items-center">
-                        <div class="relative group">
-                            <div
-                                class="w-40 h-40 rounded-[3rem] rotate-3 group-hover:rotate-0 transition-all duration-500 overflow-hidden border-4 border-white dark:border-zinc-800 shadow-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-                                @if ($user->avatar)
-                                    <img src="{{ auth_storage_url($user->avatar) }}"
-                                        class="w-full h-full object-cover -rotate-3 group-hover:rotate-0 scale-110 transition-all duration-500"
-                                        alt="{{ $user->full_name }}">
-                                @else
-                                    <div
-                                        class="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-500 to-indigo-600">
-                                        <span
-                                            class="text-4xl font-black text-white">{{ strtoupper(substr($user->username, 0, 2)) }}</span>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="mt-8 text-center space-y-1">
-                            <h3 class="text-2xl font-black text-text-primary tracking-tight">
-                                {{ $user->first_name }} {{ $user->last_name }}</h3>
-                            <p class="text-primary-600 dark:text-primary-400 font-bold text-sm">@ {{ $user->username }}
-                            </p>
-                            <p class="text-text-primary text-xs text-center font-medium">
-                                {{ $user->email }}</p>
-                        </div>
-
-                        <div class="w-full grid grid-cols-2 gap-3 mt-8">
-                            <div
-                                class="p-3 rounded-2xl bg-zinc-100/80 dark:bg-white/5 border border-zinc-200 dark:border-white/5 text-center hover:shadow-inner transition-all">
-                                <p
-                                    class="text-[10px] text-text-primary uppercase font-black tracking-tighter">
-                                    {{ __('Points') }}</p>
-                                <p class="text-lg font-black text-primary-600 dark:text-primary-400">
-                                    {{ $user->userPoint->points ?? 0 }}</p>
-                            </div>
-                            <div
-                                class="p-3 rounded-2xl bg-zinc-100/80 dark:bg-white/5 border border-zinc-200 dark:border-white/5 text-center hover:shadow-inner transition-all">
-                                <p
-                                    class="text-[10px] text-text-primary uppercase font-black tracking-tighter">
-                                    {{ __('Rank') }}</p>
-                                <p class="text-xs font-black text-text-primary truncate">
-                                    {{ $user->userRank->rank->name ?? 'N/A' }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Social Connections & Points Note --}}
-                <div
-                    class="glass-card rounded-[2rem] p-6 space-y-4 border border-zinc-200 dark:border-white/5 bg-zinc-50 dark:bg-zinc-900/20 shadow-sm">
-                    <h4 class="text-[10px] font-black text-text-primary uppercase tracking-[0.2em] px-2">
-                        {{ __('Verification & Social') }}</h4>
-                    <div class="space-y-2">
-                        @foreach (['Google' => $user->google_id, 'Facebook' => $user->facebook_id, 'Apple' => $user->apple_id] as $label => $val)
-                            <div
-                                class="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-white/5 border border-zinc-100 dark:border-white/5 shadow-sm">
-                                <span class="text-xs font-bold text-text-primary">{{ $label }}
-                                    ID</span>
-                                <span
-                                    class="text-[11px] font-mono font-bold text-text-primary">{{ $val ?? 'N/A' }}</span>
-                            </div>
-                        @endforeach
-                    </div>
-
-                    <div
-                        class="p-4 rounded-xl bg-primary-50 dark:bg-primary-500/5 border border-primary-100 dark:border-primary-500/10 mt-4">
-                        <p class="text-[10px] font-black text-primary-600 dark:text-primary-500 uppercase mb-1">
-                            {{ __('Point Note') }}</p>
-                        <p class="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed italic opacity-90">
-                            "{{ $user->userPoint->note ?? 'No points notes available.' }}"</p>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Main Content --}}
-            <div class="lg:col-span-9 space-y-8">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {{-- Identity Box --}}
-                    <div
-                        class="md:col-span-2 glass-card rounded-[2.5rem] overflow-hidden border border-zinc-200 dark:border-white/10 shadow-xl bg-white dark:bg-zinc-900/30">
-                        <div class="bg-zinc-50 dark:bg-white/5 p-6 border-b border-zinc-100 dark:border-white/5">
-                            <h3
-                                class="font-black text-text-primary uppercase tracking-widest text-sm flex items-center gap-2">
-                                <flux:icon name="user" class="w-4 h-4 text-primary-500" />
-                                {{ __('Identity & Localization') }}
-                            </h3>
-                        </div>
-                        <div class="p-8 grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-8">
-                            @php
-                                $fields = [
-                                    [
-                                        'label' => 'Full Name',
-                                        'val' => $user->first_name . ' ' . $user->last_name,
-                                        'icon' => 'identification',
-                                    ],
-                                    [
-                                        'label' => 'Date of Birth',
-                                        'val' => $user->date_of_birth ?? 'N/A',
-                                        'icon' => 'calendar',
-                                    ],
-                                    [
-                                        'label' => 'Country',
-                                        'val' => $user->country->name ?? 'N/A',
-                                        'icon' => 'globe-alt',
-                                    ],
-                                    [
-                                        'label' => 'Language',
-                                        'val' => $user->language->name ?? 'N/A',
-                                        'icon' => 'language',
-                                    ],
-                                    [
-                                        'label' => 'Currency',
-                                        'val' => $user->currency->name ?? 'N/A',
-                                        'icon' => 'banknotes',
-                                    ],
-                                    ['label' => 'Timezone', 'val' => $user->timezone ?? 'N/A', 'icon' => 'clock'],
-                                ];
-                            @endphp
-
-                            @foreach ($fields as $f)
-                                <div class="flex items-start gap-4">
-                                    <div
-                                        class="p-2.5 rounded-xl bg-zinc-100 dark:bg-white/5 text-text-primary">
-                                        <flux:icon :name="$f['icon']" class="w-4 h-4" />
-                                    </div>
-                                    <div>
-                                        <p
-                                            class="text-[10px] font-black text-text-primary uppercase">
-                                            {{ __($f['label']) }}</p>
-                                        <p class="text-sm font-bold text-text-primary">
-                                            {{ $f['val'] }}</p>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    {{-- Status Box --}}
-                    <div
-                        class="glass-card rounded-[2.5rem] p-8 border border-zinc-200 dark:border-white/10 shadow-xl bg-white dark:bg-zinc-900/30">
-                        <h3 class="font-black text-text-primary uppercase tracking-widest text-sm mb-6">
-                            {{ __('Account Control') }}</h3>
-                        <div class="space-y-5">
-                            <div
-                                class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-100 dark:border-white/5 shadow-sm">
-                                <p class="text-[10px] font-black text-text-primary uppercase mb-2">
-                                    {{ __('Account Status') }}</p>
-                                <span
-                                    class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase {{ $user->account_status->color() }} bg-opacity-10 dark:bg-opacity-20 border border-current shadow-sm">
-                                    {{ $user->account_status->label() }}
-                                </span>
-                            </div>
-                            <div
-                                class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-100 dark:border-white/5 shadow-sm">
-                                <p class="text-[10px] font-black text-text-primary uppercase mb-2">
-                                    {{ __('Rank Status') }}</p>
-                                <div class="flex items-center gap-2">
-                                    <span
-                                        class="h-2 w-2 rounded-full {{ $user->userRank && $user->userRank->is_active ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500' }}"></span>
-                                    <span
-                                        class="text-sm font-bold text-text-primary">{{ $user->userRank && $user->userRank->is_active ? 'Active Rank' : 'Inactive' }}</span>
-                                </div>
-                            </div>
-                            <div
-                                class="flex items-center justify-between px-2 pt-2 border-t border-zinc-100 dark:border-white/5">
-                                <span class="text-[10px] font-black text-text-primary uppercase">2FA
-                                    Auth</span>
-                                <span
-                                    class="text-xs font-black {{ $user->two_factor_enabled ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }}">
-                                    {{ $user->two_factor_enabled ? 'ENABLED' : 'DISABLED' }}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Audit Grid --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            {{-- Wallet & Financial Overview --}}
+            <div>
+                <h3 class="text-[11px] font-black uppercase tracking-widest text-zinc-400 mb-4">Wallet & Finances</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     @php
-                        $audits = [
+                        $wallet = $user->wallet;
+                        $finCards = [
                             [
-                                'label' => 'Created',
-                                'color' => 'text-primary-600',
-                                'bg' => 'bg-primary-50',
-                                'user' => getAuditorName($user->creater),
-                                'date' => $user->created_at_formatted,
-                            ],
-                            [
-                                'label' => 'Updated',
-                                'color' => 'text-blue-600',
-                                'bg' => 'bg-blue-50',
-                                'user' => getAuditorName($user->updater) ?? 'System',
-                                'date' => $user->updated_at_formatted,
-                            ],
-                            [
-                                'label' => 'Deleted',
-                                'color' => 'text-rose-600',
-                                'bg' => 'bg-rose-50',
-                                'user' => $user->deleted_at ? getAuditorName($user->deleter) : 'N/A',
-                                'date' => $user->deleted_at_formatted ?? 'Active',
-                            ],
-                            [
-                                'label' => 'Restored',
+                                'label' => 'Balance',
+                                'value' => number_format($wallet->balance ?? 0, 2),
                                 'color' => 'text-emerald-600',
-                                'bg' => 'bg-emerald-50',
-                                'user' => $user->restored_at ? getAuditorName($user->restorer) : 'N/A',
-                                'date' => $user->restored_at_formatted ?? 'None',
+                                'bg' => 'bg-emerald-50 dark:bg-emerald-950/30',
+                                'border' => 'border-emerald-200 dark:border-emerald-800',
+                            ],
+                            [
+                                'label' => 'Frozen / Locked',
+                                'value' => number_format($wallet->locked_balance ?? 0, 2),
+                                'color' => 'text-rose-600',
+                                'bg' => 'bg-rose-50 dark:bg-rose-950/30',
+                                'border' => 'border-rose-200 dark:border-rose-800',
+                            ],
+                            [
+                                'label' => 'Total Deposited',
+                                'value' => number_format($wallet->total_deposits ?? 0, 2),
+                                'color' => 'text-sky-600',
+                                'bg' => 'bg-sky-50 dark:bg-sky-950/30',
+                                'border' => 'border-sky-200 dark:border-sky-800',
+                            ],
+                            [
+                                'label' => 'Total Withdrawn',
+                                'value' => number_format($wallet->total_withdrawals ?? 0, 2),
+                                'color' => 'text-fuchsia-600',
+                                'bg' => 'bg-fuchsia-50 dark:bg-fuchsia-950/30',
+                                'border' => 'border-fuchsia-200 dark:border-fuchsia-800',
                             ],
                         ];
                     @endphp
-                    @foreach ($audits as $a)
+                    @foreach ($finCards as $card)
                         <div
-                            class="glass-card p-6 rounded-[2rem] border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900/20 shadow-sm hover:shadow-md transition-shadow">
-                            <p class="text-[10px] font-black {{ $a['color'] }} uppercase tracking-widest mb-3">
-                                {{ __($a['label']) }}</p>
-                            <p class="text-sm font-black text-text-primary truncate">{{ $a['user'] }}
-                            </p>
-                            <p class="text-[11px] font-bold text-text-primary mt-1">{{ $a['date'] }}
-                            </p>
+                            class="glass-card rounded-2xl p-5 border {{ $card['border'] }} {{ $card['bg'] }} shadow-sm">
+                            <p class="text-[10px] font-black uppercase text-zinc-500">{{ $card['label'] }}</p>
+                            <p class="mt-2 text-2xl font-black {{ $card['color'] }}">{{ $card['value'] }}</p>
                         </div>
                     @endforeach
                 </div>
+            </div>
 
-                {{-- Security & Session --}}
-                <div
-                    class="glass-card rounded-[2.5rem] p-8 border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900/30 shadow-xl overflow-hidden relative">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 relative z-10">
-                        <div class="space-y-6">
-                            <h4
-                                class="text-[10px] font-black text-text-primary uppercase tracking-widest">
-                                {{ __('Security Markers') }}</h4>
-                            <div class="space-y-4">
-                                @foreach (['Email Verified' => $user->email_verified_at, 'Phone Verified' => $user->phone_verified_at] as $l => $v)
-                                    <div class="flex flex-col gap-1">
-                                        <span
-                                            class="text-[10px] font-bold text-text-primary uppercase">{{ $l }}</span>
-                                        <span
-                                            class="text-xs font-black text-text-primary">{{ $v ?? 'Pending Verification' }}</span>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-
-                        <div class="space-y-6">
-                            <h4
-                                class="text-[10px] font-black text-text-primary uppercase tracking-widest">
-                                {{ __('Legal Compliance') }}</h4>
-                            <div class="space-y-4">
-                                @foreach (['Terms Accepted' => $user->terms_accepted_at, 'Privacy Accepted' => $user->privacy_accepted_at] as $l => $v)
-                                    <div class="flex flex-col gap-1">
-                                        <span
-                                            class="text-[10px] font-bold text-text-primary uppercase">{{ $l }}</span>
-                                        <span
-                                            class="text-xs font-black text-text-primary">{{ $v ?? 'Not Signed' }}</span>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-
-                        <div class="space-y-6">
-                            <h4
-                                class="text-[10px] font-black text-text-primary uppercase tracking-widest">
-                                {{ __('Last Session Info') }}</h4>
-                            <div
-                                class="p-5 rounded-[1.5rem]  dark:bg-primary-500/5 border border-zinc-100 dark:border-primary-500/10 shadow-inner">
-                                <div class="flex items-center gap-4">
-                                    <div class="p-3 bg-white dark:bg-zinc-800 rounded-xl shadow-sm">
-                                        <flux:icon name="map-pin" class="w-5 h-5 text-primary-500" />
-                                    </div>
-                                    <div>
-                                        <p class="text-sm font-black text-text-primary">
-                                            {{ $user->last_login_ip ?? '0.0.0.0' }}</p>
-                                        <p class="text-[10px] text-text-primary font-bold uppercase">
-                                            {{ __('Last Sync:') }} {{ $user->last_synced_at ?? 'N/A' }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            {{-- Points & Rank --}}
+            <div>
+                <h3 class="text-[11px] font-black uppercase tracking-widest text-zinc-400 mb-4">Points & Rank</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div
+                        class="glass-card rounded-2xl p-5 border border-primary-200 dark:border-primary-800 bg-primary-50 dark:bg-primary-950/30 shadow-sm">
+                        <p class="text-[10px] font-black uppercase text-zinc-500">Total Points</p>
+                        <p class="mt-2 text-3xl font-black text-primary-600">
+                            {{ number_format($user->userPoint->points ?? 0) }}</p>
+                    </div>
+                    <div
+                        class="glass-card rounded-2xl p-5 border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 shadow-sm">
+                        <p class="text-[10px] font-black uppercase text-zinc-500">Current Rank</p>
+                        @if ($activeRank)
+                            <p class="mt-2 text-xl font-black text-amber-600">{{ $activeRank->name }}</p>
+                            <p class="text-[10px] text-zinc-500 mt-1">
+                                {{ number_format($activeRank->minimum_points) }} –
+                                {{ number_format($activeRank->maximum_points) }} pts
+                            </p>
+                        @else
+                            <p class="mt-2 text-sm font-bold text-zinc-400">No rank assigned</p>
+                        @endif
+                    </div>
+                    <div
+                        class="glass-card rounded-2xl p-5 border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900/40 shadow-sm">
+                        <p class="text-[10px] font-black uppercase text-zinc-500">Withdrawal Requests</p>
+                        <p class="mt-2 text-3xl font-black text-fuchsia-600">{{ $withdrawalRequestsCount }}</p>
                     </div>
                 </div>
             </div>
+
+            {{-- Withdrawal History --}}
+            <div
+                class="glass-card rounded-[2rem] border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900/60 shadow-xl overflow-hidden">
+                <div
+                    class="bg-zinc-50 dark:bg-white/5 p-5 border-b border-zinc-100 dark:border-white/10 flex items-center justify-between">
+                    <h3 class="font-black uppercase tracking-widest text-sm flex items-center gap-2">
+                        <flux:icon name="arrow-up-tray" class="w-4 h-4 text-fuchsia-500" />
+                        {{ __('Withdrawal History') }}
+                    </h3>
+                    <div class="relative">
+                        <input wire:model.live.debounce.400ms="withdrawalSearch" type="text"
+                            placeholder="{{ __('Search…') }}"
+                            class="pl-3 pr-8 py-1.5 text-xs rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary-400" />
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead
+                            class="bg-zinc-50 dark:bg-white/5 text-[10px] uppercase font-black text-zinc-400 tracking-widest">
+                            <tr>
+                                <th class="px-6 py-3 text-left">#</th>
+                                <th class="px-6 py-3 text-left">Amount</th>
+                                <th class="px-6 py-3 text-left">Status</th>
+                                <th class="px-6 py-3 text-left">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-zinc-100 dark:divide-white/5">
+                            @forelse ($withdrawals as $w)
+                                <tr class="hover:bg-zinc-50 dark:hover:bg-white/5 transition-colors">
+                                    <td class="px-6 py-3 font-mono text-xs text-zinc-400">{{ $w->id }}</td>
+                                    <td class="px-6 py-3 font-black text-emerald-600">
+                                        {{ number_format($w->amount, 2) }}</td>
+                                    <td class="px-6 py-3">
+                                        <span
+                                            class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-zinc-100 dark:bg-white/10 text-zinc-600 dark:text-zinc-300">
+                                            {{ $w->status ?? 'N/A' }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-3 text-xs text-zinc-500">
+                                        {{ $w->created_at->toDayDateTimeString() }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4"
+                                        class="px-6 py-12 text-center text-xs text-zinc-400 font-bold uppercase">No
+                                        withdrawal requests found.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+                @if ($withdrawals->hasPages())
+                    <div class="p-4 border-t border-zinc-100 dark:border-white/10">
+                        {{ $withdrawals->links() }}
+                    </div>
+                @endif
+            </div>
+
+            {{-- Point Gain History --}}
+            <div
+                class="glass-card rounded-[2rem] border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900/60 shadow-xl overflow-hidden">
+                <div
+                    class="bg-zinc-50 dark:bg-white/5 p-5 border-b border-zinc-100 dark:border-white/10 flex items-center justify-between">
+                    <h3 class="font-black uppercase tracking-widest text-sm flex items-center gap-2">
+                        <flux:icon name="star" class="w-4 h-4 text-primary-500" />
+                        {{ __('Point History') }}
+                    </h3>
+                    <div class="relative">
+                        <input wire:model.live.debounce.400ms="pointSearch" type="text"
+                            placeholder="{{ __('Search…') }}"
+                            class="pl-3 pr-8 py-1.5 text-xs rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary-400" />
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead
+                            class="bg-zinc-50 dark:bg-white/5 text-[10px] uppercase font-black text-zinc-400 tracking-widest">
+                            <tr>
+                                <th class="px-6 py-3 text-left">Points</th>
+                                <th class="px-6 py-3 text-left">Type</th>
+                                <th class="px-6 py-3 text-left">Notes</th>
+                                <th class="px-6 py-3 text-left">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-zinc-100 dark:divide-white/5">
+                            @forelse ($pointLogs as $log)
+                                <tr class="hover:bg-zinc-50 dark:hover:bg-white/5 transition-colors">
+                                    <td
+                                        class="px-6 py-3 font-black {{ $log->points >= 0 ? 'text-emerald-600' : 'text-rose-600' }}">
+                                        {{ $log->points >= 0 ? '+' : '' }}{{ number_format($log->points) }}
+                                    </td>
+                                    <td class="px-6 py-3">
+                                        <span
+                                            class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-primary-100 dark:bg-primary-950/40 text-primary-600">
+                                            {{ $log->type->label() ?? $log->type->value }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-3 text-xs text-zinc-500 max-w-[240px] truncate">
+                                        {{ $log->notes ?? '—' }}</td>
+                                    <td class="px-6 py-3 text-xs text-zinc-500">
+                                        {{ $log->created_at->toDayDateTimeString() }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4"
+                                        class="px-6 py-12 text-center text-xs text-zinc-400 font-bold uppercase">No
+                                        point history found.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+                @if ($pointLogs->hasPages())
+                    <div class="p-4 border-t border-zinc-100 dark:border-white/10">
+                        {{ $pointLogs->links() }}
+                    </div>
+                @endif
+            </div>
+
         </div>
-    </div>
+    @endif
 
-    <style>
-        .glass-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+    {{-- ══════════════════════════════════════════════════════
+         TAB: BUYER HISTORY
+    ══════════════════════════════════════════════════════ --}}
+    @if ($activeTab === 'buyer')
+        <div class="space-y-8" wire:key="tab-buyer">
 
-        .light .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-        }
-    </style>
+            {{-- Buyer Stats Grid --}}
+            <div>
+                <h3 class="text-[11px] font-black uppercase tracking-widest text-zinc-400 mb-4">Buyer Overview</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    @php
+                        $buyerCards = [
+                            [
+                                'label' => 'Paid Orders',
+                                'value' => $paidOrdersCount,
+                                'color' => 'text-primary-600',
+                                'bg' => 'bg-primary-50 dark:bg-primary-950/30',
+                                'border' => 'border-primary-200 dark:border-primary-800',
+                            ],
+                            [
+                                'label' => 'Delivered Orders',
+                                'value' => $deliveredOrdersCount,
+                                'color' => 'text-emerald-600',
+                                'bg' => 'bg-emerald-50 dark:bg-emerald-950/30',
+                                'border' => 'border-emerald-200 dark:border-emerald-800',
+                            ],
+                            [
+                                'label' => 'Disputes Raised',
+                                'value' => $buyerDisputesCount,
+                                'color' => 'text-rose-600',
+                                'bg' => 'bg-rose-50 dark:bg-rose-950/30',
+                                'border' => 'border-rose-200 dark:border-rose-800',
+                            ],
+                            [
+                                'label' => 'Disputes Won',
+                                'value' => $buyerDisputesWonCount,
+                                'color' => 'text-amber-600',
+                                'bg' => 'bg-amber-50 dark:bg-amber-950/30',
+                                'border' => 'border-amber-200 dark:border-amber-800',
+                            ],
+                            [
+                                'label' => 'Total Spent',
+                                'value' => number_format($totalTransactionAmount, 2),
+                                'color' => 'text-sky-600',
+                                'bg' => 'bg-sky-50 dark:bg-sky-950/30',
+                                'border' => 'border-sky-200 dark:border-sky-800',
+                            ],
+                        ];
+                    @endphp
+                    @foreach ($buyerCards as $card)
+                        <div
+                            class="glass-card rounded-2xl p-5 border {{ $card['border'] }} {{ $card['bg'] }} shadow-sm">
+                            <p class="text-[10px] font-black uppercase text-zinc-500">{{ $card['label'] }}</p>
+                            <p class="mt-2 text-2xl font-black {{ $card['color'] }}">{{ $card['value'] }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            {{-- Transaction History --}}
+            <div
+                class="glass-card rounded-[2rem] border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900/60 shadow-xl overflow-hidden">
+                <div
+                    class="bg-zinc-50 dark:bg-white/5 p-5 border-b border-zinc-100 dark:border-white/10 flex items-center justify-between gap-4">
+                    <h3 class="font-black uppercase tracking-widest text-sm flex items-center gap-2 shrink-0">
+                        <flux:icon name="credit-card" class="w-4 h-4 text-sky-500" />
+                        {{ __('Transaction History') }}
+                    </h3>
+                    <input wire:model.live.debounce.400ms="transactionSearch" type="text"
+                        placeholder="{{ __('Search by TX ID…') }}"
+                        class="pl-3 pr-4 py-1.5 text-xs rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary-400 w-48" />
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead
+                            class="bg-zinc-50 dark:bg-white/5 text-[10px] uppercase font-black text-zinc-400 tracking-widest">
+                            <tr>
+                                <th class="px-6 py-3 text-left">TX ID</th>
+                                <th class="px-6 py-3 text-left">Type</th>
+                                <th class="px-6 py-3 text-left">Amount</th>
+                                <th class="px-6 py-3 text-left">Fee</th>
+                                <th class="px-6 py-3 text-left">Net</th>
+                                <th class="px-6 py-3 text-left">Status</th>
+                                <th class="px-6 py-3 text-left">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-zinc-100 dark:divide-white/5">
+                            @forelse ($transactions as $tx)
+                                <tr class="hover:bg-zinc-50 dark:hover:bg-white/5 transition-colors">
+                                    <td class="px-6 py-3 font-mono text-xs text-zinc-400">{{ $tx->transaction_id }}
+                                    </td>
+                                    <td class="px-6 py-3">
+                                        <span
+                                            class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-zinc-100 dark:bg-white/10 text-zinc-600 dark:text-zinc-300">
+                                            {{ $tx->type->value ?? '—' }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-3 font-black text-zinc-800 dark:text-zinc-200">
+                                        {{ number_format($tx->amount, 2) }}</td>
+                                    <td class="px-6 py-3 text-rose-500 font-bold text-xs">
+                                        {{ number_format($tx->fee_amount, 2) }}</td>
+                                    <td class="px-6 py-3 font-black text-emerald-600">
+                                        {{ number_format($tx->net_amount, 2) }}</td>
+                                    <td class="px-6 py-3">
+                                        <span
+                                            class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase
+                                            @if ($tx->status->value === 'paid') bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40
+                                            @elseif ($tx->status->value === 'pending') bg-amber-100 text-amber-700 dark:bg-amber-950/40
+                                            @else bg-rose-100 text-rose-700 dark:bg-rose-950/40 @endif">
+                                            {{ $tx->status->value }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-3 text-xs text-zinc-500">
+                                        {{ $tx->created_at->toDayDateTimeString() }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="7"
+                                        class="px-6 py-12 text-center text-xs text-zinc-400 font-bold uppercase">No
+                                        transactions found.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+                @if ($transactions->hasPages())
+                    <div class="p-4 border-t border-zinc-100 dark:border-white/10">
+                        {{ $transactions->links() }}
+                    </div>
+                @endif
+            </div>
+
+            {{-- Order History --}}
+            <div
+                class="glass-card rounded-[2rem] border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900/60 shadow-xl overflow-hidden">
+                <div
+                    class="bg-zinc-50 dark:bg-white/5 p-5 border-b border-zinc-100 dark:border-white/10 flex items-center justify-between gap-4">
+                    <h3 class="font-black uppercase tracking-widest text-sm flex items-center gap-2 shrink-0">
+                        <flux:icon name="shopping-bag" class="w-4 h-4 text-indigo-500" />
+                        {{ __('Order History') }}
+                    </h3>
+                    <input wire:model.live.debounce.400ms="orderSearch" type="text"
+                        placeholder="{{ __('Search by Order ID…') }}"
+                        class="pl-3 pr-4 py-1.5 text-xs rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-primary-400 w-48" />
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead
+                            class="bg-zinc-50 dark:bg-white/5 text-[10px] uppercase font-black text-zinc-400 tracking-widest">
+                            <tr>
+                                <th class="px-6 py-3 text-left">Order ID</th>
+                                <th class="px-6 py-3 text-left">Product</th>
+                                <th class="px-6 py-3 text-left">Qty</th>
+                                <th class="px-6 py-3 text-left">Total</th>
+                                <th class="px-6 py-3 text-left">Status</th>
+                                <th class="px-6 py-3 text-left">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-zinc-100 dark:divide-white/5">
+                            @forelse ($buyerOrders as $order)
+                                <tr class="hover:bg-zinc-50 dark:hover:bg-white/5 transition-colors">
+                                    <td class="px-6 py-3 font-mono text-xs font-bold text-zinc-500">
+                                        {{ $order->order_id }}</td>
+                                    <td
+                                        class="px-6 py-3 text-sm font-semibold text-zinc-700 dark:text-zinc-300 max-w-[180px] truncate">
+                                        {{ $order->source?->name ?? '—' }}
+                                    </td>
+                                    <td class="px-6 py-3 text-zinc-600 dark:text-zinc-400">{{ $order->quantity ?? 1 }}
+                                    </td>
+                                    <td class="px-6 py-3 font-black text-zinc-800 dark:text-zinc-200">
+                                        {{ number_format($order->grand_total, 2) }}</td>
+                                    <td class="px-6 py-3">
+                                        <span
+                                            class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase {{ $order->status->color() }}">
+                                            {{ $order->status->label() }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-3 text-xs text-zinc-500">
+                                        {{ $order->created_at->toDayDateTimeString() }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6"
+                                        class="px-6 py-12 text-center text-xs text-zinc-400 font-bold uppercase">No
+                                        orders found.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+                @if ($buyerOrders->hasPages())
+                    <div class="p-4 border-t border-zinc-100 dark:border-white/10">
+                        {{ $buyerOrders->links() }}
+                    </div>
+                @endif
+            </div>
+
+        </div>
+    @endif
+
+    {{-- ══════════════════════════════════════════════════════
+         TAB: SELLER HISTORY
+    ══════════════════════════════════════════════════════ --}}
+    @if ($activeTab === 'seller')
+        <div class="space-y-8" wire:key="tab-seller">
+
+            {{-- Seller Stats Grid --}}
+            <div>
+                <h3 class="text-[11px] font-black uppercase tracking-widest text-zinc-400 mb-4">Seller Overview</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    @php
+                        $sellerCards = [
+                            [
+                                'label' => 'Sold Orders',
+                                'value' => $soldOrdersCount,
+                                'color' => 'text-emerald-600',
+                                'bg' => 'bg-emerald-50 dark:bg-emerald-950/30',
+                                'border' => 'border-emerald-200 dark:border-emerald-800',
+                            ],
+                            [
+                                'label' => 'Disputes Filed',
+                                'value' => $sellerDisputesCount,
+                                'color' => 'text-rose-600',
+                                'bg' => 'bg-rose-50 dark:bg-rose-950/30',
+                                'border' => 'border-rose-200 dark:border-rose-800',
+                            ],
+                            [
+                                'label' => 'Disputes Won',
+                                'value' => $sellerDisputesWonCount,
+                                'color' => 'text-amber-600',
+                                'bg' => 'bg-amber-50 dark:bg-amber-950/30',
+                                'border' => 'border-amber-200 dark:border-amber-800',
+                            ],
+                            [
+                                'label' => 'Cancelled Orders',
+                                'value' => $cancelledOrdersCount,
+                                'color' => 'text-zinc-600',
+                                'bg' => 'bg-zinc-50 dark:bg-zinc-900/40',
+                                'border' => 'border-zinc-200 dark:border-white/10',
+                            ],
+                            [
+                                'label' => 'Total Products',
+                                'value' => $productsCount,
+                                'color' => 'text-primary-600',
+                                'bg' => 'bg-primary-50 dark:bg-primary-950/30',
+                                'border' => 'border-primary-200 dark:border-primary-800',
+                            ],
+                        ];
+                    @endphp
+                    @foreach ($sellerCards as $card)
+                        <div
+                            class="glass-card rounded-2xl p-5 border {{ $card['border'] }} {{ $card['bg'] }} shadow-sm">
+                            <p class="text-[10px] font-black uppercase text-zinc-500">{{ $card['label'] }}</p>
+                            <p class="mt-2 text-2xl font-black {{ $card['color'] }}">{{ $card['value'] }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            {{-- Dispute Win Rate Visual --}}
+            @if ($sellerDisputesCount > 0)
+                <div
+                    class="glass-card rounded-2xl p-6 border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900/60 shadow-sm">
+                    <p class="text-[10px] font-black uppercase text-zinc-400 mb-3">Dispute Win Rate</p>
+                    @php $winRate = round(($sellerDisputesWonCount / $sellerDisputesCount) * 100); @endphp
+                    <div class="flex items-center gap-4">
+                        <div class="flex-1 h-3 bg-zinc-100 dark:bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full rounded-full bg-gradient-to-r from-amber-400 to-emerald-500 transition-all duration-700"
+                                style="width: {{ $winRate }}%"></div>
+                        </div>
+                        <span class="text-lg font-black text-emerald-600 shrink-0">{{ $winRate }}%</span>
+                    </div>
+                    <p class="text-xs text-zinc-400 mt-2">{{ $sellerDisputesWonCount }} won out of
+                        {{ $sellerDisputesCount }} total disputes</p>
+                </div>
+            @endif
+
+            {{-- Seller Orders Table --}}
+            <div
+                class="glass-card rounded-[2rem] border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900/60 shadow-xl overflow-hidden">
+                <div
+                    class="bg-zinc-50 dark:bg-white/5 p-5 border-b border-zinc-100 dark:border-white/10 flex items-center gap-2">
+                    <flux:icon name="store" class="w-4 h-4 text-amber-500" />
+                    <h3 class="font-black uppercase tracking-widest text-sm">{{ __('Sales History') }}</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead
+                            class="bg-zinc-50 dark:bg-white/5 text-[10px] uppercase font-black text-zinc-400 tracking-widest">
+                            <tr>
+                                <th class="px-6 py-3 text-left">Order ID</th>
+                                <th class="px-6 py-3 text-left">Buyer</th>
+                                <th class="px-6 py-3 text-left">Product</th>
+                                <th class="px-6 py-3 text-left">Total</th>
+                                <th class="px-6 py-3 text-left">Status</th>
+                                <th class="px-6 py-3 text-left">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-zinc-100 dark:divide-white/5">
+                            @forelse ($sellerOrders as $order)
+                                <tr class="hover:bg-zinc-50 dark:hover:bg-white/5 transition-colors">
+                                    <td class="px-6 py-3 font-mono text-xs font-bold text-zinc-500">
+                                        {{ $order->order_id }}</td>
+                                    <td class="px-6 py-3">
+                                        <div class="flex items-center gap-2">
+                                            <div
+                                                class="w-7 h-7 rounded-xl overflow-hidden bg-gradient-to-br from-primary-400 to-indigo-500 flex items-center justify-center shrink-0">
+                                                <span
+                                                    class="text-[9px] font-black text-white">{{ strtoupper(substr($order->user?->username ?? '?', 0, 2)) }}</span>
+                                            </div>
+                                            <span
+                                                class="text-xs font-semibold text-zinc-700 dark:text-zinc-300">{{ $order->user?->username ?? '—' }}</span>
+                                        </div>
+                                    </td>
+                                    <td
+                                        class="px-6 py-3 text-sm font-semibold text-zinc-700 dark:text-zinc-300 max-w-[160px] truncate">
+                                        {{ $order->source?->name ?? '—' }}
+                                    </td>
+                                    <td class="px-6 py-3 font-black text-zinc-800 dark:text-zinc-200">
+                                        {{ number_format($order->grand_total, 2) }}</td>
+                                    <td class="px-6 py-3">
+                                        <span
+                                            class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase {{ $order->status->color() }}">
+                                            {{ $order->status->label() }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-3 text-xs text-zinc-500">
+                                        {{ $order->created_at->toDayDateTimeString() }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6"
+                                        class="px-6 py-12 text-center text-xs text-zinc-400 font-bold uppercase">No
+                                        sales found.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+                @if ($sellerOrders->hasPages())
+                    <div class="p-4 border-t border-zinc-100 dark:border-white/10">
+                        {{ $sellerOrders->links() }}
+                    </div>
+                @endif
+            </div>
+
+        </div>
+    @endif
+
 </div>

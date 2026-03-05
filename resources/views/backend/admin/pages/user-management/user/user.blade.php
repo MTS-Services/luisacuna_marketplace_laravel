@@ -50,6 +50,13 @@
             <livewire:backend.admin.user-management.user.profile.statistic :user="$user" />
         @break
 
+        @case('admin.um.user.ban-history')
+            <x-slot name="pageSlug">{{ __('admin-users') }}</x-slot>
+            <x-slot name="title">{{ __('Ban History') }}</x-slot>
+            <x-slot name="breadcrumb">{{ __('User Management') }}</x-slot>
+            <livewire:backend.admin.user-management.user.profile.ban-history :user="$user" />
+        @break
+
         @case('admin.um.user.referral')
             <x-slot name="pageSlug">{{ __('admin-users') }}</x-slot>
             <x-slot name="title">{{ __('Statistic Info') }}</x-slot>

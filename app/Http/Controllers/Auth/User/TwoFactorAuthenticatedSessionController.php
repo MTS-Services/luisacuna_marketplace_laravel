@@ -69,7 +69,7 @@ class TwoFactorAuthenticatedSessionController extends Controller
             }
         }
 
-        if ($user->account_status === UserAccountStatus::BANNED) {
+        if ($user->isCurrentlyBanned()) {
             $request->session()->forget(['login.id', 'login.remember', 'login.device_info']);
 
             return redirect()->route('login')->withErrors(['message' => $user->getBannedLoginMessage()]);

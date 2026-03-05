@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\AuditBaseModel;
 use App\Enums\UserBanType;
-use Laravel\Scout\Searchable;
+use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
-use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
+use Laravel\Scout\Searchable;
+use OwenIt\Auditing\Contracts\Auditable;
 
 class UserBan extends AuditBaseModel implements Auditable
 {
@@ -35,7 +35,9 @@ class UserBan extends AuditBaseModel implements Auditable
     ];
 
     protected $casts = [
-        'type' => UserBanType::class
+        'type' => UserBanType::class,
+        'expires_at' => 'datetime',
+        'unbanned_at' => 'datetime',
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=

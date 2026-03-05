@@ -20,7 +20,7 @@ class EnsureUserNotBanned
         if (Auth::guard('web')->check()) {
             $user = Auth::guard('web')->user();
 
-            if ($user && $user->account_status === UserAccountStatus::BANNED) {
+            if ($user && $user->isCurrentlyBanned()) {
                 Auth::guard('web')->logout();
 
                 return redirect()

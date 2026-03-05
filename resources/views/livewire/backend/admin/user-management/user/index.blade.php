@@ -38,8 +38,33 @@
         :button-text="__('Confirm Action')" />
 
     {{-- Band User Confirmation Modal --}}
-    <x-ui.confirmation-modal :show="'showBandUserModal'" :title="__('Band this User?')" :message="__('Are you sure you want to band this user?')" :method="'bandUser'"
-        :button-text="__('Confirm Band User')" :inputs="[
-            ['model' => 'bandReason', 'placeholder' => 'Enter band reason', 'required' => true, 'type' => 'text'],
+    <x-ui.confirmation-modal :show="'showBandUserModal'" :title="__('Band this User?')" :message="__('Set ban reason and duration for this user.')" :method="'bandUser'"
+        :button-text="__('Confirm Ban')" :inputs="[
+            [
+                'model' => 'banReason',
+                'label' => __('Ban reason'),
+                'placeholder' => __('Enter ban reason'),
+                'required' => true,
+                'type' => 'text',
+            ],
+            [
+                'model' => 'banPermanent',
+                'label' => __('Permanent ban'),
+                'type' => 'checkbox',
+            ],
+            [
+                'model' => 'banDate',
+                'label' => __('Ban until date'),
+                'type' => 'date',
+                'depends_on' => 'banPermanent',
+                'disable_when_true' => true,
+            ],
+            [
+                'model' => 'banTime',
+                'label' => __('Ban until time'),
+                'type' => 'time',
+                'depends_on' => 'banPermanent',
+                'disable_when_true' => true,
+            ],
         ]" />
 </section>

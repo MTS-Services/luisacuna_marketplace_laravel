@@ -175,7 +175,7 @@ class Login extends Component
             ]);
         }
 
-        if ($user->account_status === UserAccountStatus::BANNED) {
+        if ($user->isCurrentlyBanned()) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
