@@ -332,6 +332,7 @@ Route::middleware(['admin', 'adminVerify', 'adminNotBanned'])->name('admin.')->p
         Route::get('/cancelled-orders', 'cancelledOrders')->name('cancelled-orders');
         Route::get('/dispute-orders', 'disputeOrders')->name('dispute-orders');
         Route::get('/show/{orderId}', 'show')->name('show');
+        Route::get('/dispute-show/{orderId}', 'disputeShow')->name('dispute-show');
     });
     Route::controller(ProfileController::class)->name('profile.')->prefix('profile')->group(function () {
         Route::get('/', 'index')->name('index');

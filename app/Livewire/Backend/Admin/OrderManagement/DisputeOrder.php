@@ -10,13 +10,18 @@ use Livewire\Component;
 
 class DisputeOrder extends Component
 {
-   use WithDataTable, WithNotification;
+    use WithDataTable, WithNotification;
 
     public $statusFilter = '';
+
     public $showDeleteModal = false;
+
     public $deleteCategoryId = null;
+
     public $bulkAction = '';
+
     public $showBulkActionModal = false;
+
     public $deleteId = null;
 
     protected OrderService $service;
@@ -25,6 +30,7 @@ class DisputeOrder extends Component
     {
         $this->service = $service;
     }
+
     public function render()
     {
         $datas = $this->service->getPaginatedData(
@@ -42,32 +48,32 @@ class DisputeOrder extends Component
                 'key' => 'source_id',
                 'label' => 'Product Title',
                 'sortable' => true,
-                'format' => fn($order) => '
+                'format' => fn ($order) => '
                 <div class="flex items-center gap-3">
                     <div class="min-w-0">
                         <h3 class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">'
-                    . $order->source->name .
+                    .$order->source->name.
                     '</h3>
                     </div>
-                </div>'
+                </div>',
             ],
             [
                 'key' => 'user_id',
                 'label' => 'Buyer',
                 'sortable' => true,
-                'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->user->username]) . '"><span class="text-text-white text-xs xxs:text-sm md:text-base truncate">' . $order->user->full_name . '</span></a>'
+                'format' => fn ($order) => '<a href="'.route('profile', ['username' => $order->user->username]).'"><span class="text-text-white text-xs xxs:text-sm md:text-base truncate">'.$order->user->full_name.'</span></a>',
             ],
             [
                 'key' => 'source_id',
                 'label' => 'Seller',
                 'sortable' => true,
-                'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->source->user->username]) . '"><span class="text-text-white text-xs xxs:text-sm md:text-base truncate">' . $order->source->user->full_name . '</span></a>'
+                'format' => fn ($order) => '<a href="'.route('profile', ['username' => $order->source->user->username]).'"><span class="text-text-white text-xs xxs:text-sm md:text-base truncate">'.$order->source->user->full_name.'</span></a>',
             ],
             [
                 'key' => 'total_amount',
                 'label' => 'Price',
                 'sortable' => true,
-                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">' . currency_symbol() . $order->total_amount  . '</span>'
+                'format' => fn ($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">'.currency_symbol().$order->total_amount.'</span>',
             ],
             [
                 'key' => 'created_at',
@@ -75,14 +81,14 @@ class DisputeOrder extends Component
                 'sortable' => true,
                 'format' => function ($order) {
                     return $order->created_at_formatted;
-                }
+                },
             ],
         ];
         $actions = [
             [
                 'key' => 'order_id',
                 'label' => 'View',
-                'route' => 'admin.orders.show',
+                'route' => 'admin.orders.dispute-show',
             ],
 
         ];
@@ -90,6 +96,7 @@ class DisputeOrder extends Component
             ['value' => 'delete', 'label' => 'Delete'],
 
         ];
+
         return view('livewire.backend.admin.order-management.dispute-order', [
             'datas' => $datas,
             'columns' => $columns,
@@ -97,6 +104,7 @@ class DisputeOrder extends Component
             'bulkActions' => $bulkActions,
         ]);
     }
+
     public function resetFilters(): void
     {
         $this->reset(['search', 'statusFilter', 'perPage', 'sortField', 'sortDirection', 'selectedIds', 'selectAll', 'bulkAction']);
@@ -106,14 +114,13 @@ class DisputeOrder extends Component
     protected function getFilters(): array
     {
         return [
-            'status'         => OrderStatus::PAID,
-            'sort_field'     => $this->sortField,
+            'status' => OrderStatus::PAID,
+            'sort_field' => $this->sortField,
             'sort_direction' => $this->sortDirection,
             'is_distpute' => true,
 
         ];
     }
-
 
     public function updatedStatusFilter(): void
     {
