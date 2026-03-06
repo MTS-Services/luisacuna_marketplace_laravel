@@ -36,6 +36,13 @@
             <livewire:backend.admin.order-management.detail :data="$data" />
         @break
 
+        @case('admin.orders.dispute-show')
+            <x-slot name="pageSlug">{{ __('dispute-orders') }}</x-slot>
+            <x-slot name="title">{{ __('Dispute Order Details') }}</x-slot>
+            <x-slot name="breadcrumb">{{ __('Order Management / Dispute Order Details') }}</x-slot>
+            <livewire:backend.admin.order-management.dispute-detail :data="$data" />
+        @break
+
         @default
             <x-slot name="title">{{ __('All Orders') }}</x-slot>
             <x-slot name="breadcrumb">{{ __('Order Management / All Orders List') }}</x-slot>
