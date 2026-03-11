@@ -17,10 +17,10 @@
             <!-- Language Fields -->
             <div class="mt-6 space-y-4 grid grid-cols-2 gap-5">
 
-                <div class="w-full col-span-2">
+                {{-- <div class="w-full col-span-2">
                     <x-ui.file-input wire:model="form.file" label="Upload CSV" accept=".csv,text/csv,application/csv" :error="$errors->first('form.file')"
                         hint="Upload a Upload CSV (Max: 2MB)" :existingFiles="$existingFile" removeModel="form.remove_file" />
-                </div>
+                </div> --}}
 
                 <!-- Name -->
                 <div>
@@ -31,12 +31,12 @@
                 </div>
 
                 <!-- Locale -->
-                <div>
+                {{-- <div>
                     <x-ui.label for="locale" :value="__('Locale')" required />
                     <x-ui.input id="locale" type="text" class="mt-1 block w-full" wire:model="form.locale"
                         placeholder="en, es, fr, bn" />
                     <x-ui.input-error :messages="$errors->get('form.locale')" class="mt-2" />
-                </div>
+                </div> --}}
 
                 <!-- Native Name -->
                 <div>

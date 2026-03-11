@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('locale')->unique()->comment('en, es, fr, bn');
             $table->string('country_code')->unique()->comment('en, es, fr, bn');
             $table->string('name')->unique()->comment('English, Spanish, France');
-            $table->string('native_name')->nullabl()->comment('English, Español');
-            $table->string('flag_icon');
+            $table->string('native_name')->nullable()->comment('English, Español');
+            $table->string('flag_icon')->nullable();
             $table->string('file')->nullable();
             $table->string('status')->index()->default(LanguageStatus::ACTIVE->value);
             $table->boolean('is_default')->default(false);

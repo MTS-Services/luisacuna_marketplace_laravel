@@ -74,6 +74,7 @@ class SetLocaleMiddleware
             }
         }
 
+
         // Set the application locale. If no locale was found,
         // use the default fallback locale configured in Laravel.
         App::setLocale($locale ?? config('app.fallback_locale', 'en'));

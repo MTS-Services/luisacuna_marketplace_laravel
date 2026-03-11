@@ -1,5 +1,5 @@
 <x-admin::app>
-    <x-slot name="pageSlug">{{ __('role') }}</x-slot>
+    <x-slot name="pageSlug">role</x-slot>
 
     @switch(Route::currentRouteName())
         @case('admin.am.role.create')

@@ -1,5 +1,5 @@
 <x-frontend::app>
-    <x-slot name="pageSlug">{{ __('register') }}</x-slot>
+    <x-slot name="pageSlug">register</x-slot>
     @switch(Route::currentRouteName())
         {{-- @case('register.emailVerify')
             <x-slot name="title">{{ __('Gmail Veryfication') }}</x-slot>

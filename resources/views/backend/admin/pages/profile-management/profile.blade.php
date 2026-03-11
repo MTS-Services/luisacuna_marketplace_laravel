@@ -1,5 +1,5 @@
 <x-admin::app>
-    <x-slot name="pageSlug">{{ __('profile') }}</x-slot>
+    <x-slot name="pageSlug">profile</x-slot>
     @switch(Route::currentRouteName())
         @case('admin.profile.edit')
             <x-slot name="title">{{ __('Profile Edit') }}</x-slot>

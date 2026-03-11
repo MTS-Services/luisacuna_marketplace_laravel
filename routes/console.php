@@ -10,3 +10,5 @@ Artisan::command('inspire', function () {
 
 Schedule::command('app:user-loyalty-point-allocation')->daily();
 Schedule::command('app:refresh-marketplace-metrics')->dailyAt('00:00');
+Schedule::command('orders:auto-complete')->everyFiveMinutes();
+Schedule::command('orders:auto-cancel')->everyFiveMinutes();

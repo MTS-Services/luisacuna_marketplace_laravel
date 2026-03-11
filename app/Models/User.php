@@ -8,7 +8,6 @@ use App\Enums\UserBanType;
 use App\Enums\userKycStatus;
 use App\Enums\UserStatus;
 use App\Enums\UserType;
-use App\Models\UserBan;
 use App\Observers\UserTwoFAObserver;
 use App\Traits\AuditableTrait;
 use App\Traits\HasDeviceManagement;
@@ -218,6 +217,14 @@ class User extends AuthBaseModel implements Auditable
         return $this->hasOne(Product::class, 'user_id', 'id');
     }
 
+    /**
+     * Products listed for sale by this user (seller).
+     */
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class, 'user_id', 'id');
+    }
+
     public function productReview(): HasOne
     {
         return $this->hasOne(Product::class, 'user_id', 'id');
@@ -310,6 +317,26 @@ class User extends AuthBaseModel implements Auditable
         return $this->hasMany(Feedback::class, 'target_user_id', 'id');
     }
 
+    public function disputeStats(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(UserDisputeStats::class, 'user_id', 'id');
+    }
+
+    public function sanctions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(UserSanction::class, 'user_id', 'id');
+    }
+
+    public function activeSanctions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(UserSanction::class, 'user_id', 'id')
+            ->where('is_active', true)
+            ->where(function ($q) {
+                $q->whereNull('expires_at')
+                    ->orWhere('expires_at', '>', now());
+            });
+    }
+
     public function AchievementProgress()
     {
         return $this->hasMany(UserAchievementProgress::class, 'user_id', 'id');
@@ -318,6 +345,11 @@ class User extends AuthBaseModel implements Auditable
     public function pointLogs()
     {
         return $this->hasMany(PointLog::class, 'user_id', 'id');
+    }
+
+    public function walletFreezes(): HasMany
+    {
+        return $this->hasMany(WalletFreeze::class, 'user_id', 'id');
     }
     /*
     |--------------------------------------------------------------------------

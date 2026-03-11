@@ -1,5 +1,5 @@
 <x-admin::app>
-    <x-slot name="pageSlug">{{ __('offer-item') }}</x-slot>
+    <x-slot name="pageSlug">offer-item</x-slot>
     @switch(Route::currentRouteName())
         @case('admin.om.offer.show')
         @break

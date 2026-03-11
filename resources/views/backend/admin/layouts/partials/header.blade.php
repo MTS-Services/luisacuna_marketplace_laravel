@@ -29,6 +29,9 @@
                     icon="magnifying-glass" /> --}}
 
                 {{-- --}}
+
+                <livewire:backend.admin.partials.lang />
+
                 <flux:button x-data
                     x-on:click="$flux.dark = !$flux.dark; window.dispatchEvent(new CustomEvent('reset-tinymce-initiallized'))"
                     variant="subtle" aria-label="{{ __('Toggle dark mode') }}">
@@ -53,7 +56,7 @@
 
                 <div class="relative" x-data="{ open: false }">
 
-                  
+
                     <button @click="open = !open" class="avatar">
                         <div class="w-8 rounded-xl">
 

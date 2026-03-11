@@ -1,5 +1,5 @@
 <x-admin::app>
-    <x-slot name="pageSlug">{{__('currency')}}</x-slot>
+    <x-slot name="pageSlug">currency</x-slot>
     @switch(Route::currentRouteName())
         @case('admin.as.currency.create')
             <x-slot name="breadcrumb">{{__('Application Settings > Currency Create')}}</x-slot>

@@ -1,6 +1,6 @@
 <x-admin::app>
 
-    <x-slot name="pageSlug">{{__('rank')}}</x-slot>
+    <x-slot name="pageSlug">rank</x-slot>
 
     @switch(Route::currentRouteName())
         @case('admin.rm.rank.create')

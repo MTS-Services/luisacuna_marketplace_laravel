@@ -3,15 +3,20 @@
 namespace App\Livewire\Backend\User\Orders;
 
 use App\Enums\OrderStatus;
+use App\Models\Order;
 use App\Services\OrderService;
+use App\Services\OrderStateMachine;
+use App\Traits\Livewire\WithNotification;
 use App\Traits\WithPaginationData;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class PurchasedOrders extends Component
 {
-    use WithPaginationData;
+    use WithNotification, WithPaginationData;
 
     public $showDeleteModal = false;
 
@@ -30,42 +35,38 @@ class PurchasedOrders extends Component
 
     protected OrderService $service;
 
-    public function boot(OrderService $service)
+    protected OrderStateMachine $stateMachine;
+
+    public function boot(OrderService $service, OrderStateMachine $stateMachine): void
     {
         $this->service = $service;
+        $this->stateMachine = $stateMachine;
     }
 
     public function render()
     {
         $datas = $this->service->getPaginatedData(
+            perPage: 10,
             filters: $this->getFilters()
         );
         $columns = [
             [
                 'key' => 'id',
                 'label' => 'Order Name',
-                'format' => fn ($order) => '
+                'format' => fn($order) => '
                 <div class="flex items-center gap-3">
-                    <div class="w-15 h-15  rounded-lg shrink-0">
-                        <img src="'.storage_url($order?->source?->game?->logo).'"
-                            alt="'.$order->source->translatedName(app()->getLocale()).'" 
-                            class="w-full h-full rounded-lg object-cover" />
+                    <div class="w-15 h-15 rounded-lg shrink-0">
+                        <img src="' . storage_url($order?->source?->game?->logo) . '"'
+                    . 'alt="' . $order->source->translatedName(app()->getLocale()) . '"'
+                    . 'class="w-full h-full rounded-lg object-cover" />
                     </div>
                     <div class="min-w-0">
                         <h3 class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">'
-                    .$order->source->translatedName(app()->getLocale()).
+                    . $order->source->translatedName(app()->getLocale()) .
                     '</h3>
                         <p class="text-xs text-text-primary/80 truncate xxs:block py-1">'
-                    .$order?->source?->translatedName(app()->getLocale()).
+                    . '#' . $order->order_id .
                     '</p>
-                        <a href="'.($order->status->value === OrderStatus::CANCELLED
-                        ? route('user.order.cancel', ['orderId' => $order->order_id])
-                        : route('user.order.complete', ['orderId' => $order->order_id])
-                    ).'"
-                        class="text-bg-pink-500 text-xs">
-                            View Details 
-                            <flux:icon name="arrow-right" class="w-4 h-4" />
-                        </a>
                     </div>
                 </div>
         ',
@@ -74,7 +75,7 @@ class PurchasedOrders extends Component
             [
                 'key' => 'source_id',
                 'label' => 'Seller',
-                'format' => fn ($order) => '<a href="'.route('profile', ['username' => $order->source->user->username]).' " target="_blank"><span class="text-zinc-500 text-xs xxs:text-sm md:text-base truncate">'.$order->source->user->full_name.'</span></a>',
+                'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->source->user->username]) . ' " target="_blank"><span class="text-zinc-500 text-xs xxs:text-sm md:text-base truncate">' . $order->source->user->full_name . '</span></a>',
             ],
             [
                 'key' => 'created_at',
@@ -88,53 +89,222 @@ class PurchasedOrders extends Component
                 'key' => 'status',
                 'label' => 'Order status',
                 'format' => function ($data) {
-                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full border-0 text-xs font-medium badge '.$data->status->color().'">'.
-                        $data->status->label().
+                    return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full border-0 text-xs font-medium badge ' . $data->status->color() . '">' .
+                        $data->status->label() .
                         '</span>';
                 },
             ],
             [
                 'key' => 'quantity',
                 'label' => 'Quantity',
-                'format' => fn ($order) => $order?->quantity,
+                'format' => fn($order) => $order?->quantity,
             ],
             [
                 'key' => 'grand_total',
                 'label' => 'Price',
-                'format' => fn ($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">'.currency_symbol().currency_exchange($order->total_amount).'</span>',
+                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">' . currency_symbol() . currency_exchange($order->total_amount) . '</span>',
             ],
         ];
 
         $this->paginationData($datas);
 
+        $actions = [
+            // [
+            //     'param' => 'order_id',
+            //     'label' => 'View Details',
+            //     'route' => 'user.order.detail',
+            //     'icon' => 'eye',
+            //     'hoverClass' => 'text-blue-400',
+            // ],
+            [
+                'param' => 'order_id',
+                'label' => 'View Details',
+                'route' => 'user.order.complete',
+                'icon' => 'eye',
+                'hoverClass' => 'text-blue-400',
+                'condition' => fn($order) => in_array($order->status, [
+                    OrderStatus::PAID,
+                    OrderStatus::PROCESSING,
+                    OrderStatus::CANCEL_REQ_BY_SELLER,
+                    OrderStatus::CANCEL_REQ_BY_BUYER,
+                    OrderStatus::DELIVERED,
+                    OrderStatus::DISPUTED,
+                    OrderStatus::ESCALATED,
+                    OrderStatus::COMPLETED,
+                    OrderStatus::RESOLVED,
+                    OrderStatus::REFUNDED,
+                    OrderStatus::PENDING_PAYMENT,
+                    OrderStatus::PARTIALLY_PAID,
+                    OrderStatus::PARTIALLY_REFUNDED,
+                ]),
+            ],
+            [
+                'param' => 'order_id',
+                'label' => 'View Details',
+                'route' => 'user.order.cancel',
+                'icon' => 'eye',
+                'hoverClass' => 'text-red-400',
+                'condition' => fn($order) => in_array($order->status, [
+                    OrderStatus::CANCELLED,
+                    OrderStatus::FAILED,
+                ]),
+            ],
+            [
+                'param' => 'id',
+                'label' => 'Cancel Order',
+                'method' => 'cancelOrder',
+                'icon' => 'prohibit',
+                'hoverClass' => 'text-red-400',
+                'encrypt' => true,
+                'condition' => fn($order) => $order->status === OrderStatus::PAID,
+            ],
+            [
+                'param' => 'id',
+                'label' => 'Confirm Delivery',
+                'method' => 'confirmDelivery',
+                'icon' => 'check-circle',
+                'hoverClass' => 'text-green-400',
+                'encrypt' => true,
+                'condition' => fn($order) => $order->status === OrderStatus::DELIVERED,
+            ],
+            [
+                'param' => 'id',
+                'label' => 'Open Dispute',
+                'method' => 'openDispute',
+                'icon' => 'shield-warning',
+                'hoverClass' => 'text-yellow-400',
+                'encrypt' => true,
+                'condition' => fn($order) => $order->status === OrderStatus::DELIVERED,
+            ],
+            [
+                'param' => 'id',
+                'label' => 'Escalate to Support',
+                'method' => 'escalateToSupport',
+                'icon' => 'megaphone-simple',
+                'hoverClass' => 'text-yellow-400',
+                'encrypt' => true,
+                'condition' => fn($order) => in_array($order->status, [
+                    OrderStatus::DISPUTED,
+                    OrderStatus::CANCEL_REQ_BY_SELLER,
+                    OrderStatus::CANCEL_REQ_BY_BUYER,
+                ]),
+            ],
+            [
+                'param' => 'id',
+                'label' => 'Accept Cancel',
+                'method' => 'acceptCancel',
+                'icon' => 'check',
+                'hoverClass' => 'text-green-400',
+                'encrypt' => true,
+                'condition' => fn($order) => in_array($order->status, [
+                    OrderStatus::CANCEL_REQ_BY_SELLER,
+                ]),
+            ],
+            [
+                'param' => 'id',
+                'label' => 'Reject Cancel',
+                'method' => 'rejectCancel',
+                'icon' => 'prohibit',
+                'hoverClass' => 'text-red-400',
+                'encrypt' => true,
+                'condition' => fn($order) => in_array($order->status, [
+                    OrderStatus::CANCEL_REQ_BY_SELLER,
+                ]),
+            ],
+            [
+                'param' => 'id',
+                'label' => 'Cancel Dispute',
+                'method' => 'cancelDispute',
+                'icon' => 'x-circle',
+                'hoverClass' => 'text-red-400',
+                'encrypt' => true,
+                'condition' => fn($order) => $order->status === OrderStatus::DISPUTED,
+            ],
+        ];
+
         $statuses = [
-            [
-                'label' => 'Processing',
-                'value' => OrderStatus::PAID->value,
-            ],
-            [
-                'label' => 'Delivered',
-                'value' => OrderStatus::DELIVERED->value,
-            ],
-            [
-                'label' => 'Cancelled',
-                'value' => OrderStatus::CANCELLED->value,
-            ],
-            [
-                'label' => 'Refunded',
-                'value' => OrderStatus::REFUNDED->value,
-            ],
-            [
-                'label' => 'Failed',
-                'value' => OrderStatus::FAILED->value,
-            ],
+            ['label' => 'Processing', 'value' => OrderStatus::PAID->value],
+            ['label' => 'Cancel Requested', 'value' => OrderStatus::CANCEL_REQ_BY_BUYER->value],
+            ['label' => 'Cancel Requested', 'value' => OrderStatus::CANCEL_REQ_BY_SELLER->value],
+            ['label' => 'Delivered', 'value' => OrderStatus::DELIVERED->value],
+            ['label' => 'Disputed', 'value' => OrderStatus::DISPUTED->value],
+            ['label' => 'Escalated', 'value' => OrderStatus::ESCALATED->value],
+            ['label' => 'Completed', 'value' => OrderStatus::COMPLETED->value],
+            ['label' => 'Resolved', 'value' => OrderStatus::RESOLVED->value],
+            ['label' => 'Cancelled', 'value' => OrderStatus::CANCELLED->value],
+            ['label' => 'Refunded', 'value' => OrderStatus::REFUNDED->value],
         ];
 
         return view('livewire.backend.user.orders.purchased-orders', [
             'datas' => $datas,
             'columns' => $columns,
+            'actions' => $actions,
             'statuses' => $statuses,
         ]);
+    }
+
+    public function confirmDelivery($encryptedId): void
+    {
+        $this->executeTransition(decrypt($encryptedId), OrderStatus::COMPLETED);
+    }
+
+    public function openDispute($encryptedId): void
+    {
+        $this->executeTransition(decrypt($encryptedId), OrderStatus::DISPUTED);
+    }
+
+    public function cancelOrder($encryptedId): void
+    {
+        $this->executeTransition(decrypt($encryptedId), OrderStatus::CANCEL_REQ_BY_BUYER);
+    }
+
+    public function escalateToSupport($encryptedId): void
+    {
+        $this->executeTransition(decrypt($encryptedId), OrderStatus::ESCALATED);
+    }
+
+    public function cancelDispute($encryptedId): void
+    {
+        $this->executeTransition(decrypt($encryptedId), OrderStatus::PAID);
+    }
+
+    public function acceptCancel($encryptedId): void
+    {
+        $this->executeTransition(decrypt($encryptedId), OrderStatus::CANCELLED_BY_SELLER);
+    }
+
+    public function rejectCancel($encryptedId): void
+    {
+        $this->executeTransition(decrypt($encryptedId), OrderStatus::PAID);
+    }
+
+    protected function executeTransition($id, OrderStatus $targetStatus): void
+    {
+        try {
+            $order = Order::findOrFail($id);
+
+            if ((int) $order->user_id !== (int) user()->id) {
+                $this->error(__('Unauthorized action.'));
+
+                return;
+            }
+
+            $this->stateMachine->transition(
+                order: $order,
+                targetStatus: $targetStatus,
+                actor: user(),
+            );
+
+            $this->success(__('Order updated successfully.'));
+        } catch (Exception $e) {
+            Log::error('Error executing transition', [
+                'order_id' => $id,
+                'target_status' => $targetStatus,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            $this->error(__('Invalid transition. Please try again.'));
+        }
     }
 
     protected function getFilters(): array
@@ -142,7 +312,7 @@ class PurchasedOrders extends Component
         return [
             'search' => $this->search,
             'status' => $this->status,
-            'exclude_status' => OrderStatus::INITIALIZED,
+            'exclude_status' => [OrderStatus::INITIALIZED, OrderStatus::PENDING],
             'order_date' => $this->order_date,
             'sort_field' => $this->sortField,
             'sort_direction' => $this->sortDirection,
@@ -162,7 +332,7 @@ class PurchasedOrders extends Component
             return;
         }
 
-        $invoiceId = 'INV-'.strtoupper(uniqid());
+        $invoiceId = 'INV-' . strtoupper(uniqid());
         $pdf = Pdf::loadView('pdf-template.invoice', [
             'orders' => $orders,
             'buyer' => Auth::user(),
@@ -171,8 +341,8 @@ class PurchasedOrders extends Component
         ]);
 
         return response()->streamDownload(
-            fn () => print ($pdf->output()),
-            'purchased-orders-invoice-'.now()->format('Y-m-d').'.pdf'
+            fn() => print($pdf->output()),
+            'purchased-orders-invoice-' . now()->format('Y-m-d') . '.pdf'
         );
     }
 }

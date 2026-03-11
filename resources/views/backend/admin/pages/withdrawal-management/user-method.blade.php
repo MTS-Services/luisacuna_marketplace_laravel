@@ -1,7 +1,7 @@
 <x-admin::app>
     <div>
      <x-slot name="title">{{ __('User Method List') }}</x-slot>
-    <x-slot name="pageSlug">{{ __('user-method') }}</x-slot>
+    <x-slot name="pageSlug">user-method</x-slot>
     @switch(Route::currentRouteName())
         @case('admin.wm.user-method.view')
        

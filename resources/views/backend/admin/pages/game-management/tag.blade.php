@@ -1,5 +1,5 @@
 <x-admin::app>
-    <x-slot name="pageSlug">{{ __('tag') }}</x-slot>
+    <x-slot name="pageSlug">tag</x-slot>
 
     @switch(Route::currentRouteName())
         @case('admin.gm.tag.create')

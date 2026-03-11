@@ -4,7 +4,7 @@
             <x-slot
                 name="title">{{ ucfirst(str_replace('-', ' ', $gameSlug)) . ' ' . ucfirst(str_replace('-', ' ', $categorySlug)) }}
                 {{ __('Shop') }}</x-slot>
-            <x-slot name="pageSlug">{{ $gameSlug }}-{{ $categorySlug }}{{ __('-shop') }}</x-slot>
+            <x-slot name="pageSlug">{{ $gameSlug }}-{{ $categorySlug }}-shop</x-slot>
             <x-slot name="gameSlug">{{ $gameSlug }}</x-slot>
             <x-slot name="categorySlug">{{ $categorySlug }}</x-slot>
             <livewire:frontend.game.shop-component :gameSlug="$gameSlug" :categorySlug="$categorySlug" />
@@ -14,7 +14,7 @@
             <x-slot
                 name="title">{{ ucfirst(str_replace('-', ' ', $gameSlug)) . ' ' . ucfirst(str_replace('-', ' ', $categorySlug)) }}
                 {{ __('Buy') }}</x-slot>
-            <x-slot name="pageSlug">{{ $gameSlug }}-{{ $categorySlug }}{{ __('-shop') }}</x-slot>
+            <x-slot name="pageSlug">{{ $gameSlug }}-{{ $categorySlug }}-shop</x-slot>
             <x-slot name="gameSlug">{{ $gameSlug }}</x-slot>
             <x-slot name="categorySlug">{{ $categorySlug }}</x-slot>
             <x-slot name="sellerSlug">{{ $productId }}</x-slot>

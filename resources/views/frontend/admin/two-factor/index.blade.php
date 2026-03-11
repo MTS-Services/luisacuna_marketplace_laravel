@@ -1,5 +1,5 @@
 <x-admin::app>
-    <x-slot name="pageSlug">{{ __('two-factor') }}</x-slot>
+    <x-slot name="pageSlug">two-factor</x-slot>
     <x-slot name="breadcrumb">{{ __('Two-Factor Authentication') }}</x-slot>
     <x-slot name="title">{{ __('Two-Factor Authentication') }}</x-slot>
 

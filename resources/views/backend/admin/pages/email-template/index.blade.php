@@ -1,5 +1,5 @@
 <x-admin::app>
-    <x-slot name="pageSlug">{{ __('email-template') }}</x-slot>
+    <x-slot name="pageSlug">email-template</x-slot>
 
     @if (Route::currentRouteName() === 'admin.email-template.edit')
         <x-slot name="title">{{ __('Edit Email Template') }}</x-slot>

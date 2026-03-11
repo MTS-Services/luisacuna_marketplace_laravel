@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Enums\DisputeStatus;
-use App\Models\AuditBaseModel;
 use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -82,6 +81,7 @@ class Dispute extends AuditBaseModel implements Auditable
     {
         return $query->whereIn('status', [
             DisputeStatus::PENDING_VENDOR,
+            DisputeStatus::PENDING_REVIEW,
             DisputeStatus::ESCALATED,
         ]);
     }
@@ -89,6 +89,10 @@ class Dispute extends AuditBaseModel implements Auditable
     public function scopeClosed(Builder $query): Builder
     {
         return $query->whereIn('status', [
+            DisputeStatus::RESOLVED_BUYER_WINS,
+            DisputeStatus::RESOLVED_SELLER_WINS,
+            DisputeStatus::RESOLVED_PARTIAL_SPLIT,
+            DisputeStatus::RESOLVED_NEUTRAL,
             DisputeStatus::RESOLVED_REFUND,
             DisputeStatus::RESOLVED_CLOSED,
         ]);
@@ -103,4 +107,3 @@ class Dispute extends AuditBaseModel implements Auditable
         ]);
     }
 }
-
