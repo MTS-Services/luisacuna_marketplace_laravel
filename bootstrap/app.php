@@ -42,10 +42,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'guest' => RedirectIfAuthenticated::class, //RedirectIfAuthenticated::class
             'seller' => SellerMiddleware::class,
         ]);
-        // $middleware->web(append: [
-        //     MultiLangSet::class,
-        //     \App\Http\Middleware\ValidateSessionExists::class,
-        // ]);
+        $middleware->web(append: [
+            MultiLangSet::class,
+            \App\Http\Middleware\ValidateSessionExists::class,
+        ]);
         // $middleware->api(append: [MultiLangSet::class]);
 
 

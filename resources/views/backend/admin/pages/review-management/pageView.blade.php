@@ -1,5 +1,5 @@
 <x-admin::app>
-    <x-slot name="pageSlug">{{__('rewiew-management')}}</x-slot>
+    <x-slot name="pageSlug">rewiew-management</x-slot>
     @switch(Route::currentRouteName())
         @case('admin.rm.review.create')
             <x-slot name="breadcrumb">{{__('Reiew Management > Page View Create')}}</x-slot>

@@ -3,6 +3,7 @@
 namespace App\Livewire\Backend\Admin\OrderManagement;
 
 use App\Enums\OrderStatus;
+use App\Models\Order;
 use App\Services\OrderService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
@@ -11,6 +12,8 @@ use Livewire\Component;
 class DisputeOrder extends Component
 {
     use WithDataTable, WithNotification;
+
+    public string $tab = 'open';
 
     public $statusFilter = '';
 
@@ -26,17 +29,64 @@ class DisputeOrder extends Component
 
     protected OrderService $service;
 
-    public function boot(OrderService $service)
+    public function boot(OrderService $service): void
     {
         $this->service = $service;
     }
 
+    public function setTab(string $tab): void
+    {
+        $this->tab = $tab;
+        $this->resetPage();
+    }
+
     public function render()
     {
-        $datas = $this->service->getPaginatedData(
-            perPage: $this->perPage,
-            filters: $this->getFilters()
-        );
+        $query = Order::query()
+            ->with(['source.user', 'user', 'source.game', 'dispute'])
+            ->when($this->search, function ($q, $search) {
+                $q->where(function ($q) use ($search) {
+                    $q->where('order_id', 'like', "%{$search}%")
+                        ->orWhereHas('user', fn ($q) => $q->where('username', 'like', "%{$search}%"))
+                        ->orWhereHasMorph('source', ['App\Models\Product'], fn ($q) => $q->where('name', 'like', "%{$search}%"));
+                });
+            });
+
+        $query = match ($this->tab) {
+            'open' => $query->whereIn('status', [
+                OrderStatus::DISPUTED->value,
+                OrderStatus::ESCALATED->value,
+                OrderStatus::CANCEL_REQ_BY_BUYER->value,
+                OrderStatus::CANCEL_REQ_BY_SELLER->value,
+            ]),
+            'resolved' => $query->where('status', OrderStatus::RESOLVED->value),
+            'closed' => $query->whereIn('status', [
+                OrderStatus::CANCELLED->value,
+                OrderStatus::COMPLETED->value,
+            ])->where('is_disputed', true),
+            default => $query->whereIn('status', [
+                OrderStatus::DISPUTED->value,
+                OrderStatus::ESCALATED->value,
+            ]),
+        };
+
+        $datas = $query
+            ->orderBy($this->sortField ?? 'created_at', $this->sortDirection ?? 'desc')
+            ->paginate($this->perPage);
+
+        $openCount = Order::query()->whereIn('status', [
+            OrderStatus::DISPUTED->value,
+            OrderStatus::ESCALATED->value,
+            OrderStatus::CANCEL_REQ_BY_BUYER->value,
+            OrderStatus::CANCEL_REQ_BY_SELLER->value,
+        ])->count();
+
+        $resolvedCount = Order::query()->where('status', OrderStatus::RESOLVED->value)->count();
+
+        $closedCount = Order::query()->whereIn('status', [
+            OrderStatus::CANCELLED->value,
+            OrderStatus::COMPLETED->value,
+        ])->where('is_disputed', true)->count();
 
         $columns = [
             [
@@ -52,7 +102,7 @@ class DisputeOrder extends Component
                 <div class="flex items-center gap-3">
                     <div class="min-w-0">
                         <h3 class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">'
-                    .$order->source->name.
+                    .e($order->source?->name ?? '—').
                     '</h3>
                     </div>
                 </div>',
@@ -61,13 +111,19 @@ class DisputeOrder extends Component
                 'key' => 'user_id',
                 'label' => 'Buyer',
                 'sortable' => true,
-                'format' => fn ($order) => '<a href="'.route('profile', ['username' => $order->user->username]).'"><span class="text-text-white text-xs xxs:text-sm md:text-base truncate">'.$order->user->full_name.'</span></a>',
+                'format' => fn ($order) => '<a href="'.route('profile', ['username' => $order->user?->username]).'"><span class="text-text-white text-xs xxs:text-sm md:text-base truncate">'.e($order->user?->full_name ?? '—').'</span></a>',
             ],
             [
                 'key' => 'source_id',
                 'label' => 'Seller',
                 'sortable' => true,
-                'format' => fn ($order) => '<a href="'.route('profile', ['username' => $order->source->user->username]).'"><span class="text-text-white text-xs xxs:text-sm md:text-base truncate">'.$order->source->user->full_name.'</span></a>',
+                'format' => fn ($order) => '<a href="'.route('profile', ['username' => $order->source?->user?->username]).'"><span class="text-text-white text-xs xxs:text-sm md:text-base truncate">'.e($order->source?->user?->full_name ?? '—').'</span></a>',
+            ],
+            [
+                'key' => 'status',
+                'label' => 'Status',
+                'sortable' => true,
+                'format' => fn ($order) => '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full border-0 text-xs font-medium badge '.$order->status->color().'">'.$order->status->label().'</span>',
             ],
             [
                 'key' => 'total_amount',
@@ -84,17 +140,22 @@ class DisputeOrder extends Component
                 },
             ],
         ];
+
         $actions = [
             [
                 'key' => 'order_id',
                 'label' => 'View',
                 'route' => 'admin.orders.dispute-show',
             ],
-
+            [
+                'key' => 'order_id',
+                'label' => 'Deep View',
+                'route' => 'admin.orders.deep-view',
+            ],
         ];
+
         $bulkActions = [
             ['value' => 'delete', 'label' => 'Delete'],
-
         ];
 
         return view('livewire.backend.admin.order-management.dispute-order', [
@@ -102,6 +163,9 @@ class DisputeOrder extends Component
             'columns' => $columns,
             'actions' => $actions,
             'bulkActions' => $bulkActions,
+            'openCount' => $openCount,
+            'resolvedCount' => $resolvedCount,
+            'closedCount' => $closedCount,
         ]);
     }
 
@@ -114,11 +178,9 @@ class DisputeOrder extends Component
     protected function getFilters(): array
     {
         return [
-            'status' => OrderStatus::PAID,
             'sort_field' => $this->sortField,
             'sort_direction' => $this->sortDirection,
-            'is_distpute' => true,
-
+            'is_dispute' => true,
         ];
     }
 

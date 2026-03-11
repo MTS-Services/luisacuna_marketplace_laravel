@@ -52,8 +52,7 @@
                     </div>
                 @else
                     <div>
-                        <x-ui.empty-state :title="__('No Active Boostings')" :message="__('There are no active boostings at the moment.')">
-                        </x-ui.empty-state>
+                        <x-ui.empty-state :title="__('No Active Boostings')" :message="__('There are no active boostings at the moment.')" />
                     </div>
                 @endif
             </div>
@@ -86,8 +85,7 @@
                     </div>
                 @else
                     <div>
-                        <x-ui.empty-state :title="__('No Popular Games')" :message="__('There are no popular games at the moment.')">
-                        </x-ui.empty-state>
+                        <x-ui.empty-state :title="__('No Popular Games')" :message="__('There are no popular games at the moment.')" />
                     </div>
                 @endif
             </div>
@@ -121,8 +119,7 @@
                     </div>
                 @else
                     <div>
-                        <x-ui.empty-state :title="__('No Top-Selling Offers')" :message="__('There are no top-selling offers at the moment.')">
-                        </x-ui.empty-state>
+                        <x-ui.empty-state :title="__('No Top-Selling Offers')" :message="__('There are no top-selling offers at the moment.')" />
                     </div>
                 @endif
             </div>

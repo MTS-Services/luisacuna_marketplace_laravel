@@ -1,5 +1,5 @@
 <x-admin::app>
-    <x-slot name="pageSlug">{{ __('permission') }}</x-slot>
+    <x-slot name="pageSlug">permission</x-slot>
 
     @switch(Route::currentRouteName())
         @case('admin.am.permission.create')

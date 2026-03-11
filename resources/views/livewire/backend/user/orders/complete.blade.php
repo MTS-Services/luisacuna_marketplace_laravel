@@ -4,11 +4,11 @@
         <div class="flex gap-4 items-center py-10">
             <x-phosphor name="less-than" variant="regular" class="w-4 h-4 text-zinc-400" />
             @if ($isVisitSeller)
-                <a wire:navigate href="{{ route('user.order.purchased-orders') }}" class="text-text-white text-base">
+                <a wire:navigate href="{{ route('user.order.sold-orders') }}" class="text-text-white text-base">
                     {{ __('All Orders') }}
                 </a>
             @else
-                <a wire:navigate href="{{ route('user.order.sold-orders') }}" class="text-text-white text-base">
+                <a wire:navigate href="{{ route('user.order.purchased-orders') }}" class="text-text-white text-base">
                     {{ __('All Orders') }}
                 </a>
             @endif
@@ -36,25 +36,23 @@
                 </div>
             </div>
             <div>
-                @if ($isVisitSeller)
+                {{-- @if ($isVisitSeller)
                     <x-ui.button wire:click="cancelOrder"
                         class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!">
                         {{ __('Cancel') }}
                     </x-ui.button>
+                @else --}}
+                @if (!$hasDispute)
+                    <p class="bg-pink-700 rounded-full text-white py-2 px-4 sm:py-3 sm:px-6 cursor-help">
+                        {{ __('Dispute') }}
+                    </p>
                 @else
-                    @if (!$hasDispute)
-                        <x-ui.button wire:click="{{ $order->is_disputed ? '' : '$set(\'showDisputeModal\', true)' }}"
-                            class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none!">
-                            {{ __('Dispute') }}
-                        </x-ui.button>
-                    @else
-                        <x-ui.button
-                            class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none! opacity-50! cursor-not-allowed!">
-                            {{ __('Disputed') }}
-                        </x-ui.button>
-                    @endif
-
+                    <x-ui.button
+                        class="bg-pink-700! w-fit! py-2! px-4! sm:py-3! sm:px-6! border-none! opacity-50! cursor-not-allowed!">
+                        {{ __('Disputed') }}
+                    </x-ui.button>
                 @endif
+                {{-- @endif --}}
 
             </div>
         </div>

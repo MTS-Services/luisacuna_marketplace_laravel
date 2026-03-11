@@ -1,5 +1,5 @@
 <x-frontend::app>
-    <x-slot name="pageSlug">{{ __('user_profile') }}</x-slot>
+    <x-slot name="pageSlug">user_profile</x-slot>
     @switch(request('tab'))
         @case('reviews')
             <x-slot name="title">{{ __('Profile Review') }}</x-slot>

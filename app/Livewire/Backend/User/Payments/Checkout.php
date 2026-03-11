@@ -207,9 +207,9 @@ class Checkout extends Component
      * Recalculate tax based on the selected payment method
      *
      * Tax Rules:
-     * 1. Wallet selected with sufficient balance: NO TAX - display original amount
-     * 2. Wallet insufficient OR Stripe/Crypto selected: TAX applied on entire order amount
-     * 3. Top-up scenario: Tax is recalculated only on the remaining balance to be topped up
+     * 1. Wallet selected with sufficient balance: NO TAX
+     * 2. Wallet selected with insufficient balance: TAX on remaining balance only (order total − wallet balance)
+     * 3. Any other gateway (Stripe, Crypto, Tebex, etc.): TAX on entire order amount
      */
     protected function recalculateTax(): void
     {
@@ -226,6 +226,10 @@ class Checkout extends Component
                 walletBalanceDefault: $this->walletBalanceDefault,
                 isTopUp: $isTopUp
             );
+
+            Log::info('Tax calculation result', [
+                'tax_calc' => $taxCalc,
+            ]);
 
             // Set calculated tax in default currency
             $this->calculatedTaxAmountDefault = $taxCalc['tax_amount_default'] ?? 0;

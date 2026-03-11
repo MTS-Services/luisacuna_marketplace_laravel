@@ -130,54 +130,9 @@
                             'active' => 'game',
                             'permission' => 'game-list',
                         ],
-                    
-                        // [
-                        //     'name' => 'Rarity',
-                        //     'route' => route('admin.gm.rarity.index'),
-                        //     'icon' => 'swords',
-                        //     'active' => 'game-rarity',
-                        // ],
                     ]" />
 
-                {{-- <x-backend.navlink type="dropdown" icon="box" name="Products" :page_slug="$active"
-                    :items="[
-                        [
-                            'name' => 'Currencies',
-                            'route' => route('admin.pm.category.index', 'currency'),
-                            'icon' => 'currency-dollar',
-                            'active' => 'currency',
-                        ],
-                        [
-                            'name' => 'Accounts',
-                            'route' => route('admin.pm.category.index', 'accounts'),
-                            'icon' => 'chess-pawn',
-                            'active' => 'account',
-                        ],
-                        [
-                            'name' => 'Top Ups',
-                            'route' => route('admin.pm.top-ups.index'),
-                            'icon' => 'bitcoin',
-                            'active' => 'top-ups',
-                        ],
-                        [
-                            'name' => 'Items',
-                            'route' => route('admin.pm.items.index'),
-                            'icon' => 'bow-arrow',
-                            'active' => 'items',
-                        ],
-                        [
-                            'name' => 'Boostings',
-                            'route' => route('admin.pm.boostings.index'),
-                            'icon' => 'rocket',
-                            'active' => 'boostings',
-                        ],
-                        [
-                            'name' => 'Gift Cards',
-                            'route' => route('admin.pm.category.index', 'gift-card'),
-                            'icon' => 'gift',
-                            'active' => 'gift-cards',
-                        ],
-                    ]" /> --}}
+
                 @php
                     $productItems = [];
 

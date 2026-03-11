@@ -9,28 +9,28 @@
         @break
 
         @case('admin.orders.completed-orders')
-            <x-slot name="pageSlug">{{ __('completed-orders') }}</x-slot>
+            <x-slot name="pageSlug">completed-orders</x-slot>
             <x-slot name="title">{{ __('Complete Orders') }}</x-slot>
             <x-slot name="breadcrumb">{{ __('Order Management / Complete Orders List') }}</x-slot>
             <livewire:backend.admin.order-management.complete-orders />
         @break
 
         @case('admin.orders.cancelled-orders')
-            <x-slot name="pageSlug">{{ __('cancelled-orders') }}</x-slot>
+            <x-slot name="pageSlug">cancelled-orders</x-slot>
             <x-slot name="title">{{ __('Cancelled Orders') }}</x-slot>
             <x-slot name="breadcrumb">{{ __('Order Management / Cancelled Orders List') }}</x-slot>
             <livewire:backend.admin.order-management.cancelled-orders />
         @break
 
         @case('admin.orders.dispute-orders')
-            <x-slot name="pageSlug">{{ __('dispute-orders') }}</x-slot>
+            <x-slot name="pageSlug">dispute-orders</x-slot>
             <x-slot name="title">{{ __('Dispute Orders') }}</x-slot>
             <x-slot name="breadcrumb">{{ __('Order Management / Dispute Orders List') }}</x-slot>
             <livewire:backend.admin.order-management.dispute-order />
         @break
 
         @case('admin.orders.show')
-            <x-slot name="pageSlug">{{ __('order-management') }}</x-slot>
+            <x-slot name="pageSlug">order-management</x-slot>
             <x-slot name="title">{{ __('Order Details') }}</x-slot>
             <x-slot name="breadcrumb">{{ __('Order Management / Order Details') }}</x-slot>
             <livewire:backend.admin.order-management.detail :data="$data" />
@@ -41,6 +41,13 @@
             <x-slot name="title">{{ __('Dispute Order Details') }}</x-slot>
             <x-slot name="breadcrumb">{{ __('Order Management / Dispute Order Details') }}</x-slot>
             <livewire:backend.admin.order-management.dispute-detail :data="$data" />
+        @break
+
+        @case('admin.orders.deep-view')
+            <x-slot name="pageSlug">{{ __('deep-view') }}</x-slot>
+            <x-slot name="title">{{ __('Order Deep View') }}</x-slot>
+            <x-slot name="breadcrumb">{{ __('Order Management / Deep View') }}</x-slot>
+            <livewire:backend.admin.order-management.deep-view :data="$data" />
         @break
 
         @default

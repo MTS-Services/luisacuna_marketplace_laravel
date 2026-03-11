@@ -1,7 +1,7 @@
 <x-admin::app>
     <div>
      <x-slot name="title">{{ __('Banner List') }}</x-slot>
-    <x-slot name="pageSlug">{{ __('banner-management') }}</x-slot>
+    <x-slot name="pageSlug">banner-management</x-slot>
     @switch(Route::currentRouteName())
        
         @case('admin.bm.banner.edit')

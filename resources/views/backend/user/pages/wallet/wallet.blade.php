@@ -1,5 +1,5 @@
 <x-user::app>
-    <x-slot name="pageSlug">{{ __('wallet') }}</x-slot>
+    <x-slot name="pageSlug">wallet</x-slot>
     @switch(Route::currentRouteName())
         @case('user.wallet.withdrawal-methods')
             <livewire:backend.user.wallet.withdrawal-method />

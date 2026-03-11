@@ -1,6 +1,6 @@
 <x-frontend::app>
     <x-slot name="title">{{  __("Become a seller ") }}</x-slot>
-    <x-slot name="pageSlug">{{ __('become-seller') }}</x-slot>
+    <x-slot name="pageSlug">become-seller</x-slot>
     @switch($step)
         @case(1)
             <livewire:backend.user.seller.seller-verification-first-step />

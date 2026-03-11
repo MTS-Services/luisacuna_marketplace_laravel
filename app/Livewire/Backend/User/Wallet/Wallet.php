@@ -2,8 +2,9 @@
 
 namespace App\Livewire\Backend\User\Wallet;
 
-use App\Enums\CalculationType;
+use App\Enums\WalletFreezeStatus;
 use App\Models\Wallet as ModelWallet;
+use App\Models\WalletFreeze;
 use App\Services\TransactionService;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -13,9 +14,12 @@ class Wallet extends Component
     use WithPagination;
 
     public $perPage = 10;
+
     public $search = '';
+
     public ?ModelWallet $wallet = null;
-    public $status; 
+
+    public $status;
 
     protected TransactionService $transactionService;
 
@@ -37,39 +41,40 @@ class Wallet extends Component
             [
                 'key' => 'created_at',
                 'label' => 'Date Created',
-                'format' => fn($item) => $item->created_at_formatted
+                'format' => fn ($item) => $item->created_at_formatted,
             ],
             [
                 'key' => 'net_amount',
                 'label' => 'Balance',
-                'format' => fn($item) =>
-                '<span class="font-semibold ' . $item->calculation_type->textColor() . ' ">' . $item->calculation_type->prefix() . ' ' . currency_symbol() . currency_exchange($item->net_amount ?? 0) . '</span>'
+                'format' => fn ($item) => '<span class="font-semibold '.$item->calculation_type->textColor().' ">'.$item->calculation_type->prefix().' '.currency_symbol().currency_exchange($item->net_amount ?? 0).'</span>',
             ],
             [
                 'key' => 'order_id',
                 'label' => 'Order ID',
-                'format' => fn($item) => $item->order?->order_id ?? ' - '
+                'format' => fn ($item) => $item->order?->order_id ?? ' - ',
             ],
             [
                 'key' => 'notes',
                 'label' => 'Description',
-                'format' => fn($item) =>
-                '<span class="line-clamp-2">' . $item->notes . '</span>'
+                'format' => fn ($item) => '<span class="line-clamp-2">'.$item->notes.'</span>',
             ],
             [
                 'key' => 'action',
                 'label' => 'Action',
-                'format' => fn($item) => '
+                'format' => fn ($item) => '
                     <div class="flex items-center gap-3">
                     <a href="#"  class="bg-zinc-500 hover:bg-zinc-600 text-white py-2 px-4 rounded-full">View</a>
-                    </div>'
+                    </div>',
             ],
         ];
+
+        $frozenBalance = WalletFreeze::where('user_id', user()->id)->where('status', WalletFreezeStatus::FROZEN)->sum('amount');
 
         return view('livewire.backend.user.wallet.wallet', [
             'datas' => $datas,
             'columns' => $columns,
             // 'pagination' => $pagination,
+            'frozenBalance' => $frozenBalance,
         ]);
     }
 
@@ -84,22 +89,21 @@ class Wallet extends Component
         ];
     }
 
-
     public function pauseItem($id)
     {
-        //  pause logic 
+        //  pause logic
         $this->dispatch('notify', [
             'type' => 'success',
-            'message' => "Item #{$id} paused successfully"
+            'message' => "Item #{$id} paused successfully",
         ]);
     }
 
     public function resumeItem($id)
     {
-        // resume logic 
+        // resume logic
         $this->dispatch('notify', [
             'type' => 'success',
-            'message' => "Item #{$id} resumed successfully"
+            'message' => "Item #{$id} resumed successfully",
         ]);
     }
 }

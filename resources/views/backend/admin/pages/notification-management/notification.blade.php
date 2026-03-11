@@ -1,5 +1,5 @@
 <x-admin::app>
-    <x-slot name="pageSlug">{{ __('notification') }}</x-slot>
+    <x-slot name="pageSlug">notification</x-slot>
     @switch(Route::currentRouteName())
         @case('admin.notification.show')
             <x-slot name="title">{{ __('Notification Details') }}</x-slot>

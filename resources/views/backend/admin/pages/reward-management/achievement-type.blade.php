@@ -1,5 +1,5 @@
 <x-admin::app>
-    <x-slot name="pageSlug">{{ __('achievement-type') }}</x-slot>
+    <x-slot name="pageSlug">achievement-type</x-slot>
     @switch(Route::currentRouteName())
         @case('admin.rm.achievementType.create')
             <x-slot name="breadcrumb">{{ __('Reward Management > Achievement Type Create') }}</x-slot>

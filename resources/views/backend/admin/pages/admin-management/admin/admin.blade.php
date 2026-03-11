@@ -1,9 +1,9 @@
 <x-admin::app>
-    <x-slot name="pageSlug">{{ __('admin') }}</x-slot>
+    <x-slot name="pageSlug">admin</x-slot>
 
     @switch(Route::currentRouteName())
         @case('admin.am.admin.create')
-            <x-slot name="title">{{ __('Admins Create') }}</x-slot>
+            <x-slot name="title">Admins Create</x-slot>
             <x-slot name="breadcrumb">{{ __('Admin Management > Admin Create') }}</x-slot>
             <livewire:backend.admin.admin-management.admin.create />
         @break

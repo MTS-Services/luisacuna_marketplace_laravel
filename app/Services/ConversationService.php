@@ -1011,7 +1011,7 @@ class ConversationService
             // Send system message about admin joining
             $this->sendMessage(
                 conversation: $conversation,
-                messageBody: "Admin {$admin->name} has joined the conversation.",
+                messageBody: ":  {$admin->name} has joined the conversation.",
                 sender: null, // System message
                 messageType: MessageType::SYSTEM ?? MessageType::TEXT,
             );
