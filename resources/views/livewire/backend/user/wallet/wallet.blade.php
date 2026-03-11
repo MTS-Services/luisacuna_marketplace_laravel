@@ -36,7 +36,7 @@
                         {{ __('Revenue from pending orders. Funds will be added to your balance when orders are Completed.') }}
                     </p>
                     <h2 class="text-text-white text-2xl font-semibold mt-2">
-                        {{ currency_symbol() }}{{ currency_exchange($wallet->pending_balance ?? 0) }}</h2>
+                        {{ currency_symbol() }}{{ currency_exchange($frozenBalance ?? 0) }}</h2>
                 </div>
             </div>
         </div>

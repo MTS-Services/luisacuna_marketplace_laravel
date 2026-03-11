@@ -43,6 +43,13 @@
             <livewire:backend.admin.order-management.dispute-detail :data="$data" />
         @break
 
+        @case('admin.orders.deep-view')
+            <x-slot name="pageSlug">{{ __('deep-view') }}</x-slot>
+            <x-slot name="title">{{ __('Order Deep View') }}</x-slot>
+            <x-slot name="breadcrumb">{{ __('Order Management / Deep View') }}</x-slot>
+            <livewire:backend.admin.order-management.deep-view :data="$data" />
+        @break
+
         @default
             <x-slot name="title">{{ __('All Orders') }}</x-slot>
             <x-slot name="breadcrumb">{{ __('Order Management / All Orders List') }}</x-slot>

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     use AuditColumnsTrait, SoftDeletes;
+
     /**
      * Run the migrations.
      */
@@ -51,6 +52,7 @@ return new class extends Migration
             $table->text('notes')->nullable();
 
             $table->boolean('is_disputed')->default(false);
+            $table->boolean('is_escalated')->default(false);
 
             $table->timestamp('completed_at')->nullable()->index();
             $table->timestamp('paid_at')->nullable()->index();

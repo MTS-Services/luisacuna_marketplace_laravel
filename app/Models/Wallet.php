@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Wallet extends BaseModel
 {
@@ -44,6 +45,11 @@ class Wallet extends BaseModel
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function walletFreezes(): HasMany
+    {
+        return $this->hasMany(WalletFreeze::class, 'wallet_id', 'id');
     }
 
     /* ==============================================================

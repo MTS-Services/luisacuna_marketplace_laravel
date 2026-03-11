@@ -64,4 +64,16 @@ class OrderController extends Controller
             'data' => $data,
         ]);
     }
+
+    public function deepView($orderID)
+    {
+        $data = $this->service->findData(column_value: $orderID, column_name: 'order_id');
+        if (! $data) {
+            abort(404);
+        }
+
+        return view($this->masterView, [
+            'data' => $data,
+        ]);
+    }
 }

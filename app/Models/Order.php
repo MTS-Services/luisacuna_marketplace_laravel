@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use App\Enums\OrderStatus;
-use App\Models\AuditBaseModel;
+use App\Enums\ResolutionType;
 use App\Traits\AuditableTrait;
-use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use OwenIt\Auditing\Contracts\Auditable;
 
 class Order extends AuditBaseModel implements Auditable
 {
@@ -51,6 +51,16 @@ class Order extends AuditBaseModel implements Auditable
 
         'points',
 
+        'delivered_at',
+        'auto_completes_at',
+        'escalated_at',
+        'resolved_at',
+        'resolution_type',
+        'resolution_buyer_amount',
+        'resolution_seller_amount',
+        'resolved_by',
+        'resolution_notes',
+
         'creater_id',
         'creater_type',
         'updater_id',
@@ -60,6 +70,10 @@ class Order extends AuditBaseModel implements Auditable
         'restorer_id',
         'restorer_type',
         'is_disputed',
+        'cancel_attempts',
+        'delivery_attempts',
+        'cancel_requested_by',
+        'auto_cancels_at',
     ];
 
     protected $casts = [
@@ -83,6 +97,16 @@ class Order extends AuditBaseModel implements Auditable
         'exchange_rate' => 'decimal:6',
         'completed_at' => 'datetime',
         'paid_at' => 'datetime',
+        'delivered_at' => 'datetime',
+        'auto_completes_at' => 'datetime',
+        'auto_cancels_at' => 'datetime',
+        'escalated_at' => 'datetime',
+        'cancel_attempts' => 'integer',
+        'delivery_attempts' => 'integer',
+        'resolved_at' => 'datetime',
+        'resolution_type' => ResolutionType::class,
+        'resolution_buyer_amount' => 'decimal:2',
+        'resolution_seller_amount' => 'decimal:2',
 
         'points' => 'integer',
     ];
@@ -98,7 +122,6 @@ class Order extends AuditBaseModel implements Auditable
     {
         return $this->morphTo('source');
     }
-
 
     public function conversation(): HasOne
     {
@@ -123,6 +146,26 @@ class Order extends AuditBaseModel implements Auditable
     public function dispute(): HasOne
     {
         return $this->hasOne(Dispute::class, 'order_id', 'id');
+    }
+
+    public function statusHistories(): HasMany
+    {
+        return $this->hasMany(OrderStatusHistory::class, 'order_id')->orderBy('created_at');
+    }
+
+    public function staffNotes(): HasMany
+    {
+        return $this->hasMany(AdminStaffNote::class, 'order_id')->orderByDesc('created_at');
+    }
+
+    public function orderDeliveries(): HasMany
+    {
+        return $this->hasMany(OrderDelivery::class, 'order_id')->orderByDesc('created_at');
+    }
+
+    public function resolvedByAdmin(): BelongsTo
+    {
+        return $this->belongsTo(Admin::class, 'resolved_by');
     }
 
     public function latestPayment()
@@ -158,6 +201,11 @@ class Order extends AuditBaseModel implements Auditable
         return $this->default_grand_total ?? $this->grand_total;
     }
 
+    public function getDefaultTaxAmount(): float
+    {
+        return $this->default_tax_amount ?? $this->tax_amount;
+    }
+
     /**
      * Get the amount in display currency (for showing to user)
      */
@@ -181,8 +229,10 @@ class Order extends AuditBaseModel implements Auditable
     {
         if ($this->display_currency) {
             $currency = \App\Models\Currency::where('code', $this->display_currency)->first();
+
             return $currency?->symbol ?? '$';
         }
+
         return currency_symbol();
     }
 
@@ -219,6 +269,7 @@ class Order extends AuditBaseModel implements Auditable
     public function isPartiallyPaid(): bool
     {
         $totalPaid = $this->getTotalPaid();
+
         return $totalPaid > 0 && $totalPaid < $this->getDefaultGrandTotal();
     }
 
@@ -227,6 +278,7 @@ class Order extends AuditBaseModel implements Auditable
         if ($this->getDefaultGrandTotal() == 0) {
             return 0;
         }
+
         return min(100, ($this->getTotalPaid() / $this->getDefaultGrandTotal()) * 100);
     }
 
@@ -235,7 +287,7 @@ class Order extends AuditBaseModel implements Auditable
      */
     public function canAcceptPayment(): bool
     {
-        return !$this->isFullyPaid() &&
+        return ! $this->isFullyPaid() &&
             $this->status !== OrderStatus::CANCELLED &&
             $this->status !== OrderStatus::REFUNDED;
     }
@@ -261,13 +313,13 @@ class Order extends AuditBaseModel implements Auditable
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
-                $query->where('order_id', 'like', '%' . $search . '%')
-                    ->orWhere('notes', 'like', '%' . $search . '%')
+                $query->where('order_id', 'like', '%'.$search.'%')
+                    ->orWhere('notes', 'like', '%'.$search.'%')
                     ->orWhereHas('user', function ($q) use ($search) {
-                        $q->where('username', 'like', '%' . $search . '%');
+                        $q->where('username', 'like', '%'.$search.'%');
                     })
                     ->orWhereHasMorph('source', ['App\Models\Product'], function ($q) use ($search) {
-                        $q->where('name', 'like', '%' . $search . '%');
+                        $q->where('name', 'like', '%'.$search.'%');
                     });
             });
         });
@@ -280,8 +332,12 @@ class Order extends AuditBaseModel implements Auditable
             $query->where('status', $status);
         });
 
-        $query->when($filters['exclude_status'] ?? null, function ($query, $status) {
-            $query->where('status', '!=', $status);
+        $query->when($filters['exclude_status'] ?? null, function ($query, $excludeStatus) {
+            if (is_array($excludeStatus)) {
+                $query->whereNotIn('status', $excludeStatus);
+            } else {
+                $query->where('status', '!=', $excludeStatus);
+            }
         });
 
         $query->when($filters['seller_id'] ?? null, function ($query, $ownerId) {
@@ -299,7 +355,7 @@ class Order extends AuditBaseModel implements Auditable
         });
 
         $query->when($filters['is_dispute'] ?? null, function ($query, $is_dispute) {
-            $query->where('is_disputed' , '=',$is_dispute);
+            $query->where('is_disputed', '=', $is_dispute);
         });
         // created_at
         $query->when($filters['order_date'] ?? null, function ($query, $created_at) {
@@ -311,7 +367,7 @@ class Order extends AuditBaseModel implements Auditable
                 case 'week':
                     $query->whereBetween('created_at', [
                         now()->startOfWeek(),
-                        now()->endOfWeek()
+                        now()->endOfWeek(),
                     ]);
                     break;
 

@@ -16,15 +16,15 @@ class TaxService
      * Calculate tax for a payment method
      *
      * Rules:
-     * 1. Wallet: No tax
-     * 2. Stripe/Crypto: Tax on entire amount
-     * 3. Wallet with top-up: Tax only on remaining balance to be paid
+     * 1. Wallet with sufficient balance: No tax
+     * 2. Wallet with insufficient balance (top-up): Tax only on the remaining balance (order total − wallet balance)
+     * 3. Other gateways (Stripe, Crypto, Tebex, etc.): Tax on entire order amount
      *
-     * @param  string  $paymentMethod  Payment method (wallet, stripe, crypto, etc.)
-     * @param  float  $amountDefault  Amount in default currency
-     * @param  float  $walletBalanceDefault  Wallet balance in default currency (if wallet payment)
-     * @param  bool  $isTopUp  Whether this is a top-up scenario
-     * @return array ['tax_amount_default' => float, 'grand_total_default' => float]
+     * @param  string  $paymentMethod  Payment method (wallet, stripe, crypto, tebex, etc.)
+     * @param  float  $amountDefault  Amount in default currency (order total, or remaining when top-up)
+     * @param  float|null  $walletBalanceDefault  Wallet balance in default currency (required for top-up scenario)
+     * @param  bool  $isTopUp  Whether this is a top-up scenario (wallet selected but balance insufficient)
+     * @return array{tax_amount_default: float, grand_total_default: float, tax_applied: bool, scenario: string}
      */
     public function calculateTax(
         string $paymentMethod,
@@ -68,8 +68,8 @@ class TaxService
                 ];
             }
 
-            // Rule 3: Other payment methods (Stripe, Crypto, etc.) - TAX ON ENTIRE AMOUNT
-            if (in_array($paymentMethod, ['stripe', 'crypto', 'nowpayments', 'paypal'])) {
+            // Rule 3: Other payment methods (Stripe, Crypto, Tebex, etc.) - TAX ON ENTIRE AMOUNT
+            if (in_array($paymentMethod, ['stripe', 'crypto', 'nowpayments', 'paypal', 'tebex'])) {
                 $fee = $this->feeSettingsService->getActiveFee();
                 $buyerTaxPercent = (float) ($fee->buyer_fee ?? 0);
 
