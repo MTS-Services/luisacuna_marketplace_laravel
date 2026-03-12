@@ -594,10 +594,20 @@
                 <div
                     class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden shadow-sm">
                     <div
-                        class="px-4 py-3 bg-gray-50 dark:bg-gray-800/60 border-b border-gray-200 dark:border-gray-800">
+                        class="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-800/60 border-b border-gray-200 dark:border-gray-800">
                         <span class="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">
                             {{ __('Actions / Sanctions') }}
                         </span>
+
+                        <flux:button
+                            variant="ghost"
+                            size="xs"
+                            icon="clock"
+                            wire:click="openSanctionHistoryModal"
+                            class="text-xs font-semibold"
+                        >
+                            {{ __('History') }}
+                        </flux:button>
                     </div>
 
                     <div class="p-4 space-y-3">
@@ -866,6 +876,38 @@
                         </div>
                     </div>
                 </div>
+
+                <flux:modal
+                    name="sanction-history-modal"
+                    wire:model="showSanctionHistoryModal"
+                    class="max-w-4xl !bg-white dark:!bg-gray-900"
+                >
+                    <div class="space-y-6 bg-white dark:bg-gray-900 rounded-2xl p-6">
+                        <flux:heading size="lg">
+                            {{ __('Sanction History') }}
+                        </flux:heading>
+
+                        @if ($buyer)
+                            <div class="space-y-2">
+                                <flux:text class="font-semibold">
+                                    {{ __('Buyer') }}: {{ $buyer->username }}
+                                </flux:text>
+
+                                @include('partials._sanction-history-table', ['rows' => $buyerSanctions])
+                            </div>
+                        @endif
+
+                        @if ($seller)
+                            <div class="space-y-2">
+                                <flux:text class="font-semibold">
+                                    {{ __('Seller') }}: {{ $seller->username }}
+                                </flux:text>
+
+                                @include('partials._sanction-history-table', ['rows' => $sellerSanctions])
+                            </div>
+                        @endif
+                    </div>
+                </flux:modal>
             @else
                 {{-- Non-escalated: order details --}}
                 <div

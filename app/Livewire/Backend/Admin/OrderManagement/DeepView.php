@@ -5,6 +5,7 @@ namespace App\Livewire\Backend\Admin\OrderManagement;
 use App\Actions\Order\ResolveOrderAction;
 use App\Enums\OrderStatus;
 use App\Enums\ResolutionType;
+use App\Enums\UserBanType;
 use App\Models\Admin;
 use App\Models\AdminStaffNote;
 use App\Models\Dispute;
@@ -14,10 +15,10 @@ use App\Models\User;
 use App\Models\UserDisputeStats;
 use App\Models\UserSanction;
 use App\Services\ConversationService;
+use App\Services\UserService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class DeepView extends Component
@@ -26,7 +27,8 @@ class DeepView extends Component
 
     public Order $order;
 
-    public ?User $buyer  = null;
+    public ?User $buyer = null;
+
     public ?User $seller = null;
 
     public ?Dispute $dispute = null;
@@ -45,72 +47,118 @@ class DeepView extends Component
     /** @var Collection<int, \App\Models\OrderDelivery> */
     public Collection $deliveryRecords;
 
+    /** @var Collection<int, UserSanction> */
+    public Collection $buyerSanctions;
+
+    /** @var Collection<int, UserSanction> */
+    public Collection $sellerSanctions;
+
     // ── Form fields ──────────────────────────────────────────────────────────
-    public string $adminMessage      = '';
-    public string $staffNoteText     = '';
-    public string $resolutionType    = '';
-    public float  $splitBuyerPercent = 50;
-    public string $resolutionNotes   = '';
-    public string $sanctionTarget    = '';
-    public string $sanctionType      = '';
-    public string $sanctionReason    = '';
-    public string $sanctionDuration  = '';
+    public string $adminMessage = '';
+
+    public string $staffNoteText = '';
+
+    public string $resolutionType = '';
+
+    public float $splitBuyerPercent = 50;
+
+    public string $resolutionNotes = '';
+
+    public string $sanctionTarget = '';
+
+    public string $sanctionType = '';
+
+    public string $sanctionReason = '';
+
+    public string $sanctionDuration = '';
 
     // ── Escrow amounts — public so Blade & Alpine can read them ─────────────
-    public float $escrowTotal  = 0;
-    public float $buyerAmount  = 0;
+    public float $escrowTotal = 0;
+
+    public float $buyerAmount = 0;
+
     public float $sellerAmount = 0;
 
     // ── Buyer stats ──────────────────────────────────────────────────────────
-    public int   $buyerTotalOrders     = 0;
-    public int   $buyerCompletedOrders = 0;
-    public int   $buyerCancelledOrders = 0;
-    public float $buyerTrustScore      = 0;
-    public int   $buyerWins            = 0;
-    public int   $buyerLosses          = 0;
-    public int   $buyerActiveDisputes  = 0;
-    public float $buyerDisputeRate     = 0;
+    public int $buyerTotalOrders = 0;
+
+    public int $buyerCompletedOrders = 0;
+
+    public int $buyerCancelledOrders = 0;
+
+    public float $buyerTrustScore = 0;
+
+    public int $buyerWins = 0;
+
+    public int $buyerLosses = 0;
+
+    public int $buyerActiveDisputes = 0;
+
+    public float $buyerDisputeRate = 0;
 
     // ── Seller stats ─────────────────────────────────────────────────────────
-    public int   $sellerTotalSales     = 0;
-    public int   $sellerCompletedSales = 0;
-    public int   $sellerCancelledSales = 0;
-    public float $sellerReputation     = 0;
-    public int   $sellerWins           = 0;
-    public int   $sellerLosses         = 0;
-    public int   $sellerActiveDisputes = 0;
-    public float $sellerDisputeRate    = 0;
+    public int $sellerTotalSales = 0;
+
+    public int $sellerCompletedSales = 0;
+
+    public int $sellerCancelledSales = 0;
+
+    public float $sellerReputation = 0;
+
+    public int $sellerWins = 0;
+
+    public int $sellerLosses = 0;
+
+    public int $sellerActiveDisputes = 0;
+
+    public float $sellerDisputeRate = 0;
 
     // ── Profile extras ───────────────────────────────────────────────────────
-    public string $buyerCountry     = '';
-    public string $buyerCountryCode = '';
-    public string $buyerSellerSince = '';
-    public string $buyerLastIp      = '';
-    public bool   $buyerIpMatch     = false;
+    public string $buyerCountry = '';
 
-    public string $sellerCountry     = '';
+    public string $buyerCountryCode = '';
+
+    public string $buyerSellerSince = '';
+
+    public string $buyerLastIp = '';
+
+    public bool $buyerIpMatch = false;
+
+    public string $sellerCountry = '';
+
     public string $sellerCountryCode = '';
+
     public string $sellerSellerSince = '';
-    public string $sellerLastIp      = '';
-    public bool   $sellerIpMatch     = false;
+
+    public string $sellerLastIp = '';
+
+    public bool $sellerIpMatch = false;
 
     public bool $sameIpDetected = false;
 
     // ── Timer (computed on mount, counting done in Alpine) ───────────────────
-    public int  $orderDelaySeconds = 0;
-    public bool $isOverdue         = false;
+    public int $orderDelaySeconds = 0;
+
+    public bool $isOverdue = false;
 
     // ─────────────────────────────────────────────────────────────────────────
 
+    public bool $showSanctionHistoryModal = false;
+
     protected ConversationService $conversationService;
-    protected ResolveOrderAction  $resolveOrderAction;
+
+    protected ResolveOrderAction $resolveOrderAction;
+
+    protected UserService $userService;
 
     public function boot(
         ConversationService $conversationService,
-        ResolveOrderAction  $resolveOrderAction,
+        ResolveOrderAction $resolveOrderAction,
+        UserService $userService,
     ): void {
         $this->conversationService = $conversationService;
-        $this->resolveOrderAction  = $resolveOrderAction;
+        $this->resolveOrderAction = $resolveOrderAction;
+        $this->userService = $userService;
     }
 
     public function mount(Order $data): void
@@ -127,7 +175,7 @@ class DeepView extends Component
             'transactions',
         ]);
 
-        $this->buyer  = $this->order->user;
+        $this->buyer = $this->order->user;
         $this->seller = $this->order->source?->user;
 
         $this->dispute = Dispute::query()
@@ -136,8 +184,11 @@ class DeepView extends Component
             ->with(['messages.sender', 'attachments'])
             ->first();
 
+        $this->buyerSanctions = collect();
+        $this->sellerSanctions = collect();
+
         // Escrow totals
-        $this->escrowTotal  = (float) $this->order->getDefaultGrandTotal();
+        $this->escrowTotal = (float) $this->order->getDefaultGrandTotal();
         $this->recalcAmounts();
 
         $this->loadChatMessages();
@@ -163,7 +214,7 @@ class DeepView extends Component
 
     protected function recalcAmounts(): void
     {
-        $this->buyerAmount  = round($this->escrowTotal * ($this->splitBuyerPercent / 100), 2);
+        $this->buyerAmount = round($this->escrowTotal * ($this->splitBuyerPercent / 100), 2);
         $this->sellerAmount = round($this->escrowTotal - $this->buyerAmount, 2);
     }
 
@@ -203,7 +254,7 @@ class DeepView extends Component
                     $query->whereNull('resolution_type')
                         ->orWhereIn('resolution_type', [
                             ResolutionType::BuyerWins,
-                            ResolutionType::PartialSplit
+                            ResolutionType::PartialSplit,
                         ]);
                 })
                 ->count();
@@ -255,7 +306,7 @@ class DeepView extends Component
                     $query->whereNull('resolution_type')
                         ->orWhereIn('resolution_type', [
                             ResolutionType::SellerWins,
-                            ResolutionType::PartialSplit
+                            ResolutionType::PartialSplit,
                         ]);
                 })
                 ->count();
@@ -296,23 +347,23 @@ class DeepView extends Component
     protected function loadExtendedProfiles(): void
     {
         if ($this->buyer) {
-            $this->buyerCountry     = $this->buyer->country?->name ?? '';
+            $this->buyerCountry = $this->buyer->country?->name ?? '';
             $this->buyerCountryCode = strtolower($this->buyer->country?->code ?? '');
-            $this->buyerLastIp      = $this->buyer->last_login_ip ?? '';
+            $this->buyerLastIp = $this->buyer->last_login_ip ?? '';
             $this->buyerSellerSince = $this->buyer->seller?->seller_verified_at?->format('d M Y') ?? 'No Application';
         }
 
         if ($this->seller) {
-            $this->sellerCountry     = $this->seller->country?->name ?? '';
+            $this->sellerCountry = $this->seller->country?->name ?? '';
             $this->sellerCountryCode = strtolower($this->seller->country?->code ?? '');
-            $this->sellerLastIp      = $this->seller->last_login_ip ?? '';
+            $this->sellerLastIp = $this->seller->last_login_ip ?? '';
             $this->sellerSellerSince = $this->seller->seller?->seller_verified_at?->format('d M Y') ?? 'No Application';
         }
 
         if ($this->buyerLastIp && $this->sellerLastIp && $this->buyerLastIp === $this->sellerLastIp) {
             $this->sameIpDetected = true;
-            $this->buyerIpMatch   = true;
-            $this->sellerIpMatch  = true;
+            $this->buyerIpMatch = true;
+            $this->sellerIpMatch = true;
         }
     }
 
@@ -332,12 +383,12 @@ class DeepView extends Component
     protected function calculateOrderDelay(): void
     {
         if ($this->order->auto_completes_at) {
-            $diff                    = now()->diffInSeconds($this->order->auto_completes_at, false);
+            $diff = now()->diffInSeconds($this->order->auto_completes_at, false);
             $this->orderDelaySeconds = (int) abs($diff);
-            $this->isOverdue         = $diff < 0;
+            $this->isOverdue = $diff < 0;
         } elseif ($this->order->escalated_at) {
             $this->orderDelaySeconds = (int) now()->diffInSeconds($this->order->escalated_at, false);
-            $this->isOverdue         = true;
+            $this->isOverdue = true;
         }
     }
 
@@ -351,6 +402,7 @@ class DeepView extends Component
 
         if (! $conversation) {
             $this->error(__('No conversation found for this order.'));
+
             return;
         }
 
@@ -378,7 +430,7 @@ class DeepView extends Component
         AdminStaffNote::query()->create([
             'order_id' => $this->order->id,
             'admin_id' => $admin->id,
-            'note'     => $this->staffNoteText,
+            'note' => $this->staffNoteText,
         ]);
 
         $this->staffNoteText = '';
@@ -418,7 +470,7 @@ class DeepView extends Component
     protected function doResolve(): void
     {
         $this->validate([
-            'resolutionType'  => 'required|in:buyer_wins,seller_wins,partial_split,neutral_cancel',
+            'resolutionType' => 'required|in:buyer_wins,seller_wins,partial_split,neutral_cancel',
             'resolutionNotes' => 'nullable|string|max:2000',
         ]);
 
@@ -432,11 +484,11 @@ class DeepView extends Component
 
         $data = [
             'resolution_type' => $this->resolutionType,
-            'notes'           => $this->resolutionNotes ?: null,
+            'notes' => $this->resolutionNotes ?: null,
         ];
 
         if ($this->resolutionType === 'partial_split') {
-            $data['buyer_amount']  = $this->buyerAmount;
+            $data['buyer_amount'] = $this->buyerAmount;
             $data['seller_amount'] = $this->sellerAmount;
         }
 
@@ -448,18 +500,31 @@ class DeepView extends Component
         } catch (\InvalidArgumentException $e) {
             $this->error($e->getMessage());
         } catch (\Throwable $e) {
-            $this->error(__('Failed to resolve order: ') . $e->getMessage());
+            $this->error(__('Failed to resolve order: ').$e->getMessage());
         }
     }
 
     // ── Sanctions ────────────────────────────────────────────────────────────
 
+    public function openSanctionHistoryModal(): void
+    {
+        $this->buyerSanctions = $this->buyer
+            ? $this->buyer->sanctions()->with('admin')->orderByDesc('created_at')->get()
+            : collect();
+
+        $this->sellerSanctions = $this->seller
+            ? $this->seller->sanctions()->with('admin')->orderByDesc('created_at')->get()
+            : collect();
+
+        $this->showSanctionHistoryModal = true;
+    }
+
     public function applySanction(): void
     {
         $this->validate([
-            'sanctionTarget'   => 'required|in:buyer,seller',
-            'sanctionType'     => 'required|in:force_kyc,freeze_wallet,suspend,ban_hwid',
-            'sanctionReason'   => 'required|string|min:10|max:2000',
+            'sanctionTarget' => 'required|in:buyer,seller',
+            'sanctionType' => 'required|in:force_kyc,freeze_wallet,suspend,ban_hwid',
+            'sanctionReason' => 'required|string|min:10|max:2000',
             'sanctionDuration' => 'required|string|max:100',
         ]);
 
@@ -470,28 +535,50 @@ class DeepView extends Component
 
         if (! $targetUser) {
             $this->error(__('Target user not found.'));
+
             return;
         }
 
         $expiresAt = match ($this->sanctionDuration) {
-            '24h'       => now()->addHours(24),
-            '7d'        => now()->addDays(7),
-            '30d'       => now()->addDays(30),
-            '90d'       => now()->addDays(90),
+            '24h' => now()->addHours(24),
+            '7d' => now()->addDays(7),
+            '30d' => now()->addDays(30),
+            '90d' => now()->addDays(90),
             'permanent' => null,
-            default     => now()->addDays(30),
+            default => now()->addDays(30),
         };
 
-        // UserSanction::query()->create([
-        //     'user_id'    => $targetUser->id,
-        //     'admin_id'   => $admin->id,
-        //     'type'       => $this->sanctionType,
-        //     'reason'     => $this->sanctionReason,
-        //     'duration'   => $this->sanctionDuration,
-        //     'expires_at' => $expiresAt,
-        //     'is_active'  => true,
-        // ]);
-        
+        UserSanction::query()->create([
+            'user_id' => $targetUser->id,
+            'admin_id' => $admin->id,
+            'type' => $this->sanctionType,
+            'reason' => $this->sanctionReason,
+            'duration' => $this->sanctionDuration,
+            'expires_at' => $expiresAt,
+            'is_active' => true,
+        ]);
+
+        if ($this->sanctionType === 'force_kyc') {
+            //
+        }
+        if ($this->sanctionType === 'freeze_wallet') {
+            $targetUser->wallet->update([
+                'freeze_expiry' => $expiresAt,
+            ]);
+        }
+        if ($this->sanctionType === 'suspend' || $this->sanctionType === 'ban_hwid') {
+            $type = $this->sanctionDuration === 'permanent' ? UserBanType::PERMANENT : UserBanType::TEMPORARY;
+
+            $this->userService->banUser(
+                userId: $targetUser->id,
+                reason: $this->sanctionReason,
+                type: $type,
+                expiresAt: $expiresAt,
+            );
+        }
+        // if ($this->sanctionType === 'ban_hwid') {
+        //     //
+        // }
 
         $this->reset('sanctionTarget', 'sanctionType', 'sanctionReason', 'sanctionDuration');
         $this->success(__('Sanction applied successfully.'));
@@ -500,29 +587,5 @@ class DeepView extends Component
     public function render()
     {
         return view('livewire.backend.admin.order-management.deep-view');
-    }
-
-    public function sanctionForceKyc(): void
-    {
-       $this->error(__('Not implemented yet.'));
-       return;
-    }
-
-    public function sanctionFreezeWallet(): void
-    {
-        $this->sanctionType = 'freeze_wallet';
-        $this->doSanction();
-    }
-
-    public function sanctionSuspend(): void
-    {
-        $this->sanctionType = 'suspend';
-        $this->doSanction();
-    }
-
-    public function sanctionBanHwid(): void
-    {
-        $this->sanctionType = 'ban_hwid';
-        $this->doSanction();
     }
 }
