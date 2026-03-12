@@ -674,19 +674,31 @@
                         <div class="grid grid-cols-2 gap-2">
                             @foreach ($sanctionButtons as $s)
                                 <button wire:click="$set('sanctionType', '{{ $s['key'] }}')"
-                                    @if ($canSanction && $sanctionReason) wire:then="applySanction"
-                                    wire:confirm="{{ __('Apply ') . $s['label'] . __(' to this user?') }}"
-                                @else
-                                    disabled @endif
                                     class="flex items-center justify-center gap-1.5 px-2.5 py-2.5 rounded-xl border
                                        text-xs font-bold uppercase tracking-wide transition-all duration-150
-                                       {{ $canSanction && $sanctionReason ? $s['light'] . ' ' . $s['dark'] : $disabledStyle }}">
+                                       {{ $canSanction && $sanctionReason ? $s['light'] . ' ' . $s['dark'] : $disabledStyle }} 
+                                        {{ $sanctionType === $s['key'] ? 'ring-2 ring-violet-500 border-transparent shadow-lg' : 'border-gray-200' }}">
                                     <flux:icon name="{{ $s['icon'] }}" class="w-4 h-4" />
                                     {{ $s['label'] }}
                                 </button>
                             @endforeach
                         </div>
 
+                        @if ($canSanction && $sanctionReason && $sanctionType)
+                            <button wire:click="applySanction"
+                                wire:confirm="{{ __('Apply this sanction? This action cannot be undone.') }}"
+                                wire:loading.attr="disabled"
+                                class="w-full flex items-center justify-center gap-2 py-3 rounded-xl
+                                   bg-violet-600 hover:bg-violet-700 dark:bg-violet-700 dark:hover:bg-violet-600
+                                   text-white text-xs font-bold uppercase tracking-wide
+                                   shadow-sm transition-all disabled:opacity-50">
+                                <flux:icon name="scale" class="w-4 h-4 stroke-white" />
+                                <span wire:loading.remove wire:target="applySanction"
+                                    class="text-white">{{ __('Apply Sanction') }}</span>
+                                <span wire:loading wire:target="applySanction"
+                                    class="text-white">{{ __('Processing...') }}</span>
+                            </button>
+                        @endif
                         @if ($canSanction && !$sanctionReason)
                             <p class="text-xs text-amber-600 dark:text-amber-500 text-center font-medium">
                                 {{ __('Add a reason to enable actions.') }}

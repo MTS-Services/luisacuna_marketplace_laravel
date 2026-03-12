@@ -35,6 +35,8 @@ return new class extends Migration
             $table->timestamp('hold_at')->nullable()->index();
             $table->timestamp('split_at')->nullable()->index();
 
+            $table->boolean('is_frozen')->default(false)->index();
+
             // $table->softDeletes();
             $table->timestamps();
 

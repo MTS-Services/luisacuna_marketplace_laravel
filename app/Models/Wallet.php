@@ -21,6 +21,8 @@ class Wallet extends BaseModel
 
         'last_deposit_at',
         'last_withdrawal_at',
+
+        'freeze_expiry'
     ];
 
     protected $hidden = [
@@ -36,6 +38,7 @@ class Wallet extends BaseModel
         'total_withdrawals' => 'decimal:2',
         'last_deposit_at' => 'datetime',
         'last_withdrawal_at' => 'datetime',
+        'freeze_expiry' => 'datetime',
     ];
 
     /* ==============================================================

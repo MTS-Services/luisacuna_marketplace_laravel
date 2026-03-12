@@ -380,11 +380,11 @@ class User extends AuthBaseModel implements Auditable
 
     public function scopeFilter($query, array $filters)
     {
-        $query->when($filters['status'] ?? null, fn ($q, $status) => $q->where('status', $status));
-        $query->when($filters['search'] ?? null, fn ($q, $search) => $q->search($search));
-        $query->when($filters['user_type'] ?? null, fn ($q, $type) => $q->where('user_type', $type));
-        $query->when($filters['account_status'] ?? null, fn ($q, $acc) => $q->where('account_status', $acc));
-        $query->when(array_key_exists('banned', $filters), fn ($q) => $filters['banned'] ? $q->whereNotNull('banned_at') : $q->whereNull('banned_at'));
+        $query->when($filters['status'] ?? null, fn($q, $status) => $q->where('status', $status));
+        $query->when($filters['search'] ?? null, fn($q, $search) => $q->search($search));
+        $query->when($filters['user_type'] ?? null, fn($q, $type) => $q->where('user_type', $type));
+        $query->when($filters['account_status'] ?? null, fn($q, $acc) => $q->where('account_status', $acc));
+        $query->when(array_key_exists('banned', $filters), fn($q) => $filters['banned'] ? $q->whereNotNull('banned_at') : $q->whereNull('banned_at'));
 
         return $query;
     }
@@ -585,7 +585,7 @@ class User extends AuthBaseModel implements Auditable
         }
 
         if (! empty($this->banned_reason)) {
-            $msg .= ' '.__('Reason: :reason', ['reason' => $this->banned_reason]);
+            $msg .= ' ' . __('Reason: :reason', ['reason' => $this->banned_reason]);
         }
 
         return $msg;
@@ -704,7 +704,7 @@ class User extends AuthBaseModel implements Auditable
 
     public function offlineStatus(): string
     {
-        return (! $this->isOnline() && $this->last_seen_at !== null && $this->last_seen_at->diffInMinutes(now()) < 60) ? round($this->last_seen_at->diffInMinutes(now())).' min ago' : 'Offline';
+        return (! $this->isOnline() && $this->last_seen_at !== null && $this->last_seen_at->diffInMinutes(now()) < 60) ? round($this->last_seen_at->diffInMinutes(now())) . ' min ago' : 'Offline';
     }
 
     public function isVerifiedSeller(): bool
@@ -712,5 +712,16 @@ class User extends AuthBaseModel implements Auditable
         $this->load('seller');
 
         return (bool) ($this->seller?->seller_verified_at !== null || $this->seller?->seller_verified == 1);
+    }
+
+    public function isFrozen(): bool
+    {
+        $this->load('wallet');
+        // 1. If there is no wallet, it's not frozen.
+        // 2. If freeze_expiry is null, it's not frozen.
+        // 3. If freeze_expiry is in the future, it IS frozen.
+        return $this->wallet &&
+            $this->wallet->freeze_expiry !== null &&
+            $this->wallet->freeze_expiry->isFuture();
     }
 }

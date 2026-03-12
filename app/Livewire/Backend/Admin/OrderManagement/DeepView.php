@@ -17,6 +17,7 @@ use App\Services\ConversationService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class DeepView extends Component
@@ -481,15 +482,16 @@ class DeepView extends Component
             default     => now()->addDays(30),
         };
 
-        UserSanction::query()->create([
-            'user_id'    => $targetUser->id,
-            'admin_id'   => $admin->id,
-            'type'       => $this->sanctionType,
-            'reason'     => $this->sanctionReason,
-            'duration'   => $this->sanctionDuration,
-            'expires_at' => $expiresAt,
-            'is_active'  => true,
-        ]);
+        // UserSanction::query()->create([
+        //     'user_id'    => $targetUser->id,
+        //     'admin_id'   => $admin->id,
+        //     'type'       => $this->sanctionType,
+        //     'reason'     => $this->sanctionReason,
+        //     'duration'   => $this->sanctionDuration,
+        //     'expires_at' => $expiresAt,
+        //     'is_active'  => true,
+        // ]);
+        
 
         $this->reset('sanctionTarget', 'sanctionType', 'sanctionReason', 'sanctionDuration');
         $this->success(__('Sanction applied successfully.'));
@@ -498,5 +500,29 @@ class DeepView extends Component
     public function render()
     {
         return view('livewire.backend.admin.order-management.deep-view');
+    }
+
+    public function sanctionForceKyc(): void
+    {
+       $this->error(__('Not implemented yet.'));
+       return;
+    }
+
+    public function sanctionFreezeWallet(): void
+    {
+        $this->sanctionType = 'freeze_wallet';
+        $this->doSanction();
+    }
+
+    public function sanctionSuspend(): void
+    {
+        $this->sanctionType = 'suspend';
+        $this->doSanction();
+    }
+
+    public function sanctionBanHwid(): void
+    {
+        $this->sanctionType = 'ban_hwid';
+        $this->doSanction();
     }
 }

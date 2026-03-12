@@ -28,6 +28,8 @@ return new class extends Migration
             $table->timestamp('last_deposit_at')->nullable()->index();
             $table->timestamp('last_withdrawal_at')->nullable()->index();
 
+            $table->timestamp('freeze_expiry')->nullable()->index();
+
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');

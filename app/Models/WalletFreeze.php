@@ -23,6 +23,7 @@ class WalletFreeze extends BaseModel
         'partially_refunded_at',
         'hold_at',
         'split_at',
+        'is_frozen',
 
         'creater_id',
         'updater_id',
@@ -45,6 +46,7 @@ class WalletFreeze extends BaseModel
         'partially_refunded_at' => 'datetime',
         'hold_at' => 'datetime',
         'split_at' => 'datetime',
+        'is_frozen' => 'boolean',
     ];
 
     /* =#=#=#=#=#=#=#=#=#=#==#=#=#=#= =#=#=#=#=#=#=#=#=#=#==#=#=#=#=
