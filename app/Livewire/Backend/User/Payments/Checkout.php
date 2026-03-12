@@ -6,6 +6,7 @@ use App\Enums\FeedbackType;
 use App\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\PaymentGateway;
+use App\Models\UserSanction;
 use App\Models\Wallet;
 use App\Services\CurrencyService;
 use App\Services\FeedbackService;
@@ -216,8 +217,8 @@ class Checkout extends Component
         try {
             // Determine if it's a top-up scenario (wallet insufficient)
             $isTopUp = $this->gateway === 'wallet' &&
-                       $this->walletBalanceDefault !== null &&
-                       $this->walletBalanceDefault < $this->order->default_total_amount;
+                $this->walletBalanceDefault !== null &&
+                $this->walletBalanceDefault < $this->order->default_total_amount;
 
             // Use TaxService to calculate tax
             $taxCalc = $this->taxService->calculateTax(
@@ -276,7 +277,11 @@ class Checkout extends Component
 
     public function render()
     {
-        return view('livewire.backend.user.payments.checkout');
+        $frozen = UserSanction::where('user_id', user()->id)->where('type', 'freeze_wallet')->where('is_active', true)->where('expires_at', '>', now())->first();
+
+        return view('livewire.backend.user.payments.checkout', [
+            'frozen' => $frozen,
+        ]);
     }
 
     /**

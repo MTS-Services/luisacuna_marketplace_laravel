@@ -130,152 +130,181 @@
                             {{ __('3. Choose Method') }}
                         </h2>
 
-                        <form class="flex flex-col gap-3" wire:submit.prevent="processPayment">
+                        @if ($frozen)
+                            <div class="alert alert-warning shadow-lg rounded-xl flex items-start gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="stroke-current flex-shrink-0 h-6 w-6 mt-0.5" fill="none"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.398 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                                <div class="flex flex-col gap-1 text-sm">
+                                    <span class="font-semibold">
+                                        {{ __('Wallet temporarily frozen') }}
+                                    </span>
 
-                            @forelse ($gateways as $gatewayItem)
-                                <div wire:click="$set('gateway', '{{ $gatewayItem->slug }}')"
-                                    class="gateway-label flex items-center p-4 rounded-xl transition-all duration-300 border-2 cursor-pointer
+                                    @if (! empty($frozen->reason))
+                                        <span>
+                                            {{ __('Reason: :reason', ['reason' => $frozen->reason]) }}
+                                        </span>
+                                    @endif
+
+                                    @if (! empty($frozen->expires_at))
+                                        <span class="text-xs opacity-80">
+                                            {{ __('Time remaining: :duration', ['duration' => $frozen->expires_at->diffForHumans()]) }}
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                        @else
+                            <form class="flex flex-col gap-3" wire:submit.prevent="processPayment">
+
+                                @forelse ($gateways as $gatewayItem)
+                                    <div wire:click="$set('gateway', '{{ $gatewayItem->slug }}')"
+                                        class="gateway-label flex items-center p-4 rounded-xl transition-all duration-300 border-2 cursor-pointer
                                     {{ $gatewayItem->slug === $gateway ? 'border-zinc-500 bg-bg-secondary' : 'border-none bg-bg-primary' }}">
 
-                                    <div class="flex items-center justify-between w-full">
-                                        <div class="flex items-center gap-3">
-                                            @if ($gatewayItem->icon)
-                                                <img src="{{ storage_url($gatewayItem->icon) }}"
-                                                    alt="{{ $gatewayItem->name }}"
-                                                    class="w-5 h-5 object-contain shrink-0" />
-                                            @elseif ($gatewayItem->slug === 'stripe' || $gatewayItem->slug === 'card')
-                                                <svg class="w-5 h-5 text-text-white" fill="none"
-                                                    stroke="currentColor" viewBox="0 0 24 24">
-                                                    <rect x="2" y="5" width="20" height="14" rx="2"
-                                                        stroke-width="2" />
-                                                    <path d="M2 10h20" stroke-width="2" />
-                                                </svg>
-                                            @elseif($gatewayItem->slug === 'crypto')
-                                                <flux:icon name="bitcoin" class="text-lg font-bold" />
-                                            @elseif($gatewayItem->slug === 'wallet')
-                                                <svg class="w-5 h-5 text-text-white" fill="none"
-                                                    stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path d="M21 12V7H5a2 2 0 01-2-2V4a2 2 0 012-2h14v5"
-                                                        stroke-width="2" />
-                                                    <path d="M3 5v14a2 2 0 002 2h16v-5" stroke-width="2" />
-                                                    <circle cx="18" cy="12" r="2" />
-                                                </svg>
-                                            @elseif ($gatewayItem->slug === 'tebex')
-                                                <flux:icon name="banknotes" class=" text-lg font-bold" />
-                                            @else
-                                                <flux:icon name="credit-card"
-                                                    class="w-5 h-5 text-text-white shrink-0" />
+                                        <div class="flex items-center justify-between w-full">
+                                            <div class="flex items-center gap-3">
+                                                @if ($gatewayItem->icon)
+                                                    <img src="{{ storage_url($gatewayItem->icon) }}"
+                                                        alt="{{ $gatewayItem->name }}"
+                                                        class="w-5 h-5 object-contain shrink-0" />
+                                                @elseif ($gatewayItem->slug === 'stripe' || $gatewayItem->slug === 'card')
+                                                    <svg class="w-5 h-5 text-text-white" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <rect x="2" y="5" width="20" height="14" rx="2"
+                                                            stroke-width="2" />
+                                                        <path d="M2 10h20" stroke-width="2" />
+                                                    </svg>
+                                                @elseif($gatewayItem->slug === 'crypto')
+                                                    <flux:icon name="bitcoin" class="text-lg font-bold" />
+                                                @elseif($gatewayItem->slug === 'wallet')
+                                                    <svg class="w-5 h-5 text-text-white" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M21 12V7H5a2 2 0 01-2-2V4a2 2 0 012-2h14v5"
+                                                            stroke-width="2" />
+                                                        <path d="M3 5v14a2 2 0 002 2h16v-5" stroke-width="2" />
+                                                        <circle cx="18" cy="12" r="2" />
+                                                    </svg>
+                                                @elseif ($gatewayItem->slug === 'tebex')
+                                                    <flux:icon name="banknotes" class=" text-lg font-bold" />
+                                                @else
+                                                    <flux:icon name="credit-card"
+                                                        class="w-5 h-5 text-text-white shrink-0" />
+                                                @endif
+                                                <span
+                                                    class="text-base font-normal text-text-white">{{ $gatewayItem->name }}</span>
+                                            </div>
+
+                                            @if ($gatewayItem->slug === 'wallet' && $walletBalance !== null)
+                                                <span
+                                                    class="text-sm font-medium {{ $walletBalance >= $order->grand_total ? 'text-green-400' : 'text-red-400' }}">
+                                                    ({{ $displaySymbol }}{{ number_format($walletBalance, 2) }})
+                                                </span>
                                             @endif
-                                            <span
-                                                class="text-base font-normal text-text-white">{{ $gatewayItem->name }}</span>
                                         </div>
-
-                                        @if ($gatewayItem->slug === 'wallet' && $walletBalance !== null)
-                                            <span
-                                                class="text-sm font-medium {{ $walletBalance >= $order->grand_total ? 'text-green-400' : 'text-red-400' }}">
-                                                ({{ $displaySymbol }}{{ number_format($walletBalance, 2) }})
-                                            </span>
-                                        @endif
                                     </div>
-                                </div>
-                            @empty
-                                <div class="alert alert-warning shadow-lg rounded-xl">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="stroke-current flex-shrink-0 h-6 w-6" fill="none"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.398 16c-.77 1.333.192 3 1.732 3z" />
-                                    </svg>
-                                    <span>{{ __('No payment gateways are currently configured.') }}</span>
-                                </div>
-                            @endforelse
-
-                            <!-- Price Breakdown -->
-                            <div class="mt-6">
-                                <div class="flex justify-between mb-2">
-                                    <p class="text-text-white font-normal text-xs">{{ __('Subtotal:') }}</p>
-                                    <p class="text-text-white font-semibold text-base">
-                                        {{ $displaySymbol }}{{ number_format($order->total_amount, 2) }}
-                                    </p>
-                                </div>
-
-                                <div class="flex justify-between mb-2">
-                                    <div class="flex gap-1 items-center">
-                                        <p class="text-text-white font-normal text-xs">{{ __('Payment Fee') }}</p>
-                                        <button type="button" onclick="openPaymentFeeModal()"
-                                            class="focus:outline-none">
-                                            <x-phosphor name="question" variant="variant"
-                                                class="fill-zinc-200 w-5 h-5 cursor-pointer hover:fill-zinc-300 transition-colors" />
-                                        </button>
-                                    </div>
-                                    <p class="text-text-white font-semibold text-base">
-                                        {{ $displaySymbol }}{{ number_format($calculatedTaxAmount, 2) }}
-                                    </p>
-                                </div>
-
-                                <div class="flex justify-between mb-2">
-                                    <p class="text-text-white font-normal text-xs">{{ __('Wallet Balance') }}</p>
-                                    <p class="text-text-white font-semibold text-base">
-                                        {{ $displaySymbol }}{{ number_format($walletBalance ?? 0, 2) }}
-                                    </p>
-                                </div>
-                                <div class="flex justify-between mb-2 border-t border-zinc-800">
-                                    <p class="text-text-white font-normal text-xs">{{ __('Points') }}</p>
-                                    <p class="text-text-white font-normal text-xs">
-                                        {{ $order->points ?? 0 }}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- Payment Fee Modal -->
-                            <div id="paymentFeeModal"
-                                class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80">
-                                <div class="bg-bg-secondary rounded-2xl p-6 max-w-md w-full mx-4 relative">
-                                    <button type="button" onclick="closePaymentFeeModal()"
-                                        class="absolute top-4 right-4 text-text-white hover:text-gray-300 transition-colors">
-                                        <svg class="w-6 h-6" fill="none" stroke="currentColor"
+                                @empty
+                                    <div class="alert alert-warning shadow-lg rounded-xl">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="stroke-current flex-shrink-0 h-6 w-6" fill="none"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M6 18L18 6M6 6l12 12"></path>
+                                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.398 16c-.77 1.333.192 3 1.732 3z" />
                                         </svg>
-                                    </button>
+                                        <span>{{ __('No payment gateways are currently configured.') }}</span>
+                                    </div>
+                                @endforelse
 
-                                    <h2 class="text-text-white font-semibold text-2xl mb-4 pr-8">
-                                        {{ __('Why do I Pay Payment Fee?') }}
-                                    </h2>
-                                    <p class="text-text-white font-normal text-base text-justify">
-                                        {{ __('Payment fee is collected to pay for service related to the product, which is a standard practice in e-commerce and other industries. In detail, it is applied to cover services rendered to the consumer as well as administrative or processing costs, such as payment processing fee and 24/7 customer support.') }}
+                                <!-- Price Breakdown -->
+                                <div class="mt-6">
+                                    <div class="flex justify-between mb-2">
+                                        <p class="text-text-white font-normal text-xs">{{ __('Subtotal:') }}</p>
+                                        <p class="text-text-white font-semibold text-base">
+                                            {{ $displaySymbol }}{{ number_format($order->total_amount, 2) }}
+                                        </p>
+                                    </div>
+
+                                    <div class="flex justify-between mb-2">
+                                        <div class="flex gap-1 items-center">
+                                            <p class="text-text-white font-normal text-xs">{{ __('Payment Fee') }}</p>
+                                            <button type="button" onclick="openPaymentFeeModal()"
+                                                class="focus:outline-none">
+                                                <x-phosphor name="question" variant="variant"
+                                                    class="fill-zinc-200 w-5 h-5 cursor-pointer hover:fill-zinc-300 transition-colors" />
+                                            </button>
+                                        </div>
+                                        <p class="text-text-white font-semibold text-base">
+                                            {{ $displaySymbol }}{{ number_format($calculatedTaxAmount, 2) }}
+                                        </p>
+                                    </div>
+
+                                    <div class="flex justify-between mb-2">
+                                        <p class="text-text-white font-normal text-xs">{{ __('Wallet Balance') }}</p>
+                                        <p class="text-text-white font-semibold text-base">
+                                            {{ $displaySymbol }}{{ number_format($walletBalance ?? 0, 2) }}
+                                        </p>
+                                    </div>
+                                    <div class="flex justify-between mb-2 border-t border-zinc-800">
+                                        <p class="text-text-white font-normal text-xs">{{ __('Points') }}</p>
+                                        <p class="text-text-white font-normal text-xs">
+                                            {{ $order->points ?? 0 }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Payment Fee Modal -->
+                                <div id="paymentFeeModal"
+                                    class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+                                    <div class="bg-bg-secondary rounded-2xl p-6 max-w-md w-full mx-4 relative">
+                                        <button type="button" onclick="closePaymentFeeModal()"
+                                            class="absolute top-4 right-4 text-text-white hover:text-gray-300 transition-colors">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M6 18L18 6M6 6l12 12"></path>
+                                            </svg>
+                                        </button>
+
+                                        <h2 class="text-text-white font-semibold text-2xl mb-4 pr-8">
+                                            {{ __('Why do I Pay Payment Fee?') }}
+                                        </h2>
+                                        <p class="text-text-white font-normal text-base text-justify">
+                                            {{ __('Payment fee is collected to pay for service related to the product, which is a standard practice in e-commerce and other industries. In detail, it is applied to cover services rendered to the consumer as well as administrative or processing costs, such as payment processing fee and 24/7 customer support.') }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Pay Button -->
+                                <div class="mt-5">
+                                    <x-ui.button type="submit" wire:loading wire:target="processPayment"
+                                        class="px-4! py-2! sm:px-6! sm:py-3!">
+                                        {{ __('Processing...') }}
+                                    </x-ui.button>
+                                    <x-ui.button type="submit" wire:loading.remove wire:target="processPayment"
+                                        class="px-4! py-2! sm:px-6! sm:py-3!">
+                                        <span wire:loading wire:target="gateway">
+                                            <flux:icon name="arrow-path"
+                                                class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary animate-spin" />
+                                        </span>
+                                        <span wire:loading.remove wire:target="gateway"
+                                            class="text-text-btn-primary group-hover:text-text-btn-secondary">
+                                            {{ $displayCurrency }} {{ number_format($calculatedGrandTotal, 2) }}
+                                            {{ __('| Pay Now') }}
+                                        </span>
+                                    </x-ui.button>
+                                </div>
+
+                                <div class="flex gap-2 mt-4">
+                                    <x-phosphor name="shield-check" variant="variant"
+                                        class="fill-zinc-500 w-6 h-6" />
+                                    <p class="text-text-white text-xs font-normal flex items-center gap-2">
+                                        <span>{{ __('I accept the Terms of Service, Privacy Notice and Refund Policy.') }}</span>
                                     </p>
                                 </div>
-                            </div>
-
-                            <!-- Pay Button -->
-                            <div class="mt-5">
-                                <x-ui.button type="submit" wire:loading wire:target="processPayment"
-                                    class="px-4! py-2! sm:px-6! sm:py-3!">
-                                    {{ __('Processing...') }}
-                                </x-ui.button>
-                                <x-ui.button type="submit" wire:loading.remove wire:target="processPayment"
-                                    class="px-4! py-2! sm:px-6! sm:py-3!">
-                                    <span wire:loading wire:target="gateway">
-                                        <flux:icon name="arrow-path"
-                                            class="w-4 h-4 stroke-text-btn-primary group-hover:stroke-text-btn-secondary animate-spin" />
-                                    </span>
-                                    <span wire:loading.remove wire:target="gateway"
-                                        class="text-text-btn-primary group-hover:text-text-btn-secondary">
-                                        {{ $displayCurrency }} {{ number_format($calculatedGrandTotal, 2) }}
-                                        {{ __('| Pay Now') }}
-                                    </span>
-                                </x-ui.button>
-                            </div>
-
-                            <div class="flex gap-2 mt-4">
-                                <x-phosphor name="shield-check" variant="variant" class="fill-zinc-500 w-6 h-6" />
-                                <p class="text-text-white text-xs font-normal flex items-center gap-2">
-                                    <span>{{ __('I accept the Terms of Service, Privacy Notice and Refund Policy.') }}</span>
-                                </p>
-                            </div>
-                        </form>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>
