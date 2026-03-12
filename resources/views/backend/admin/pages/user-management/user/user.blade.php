@@ -29,6 +29,13 @@
             <livewire:backend.admin.user-management.user.profile.persona-info :user="$user" />
         @break
 
+        @case('admin.um.user.wallet')
+            <x-slot name="pageSlug">admin-users</x-slot>
+            <x-slot name="title">{{ __('Wallet') }}</x-slot>
+            <x-slot name="breadcrumb">{{ __('User Management') }}</x-slot>
+            <livewire:backend.admin.user-management.user.wallet-manage :user="$user" />
+        @break
+
         @case('admin.um.user.shopInfo')
             <x-slot name="pageSlug">admin-users</x-slot>
             <x-slot name="title">{{ __('Shop Info') }}</x-slot>

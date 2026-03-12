@@ -2,28 +2,32 @@
 
 namespace App\Livewire\Backend\Admin\UserManagement\User;
 
-use Livewire\Component;
 use App\Enums\UserAccountStatus;
 use App\Enums\UserType;
 use App\Services\UserService;
-use Illuminate\Support\Facades\Log;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
+use Illuminate\Support\Facades\Log;
+use Livewire\Component;
 
 class BannedUser extends Component
 {
     use WithDataTable, WithNotification;
 
-
     protected UserService $service;
 
     public $statusFilter = '';
+
     public $deleteUserId;
+
     public $bulkAction = '';
+
     public $showDeleteModal = false;
+
     public $showBulkActionModal = false;
- 
+
     public $unbanUserId;
+
     public $showUnbanUserModal = false;
 
     public function boot(UserService $service)
@@ -38,27 +42,38 @@ class BannedUser extends Component
             filters: $this->getFilters()
         );
 
+        return view('livewire.backend.admin.user-management.user.banned-user', [
+            'datas' => $users,
+            'columns' => $this->getColumns(),
+            'types' => UserType::options(),
+            'actions' => $this->getActions(),
+            'bulkActions' => $this->getBulkActions(),
 
-        $columns = [
+        ]);
+    }
+
+    protected function getColumns(): array
+    {
+        return [
             [
                 'key' => 'first_name',
                 'label' => 'Name',
-                'sortable' => true
+                'sortable' => true,
             ],
             [
                 'key' => 'username',
                 'label' => 'User Name',
-                'sortable' => true
+                'sortable' => true,
             ],
             [
                 'key' => 'email',
                 'label' => 'Email',
-                'sortable' => true
+                'sortable' => true,
             ],
             [
                 'key' => 'phone',
                 'label' => 'Phone',
-                'sortable' => true
+                'sortable' => true,
             ],
             [
                 'key' => 'user_type',
@@ -66,10 +81,10 @@ class BannedUser extends Component
                 'sortable' => true,
                 'format' => function ($user) {
                     return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium '
-                        . $user->user_type_color . '">'
-                        . $user->user_type_label .
+                        .$user->user_type_color.'">'
+                        .$user->user_type_label.
                         '</span>';
-                }
+                },
             ],
             [
                 'key' => 'banned_at',
@@ -77,41 +92,46 @@ class BannedUser extends Component
                 'sortable' => true,
                 'format' => function ($user) {
                     return $user->banned_at ? dateTimeFormat($user->banned_at) : '-';
-                }
-            ]
+                },
+            ],
         ];
-        $actions = [
+    }
+
+    protected function getActions(): array
+    {
+        return [
             [
                 'key' => 'id',
                 'label' => 'Profile',
-                'route' => 'admin.um.user.profileInfo'
+                'route' => 'admin.um.user.profileInfo',
+            ],
+            [
+                'key' => 'id',
+                'label' => 'Wallet Manage',
+                'route' => 'admin.um.user.wallet',
             ],
             [
                 'key' => 'id',
                 'label' => 'Ban History',
-                'route' => 'admin.um.user.ban-history'
+                'route' => 'admin.um.user.ban-history',
             ],
             [
                 'key' => 'id',
                 'label' => 'Unban User',
-                'method' => 'confirmUnbanUser'
+                'method' => 'confirmUnbanUser',
             ],
         ];
-        $bulkActions = [
+    }
+
+    protected function getBulkActions(): array
+    {
+        return [
             ['value' => 'delete', 'label' => 'Delete'],
             ['value' => 'activate', 'label' => 'Activate'],
             ['value' => 'deactivate', 'label' => 'Deactivate'],
             ['value' => 'suspend', 'label' => 'Suspend'],
             ['value' => 'unbanUser', 'label' => 'Unban User'],
         ];
-        return view('livewire.backend.admin.user-management.user.banned-user', [
-            'datas' => $users,
-            'columns' => $columns,
-            'types' => UserType::options(),
-            'actions' => $actions,
-            'bulkActions' => $bulkActions,
-
-        ]);
     }
 
     public function confirmUnbanUser($userId): void
@@ -125,11 +145,11 @@ class BannedUser extends Component
         try {
             $this->service->unbanUser($this->unbanUserId);
             $this->success('User unban successfully');
-            
+
             $this->showUnbanUserModal = false;
             $this->unbanUserId = null;
         } catch (\Exception $e) {
-            $this->error('Failed to unban User: ' . $e->getMessage());
+            $this->error('Failed to unban User: '.$e->getMessage());
             $this->showUnbanUserModal = false;
             $this->unbanUserId = null;
         }
@@ -154,7 +174,7 @@ class BannedUser extends Component
 
             $this->success('User status updated successfully');
         } catch (\Exception $e) {
-            $this->error('Failed to update status: ' . $e->getMessage());
+            $this->error('Failed to update status: '.$e->getMessage());
         }
     }
 
@@ -163,6 +183,7 @@ class BannedUser extends Component
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
             $this->warning('Please select Users and an action');
             Log::info('No Users selected or no bulk action selected');
+
             return;
         }
 
@@ -185,7 +206,7 @@ class BannedUser extends Component
             $this->selectAll = false;
             $this->bulkAction = '';
         } catch (\Exception $e) {
-            $this->error('Bulk action failed: ' . $e->getMessage());
+            $this->error('Bulk action failed: '.$e->getMessage());
         }
     }
 
@@ -208,7 +229,7 @@ class BannedUser extends Component
             'account_status' => $this->statusFilter,
             'sort_field' => $this->sortField,
             'sort_direction' => $this->sortDirection,
-            'banned' => true
+            'banned' => true,
         ];
     }
 

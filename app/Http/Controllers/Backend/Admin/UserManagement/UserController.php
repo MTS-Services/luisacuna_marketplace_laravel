@@ -3,23 +3,20 @@
 namespace App\Http\Controllers\Backend\Admin\UserManagement;
 
 use App\Http\Controllers\Controller;
-
 use App\Services\UserService;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-
 class UserController extends Controller implements HasMiddleware
 {
-
     protected $masterView = 'backend.admin.pages.user-management.user.user';
 
     protected UserService $service;
+
     public function __construct(UserService $service)
     {
         $this->service = $service;
     }
-
 
     public static function middleware(): array
     {
@@ -44,99 +41,129 @@ class UserController extends Controller implements HasMiddleware
     {
         return view($this->masterView);
     }
+
     public function create()
     {
         return view($this->masterView);
     }
+
     public function view(string $id)
     {
         $user = $this->service->getDataById($id);
 
-        if (!$user) {
+        if (! $user) {
             abort(404);
         }
 
         return view($this->masterView, [
-            'user' => $user
+            'user' => $user,
         ]);
     }
+
     public function edit(string $id)
     {
         $user = $this->service->getDataById($id);
-        if (!$user) {
+        if (! $user) {
             abort(404);
         }
+
         return view($this->masterView, [
-            'user' => $user
+            'user' => $user,
         ]);
     }
+
     public function trash()
     {
         return view($this->masterView);
     }
+
     public function bannedUser()
     {
         return view($this->masterView);
     }
+
+    public function wallet($id)
+    {
+        $user = $this->service->getDataById($id);
+        if (! $user) {
+            abort(404);
+        }
+
+        return view($this->masterView, [
+            'user' => $user,
+        ]);
+    }
+
     public function profileInfo($id)
     {
         $user = $this->service->getDataById($id);
-        if (!$user) {
+        if (! $user) {
             abort(404);
         }
+
         return view($this->masterView, [
-            'user' => $user
+            'user' => $user,
         ]);
     }
+
     public function shopInfo($id)
     {
         $user = $this->service->getDataById($id);
-        if (!$user) {
+        if (! $user) {
             abort(404);
         }
+
         return view($this->masterView, [
-            'user' => $user
+            'user' => $user,
         ]);
     }
+
     public function kycInfo($id)
     {
 
         $user = $this->service->getDataById($id);
-        if (!$user) {
+        if (! $user) {
             abort(404);
         }
+
         return view($this->masterView, [
-            'user' => $user
+            'user' => $user,
         ]);
     }
+
     public function statistic($id)
     {
         $user = $this->service->getDataById($id);
-        if (!$user) {
+        if (! $user) {
             abort(404);
         }
+
         return view($this->masterView, [
-            'user' => $user
+            'user' => $user,
         ]);
     }
+
     public function banHistory($id)
     {
         $user = $this->service->getDataById($id);
-        if (!$user) {
+        if (! $user) {
             abort(404);
         }
+
         return view($this->masterView, [
-            'user' => $user
+            'user' => $user,
         ]);
     }
+
     public function referral($id)
     {
         $user = $this->service->getDataById($id);
-        if (!$user) {
+        if (! $user) {
             abort(404);
         }
+
         return view($this->masterView, [
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
@@ -144,20 +171,23 @@ class UserController extends Controller implements HasMiddleware
     {
         return view($this->masterView);
     }
+
     public function sellerTrash()
     {
         return view($this->masterView);
     }
+
     public function allBuyer()
     {
         return view($this->masterView);
     }
+
     public function buyerTrash()
     {
         return view($this->masterView);
     }
 
-    //Seller Verificaiton 
+    // Seller Verificaiton
 
     public function pendingVerification()
     {
@@ -169,7 +199,7 @@ class UserController extends Controller implements HasMiddleware
     public function sellerView(string $encryptedId)
     {
         return view($this->masterView, [
-            'encryptedId' => $encryptedId
+            'encryptedId' => $encryptedId,
         ]);
     }
 
@@ -177,10 +207,11 @@ class UserController extends Controller implements HasMiddleware
     {
         return view($this->masterView);
     }
+
     public function feedback(string $encryptedId)
     {
         return view($this->masterView, [
-            'encryptedId' => $encryptedId
+            'encryptedId' => $encryptedId,
         ]);
     }
 }

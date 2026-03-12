@@ -5,34 +5,40 @@ namespace App\Livewire\Backend\Admin\UserManagement\User;
 use App\Enums\UserAccountStatus;
 use App\Enums\UserBanType;
 use App\Services\UserService;
-use App\Models\User;
-use App\Enums\UserType;
+use App\Traits\Livewire\WithDataTable;
+use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
-use App\Traits\Livewire\WithDataTable;
-use App\Traits\Livewire\WithNotification;
 
 class Index extends Component
 {
     use WithDataTable, WithNotification;
 
-
     protected UserService $service;
 
     public $statusFilter = '';
+
     public $deleteUserId;
+
     public $bulkAction = '';
+
     public $showDeleteModal = false;
+
     public $showBulkActionModal = false;
 
     public $bandUserId;
+
     public $showBandUserModal = false;
 
     public string $banReason = '';
+
     public bool $banPermanent = false;
+
     public ?string $banDate = null;
+
     public ?string $banTime = null;
+
     public $userId;
 
     public function boot(UserService $service)
@@ -47,27 +53,38 @@ class Index extends Component
             filters: $this->getFilters()
         );
 
+        return view('livewire.backend.admin.user-management.user.index', [
+            'datas' => $users,
+            'columns' => $this->getColumns(),
+            'statuses' => UserAccountStatus::options(),
+            'actions' => $this->getActions(),
+            'bulkActions' => $this->getBulkActions(),
 
-        $columns = [
+        ]);
+    }
+
+    protected function getColumns(): array
+    {
+        return [
             [
                 'key' => 'first_name',
                 'label' => 'Name',
-                'sortable' => true
+                'sortable' => true,
             ],
             [
                 'key' => 'username',
                 'label' => 'User Name',
-                'sortable' => true
+                'sortable' => true,
             ],
             [
                 'key' => 'email',
                 'label' => 'Email',
-                'sortable' => true
+                'sortable' => true,
             ],
             [
                 'key' => 'phone',
                 'label' => 'Phone',
-                'sortable' => true
+                'sortable' => true,
             ],
             [
                 'key' => 'account_status',
@@ -75,71 +92,76 @@ class Index extends Component
                 'sortable' => true,
                 'format' => function ($user) {
                     return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium '
-                        . $user->account_status_color . '">'
-                        . $user->account_status_label .
+                        .$user->account_status_color.'">'
+                        .$user->account_status_label.
                         '</span>';
-                }
+                },
             ],
         ];
-        $actions = [
+    }
+
+    protected function getActions(): array
+    {
+        return [
             [
                 'key' => 'id',
                 'label' => 'Profile',
-                'route' => 'admin.um.user.profileInfo'
-            ],
-            [
-                'key' => 'id',
-                'label' => 'Ban History',
-                'route' => 'admin.um.user.ban-history'
+                'route' => 'admin.um.user.profileInfo',
             ],
             [
                 'key' => 'username',
                 'label' => 'View Account',
                 'route' => 'profile',
-                'target' => '_blank'
+                'target' => '_blank',
             ],
             [
                 'key' => 'id',
-                'label' => 'Edit',
-                'route' => 'admin.um.user.edit'
+                'label' => 'Wallet Manage',
+                'route' => 'admin.um.user.wallet',
             ],
             [
                 'key' => 'id',
-                'label' => 'Ban User',
-                'method' => 'confirmBandUser'
-            ],
-            [
-                'key' => 'id',
-                'label' => 'Delete',
-                'method' => 'confirmDelete'
+                'label' => 'Ban History',
+                'route' => 'admin.um.user.ban-history',
             ],
             [
                 'key' => 'id',
                 'label' => 'Feedbacks',
                 'encrypt' => true,
-                'route' => 'admin.um.user.feedback'
+                'route' => 'admin.um.user.feedback',
             ],
             [
                 'key' => 'id',
                 'label' => 'Reward',
                 'x_click' => "\$dispatch('point-modal-open', { userId: '{value}' })",
             ],
+            [
+                'key' => 'id',
+                'label' => 'Edit',
+                'route' => 'admin.um.user.edit',
+            ],
+            [
+                'key' => 'id',
+                'label' => 'Ban User',
+                'method' => 'confirmBandUser',
+            ],
+            [
+                'key' => 'id',
+                'label' => 'Delete',
+                'method' => 'confirmDelete',
+            ],
         ];
-        $bulkActions = [
+    }
+
+    protected function getBulkActions(): array
+    {
+        return [
             ['value' => 'delete', 'label' => 'Delete'],
             ['value' => 'activate', 'label' => 'Activate'],
             ['value' => 'deactivate', 'label' => 'Deactivate'],
             ['value' => 'suspend', 'label' => 'Suspend'],
             ['value' => 'bandUser', 'label' => 'Band User'],
         ];
-        return view('livewire.backend.admin.user-management.user.index', [
-            'datas' => $users,
-            'columns' => $columns,
-            'statuses' => UserAccountStatus::options(),
-            'actions' => $actions,
-            'bulkActions' => $bulkActions,
-
-        ]);
     }
 
     public function confirmBandUser($userId): void
@@ -171,7 +193,7 @@ class Index extends Component
             $expiresAt = null;
 
             if (! $this->banPermanent && $this->banDate && $this->banTime) {
-                $expiresAt = Carbon::parse($this->banDate . ' ' . $this->banTime);
+                $expiresAt = Carbon::parse($this->banDate.' '.$this->banTime);
             }
 
             $this->service->banUser(
@@ -189,7 +211,7 @@ class Index extends Component
             $this->banDate = null;
             $this->banTime = null;
         } catch (\Exception $e) {
-            $this->error('Failed to band User: ' . $e->getMessage());
+            $this->error('Failed to band User: '.$e->getMessage());
             $this->showBandUserModal = false;
             $this->bandUserId = null;
             $this->banReason = '';
@@ -208,7 +230,7 @@ class Index extends Component
     public function delete(): void
     {
         try {
-            if (!$this->deleteUserId) {
+            if (! $this->deleteUserId) {
                 return;
             }
             $this->service->deleteData($this->deleteUserId);
@@ -218,7 +240,7 @@ class Index extends Component
 
             $this->success('User deleted successfully');
         } catch (\Exception $e) {
-            $this->error('Failed to delete User: ' . $e->getMessage());
+            $this->error('Failed to delete User: '.$e->getMessage());
         }
     }
 
@@ -241,7 +263,7 @@ class Index extends Component
 
             $this->success('User status updated successfully');
         } catch (\Exception $e) {
-            $this->error('Failed to update status: ' . $e->getMessage());
+            $this->error('Failed to update status: '.$e->getMessage());
         }
     }
 
@@ -250,6 +272,7 @@ class Index extends Component
         if (empty($this->selectedIds) || empty($this->bulkAction)) {
             $this->warning('Please select Users and an action');
             Log::info('No Users selected or no bulk action selected');
+
             return;
         }
 
@@ -272,7 +295,7 @@ class Index extends Component
             $this->selectAll = false;
             $this->bulkAction = '';
         } catch (\Exception $e) {
-            $this->error('Bulk action failed: ' . $e->getMessage());
+            $this->error('Bulk action failed: '.$e->getMessage());
         }
     }
 

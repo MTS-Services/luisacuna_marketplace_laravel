@@ -17,10 +17,18 @@
                             <a href="#" class="text-pink-500 mt-2 inline-block">{{ __('Learn more') }}</a>
                         </div>
                         <div>
-                            <x-ui.button href="{{ route('user.wallet.withdrawal-methods') }}" class="w-fit! py-3! px-6!">
-                                <span
-                                    class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Withdraw') }}</span>
-                            </x-ui.button>
+                            @if ($frozen)
+                                <x-ui.button type="button" wire:click="openFreezeModal" class="w-fit! py-3! px-6!">
+                                    <span
+                                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Wallet Frozen') }}</span>
+                                        <flux:icon name="loading" class="w-4 h-4 animate-spin" wire:loading wire:target="openFreezeModal" />
+                                </x-ui.button>
+                            @else
+                                <x-ui.button href="{{ route('user.wallet.withdrawal-methods') }}" class="w-fit! py-3! px-6!">
+                                    <span
+                                        class="text-text-btn-primary group-hover:text-text-btn-secondary">{{ __('Withdraw') }}</span>
+                                </x-ui.button>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -91,5 +99,46 @@
             emptyMessage="No data found. Add your first data to get started." class="rounded-lg overflow-hidden" />
         {{-- <x-frontend.pagination-ui :pagination="$pagination" /> --}}
     </div>
+
+    @if ($frozen)
+        <flux:modal wire:model="showFreezeModal">
+            <flux:heading>{{ __('Wallet Freeze Details') }}</flux:heading>
+
+            <div class="space-y-3 mt-2">
+                <p class="text-sm text-text-white">
+                    {{ __('Your wallet is currently frozen and withdrawals are temporarily disabled.') }}
+                </p>
+
+                <div class="text-sm space-y-1">
+                    @if (! empty($frozen->reason))
+                        <p>
+                            <span class="font-semibold">{{ __('Reason:') }}</span>
+                            <span>{{ $frozen->reason }}</span>
+                        </p>
+                    @endif
+
+                    @if (! empty($frozen->expires_at))
+                        <p class="text-xs text-text-secondary">
+                            <span class="font-semibold">{{ __('Time remaining:') }}</span>
+                            <span>{{ $frozen->expires_at->diffForHumans() }}</span>
+                        </p>
+                    @endif
+
+                    @if (! empty($frozen->duration))
+                        <p class="text-xs text-text-secondary">
+                            <span class="font-semibold">{{ __('Original duration:') }}</span>
+                            <span>{{ $frozen->duration }}</span>
+                        </p>
+                    @endif
+                </div>
+            </div>
+
+            <div class="mt-4 flex justify-end">
+                <flux:button variant="primary" wire:click="closeFreezeModal">
+                    {{ __('Close') }}
+                </flux:button>
+            </div>
+        </flux:modal>
+    @endif
 
 </div>

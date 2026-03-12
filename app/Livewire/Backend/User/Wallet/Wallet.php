@@ -3,6 +3,7 @@
 namespace App\Livewire\Backend\User\Wallet;
 
 use App\Enums\WalletFreezeStatus;
+use App\Models\UserSanction;
 use App\Models\Wallet as ModelWallet;
 use App\Models\WalletFreeze;
 use App\Services\TransactionService;
@@ -20,6 +21,8 @@ class Wallet extends Component
     public ?ModelWallet $wallet = null;
 
     public $status;
+
+    public bool $showFreezeModal = false;
 
     protected TransactionService $transactionService;
 
@@ -70,12 +73,25 @@ class Wallet extends Component
 
         $frozenBalance = WalletFreeze::where('user_id', user()->id)->where('status', WalletFreezeStatus::FROZEN)->sum('amount');
 
+        $frozen = UserSanction::where('user_id', user()->id)->where('type', 'freeze_wallet')->where('is_active', true)->where('expires_at', '>', now())->first();
+
         return view('livewire.backend.user.wallet.wallet', [
             'datas' => $datas,
             'columns' => $columns,
             // 'pagination' => $pagination,
             'frozenBalance' => $frozenBalance,
+            'frozen' => $frozen,
         ]);
+    }
+
+    public function openFreezeModal(): void
+    {
+        $this->showFreezeModal = true;
+    }
+
+    public function closeFreezeModal(): void
+    {
+        $this->showFreezeModal = false;
     }
 
     public function filter()
