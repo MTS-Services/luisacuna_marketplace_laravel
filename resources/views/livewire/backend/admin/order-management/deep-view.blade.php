@@ -127,7 +127,7 @@
                         <div class="flex items-center gap-2.5">
                             <flux:icon name="clock" class="w-4 h-4 text-gray-400 dark:text-gray-500" />
                             <span class="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">
-                                {{ __('Timeline') }}
+                                {{ __('Order Status Timeline') }}
                             </span>
                             <span
                                 class="inline-flex items-center justify-center min-w-5 h-5 px-1.5
@@ -347,7 +347,8 @@
                             <div class="flex items-center gap-3">
                                 <div class="h-px flex-1 bg-gray-200 dark:bg-gray-800"></div>
                                 <p
-                                    class="text-[11px] text-gray-400 dark:text-gray-600 px-2 text-center max-w-sm leading-relaxed">{{ $msgBody }}</p>
+                                    class="text-[11px] text-gray-400 dark:text-gray-600 px-2 text-center max-w-sm leading-relaxed">
+                                    {{ $msgBody }}</p>
                                 <div class="h-px flex-1 bg-gray-200 dark:bg-gray-800"></div>
                             </div>
                         @elseif ($isAdmin)
@@ -362,7 +363,8 @@
                                             border border-amber-200 dark:border-amber-700/40
                                             rounded-2xl px-4 py-2.5">
                                     <p
-                                        class="text-sm text-amber-800 dark:text-amber-200 whitespace-pre-line break-words leading-relaxed">{{ $msgBody }}</p>
+                                        class="text-sm text-amber-800 dark:text-amber-200 whitespace-pre-line break-words leading-relaxed">
+                                        {{ $msgBody }}</p>
                                 </div>
                             </div>
                         @elseif ($isBuyer)
@@ -379,7 +381,8 @@
                                                 border border-gray-200 dark:border-gray-700/50
                                                 rounded-2xl rounded-bl-sm px-4 py-2.5">
                                         <p
-                                            class="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line break-words leading-relaxed">{{ $msgBody }}</p>
+                                            class="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line break-words leading-relaxed">
+                                            {{ $msgBody }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -401,7 +404,8 @@
                                                 border border-orange-100 dark:border-gray-600/40
                                                 rounded-2xl rounded-br-sm px-4 py-2.5">
                                         <p
-                                            class="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line break-words leading-relaxed">{{ $msgBody }}</p>
+                                            class="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line break-words leading-relaxed">
+                                            {{ $msgBody }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -490,7 +494,8 @@
                                             border border-amber-100 dark:border-amber-800/20
                                             rounded-xl px-4 py-3">
                                     <p
-                                        class="text-sm text-gray-700 dark:text-amber-100 whitespace-pre-line leading-relaxed">{{ $note->note }}</p>
+                                        class="text-sm text-gray-700 dark:text-amber-100 whitespace-pre-line leading-relaxed">
+                                        {{ $note->note }}</p>
                                     <p class="text-[11px] text-amber-600/70 dark:text-amber-600/60 mt-1.5">
                                         {{ $note->admin?->full_name ?? ($note->admin?->first_name . ' ' . $note->admin?->last_name ?? __('Admin')) }}
                                         · {{ $note->created_at?->diffForHumans() }}
@@ -528,112 +533,169 @@
         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --}}
         <div class="flex flex-col gap-4">
 
-            {{-- ▌ACTIONS / SANCTIONS --}}
-            <div
-                class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden shadow-sm">
-                <div class="px-4 py-3 bg-gray-50 dark:bg-gray-800/60 border-b border-gray-200 dark:border-gray-800">
-                    <span class="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">
-                        {{ __('Actions / Sanctions') }}
-                    </span>
+            @if ($order->status->value === 'resolved')
+                <div
+                    class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden shadow-sm">
+                    <div
+                        class="px-4 py-3 bg-green-50 dark:bg-green-900/10
+                        border-b border-green-100 dark:border-green-800/20 flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                        <span class="text-xs font-bold text-green-700 dark:text-green-400 uppercase tracking-widest">
+                            {{ __('Resolution Applied') }}
+                        </span>
+                    </div>
+                    <div class="p-4 space-y-2.5">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500 dark:text-gray-500">{{ __('Type') }}</span>
+                            <span
+                                class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold
+                                 {{ $order->resolution_type?->color() ?? 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400' }}">
+                                {{ $order->resolution_type?->label() ?? '—' }}
+                            </span>
+                        </div>
+                        @if ($order->resolution_buyer_amount)
+                            <div class="flex justify-between">
+                                <span
+                                    class="text-sm text-gray-500 dark:text-gray-500">{{ __('Buyer Received') }}</span>
+                                <span class="text-sm font-bold text-green-600 dark:text-green-400">
+                                    ${{ number_format($order->resolution_buyer_amount, 2) }}
+                                </span>
+                            </div>
+                        @endif
+                        @if ($order->resolution_seller_amount)
+                            <div class="flex justify-between">
+                                <span
+                                    class="text-sm text-gray-500 dark:text-gray-500">{{ __('Seller Received') }}</span>
+                                <span class="text-sm font-bold text-green-600 dark:text-green-400">
+                                    ${{ number_format($order->resolution_seller_amount, 2) }}
+                                </span>
+                            </div>
+                        @endif
+                        @if ($order->resolved_at)
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-500 dark:text-gray-500">{{ __('Resolved at') }}</span>
+                                <span class="text-sm text-gray-700 dark:text-gray-300">
+                                    {{ $order->resolved_at->format('d M Y, H:i') }}
+                                </span>
+                            </div>
+                        @endif
+                        @if ($order->resolution_notes)
+                            <div
+                                class="bg-gray-50 dark:bg-gray-800/60 border border-gray-100 dark:border-gray-700 rounded-xl p-3 mt-1">
+                                <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                    {{ $order->resolution_notes }}
+                                </p>
+                            </div>
+                        @endif
+                    </div>
                 </div>
-
-                <div class="p-4 space-y-3">
-                    {{-- Target --}}
-                    <flux:select wire:model.live="sanctionTarget"
-                        class="w-full text-sm border-gray-200 dark:border-gray-700">
-                        <option value="">{{ __('Select target user...') }}</option>
-                        <option value="buyer">{{ __('Buyer') }}: {{ $buyer?->username ?? '?' }}</option>
-                        <option value="seller">{{ __('Seller') }}: {{ $seller?->username ?? '?' }}</option>
-                    </flux:select>
-
-                    {{-- Duration --}}
-                    <flux:select wire:model="sanctionDuration"
-                        class="w-full text-sm border-gray-200 dark:border-gray-700">
-                        <option value="">{{ __('Select Duration...') }}</option>
-                        <option value="24h">{{ __('24 Hours') }}</option>
-                        <option value="7d">{{ __('7 Days') }}</option>
-                        <option value="30d">{{ __('30 Days') }}</option>
-                        <option value="90d">{{ __('90 Days') }}</option>
-                        <option value="permanent">{{ __('Permanent') }}</option>
-                    </flux:select>
-
-                    {{-- Reason textarea --}}
-                    <div>
-                        <flux:textarea wire:model="sanctionReason" rows="2"
-                            placeholder="{{ __('Write reason (e.g. Fraud attempt, Dispute abuse)...') }}"
-                            class="w-full text-sm resize-none border-gray-200 dark:border-gray-700" />
-                        @error('sanctionReason')
-                            <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ $message }}</p>
-                        @enderror
+            @elseif ($order->status->value === 'escalated')
+                {{-- ▌ACTIONS / SANCTIONS --}}
+                <div
+                    class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden shadow-sm">
+                    <div
+                        class="px-4 py-3 bg-gray-50 dark:bg-gray-800/60 border-b border-gray-200 dark:border-gray-800">
+                        <span class="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">
+                            {{ __('Actions / Sanctions') }}
+                        </span>
                     </div>
 
-                    {{-- 2×2 action buttons --}}
-                    @php
-                        $canSanction = $sanctionTarget && $sanctionDuration;
-                        $sanctionButtons = [
-                            [
-                                'key' => 'force_kyc',
-                                'label' => 'Force KYC',
-                                'icon' => 'identification',
-                                'light' => 'bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100',
-                                'dark' =>
-                                    'dark:bg-blue-900/20 dark:border-blue-700/50 dark:text-blue-400 dark:hover:bg-blue-900/40',
-                            ],
-                            [
-                                'key' => 'freeze_wallet',
-                                'label' => 'Freeze Wallet',
-                                'icon' => 'lock-closed',
-                                'light' => 'bg-cyan-50 border-cyan-200 text-cyan-700 hover:bg-cyan-100',
-                                'dark' =>
-                                    'dark:bg-cyan-900/20 dark:border-cyan-700/50 dark:text-cyan-400 dark:hover:bg-cyan-900/40',
-                            ],
-                            [
-                                'key' => 'suspend',
-                                'label' => 'Suspend',
-                                'icon' => 'pause-circle',
-                                'light' => 'bg-yellow-50 border-yellow-200 text-yellow-700 hover:bg-yellow-100',
-                                'dark' =>
-                                    'dark:bg-yellow-900/20 dark:border-yellow-700/50 dark:text-yellow-400 dark:hover:bg-yellow-900/40',
-                            ],
-                            [
-                                'key' => 'ban_hwid',
-                                'label' => 'Ban HWID',
-                                'icon' => 'computer-desktop',
-                                'light' => 'bg-red-50 border-red-200 text-red-700 hover:bg-red-100',
-                                'dark' =>
-                                    'dark:bg-red-900/20 dark:border-red-700/50 dark:text-red-400 dark:hover:bg-red-900/40',
-                            ],
-                        ];
-                        $disabledStyle =
-                            'bg-gray-50 dark:bg-gray-800/40 border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-600 cursor-not-allowed';
-                    @endphp
+                    <div class="p-4 space-y-3">
+                        {{-- Target --}}
+                        <flux:select wire:model.live="sanctionTarget"
+                            class="w-full text-sm border-gray-200 dark:border-gray-700">
+                            <option value="">{{ __('Select target user...') }}</option>
+                            <option value="buyer">{{ __('Buyer') }}: {{ $buyer?->username ?? '?' }}</option>
+                            <option value="seller">{{ __('Seller') }}: {{ $seller?->username ?? '?' }}</option>
+                        </flux:select>
 
-                    <div class="grid grid-cols-2 gap-2">
-                        @foreach ($sanctionButtons as $s)
-                            <button wire:click="$set('sanctionType', '{{ $s['key'] }}')"
-                                @if ($canSanction && $sanctionReason) wire:then="applySanction"
+                        {{-- Duration --}}
+                        <flux:select wire:model="sanctionDuration"
+                            class="w-full text-sm border-gray-200 dark:border-gray-700">
+                            <option value="">{{ __('Select Duration...') }}</option>
+                            <option value="24h">{{ __('24 Hours') }}</option>
+                            <option value="7d">{{ __('7 Days') }}</option>
+                            <option value="30d">{{ __('30 Days') }}</option>
+                            <option value="90d">{{ __('90 Days') }}</option>
+                            <option value="permanent">{{ __('Permanent') }}</option>
+                        </flux:select>
+
+                        {{-- Reason textarea --}}
+                        <div>
+                            <flux:textarea wire:model="sanctionReason" rows="2"
+                                placeholder="{{ __('Write reason (e.g. Fraud attempt, Dispute abuse)...') }}"
+                                class="w-full text-sm resize-none border-gray-200 dark:border-gray-700" />
+                            @error('sanctionReason')
+                                <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        {{-- 2×2 action buttons --}}
+                        @php
+                            $canSanction = $sanctionTarget && $sanctionDuration;
+                            $sanctionButtons = [
+                                [
+                                    'key' => 'force_kyc',
+                                    'label' => 'Force KYC',
+                                    'icon' => 'identification',
+                                    'light' => 'bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100',
+                                    'dark' =>
+                                        'dark:bg-blue-900/20 dark:border-blue-700/50 dark:text-blue-400 dark:hover:bg-blue-900/40',
+                                ],
+                                [
+                                    'key' => 'freeze_wallet',
+                                    'label' => 'Freeze Wallet',
+                                    'icon' => 'lock-closed',
+                                    'light' => 'bg-cyan-50 border-cyan-200 text-cyan-700 hover:bg-cyan-100',
+                                    'dark' =>
+                                        'dark:bg-cyan-900/20 dark:border-cyan-700/50 dark:text-cyan-400 dark:hover:bg-cyan-900/40',
+                                ],
+                                [
+                                    'key' => 'suspend',
+                                    'label' => 'Suspend',
+                                    'icon' => 'pause-circle',
+                                    'light' => 'bg-yellow-50 border-yellow-200 text-yellow-700 hover:bg-yellow-100',
+                                    'dark' =>
+                                        'dark:bg-yellow-900/20 dark:border-yellow-700/50 dark:text-yellow-400 dark:hover:bg-yellow-900/40',
+                                ],
+                                [
+                                    'key' => 'ban_hwid',
+                                    'label' => 'Ban HWID',
+                                    'icon' => 'computer-desktop',
+                                    'light' => 'bg-red-50 border-red-200 text-red-700 hover:bg-red-100',
+                                    'dark' =>
+                                        'dark:bg-red-900/20 dark:border-red-700/50 dark:text-red-400 dark:hover:bg-red-900/40',
+                                ],
+                            ];
+                            $disabledStyle =
+                                'bg-gray-50 dark:bg-gray-800/40 border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-600 cursor-not-allowed';
+                        @endphp
+
+                        <div class="grid grid-cols-2 gap-2">
+                            @foreach ($sanctionButtons as $s)
+                                <button wire:click="$set('sanctionType', '{{ $s['key'] }}')"
+                                    @if ($canSanction && $sanctionReason) wire:then="applySanction"
                                     wire:confirm="{{ __('Apply ') . $s['label'] . __(' to this user?') }}"
                                 @else
                                     disabled @endif
-                                class="flex items-center justify-center gap-1.5 px-2.5 py-2.5 rounded-xl border
+                                    class="flex items-center justify-center gap-1.5 px-2.5 py-2.5 rounded-xl border
                                        text-xs font-bold uppercase tracking-wide transition-all duration-150
                                        {{ $canSanction && $sanctionReason ? $s['light'] . ' ' . $s['dark'] : $disabledStyle }}">
-                                <flux:icon name="{{ $s['icon'] }}" class="w-4 h-4" />
-                                {{ $s['label'] }}
-                            </button>
-                        @endforeach
+                                    <flux:icon name="{{ $s['icon'] }}" class="w-4 h-4" />
+                                    {{ $s['label'] }}
+                                </button>
+                            @endforeach
+                        </div>
+
+                        @if ($canSanction && !$sanctionReason)
+                            <p class="text-xs text-amber-600 dark:text-amber-500 text-center font-medium">
+                                {{ __('Add a reason to enable actions.') }}
+                            </p>
+                        @endif
                     </div>
-
-                    @if ($canSanction && !$sanctionReason)
-                        <p class="text-xs text-amber-600 dark:text-amber-500 text-center font-medium">
-                            {{ __('Add a reason to enable actions.') }}
-                        </p>
-                    @endif
                 </div>
-            </div>
 
-            {{-- ▌RESOLUTION PANEL --}}
-            @if ($order->status->value === 'escalated')
+                {{-- ▌RESOLUTION PANEL --}}
                 <div
                     class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden shadow-sm">
                     <div
@@ -729,8 +791,10 @@
                                        text-white text-xs font-bold uppercase tracking-wide
                                        shadow-sm transition-all disabled:opacity-50">
                                 <flux:icon name="scale" class="w-4 h-4 stroke-white" />
-                                <span wire:loading.remove wire:target="applySplit" class="text-white">{{ __('Apply Division') }}</span>
-                                <span wire:loading wire:target="applySplit" class="text-white">{{ __('Processing...') }}</span>
+                                <span wire:loading.remove wire:target="applySplit"
+                                    class="text-white">{{ __('Apply Division') }}</span>
+                                <span wire:loading wire:target="applySplit"
+                                    class="text-white">{{ __('Processing...') }}</span>
                             </button>
 
                             {{-- Win Buyer --}}
@@ -743,8 +807,10 @@
                                        shadow-sm transition-all disabled:opacity-50">
                                 <div class="flex items-center gap-2">
                                     <flux:icon name="x-circle" class="w-4 h-4 stroke-white" />
-                                    <span wire:loading.remove wire:target="awardBuyer" class="text-white">{{ __('Win Buyer') }}</span>
-                                    <span wire:loading wire:target="awardBuyer" class="text-white">{{ __('Processing...') }}</span>
+                                    <span wire:loading.remove wire:target="awardBuyer"
+                                        class="text-white">{{ __('Win Buyer') }}</span>
+                                    <span wire:loading wire:target="awardBuyer"
+                                        class="text-white">{{ __('Processing...') }}</span>
                                 </div>
                                 <span class="font-bold text-red-100">${{ number_format($escrowTotal, 2) }}</span>
                             </button>
@@ -762,7 +828,8 @@
                                     <span wire:loading.remove wire:target="awardSeller" class="text-white">
                                         {{ __('Win Seller') }}
                                         @if ($seller)
-                                            <span class="normal-case font-normal tracking-normal opacity-80 text-white">
+                                            <span
+                                                class="normal-case font-normal tracking-normal opacity-80 text-white">
                                                 {{ $seller->username }}
                                             </span>
                                         @endif
@@ -773,7 +840,7 @@
                             </button>
 
                             {{-- Neutral cancel --}}
-                            <button wire:click="applyNeutralCancel"
+                            {{-- <button wire:click="applyNeutralCancel"
                                 wire:confirm="{{ __('Neutral cancel — full refund to buyer?') }}"
                                 wire:loading.attr="disabled"
                                 class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl
@@ -783,64 +850,8 @@
                                        transition-all disabled:opacity-50">
                                 <flux:icon name="arrow-uturn-left" class="w-4 h-4" />
                                 {{ __('Neutral Cancel (Refund)') }}
-                            </button>
+                            </button> --}}
                         </div>
-                    </div>
-                </div>
-            @elseif ($order->status->value === 'resolved')
-                <div
-                    class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden shadow-sm">
-                    <div
-                        class="px-4 py-3 bg-green-50 dark:bg-green-900/10
-                                border-b border-green-100 dark:border-green-800/20 flex items-center gap-2">
-                        <div class="w-2 h-2 rounded-full bg-green-500"></div>
-                        <span class="text-xs font-bold text-green-700 dark:text-green-400 uppercase tracking-widest">
-                            {{ __('Resolution Applied') }}
-                        </span>
-                    </div>
-                    <div class="p-4 space-y-2.5">
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-500 dark:text-gray-500">{{ __('Type') }}</span>
-                            <span
-                                class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold
-                                         {{ $order->resolution_type?->color() ?? 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400' }}">
-                                {{ $order->resolution_type?->label() ?? '—' }}
-                            </span>
-                        </div>
-                        @if ($order->resolution_buyer_amount)
-                            <div class="flex justify-between">
-                                <span
-                                    class="text-sm text-gray-500 dark:text-gray-500">{{ __('Buyer Received') }}</span>
-                                <span class="text-sm font-bold text-green-600 dark:text-green-400">
-                                    ${{ number_format($order->resolution_buyer_amount, 2) }}
-                                </span>
-                            </div>
-                        @endif
-                        @if ($order->resolution_seller_amount)
-                            <div class="flex justify-between">
-                                <span
-                                    class="text-sm text-gray-500 dark:text-gray-500">{{ __('Seller Received') }}</span>
-                                <span class="text-sm font-bold text-green-600 dark:text-green-400">
-                                    ${{ number_format($order->resolution_seller_amount, 2) }}
-                                </span>
-                            </div>
-                        @endif
-                        @if ($order->resolved_at)
-                            <div class="flex justify-between">
-                                <span class="text-sm text-gray-500 dark:text-gray-500">{{ __('Resolved at') }}</span>
-                                <span class="text-sm text-gray-700 dark:text-gray-300">
-                                    {{ $order->resolved_at->format('d M Y, H:i') }}
-                                </span>
-                            </div>
-                        @endif
-                        @if ($order->resolution_notes)
-                            <div
-                                class="bg-gray-50 dark:bg-gray-800/60 border border-gray-100 dark:border-gray-700 rounded-xl p-3 mt-1">
-                                <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                                    {{ $order->resolution_notes }}
-                                </p>
-                            </div>
-                        @endif
                     </div>
                 </div>
             @else
@@ -883,6 +894,20 @@
                             </div>
                         @endif
                     </div>
+
+                    {{-- <div class="p-4">
+                        <button wire:click="forceOpenEscalation"
+                            wire:confirm="{{ __('Force open escalation? This action cannot be undone.') }}"
+                            wire:loading.attr="disabled"
+                            class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl
+                                       bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700
+                                       border border-gray-200 dark:border-gray-700
+                                       text-gray-600 dark:text-gray-400 text-xs font-semibold
+                                       transition-all disabled:opacity-50">
+                            <flux:icon name="arrow-uturn-left" class="w-4 h-4" />
+                            {{ __('Force Open Escalation') }}
+                        </button>
+                    </div> --}}
                 </div>
             @endif
 

@@ -307,6 +307,12 @@ class Checkout extends Component
                 return;
             }
 
+            Log::info('Processing payment', [
+                'order_id' => $this->order->order_id,
+                'gateway' => $this->gateway,
+                'wallet_balance' => $this->walletBalance,
+                'calculated_grand_total' => $this->calculatedGrandTotal,
+            ]);
             // Check if wallet is selected and balance is insufficient
             if ($this->gateway === 'wallet' && $this->walletBalance < $this->calculatedGrandTotal) {
                 // For top-up scenario: calculate tax only on remaining balance

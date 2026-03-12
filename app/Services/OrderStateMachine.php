@@ -85,19 +85,19 @@ class OrderStateMachine
             $to === OrderStatus::CANCEL_REQ_BY_SELLER => $this->onCancelRequested($order, $actor),
             $to === OrderStatus::DELIVERED && $from === OrderStatus::PAID => $this->onDelivered($order),
             $to === OrderStatus::DELIVERED && $from === OrderStatus::DISPUTED => $this->onReDelivered($order),
-            $to === OrderStatus::COMPLETED => $this->onCompleted($order),
+            $to === OrderStatus::COMPLETED => $this->onCompleted($order), // completed.
             $to === OrderStatus::DISPUTED => $this->onDisputed($order, $actor, $meta),
             $to === OrderStatus::ESCALATED => $this->onEscalated($order),
-            $to === OrderStatus::CANCELLED && $from === OrderStatus::CANCEL_REQ_BY_BUYER => $this->onCancelledFromRequest($order),
-            $to === OrderStatus::CANCELLED && $from === OrderStatus::CANCEL_REQ_BY_SELLER => $this->onCancelledFromRequest($order),
-            $to === OrderStatus::CANCELLED && $from === OrderStatus::DELIVERED => $this->onCancelledBySellerAfterDelivery($order),
-            $to === OrderStatus::CANCELLED && $from === OrderStatus::DISPUTED => $this->onCancelledBySellerAfterDelivery($order),
+            $to === OrderStatus::CANCELLED && $from === OrderStatus::CANCEL_REQ_BY_BUYER => $this->onCancelledFromRequest($order), // cancelled.
+            $to === OrderStatus::CANCELLED && $from === OrderStatus::CANCEL_REQ_BY_SELLER => $this->onCancelledFromRequest($order), // cancelled.
+            $to === OrderStatus::CANCELLED && $from === OrderStatus::DELIVERED => $this->onCancelledBySellerAfterDelivery($order), // cancelled.
+            $to === OrderStatus::CANCELLED && $from === OrderStatus::DISPUTED => $this->onCancelledBySellerAfterDelivery($order), // cancelled.
             $to === OrderStatus::PAID && $from === OrderStatus::DISPUTED => $this->onDisputeCancelled($order),
             $to === OrderStatus::PAID && $from === OrderStatus::CANCEL_REQ_BY_BUYER => $this->onCancelRejected($order, $actor),
             $to === OrderStatus::PAID && $from === OrderStatus::CANCEL_REQ_BY_SELLER => $this->onCancelRejected($order, $actor),
-            $to === OrderStatus::RESOLVED => $this->onResolved($order, $meta),
+            $to === OrderStatus::RESOLVED => $this->onResolved($order, $meta), // completed.
 
-            $to === OrderStatus::CANCELLED_BY_BUYER => $this->onCancelledByBuyer($order, $actor),
+            $to === OrderStatus::CANCELLED_BY_BUYER => $this->onCancelledByBuyer($order, $actor), 
             $to === OrderStatus::CANCELLED_BY_SELLER => $this->onCancelledBySeller($order, $actor),
             $to === OrderStatus::CANCELLED_BY_ADMIN => $this->onCancelledByAdmin($order, $actor),
             default => null,
@@ -213,6 +213,7 @@ class OrderStateMachine
         $order->is_disputed = false;
         $order->auto_completes_at = null;
         $order->auto_cancels_at = null;
+        $order->completed_at = now();
 
         if ($resolutionType) {
             $order->resolution_type = $resolutionType;

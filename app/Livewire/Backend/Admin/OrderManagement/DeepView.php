@@ -3,6 +3,8 @@
 namespace App\Livewire\Backend\Admin\OrderManagement;
 
 use App\Actions\Order\ResolveOrderAction;
+use App\Enums\OrderStatus;
+use App\Enums\ResolutionType;
 use App\Models\Admin;
 use App\Models\AdminStaffNote;
 use App\Models\Dispute;
@@ -188,35 +190,104 @@ class DeepView extends Component
         if ($this->buyer) {
             $bid = $this->buyer->id;
 
-            $this->buyerTotalOrders     = Order::where('user_id', $bid)->whereNotIn('status', ['initialized'])->count();
-            $this->buyerCompletedOrders = Order::where('user_id', $bid)->where('status', 'completed')->count();
-            $this->buyerCancelledOrders = Order::where('user_id', $bid)->where('status', 'cancelled')->count();
-            $this->buyerTrustScore      = $this->buyerTotalOrders > 0
+            // Total: Anything that moved past the checkout phase
+            $this->buyerTotalOrders = Order::where('user_id', $bid)
+                ->whereNotIn('status', [OrderStatus::INITIALIZED])
+                ->count();
+
+            // Completed: User owns it + Completed timestamp + (No dispute OR Buyer/Partial win)
+            $this->buyerCompletedOrders = Order::where('user_id', $bid)
+                ->whereNotNull('completed_at')
+                ->where(function ($query) {
+                    $query->whereNull('resolution_type')
+                        ->orWhereIn('resolution_type', [
+                            ResolutionType::BuyerWins,
+                            ResolutionType::PartialSplit
+                        ]);
+                })
+                ->count();
+
+            // Cancelled: Explicitly cancelled or neutral resolution
+            $this->buyerCancelledOrders = Order::where('user_id', $bid)
+                ->where(function ($query) {
+                    $query->where('status', OrderStatus::CANCELLED)
+                        ->orWhere('resolution_type', ResolutionType::NeutralCancel);
+                })
+                ->count();
+
+            // Trust Score: Based on successful completions vs total attempts
+            $this->buyerTrustScore = $this->buyerTotalOrders > 0
                 ? round(($this->buyerCompletedOrders / $this->buyerTotalOrders) * 100, 1)
                 : 0;
-            $this->buyerWins           = Dispute::where('buyer_id', $bid)->where('status', 'resolved_buyer_wins')->count();
-            $this->buyerLosses         = Dispute::where('buyer_id', $bid)->where('status', 'resolved_seller_wins')->count();
+
+            // Wins/Losses: Use the Order resolution_type for consistency with the queries above
+            $this->buyerWins = Order::where('user_id', $bid)
+                ->where('resolution_type', ResolutionType::BuyerWins)
+                ->count();
+
+            $this->buyerLosses = Order::where('user_id', $bid)
+                ->where('resolution_type', ResolutionType::SellerWins)
+                ->count();
+
             $this->buyerActiveDisputes = Dispute::where('buyer_id', $bid)
                 ->whereIn('status', ['pending_vendor', 'pending_review', 'escalated'])
                 ->count();
+
             $this->buyerDisputeRate = (float) (UserDisputeStats::where('user_id', $bid)->value('dispute_rate') ?? 0);
         }
 
         if ($this->seller) {
-            $sid              = $this->seller->id;
+            $sid = $this->seller->id;
             $sellerProductIds = $this->seller->products()->pluck('id');
 
-            $this->sellerTotalSales     = Order::where('source_type', \App\Models\Product::class)->whereIn('source_id', $sellerProductIds)->whereNotIn('status', ['initialized'])->count();
-            $this->sellerCompletedSales = Order::where('source_type', \App\Models\Product::class)->whereIn('source_id', $sellerProductIds)->where('status', 'completed')->count();
-            $this->sellerCancelledSales = Order::where('source_type', \App\Models\Product::class)->whereIn('source_id', $sellerProductIds)->where('status', 'cancelled')->count();
-            $this->sellerReputation     = $this->sellerTotalSales > 0
+            // Total: All orders for this seller's products
+            $this->sellerTotalSales = Order::where('source_type', \App\Models\Product::class)
+                ->whereIn('source_id', $sellerProductIds)
+                ->whereNotIn('status', [OrderStatus::INITIALIZED])
+                ->count();
+
+            // Completed: Owned by seller + Completed timestamp + (No dispute OR Seller/Partial win)
+            $this->sellerCompletedSales = Order::where('source_type', \App\Models\Product::class)
+                ->whereIn('source_id', $sellerProductIds)
+                ->whereNotNull('completed_at')
+                ->where(function ($query) {
+                    $query->whereNull('resolution_type')
+                        ->orWhereIn('resolution_type', [
+                            ResolutionType::SellerWins,
+                            ResolutionType::PartialSplit
+                        ]);
+                })
+                ->count();
+
+            // Cancelled: Explicitly cancelled or neutral resolution
+            $this->sellerCancelledSales = Order::where('source_type', \App\Models\Product::class)
+                ->whereIn('source_id', $sellerProductIds)
+                ->where(function ($query) {
+                    $query->where('status', OrderStatus::CANCELLED)
+                        ->orWhere('resolution_type', ResolutionType::NeutralCancel);
+                })
+                ->count();
+
+            // Reputation
+            $this->sellerReputation = $this->sellerTotalSales > 0
                 ? round(($this->sellerCompletedSales / $this->sellerTotalSales) * 100, 1)
                 : 0;
-            $this->sellerWins           = Dispute::where('vendor_id', $sid)->where('status', 'resolved_seller_wins')->count();
-            $this->sellerLosses         = Dispute::where('vendor_id', $sid)->where('status', 'resolved_buyer_wins')->count();
+
+            // Wins/Losses
+            $this->sellerWins = Order::where('source_type', \App\Models\Product::class)
+                ->whereIn('source_id', $sellerProductIds)
+                ->where('resolution_type', ResolutionType::SellerWins)
+                ->count();
+
+            $this->sellerLosses = Order::where('source_type', \App\Models\Product::class)
+                ->whereIn('source_id', $sellerProductIds)
+                ->where('resolution_type', ResolutionType::BuyerWins)
+                ->count();
+
             $this->sellerActiveDisputes = Dispute::where('vendor_id', $sid)
                 ->whereIn('status', ['pending_vendor', 'pending_review', 'escalated'])
                 ->count();
+
             $this->sellerDisputeRate = (float) (UserDisputeStats::where('user_id', $sid)->value('dispute_rate') ?? 0);
         }
     }

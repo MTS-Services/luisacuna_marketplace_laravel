@@ -7,12 +7,14 @@ use App\Models\Order;
 use App\Services\OrderService;
 use App\Traits\Livewire\WithDataTable;
 use App\Traits\Livewire\WithNotification;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class DisputeOrder extends Component
 {
     use WithDataTable, WithNotification;
 
+    #[Url(keep: true)]
     public string $tab = 'open';
 
     public $statusFilter = '';
@@ -34,10 +36,9 @@ class DisputeOrder extends Component
         $this->service = $service;
     }
 
-    public function setTab(string $tab): void
+    public function mount(): void
     {
-        $this->tab = $tab;
-        $this->resetPage();
+        $this->tab = request()->input('tab', 'open');
     }
 
     public function render()
@@ -47,8 +48,8 @@ class DisputeOrder extends Component
             ->when($this->search, function ($q, $search) {
                 $q->where(function ($q) use ($search) {
                     $q->where('order_id', 'like', "%{$search}%")
-                        ->orWhereHas('user', fn ($q) => $q->where('username', 'like', "%{$search}%"))
-                        ->orWhereHasMorph('source', ['App\Models\Product'], fn ($q) => $q->where('name', 'like', "%{$search}%"));
+                        ->orWhereHas('user', fn($q) => $q->where('username', 'like', "%{$search}%"))
+                        ->orWhereHasMorph('source', ['App\Models\Product'], fn($q) => $q->where('name', 'like', "%{$search}%"));
                 });
             });
 
@@ -56,8 +57,6 @@ class DisputeOrder extends Component
             'open' => $query->whereIn('status', [
                 OrderStatus::DISPUTED->value,
                 OrderStatus::ESCALATED->value,
-                OrderStatus::CANCEL_REQ_BY_BUYER->value,
-                OrderStatus::CANCEL_REQ_BY_SELLER->value,
             ]),
             'resolved' => $query->where('status', OrderStatus::RESOLVED->value),
             'closed' => $query->whereIn('status', [
@@ -77,8 +76,6 @@ class DisputeOrder extends Component
         $openCount = Order::query()->whereIn('status', [
             OrderStatus::DISPUTED->value,
             OrderStatus::ESCALATED->value,
-            OrderStatus::CANCEL_REQ_BY_BUYER->value,
-            OrderStatus::CANCEL_REQ_BY_SELLER->value,
         ])->count();
 
         $resolvedCount = Order::query()->where('status', OrderStatus::RESOLVED->value)->count();
@@ -97,12 +94,11 @@ class DisputeOrder extends Component
             [
                 'key' => 'source_id',
                 'label' => 'Product Title',
-                'sortable' => true,
-                'format' => fn ($order) => '
+                'format' => fn($order) => '
                 <div class="flex items-center gap-3">
                     <div class="min-w-0">
                         <h3 class="font-semibold text-text-white text-xs xxs:text-sm md:text-base truncate">'
-                    .e($order->source?->name ?? '—').
+                    . e($order->source?->name ?? '—') .
                     '</h3>
                     </div>
                 </div>',
@@ -110,26 +106,24 @@ class DisputeOrder extends Component
             [
                 'key' => 'user_id',
                 'label' => 'Buyer',
-                'sortable' => true,
-                'format' => fn ($order) => '<a href="'.route('profile', ['username' => $order->user?->username]).'"><span class="text-text-white text-xs xxs:text-sm md:text-base truncate">'.e($order->user?->full_name ?? '—').'</span></a>',
+                'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->user?->username]) . '"><span class="text-text-white text-xs xxs:text-sm md:text-base truncate">' . e($order->user?->full_name ?? '—') . '</span></a>',
             ],
             [
                 'key' => 'source_id',
                 'label' => 'Seller',
-                'sortable' => true,
-                'format' => fn ($order) => '<a href="'.route('profile', ['username' => $order->source?->user?->username]).'"><span class="text-text-white text-xs xxs:text-sm md:text-base truncate">'.e($order->source?->user?->full_name ?? '—').'</span></a>',
+                'format' => fn($order) => '<a href="' . route('profile', ['username' => $order->source?->user?->username]) . '"><span class="text-text-white text-xs xxs:text-sm md:text-base truncate">' . e($order->source?->user?->full_name ?? '—') . '</span></a>',
             ],
             [
                 'key' => 'status',
                 'label' => 'Status',
                 'sortable' => true,
-                'format' => fn ($order) => '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full border-0 text-xs font-medium badge '.$order->status->color().'">'.$order->status->label().'</span>',
+                'format' => fn($order) => '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full border-0 text-xs font-medium badge ' . $order->status->color() . '">' . $order->status->label() . '</span>',
             ],
             [
                 'key' => 'total_amount',
                 'label' => 'Price',
                 'sortable' => true,
-                'format' => fn ($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">'.currency_symbol().$order->total_amount.'</span>',
+                'format' => fn($order) => '<span class="text-text-white font-semibold text-xs sm:text-sm">' . currency_symbol() . $order->total_amount . '</span>',
             ],
             [
                 'key' => 'created_at',

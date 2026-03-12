@@ -183,7 +183,7 @@
                             'permission' => 'achievement-list',
                         ],
                         [
-                            'name' => 'Disputed Orders',
+                            'name' => 'Disputed/Escalated Orders',
                             'route' => route('admin.orders.dispute-orders'),
                             'icon' => 'circle-off',
                             'active' => 'dispute-orders',
