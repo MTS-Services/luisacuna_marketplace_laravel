@@ -175,7 +175,7 @@ class DeepView extends Component
             : collect();
     }
 
-    protected function loadStaffNotes(): void
+    public function loadStaffNotes(): void
     {
         $this->staffNotes = $this->order->staffNotes()
             ->with('admin')
@@ -227,14 +227,14 @@ class DeepView extends Component
             $this->buyerCountry     = $this->buyer->country?->name ?? '';
             $this->buyerCountryCode = strtolower($this->buyer->country?->code ?? '');
             $this->buyerLastIp      = $this->buyer->last_login_ip ?? '';
-            $this->buyerSellerSince = $this->buyer->seller?->created_at?->format('d M Y') ?? '';
+            $this->buyerSellerSince = $this->buyer->seller?->seller_verified_at?->format('d M Y') ?? 'No Application';
         }
 
         if ($this->seller) {
             $this->sellerCountry     = $this->seller->country?->name ?? '';
             $this->sellerCountryCode = strtolower($this->seller->country?->code ?? '');
             $this->sellerLastIp      = $this->seller->last_login_ip ?? '';
-            $this->sellerSellerSince = $this->seller->seller?->created_at?->format('d M Y') ?? '';
+            $this->sellerSellerSince = $this->seller->seller?->seller_verified_at?->format('d M Y') ?? 'No Application';
         }
 
         if ($this->buyerLastIp && $this->sellerLastIp && $this->buyerLastIp === $this->sellerLastIp) {
@@ -294,7 +294,6 @@ class DeepView extends Component
 
         $this->adminMessage = '';
         $this->loadChatMessages();
-        $this->success(__('Message sent.'));
     }
 
     public function addStaffNote(): void
@@ -312,7 +311,6 @@ class DeepView extends Component
 
         $this->staffNoteText = '';
         $this->loadStaffNotes();
-        $this->success(__('Staff note added.'));
     }
 
     // ── Resolution ───────────────────────────────────────────────────────────

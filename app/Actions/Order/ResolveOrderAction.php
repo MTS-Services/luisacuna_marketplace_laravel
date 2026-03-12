@@ -30,7 +30,7 @@ class ResolveOrderAction
     public function execute(Order $order, Admin $admin, array $data): Order
     {
         $resolutionType = ResolutionType::from($data['resolution_type']);
-        $escrowTotal = (float) $order->getDefaultGrandTotal();
+        $escrowTotal = (float) ($order->getDefaultGrandTotal() - $order->getDefaultTaxAmount());
 
         $buyerAmount = match ($resolutionType) {
             ResolutionType::BuyerWins => $escrowTotal,
