@@ -22,8 +22,10 @@
         },
         startTimer() {
             this.ticker = setInterval(() => {
-                if (this.isOverdue) { this.delaySeconds++; } else { if (this.delaySeconds > 0) this.delaySeconds--;
-                    else this.isOverdue = true; }
+                if (this.isOverdue) { this.delaySeconds++; } else {
+                    if (this.delaySeconds > 0) this.delaySeconds--;
+                    else this.isOverdue = true;
+                }
             }, 1000);
         }
     }" x-init="startTimer()" @destroy.window="clearInterval(ticker)">
@@ -95,78 +97,21 @@
     {{-- ═══════════════════════════════════════════════════════════
          3-COLUMN GRID
     ═══════════════════════════════════════════════════════════ --}}
-    <div class="grid grid-cols-1 lg:grid-cols-[280px_1fr_300px] gap-4 items-start">
+    <div class="grid grid-cols-1 lg:grid-cols-[350px_1fr_320px] gap-4 items-start">
 
         {{-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
              COL 1 — PROFILES
         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --}}
         <div class="flex flex-col gap-4">
 
-            {{-- ▌BUYER CARD --}}
-            {{-- @include('livewire.backend.admin.order-management.profile-card', [
-                'user'        => $buyer,
-                'role'        => 'buyer',
-                'accentClass' => 'text-blue-600 dark:text-blue-400',
-                'dotClass'    => 'bg-blue-500',
-                'ringClass'   => 'ring-blue-500/20',
-                'routeHref'   => $buyer ? route('admin.users.show', $buyer->id) : '#',
-                'totalOrders' => $buyerTotalOrders,
-                'done'        => $buyerCompletedOrders,
-                'cancelled'   => $buyerCancelledOrders,
-                'trustScore'  => $buyerTrustScore,
-                'wins'        => $buyerWins,
-                'active'      => $buyerActiveDisputes,
-                'disputeRate' => $buyerDisputeRate,
-                'country'     => $buyerCountry,
-                'countryCode' => $buyerCountryCode,
-                'sellerSince' => $buyerSellerSince,
-                'ipMatch'     => $buyerIpMatch,
-                'hasIp'       => (bool) $buyerLastIp,
-                'sameIp'      => $sameIpDetected,
-                'statsLabel'  => 'Shopping',
-                'dispLabel'   => 'Score',
-                'dispValue'   => $buyerTrustScore . '%',
-                'winLabel'    => 'Won',
-                'winValue'    => $buyerWins,
-                'repOrScore'  => $buyerTrustScore,
-            ]) --}}
-
             <x-profile-card :user="$buyer" :role="'buyer'" :accentClass="'text-blue-600 dark:text-blue-400'" :dotClass="'bg-blue-500'" :ringClass="'ring-blue-500/20'"
-                :routeHref="'#'" :totalOrders="$buyerTotalOrders" :done="$buyerCompletedOrders" :cancelled="$buyerCancelledOrders" :trustScore="$buyerTrustScore"
+                :routeHref="route('profile', $buyer->username) ?? '#'" :totalOrders="$buyerTotalOrders" :done="$buyerCompletedOrders" :cancelled="$buyerCancelledOrders" :trustScore="$buyerTrustScore"
                 :wins="$buyerWins" :active="$buyerActiveDisputes" :disputeRate="$buyerDisputeRate" :country="$buyerCountry" :countryCode="$buyerCountryCode"
                 :sellerSince="$buyerSellerSince" :ipMatch="$buyerIpMatch" :hasIp="$buyerLastIp ? true : false" :sameIp="$sameIpDetected" :statsLabel="'Shopping'"
                 :dispLabel="'Score'" :dispValue="$buyerTrustScore . '%'" :winLabel="'Won'" :winValue="$buyerWins" :repOrScore="$buyerTrustScore" />
 
-            {{-- ▌SELLER CARD --}}
-            {{-- @include('livewire.backend.admin.order-management.deep-view.partials.profile-card', [
-                'user'        => $seller,
-                'role'        => 'seller',
-                'accentClass' => 'text-orange-600 dark:text-orange-400',
-                'dotClass'    => 'bg-orange-500',
-                'ringClass'   => 'ring-orange-500/20',
-                'routeHref'   => $seller ? route('admin.users.show', $seller->id) : '#',
-                'totalOrders' => $sellerTotalSales,
-                'done'        => $sellerCompletedSales,
-                'cancelled'   => $sellerCancelledSales,
-                'trustScore'  => $sellerReputation,
-                'wins'        => $sellerWins,
-                'active'      => $sellerActiveDisputes,
-                'disputeRate' => $sellerDisputeRate,
-                'country'     => $sellerCountry,
-                'countryCode' => $sellerCountryCode,
-                'sellerSince' => $sellerSellerSince,
-                'ipMatch'     => $sellerIpMatch,
-                'hasIp'       => (bool) $sellerLastIp,
-                'sameIp'      => $sameIpDetected,
-                'statsLabel'  => 'Sales',
-                'dispLabel'   => 'Rep.',
-                'dispValue'   => $sellerReputation . '%',
-                'winLabel'    => 'Lost',
-                'winValue'    => $sellerLosses,
-                'repOrScore'  => $sellerReputation,
-            ]) --}}
             <x-profile-card :user="$seller" :role="'seller'" :accentClass="'text-orange-600 dark:text-orange-400'" :dotClass="'bg-orange-500'"
-                :ringClass="'ring-orange-500/20'" :routeHref="'#'" :totalOrders="$sellerTotalSales" :done="$sellerCompletedSales" :cancelled="$sellerCancelledSales"
+                :ringClass="'ring-orange-500/20'" :routeHref="route('profile', $seller->username) ?? '#'" :totalOrders="$sellerTotalSales" :done="$sellerCompletedSales" :cancelled="$sellerCancelledSales"
                 :trustScore="$sellerReputation" :wins="$sellerWins" :active="$sellerActiveDisputes" :disputeRate="$sellerDisputeRate" :country="$sellerCountry"
                 :countryCode="$sellerCountryCode" :sellerSince="$sellerSellerSince" :ipMatch="$sellerIpMatch" :hasIp="$sellerLastIp ? true : false" :sameIp="$sameIpDetected"
                 :statsLabel="'Sales'" :dispLabel="'Rep.'" :dispValue="$sellerReputation . '%'" :winLabel="'Lost'" :winValue="$sellerLosses"
@@ -366,7 +311,24 @@
 
                 {{-- ── CHAT MESSAGES ── --}}
                 <div class="overflow-y-auto px-5 py-4 space-y-4 min-h-[320px] max-h-[440px]" id="chat-scroll"
-                    x-init="$el.scrollTop = $el.scrollHeight" wire:poll.10s="loadChatMessages">
+                    wire:poll.5s="loadChatMessages" x-data="{
+                        atBottom: true,
+                        threshold: 60,
+                        init() {
+                            this.$el.scrollTop = this.$el.scrollHeight;
+                    
+                            this.$el.addEventListener('scroll', () => {
+                                const el = this.$el;
+                                this.atBottom = (el.scrollHeight - el.scrollTop - el.clientHeight) < this.threshold;
+                            });
+                    
+                            new MutationObserver(() => {
+                                if (this.atBottom) {
+                                    this.$el.scrollTop = this.$el.scrollHeight;
+                                }
+                            }).observe(this.$el, { childList: true, subtree: true });
+                        }
+                    }">
 
                     @forelse ($chatMessages as $msg)
                         @php
@@ -385,25 +347,22 @@
                             <div class="flex items-center gap-3">
                                 <div class="h-px flex-1 bg-gray-200 dark:bg-gray-800"></div>
                                 <p
-                                    class="text-[11px] text-gray-400 dark:text-gray-600 px-2 text-center max-w-sm leading-relaxed">
-                                    {{ $msgBody }}
-                                </p>
+                                    class="text-[11px] text-gray-400 dark:text-gray-600 px-2 text-center max-w-sm leading-relaxed">{{ $msgBody }}</p>
                                 <div class="h-px flex-1 bg-gray-200 dark:bg-gray-800"></div>
                             </div>
                         @elseif ($isAdmin)
                             {{-- Admin message — centered --}}
                             <div class="flex flex-col items-center gap-1">
                                 <p class="text-[11px] font-semibold text-amber-600 dark:text-amber-500">
-                                    {{ __('Admin') }} · {{ $msg->created_at?->diffForHumans() }}
+                                    {{ $msg->sender?->full_name ?? ($msg->sender?->first_name . ' ' . $msg->sender?->last_name ?? __('Admin')) }}
+                                    · {{ $msg->created_at?->diffForHumans() }}
                                 </p>
                                 <div
                                     class="max-w-[82%] bg-amber-50 dark:bg-amber-900/20
                                             border border-amber-200 dark:border-amber-700/40
                                             rounded-2xl px-4 py-2.5">
                                     <p
-                                        class="text-sm text-amber-800 dark:text-amber-200 whitespace-pre-line break-words leading-relaxed">
-                                        {{ $msgBody }}
-                                    </p>
+                                        class="text-sm text-amber-800 dark:text-amber-200 whitespace-pre-line break-words leading-relaxed">{{ $msgBody }}</p>
                                 </div>
                             </div>
                         @elseif ($isBuyer)
@@ -420,9 +379,7 @@
                                                 border border-gray-200 dark:border-gray-700/50
                                                 rounded-2xl rounded-bl-sm px-4 py-2.5">
                                         <p
-                                            class="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line break-words leading-relaxed">
-                                            {{ $msgBody }}
-                                        </p>
+                                            class="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line break-words leading-relaxed">{{ $msgBody }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -444,9 +401,7 @@
                                                 border border-orange-100 dark:border-gray-600/40
                                                 rounded-2xl rounded-br-sm px-4 py-2.5">
                                         <p
-                                            class="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line break-words leading-relaxed">
-                                            {{ $msgBody }}
-                                        </p>
+                                            class="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line break-words leading-relaxed">{{ $msgBody }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -464,7 +419,7 @@
                 <div class="px-5 py-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/30">
                     <form wire:submit="sendAdminMessage" class="flex gap-2.5 items-center">
                         <flux:input wire:model="adminMessage" placeholder="{{ __('Intervene as Admin...') }}"
-                             class="flex-1 text-sm" />
+                            class="flex-1 text-sm" />
                         <button type="submit" wire:loading.attr="disabled"
                             class="flex items-center gap-2 px-4 py-2.5
                                    bg-amber-500 hover:bg-amber-600 dark:bg-amber-600 dark:hover:bg-amber-500
@@ -511,7 +466,23 @@
 
                 <div x-show="expanded" x-collapse>
                     @if ($staffNotes->isNotEmpty())
-                        <div
+                        <div wire:poll.5s="loadStaffNotes" x-data="{
+                            atTop: true,
+                            threshold: 60,
+                            init() {
+                                this.$el.scrollTop = 0;
+                        
+                                this.$el.addEventListener('scroll', () => {
+                                    this.atTop = this.$el.scrollTop < this.threshold;
+                                });
+                        
+                                new MutationObserver(() => {
+                                    if (this.atTop) {
+                                        this.$el.scrollTop = 0;
+                                    }
+                                }).observe(this.$el, { childList: true, subtree: true });
+                            }
+                        }"
                             class="p-4 space-y-2.5 max-h-48 overflow-y-auto border-b border-gray-100 dark:border-gray-800">
                             @foreach ($staffNotes as $note)
                                 <div
@@ -519,11 +490,9 @@
                                             border border-amber-100 dark:border-amber-800/20
                                             rounded-xl px-4 py-3">
                                     <p
-                                        class="text-sm text-gray-700 dark:text-amber-100 whitespace-pre-line leading-relaxed">
-                                        {{ $note->note }}
-                                    </p>
+                                        class="text-sm text-gray-700 dark:text-amber-100 whitespace-pre-line leading-relaxed">{{ $note->note }}</p>
                                     <p class="text-[11px] text-amber-600/70 dark:text-amber-600/60 mt-1.5">
-                                        {{ $note->admin?->first_name ?? ($note->admin?->name ?? __('Admin')) }}
+                                        {{ $note->admin?->full_name ?? ($note->admin?->first_name . ' ' . $note->admin?->last_name ?? __('Admin')) }}
                                         · {{ $note->created_at?->diffForHumans() }}
                                     </p>
                                 </div>
@@ -703,9 +672,7 @@
                                     class="absolute inset-x-0 h-2 rounded-full overflow-hidden
                                             bg-gray-200 dark:bg-gray-700">
                                     <div class="h-full transition-all duration-75"
-                                        :style="`background: linear-gradient(to right,
-                                                                                     #3b82f6 ${splitBuyerPct}%,
-                                                                                     #f97316 ${splitBuyerPct}%)`">
+                                        :style="`background: linear-gradient(to right, #3b82f6 ${splitBuyerPct}%, #f97316 ${splitBuyerPct}%)`">
                                     </div>
                                 </div>
                                 <input type="range" min="0" max="100" step="1"
@@ -761,9 +728,9 @@
                                        bg-violet-600 hover:bg-violet-700 dark:bg-violet-700 dark:hover:bg-violet-600
                                        text-white text-xs font-bold uppercase tracking-wide
                                        shadow-sm transition-all disabled:opacity-50">
-                                <flux:icon name="scale" class="w-4 h-4" />
-                                <span wire:loading.remove wire:target="applySplit">{{ __('Apply Division') }}</span>
-                                <span wire:loading wire:target="applySplit">{{ __('Processing...') }}</span>
+                                <flux:icon name="scale" class="w-4 h-4 stroke-white" />
+                                <span wire:loading.remove wire:target="applySplit" class="text-white">{{ __('Apply Division') }}</span>
+                                <span wire:loading wire:target="applySplit" class="text-white">{{ __('Processing...') }}</span>
                             </button>
 
                             {{-- Win Buyer --}}
@@ -775,9 +742,9 @@
                                        text-white text-xs font-bold uppercase tracking-wide
                                        shadow-sm transition-all disabled:opacity-50">
                                 <div class="flex items-center gap-2">
-                                    <flux:icon name="x-circle" class="w-4 h-4" />
-                                    <span wire:loading.remove wire:target="awardBuyer">{{ __('Win Buyer') }}</span>
-                                    <span wire:loading wire:target="awardBuyer">{{ __('Processing...') }}</span>
+                                    <flux:icon name="x-circle" class="w-4 h-4 stroke-white" />
+                                    <span wire:loading.remove wire:target="awardBuyer" class="text-white">{{ __('Win Buyer') }}</span>
+                                    <span wire:loading wire:target="awardBuyer" class="text-white">{{ __('Processing...') }}</span>
                                 </div>
                                 <span class="font-bold text-red-100">${{ number_format($escrowTotal, 2) }}</span>
                             </button>
@@ -791,11 +758,11 @@
                                        text-white text-xs font-bold uppercase tracking-wide
                                        shadow-sm transition-all disabled:opacity-50">
                                 <div class="flex items-center gap-2">
-                                    <flux:icon name="check-circle" class="w-4 h-4" />
-                                    <span wire:loading.remove wire:target="awardSeller">
+                                    <flux:icon name="check-circle" class="w-4 h-4 stroke-white" />
+                                    <span wire:loading.remove wire:target="awardSeller" class="text-white">
                                         {{ __('Win Seller') }}
                                         @if ($seller)
-                                            <span class="normal-case font-normal tracking-normal opacity-80">
+                                            <span class="normal-case font-normal tracking-normal opacity-80 text-white">
                                                 {{ $seller->username }}
                                             </span>
                                         @endif
@@ -953,5 +920,5 @@
             @endif
 
         </div>{{-- /col 3 --}}
-    </div>{{-- /grid --}}
+    </div>
 </div>
