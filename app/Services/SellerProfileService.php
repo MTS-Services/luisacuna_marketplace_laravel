@@ -140,4 +140,29 @@ class SellerProfileService
             return $sellerProfile->delete();
         });
     }
+
+    public function rejectData($id, string $reason): bool
+    {
+        return DB::transaction(function () use ($id, $reason) {
+            $sellerProfile = $this->findData($id);
+
+            if (!$sellerProfile) {
+                throw new \Exception('Seller profile not found.');
+            }
+
+            $sellerProfile->update([
+                'seller_verified'    => 0,
+                'seller_verified_at' => null,
+                'rejected_at'        => now(),
+                'rejected_reason'    => $reason,
+            ]);
+
+            // Revert user type back to buyer/default if needed
+            $sellerProfile->user()->update([
+                'user_type' => \App\Enums\UserType::BUYER,
+            ]);
+
+            return true;
+        });
+    }
 }
