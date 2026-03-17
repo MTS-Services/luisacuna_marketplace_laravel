@@ -85,11 +85,18 @@
             <!-- Buy Button -->
             {{-- @dd(currency_symbol()) --}}
             @auth('web')
-                <x-ui.button class="w-full  py-2!" type="submit">
-                    {{ strtoupper(currency_code()) }}<span x-text="(quantity * price).toFixed(2)"
-                        class="text-text-btn-primary group-hover:text-text-btn-secondary ">
+                <x-ui.button class="w-full py-2!" type="submit" wire:loading.attr="disabled"
+                    wire:target="submit, finalizeOrder">
+                    <span wire:loading.remove wire:target="submit, finalizeOrder"
+                        class="text-text-btn-primary group-hover:text-text-btn-secondary">
+                        {{ strtoupper(currency_code()) }}
+                        <span x-text="(quantity * price).toFixed(2)"
+                            class="text-text-btn-primary group-hover:text-text-btn-secondary"></span>
+                        {{ __(' | Buy Now') }}
                     </span>
-                    {{ __('| Buy Now') }}
+                    <span wire:loading wire:target="submit, finalizeOrder">
+                        {{ __('Processing…') }}
+                    </span>
                 </x-ui.button>
             @else
                 <a href="{{ route('login') }}" wire:navigate
@@ -157,7 +164,8 @@
 
             <div class="  mt-2 pt-3 flex items-center justify-between gap-2">
 
-                <a class="w-18 h-14 relative block" href="{{ route('profile', $product->user->username) }}" wire:navigate>
+                <a class="w-18 h-14 relative block" href="{{ route('profile', $product->user->username) }}"
+                    wire:navigate>
 
                     <img src="{{ auth_storage_url($product?->user?->avatar) }}"
                         alt="{{ $product?->user?->full_name }}" class="w-full h-full object-cover rounded-full" />
@@ -170,7 +178,7 @@
                     @endif
                 </a>
 
-                <a class="block w-full" href="{{ route('profile', $product->user->username) }}" wire:navigate >
+                <a class="block w-full" href="{{ route('profile', $product->user->username) }}" wire:navigate>
                     <p class="text-text-primary font-medium flex items-center gap-2">
                         <span> {{ $product->user->full_name }}</span>
                         @if ($product->user?->isVerifiedSeller())
@@ -275,5 +283,7 @@
 
 
     </form>
+
+    <livewire:delivery-info />
 
 </div>

@@ -6,6 +6,7 @@ use App\Enums\ActiveInactiveEnum;
 use App\Traits\AuditableTrait;
 use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -100,6 +101,11 @@ class Product extends BaseModel implements Auditable
     public function orders(): MorphMany
     {
         return $this->morphMany(Order::class, 'source');
+    }
+
+    public function deliveryInfos(): HasMany
+    {
+        return $this->hasMany(DeliveryInfo::class, 'product_id', 'id');
     }
 
     public function feedbacks()

@@ -174,12 +174,12 @@
                             @auth('web')
                                 <x-ui.button wire:click="submit" wire:loading.attr="disabled" :disabled="!isset($product)"
                                     class="w-full py-2!">
-                                    <span wire:loading.remove wire:target="submit"
+                                    <span wire:loading.remove wire:target="submit, finalizeOrder"
                                         class="text-text-btn-primary group-hover:text-text-btn-secondary">
                                         {{ currency_code() }} {{ currency_exchange($product->price ?? 00) }}
                                         {{ __('Buy Now') }}
                                     </span>
-                                    <span wire:loading wire:target="submit"
+                                    <span wire:loading wire:target="submit, finalizeOrder"
                                         class="text-text-btn-primary group-hover:text-text-btn-secondary">
                                         {{ __('Processing...') }}
                                     </span>
@@ -358,4 +358,5 @@
             </table>
         </div>
     </section>
+    <livewire:delivery-info />
 </div>

@@ -13,6 +13,7 @@ use App\Services\ProductService;
 use App\Traits\Livewire\WithNotification;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class InitializeOrder extends Component
@@ -37,6 +38,12 @@ class InitializeOrder extends Component
     public string $displaySymbol;
 
     public float $exchangeRate;
+
+    // ------------------------------------------------------------------
+    // Pending order payload — populated in submit(), consumed in
+    // finalizeOrder() after the DeliveryInfo modal is submitted.
+    // ------------------------------------------------------------------
+    protected array $pendingOrderPayload = [];
 
     protected OrderService $orderService;
 
@@ -65,7 +72,6 @@ class InitializeOrder extends Component
         $this->product->load(['user.seller', 'user.feedbacksReceived', 'platform', 'product_configs.game_configs', 'orders.feedbacks']);
         $this->feedbacks = $this->product->feedbacks()->latest()->take(6)->get();
 
-        // Get user's selected currency or default
         $currentCurrency = $this->currencyService->getCurrentCurrency();
         $this->displayCurrency = $currentCurrency->code;
         $this->displaySymbol = $currentCurrency->symbol;
@@ -86,9 +92,17 @@ class InitializeOrder extends Component
         }
     }
 
+    // ------------------------------------------------------------------
+    // STEP 1 — Called by the "Buy Now" button.
+    //
+    //   • Validates the product is still purchasable.
+    //   • Pre-computes all currency amounts and stashes them in the
+    //     session so they survive across Livewire requests.
+    //   • Dispatches the 'open-delivery-modal' event which the sibling
+    //     DeliveryInfo component is listening for.
+    // ------------------------------------------------------------------
     public function submit()
     {
-        // Ensure the product is still active before initializing checkout
         if ($this->product) {
             $this->product->refresh();
         }
@@ -102,132 +116,137 @@ class InitializeOrder extends Component
         try {
             $defaultCurrency = $this->currencyService->getDefaultCurrency();
 
-            // =================================================================
-            // STEP 1: Calculate in DEFAULT CURRENCY (USD)
-            // Product prices are stored in default currency
-            // Tax will be calculated during checkout based on payment method
-            // =================================================================
-            $unitPriceDefault = (float) $this->product->price;
-            $quantity = (int) $this->quantity;
+            // --- DEFAULT CURRENCY (stored) ---
+            $unitPriceDefault  = (float) $this->product->price;
+            $quantity          = (int) $this->quantity;
             $totalAmountDefault = $unitPriceDefault * $quantity;
-
-            // Tax amounts will be calculated later during checkout
-            $taxAmountDefault = 0;
+            $taxAmountDefault  = 0;
             $grandTotalDefault = $totalAmountDefault;
 
-            // =================================================================
-            // STEP 2: Convert to DISPLAY CURRENCY (for user-facing amounts)
-            // These will be shown to user during checkout
-            // =================================================================
-            $unitPriceDisplay = $this->currencyService->convertFromDefault(
-                $unitPriceDefault,
-                $this->displayCurrency
-            );
-            $totalAmountDisplay = $this->currencyService->convertFromDefault(
-                $totalAmountDefault,
-                $this->displayCurrency
-            );
-            $taxAmountDisplay = $this->currencyService->convertFromDefault(
-                $taxAmountDefault,
-                $this->displayCurrency
-            );
-            $grandTotalDisplay = $this->currencyService->convertFromDefault(
-                $grandTotalDefault,
-                $this->displayCurrency
-            );
+            // --- DISPLAY CURRENCY (shown to user) ---
+            $unitPriceDisplay    = $this->currencyService->convertFromDefault($unitPriceDefault, $this->displayCurrency);
+            $totalAmountDisplay  = $this->currencyService->convertFromDefault($totalAmountDefault, $this->displayCurrency);
+            $taxAmountDisplay    = $this->currencyService->convertFromDefault($taxAmountDefault, $this->displayCurrency);
+            $grandTotalDisplay   = $this->currencyService->convertFromDefault($grandTotalDefault, $this->displayCurrency);
 
-            // =================================================================
-            // STEP 3: Create Order with BOTH amounts
-            // Default amounts: For internal calculations, wallet operations
-            // Display amounts: For showing to user, Stripe checkout
-            // =================================================================
-            $token = bin2hex(random_bytes(126));
+            $token   = bin2hex(random_bytes(126));
             $orderId = generate_order_id_hybrid();
 
-            $order = $this->orderService->createData([
-                'order_id' => $orderId,
-                'user_id' => user()->id,
-                'source_id' => $this->product->id,
-                'source_type' => Product::class,
+            // Stash the fully-computed payload so finalizeOrder() can
+            // pick it up without re-doing all the math.
+            Session::put("pending_order_{$this->product->id}", [
+                'order_id'              => $orderId,
+                'token'                 => $token,
+                'user_id'               => user()->id,
+                'source_id'             => $this->product->id,
+                'source_type'           => Product::class,
 
-                // Display amounts (in user's selected currency)
-                'unit_price' => $unitPriceDisplay,
-                'total_amount' => $totalAmountDisplay,
-                'tax_amount' => $taxAmountDisplay,
-                'grand_total' => $grandTotalDisplay,
-                'currency' => $this->displayCurrency,
-                'display_currency' => $this->displayCurrency,
+                // Display amounts
+                'unit_price'            => $unitPriceDisplay,
+                'total_amount'          => $totalAmountDisplay,
+                'tax_amount'            => $taxAmountDisplay,
+                'grand_total'           => $grandTotalDisplay,
+                'currency'              => $this->displayCurrency,
+                'display_currency'      => $this->displayCurrency,
 
-                // Default amounts (in system default currency - USD)
-                'default_unit_price' => $unitPriceDefault,
-                'default_total_amount' => $totalAmountDefault,
-                'default_tax_amount' => $taxAmountDefault,
-                'default_grand_total' => $grandTotalDefault,
-                'default_currency' => $defaultCurrency->code,
+                // Default amounts
+                'default_unit_price'    => $unitPriceDefault,
+                'default_total_amount'  => $totalAmountDefault,
+                'default_tax_amount'    => $taxAmountDefault,
+                'default_grand_total'   => $grandTotalDefault,
+                'default_currency'      => $defaultCurrency->code,
 
-                // Currency metadata
-                'exchange_rate' => $this->exchangeRate,
-                'quantity' => $quantity,
-
-                'notes' => 'Order initiated by '.user()->username.', Order ID: '.$orderId,
-                'display_symbol' => $this->displaySymbol, // Legacy field
-
-                'points' => $totalAmountDefault * env('ORDER_POINTS_MULTIPLAYER', 100),
-
-                'creater_id' => user()->id,
-                'creater_type' => User::class,
+                // Meta
+                'exchange_rate'         => $this->exchangeRate,
+                'quantity'              => $quantity,
+                'display_symbol'        => $this->displaySymbol,
+                'points'                => $totalAmountDefault * env('ORDER_POINTS_MULTIPLAYER', 100),
+                'notes'                 => 'Order initiated by ' . user()->username . ', Order ID: ' . $orderId,
+                'creater_id'            => user()->id,
+                'creater_type'          => User::class,
             ]);
 
-            // =================================================================
-            // STEP 4: Store in Database for Checkout
-            // Lock subtotal in DEFAULT currency for accurate calculations
-            // Tax will be added during checkout based on payment method
-            // =================================================================
-            Session::driver('database')->put("checkout_{$token}", [
-                'order_id' => $order->id,
-                'subtotal_locked' => $totalAmountDefault, // Subtotal without tax
-                'price_locked' => $totalAmountDefault, // For backward compatibility
-                'display_subtotal' => $totalAmountDisplay, // For reference
-                'display_currency' => $this->displayCurrency,
-                'exchange_rate' => $this->exchangeRate,
-                'expires_at' => now()->addMinutes((int) env('ORDER_CHECKOUT_TIMEOUT_MINUTES', 10))->timestamp,
-            ]);
-
-            // Log order creation with currency details
-            Log::info('Order initialized without tax - will be calculated at checkout', [
-                'order_id' => $orderId,
-                'user_id' => user()->id,
-                'product_id' => $this->product->id,
-                'quantity' => $quantity,
-                'default_currency' => $defaultCurrency->code,
-                'default_total_amount' => $totalAmountDefault,
-                'display_currency' => $this->displayCurrency,
-                'display_total_amount' => $totalAmountDisplay,
-                'exchange_rate' => $this->exchangeRate,
-            ]);
-
-            return $this->redirect(
-                route('user.checkout', ['slug' => encrypt($this->product->id), 'token' => $token]),
-                navigate: true
-            );
+            // Tell the DeliveryInfo component to open its modal.
+            $this->dispatch('open-delivery-modal', productId: $this->product->id);
         } catch (\Exception $e) {
-            Log::error('Order initialization failed', [
+            Log::error('Order pre-computation failed', [
                 'product_id' => $this->product->id,
-                'user_id' => user()->id,
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
+                'user_id'    => user()->id,
+                'error'      => $e->getMessage(),
+                'trace'      => $e->getTraceAsString(),
             ]);
 
             $this->addError('order', __('Failed to initialize order. Please try again.'));
+        }
+
+        return null;
+    }
+
+    // ------------------------------------------------------------------
+    // STEP 2 — Called automatically when DeliveryInfo dispatches
+    //          'delivery-info-saved' after the modal is submitted.
+    //
+    //   • Retrieves the pre-computed payload from the session.
+    //   • Creates the Order record linked to the DeliveryInfo record.
+    //   • Stores the checkout session and redirects.
+    // ------------------------------------------------------------------
+    #[On('delivery-info-saved')]
+    public function finalizeOrder(int $deliveryInfoId, int $productId): mixed
+    {
+        $payload = Session::pull("pending_order_{$productId}");
+
+        if (! $payload) {
+            $this->addError('order', __('Order session expired. Please try again.'));
+
+            return null;
+        }
+
+        // Guard: make sure this event is for the product THIS component manages.
+        if ((int) $payload['source_id'] !== (int) $productId) {
+            return null;
+        }
+
+        try {
+            $order = $this->orderService->createData(array_merge($payload, [
+                'delivery_info_id' => $deliveryInfoId,
+            ]));
+
+            Session::driver('database')->put("checkout_{$payload['token']}", [
+                'order_id'          => $order->id,
+                'subtotal_locked'   => $payload['default_total_amount'],
+                'price_locked'      => $payload['default_total_amount'],
+                'display_subtotal'  => $payload['total_amount'],
+                'display_currency'  => $payload['display_currency'],
+                'exchange_rate'     => $payload['exchange_rate'],
+                'expires_at'        => now()->addMinutes((int) env('ORDER_CHECKOUT_TIMEOUT_MINUTES', 10))->timestamp,
+            ]);
+
+            Log::info('Order finalized with delivery info', [
+                'order_id'         => $payload['order_id'],
+                'delivery_info_id' => $deliveryInfoId,
+                'user_id'          => user()->id,
+                'product_id'       => $productId,
+            ]);
+
+            return $this->redirect(
+                route('user.checkout', ['slug' => encrypt($productId), 'token' => $payload['token']]),
+                navigate: true
+            );
+        } catch (\Exception $e) {
+            Log::error('Order finalization failed', [
+                'product_id'       => $productId,
+                'delivery_info_id' => $deliveryInfoId,
+                'user_id'          => user()->id,
+                'error'            => $e->getMessage(),
+                'trace'            => $e->getTraceAsString(),
+            ]);
+
+            $this->addError('order', __('Failed to create order. Please try again.'));
 
             return null;
         }
     }
 
-    /**
-     * Get display price for UI
-     * This is used in the view to show converted prices
-     */
     public function getDisplayPrice(): float
     {
         return $this->currencyService->convertFromDefault(
@@ -236,19 +255,15 @@ class InitializeOrder extends Component
         );
     }
 
-    /**
-     * Get formatted total with symbol
-     */
     public function getFormattedTotal(): string
     {
         $total = $this->getDisplayPrice();
 
-        return $this->displaySymbol.number_format($total, 2);
+        return $this->displaySymbol . number_format($total, 2);
     }
 
     public function render()
     {
-
         return view('livewire.backend.user.payments.initialize-order');
     }
 }

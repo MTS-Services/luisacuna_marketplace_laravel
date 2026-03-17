@@ -351,6 +351,11 @@ class User extends AuthBaseModel implements Auditable
     {
         return $this->hasMany(WalletFreeze::class, 'user_id', 'id');
     }
+
+    public function deliveryInfos(): HasMany
+    {
+        return $this->hasMany(DeliveryInfo::class, 'user_id', 'id');
+    }
     /*
     |--------------------------------------------------------------------------
     | Query Scopes

@@ -20,6 +20,7 @@ class Order extends AuditBaseModel implements Auditable
         'sort_order',
         'order_id',
         'user_id',
+        'delivery_info_id',
         'source_id',
         'source_type',
         'status',
@@ -116,6 +117,11 @@ class Order extends AuditBaseModel implements Auditable
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function deliveryInfo(): BelongsTo
+    {
+        return $this->belongsTo(DeliveryInfo::class, 'delivery_info_id');
     }
 
     public function source(): MorphTo

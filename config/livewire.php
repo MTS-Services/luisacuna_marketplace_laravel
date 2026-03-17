@@ -187,7 +187,7 @@ return [
     'pagination_theme' => 'tailwind',
 
     'make_command' => [
-        'emoji' => true,
+        'emoji' => false,
     ],
 
 

@@ -5,7 +5,7 @@
         {{-- <livewire:frontend.partials.breadcrumb :gameSlug="$gameSlug" :categorySlug="$categorySlug" /> --}}
 
         <div>
-            <div class=" text-white min-h-screen">
+            <div class=" text-white">
                 <div class="w-full mx-auto">
                     <!-- Main Content Grid -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10">

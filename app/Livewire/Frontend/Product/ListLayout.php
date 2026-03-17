@@ -4,7 +4,6 @@ namespace App\Livewire\Frontend\Product;
 
 use App\Enums\ActiveInactiveEnum;
 use App\Enums\FeedbackType;
-use App\Models\Currency;
 use App\Models\Product;
 use App\Models\User;
 use App\Services\CurrencyService;
@@ -16,6 +15,7 @@ use App\Services\ProductService;
 use App\Traits\WithPaginationData;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
@@ -24,21 +24,13 @@ class ListLayout extends Component
     use WithPaginationData;
 
     public $gameSlug;
-
     public $categorySlug;
-
     public $game;
-
-    public $product; // Holds the selected product
-
+    public $product;
     public $data;
-
     public $platforms;
-
     public $gameTags;
-
     public $displayCurrency;
-
     public $onlineOnly = false;
 
     #[Url(as: 'asc')]
@@ -60,29 +52,20 @@ class ListLayout extends Component
     public $platform_id = '';
 
     public $sortBy = 'price';
-
     public $tags = [];
 
     #[Url('config')]
     public $filter_by_config;
 
     public $exchangeRate;
-
     public $displaySymbol;
 
     protected $datas;
-
-    // Services
     protected $productService;
-
     protected $feeSettingsService;
-
     protected $orderService;
-
     protected $gameService;
-
     protected $platformService;
-
     protected $currencyService;
 
     public function boot(
@@ -93,11 +76,11 @@ class ListLayout extends Component
         CurrencyService $currencyService,
         FeeSettingsService $feeSettingsService
     ) {
-        $this->productService = $productService;
-        $this->orderService = $orderService;
-        $this->gameService = $gameService;
-        $this->platformService = $platformService;
-        $this->currencyService = $currencyService;
+        $this->productService    = $productService;
+        $this->orderService      = $orderService;
+        $this->gameService       = $gameService;
+        $this->platformService   = $platformService;
+        $this->currencyService   = $currencyService;
         $this->feeSettingsService = $feeSettingsService;
     }
 
@@ -108,37 +91,23 @@ class ListLayout extends Component
 
     public function mount($gameSlug, $categorySlug)
     {
+        $currentCurrency         = $this->currencyService->getCurrentCurrency();
+        $this->displayCurrency   = $currentCurrency->code;
+        $this->displaySymbol     = $currentCurrency->symbol;
+        $this->exchangeRate      = $currentCurrency->exchange_rate;
 
-        // Get user's selected currency or default
-        $currentCurrency = $this->currencyService->getCurrentCurrency();
-        $this->displayCurrency = $currentCurrency->code;
-        $this->displaySymbol = $currentCurrency->symbol;
-        $this->exchangeRate = $currentCurrency->exchange_rate;
+        $this->gameSlug          = $gameSlug;
+        $this->categorySlug      = $categorySlug;
 
-        $this->gameSlug = $gameSlug;
-        $this->categorySlug = $categorySlug;
-
-        // Load game with counts to avoid heavy relationships in mount
         $this->game = $this->gameService->findData($gameSlug, 'slug')
             ->load(['tags', 'gameConfig', 'platforms']);
 
-        // 1. Game tags
-        $gameTags = $this->game->tags;
+        $this->gameTags = $this->game->tags;
+        $this->platforms = $this->platformService->getAllDatas()->pluck('id', 'name');
 
-        $this->gameTags = $gameTags;
-
-        // 2. Platform service tags
-        $platforms = $this->platformService->getAllDatas()
-            ->pluck('id', 'name');
-        $this->platforms = $platforms;
-
-        // 3. Game config dropdown values
-        $configTags = collect($this->game->gameConfig)
+        $this->tags = collect($this->game->gameConfig)
             ->pluck('dropdown_values')
-            ->flatten();
-
-        // 4. Merge everything
-        $this->tags = $configTags
+            ->flatten()
             ->filter()
             ->shuffle()
             ->toArray();
@@ -146,177 +115,179 @@ class ListLayout extends Component
 
     public function selectItem($id)
     {
-        // Use findWithSelectedData to get exactly what's needed for the sidebar
         $this->product = Product::with([
-            'user' => fn ($q) => $q->withCount([
-                'feedbacksReceived as pos_count' => fn ($f) => $f->where('type', FeedbackType::POSITIVE->value),
-                'feedbacksReceived as neg_count' => fn ($f) => $f->where('type', FeedbackType::NEGATIVE->value),
+            'user' => fn($q) => $q->withCount([
+                'feedbacksReceived as pos_count' => fn($f) => $f->where('type', FeedbackType::POSITIVE->value),
+                'feedbacksReceived as neg_count'  => fn($f) => $f->where('type', FeedbackType::NEGATIVE->value),
             ]),
         ])->findOrFail($id);
     }
 
+    // ------------------------------------------------------------------
+    // STEP 1 — "Buy Now" clicked.
+    //   • Guards product availability and self-purchase.
+    //   • Pre-computes all currency amounts.
+    //   • Stashes payload in session keyed by product id.
+    //   • Opens the DeliveryInfo modal via event.
+    // ------------------------------------------------------------------
     public function submit()
     {
         if (! $this->product) {
             return;
         }
 
-        // Ensure the product is still active before proceeding
         $this->product->refresh();
 
         if ($this->product->status?->value !== ActiveInactiveEnum::ACTIVE->value) {
             $this->addError('order', __('This product is no longer available.'));
-
             return;
         }
 
         if ((int) $this->product->user_id === (int) user()->id) {
             $this->addError('order', __('You cannot purchase your own product.'));
-
             return;
         }
 
         try {
             $defaultCurrency = $this->currencyService->getDefaultCurrency();
 
-            // =================================================================
-            // STEP 1: Calculate in DEFAULT CURRENCY (USD)
-            // Product prices are stored in default currency
-            // Tax will be calculated during checkout based on payment method
-            // =================================================================
-            $unitPriceDefault = (float) $this->product->price;
-            $quantity = (int) 1;
+            $unitPriceDefault   = (float) $this->product->price;
+            $quantity           = 1;
             $totalAmountDefault = $unitPriceDefault * $quantity;
+            $taxAmountDefault   = 0;
+            $grandTotalDefault  = $totalAmountDefault;
 
-            // No tax during initialization - will be calculated at checkout
-            $taxAmountDefault = 0;
-            $grandTotalDefault = $totalAmountDefault;
+            $unitPriceDisplay   = $this->currencyService->convertFromDefault($unitPriceDefault, $this->displayCurrency);
+            $totalAmountDisplay = $this->currencyService->convertFromDefault($totalAmountDefault, $this->displayCurrency);
+            $taxAmountDisplay   = $this->currencyService->convertFromDefault($taxAmountDefault, $this->displayCurrency);
+            $grandTotalDisplay  = $this->currencyService->convertFromDefault($grandTotalDefault, $this->displayCurrency);
 
-            // =================================================================
-            // STEP 2: Convert to DISPLAY CURRENCY (for user-facing amounts)
-            // These will be shown to user during checkout
-            // =================================================================
-            $unitPriceDisplay = $this->currencyService->convertFromDefault(
-                $unitPriceDefault,
-                $this->displayCurrency
-            );
-            $totalAmountDisplay = $this->currencyService->convertFromDefault(
-                $totalAmountDefault,
-                $this->displayCurrency
-            );
-            $taxAmountDisplay = $this->currencyService->convertFromDefault(
-                $taxAmountDefault,
-                $this->displayCurrency
-            );
-            $grandTotalDisplay = $this->currencyService->convertFromDefault(
-                $grandTotalDefault,
-                $this->displayCurrency
-            );
-
-            $token = bin2hex(random_bytes(32)); // Standardized token length
+            $token   = bin2hex(random_bytes(32));
             $orderId = generate_order_id_hybrid();
-            $order = $this->orderService->createData([
-                'order_id' => $orderId,
-                'user_id' => user()->id,
-                'source_id' => $this->product->id,
-                'source_type' => Product::class,
 
-                // Display amounts (in user's selected currency)
-                'unit_price' => $unitPriceDisplay,
-                'total_amount' => $totalAmountDisplay,
-                'tax_amount' => $taxAmountDisplay,
-                'grand_total' => $grandTotalDisplay,
-                'currency' => $this->displayCurrency,
-                'display_currency' => $this->displayCurrency,
+            Session::put("pending_order_{$this->product->id}", [
+                'order_id'             => $orderId,
+                'token'                => $token,
+                'user_id'              => user()->id,
+                'source_id'            => $this->product->id,
+                'source_type'          => Product::class,
 
-                // Default amounts (in system default currency - USD)
-                'default_unit_price' => $unitPriceDefault,
+                'unit_price'           => $unitPriceDisplay,
+                'total_amount'         => $totalAmountDisplay,
+                'tax_amount'           => $taxAmountDisplay,
+                'grand_total'          => $grandTotalDisplay,
+                'currency'             => $this->displayCurrency,
+                'display_currency'     => $this->displayCurrency,
+
+                'default_unit_price'   => $unitPriceDefault,
                 'default_total_amount' => $totalAmountDefault,
-                'default_tax_amount' => $taxAmountDefault,
-                'default_grand_total' => $grandTotalDefault,
-                'default_currency' => $defaultCurrency->code,
+                'default_tax_amount'   => $taxAmountDefault,
+                'default_grand_total'  => $grandTotalDefault,
+                'default_currency'     => $defaultCurrency->code,
 
-                // Currency metadata
-                'exchange_rate' => $this->exchangeRate,
-                'quantity' => $quantity,
-
-                'notes' => 'Order initiated by '.user()->username.', Order ID: '.$orderId,
-                'display_symbol' => $this->displaySymbol, // Legacy field
-
-                'points' => $totalAmountDefault * env('ORDER_POINTS_MULTIPLAYER', 100),
-
-                'creater_id' => user()->id,
-                'creater_type' => User::class,
+                'exchange_rate'        => $this->exchangeRate,
+                'quantity'             => $quantity,
+                'display_symbol'       => $this->displaySymbol,
+                'points'               => $totalAmountDefault * env('ORDER_POINTS_MULTIPLAYER', 100),
+                'notes'                => 'Order initiated by ' . user()->username . ', Order ID: ' . $orderId,
+                'creater_id'           => user()->id,
+                'creater_type'         => User::class,
             ]);
 
-            // =================================================================
-            // STEP 4: Store in Redis for Checkout
-            // Lock price in DEFAULT currency for accurate calculations
-            // =================================================================
-            Session::driver('database')->put("checkout_{$token}", [
-                'order_id' => $order->id,
-                'price_locked' => $grandTotalDefault, // Store in default currency
-                'display_price' => $grandTotalDisplay, // For reference
-                'display_currency' => $this->displayCurrency,
-                'exchange_rate' => $this->exchangeRate,
-                'expires_at' => now()->addMinutes((int) env('ORDER_CHECKOUT_TIMEOUT_MINUTES', 10))->timestamp,
-            ]);
-            // Log order creation with currency details
-            Log::info('Order initialized with currency conversion', [
-                'order_id' => $orderId,
-                'user_id' => user()->id,
-                'product_id' => $this->product->id,
-                'quantity' => $quantity,
-                'default_currency' => $defaultCurrency->code,
-                'default_grand_total' => $grandTotalDefault,
-                'display_currency' => $this->displayCurrency,
-                'display_grand_total' => $grandTotalDisplay,
-                'exchange_rate' => $this->exchangeRate,
-            ]);
-
-            return $this->redirect(
-                route('user.checkout', ['slug' => encrypt($this->product->id), 'token' => $token]),
-                navigate: true
-            );
+            $this->dispatch('open-delivery-modal', productId: $this->product->id);
         } catch (\Exception $e) {
-            Log::error('Order initialization failed', [
+            Log::error('Order pre-computation failed (ListLayout)', [
                 'product_id' => $this->product->id,
-                'user_id' => user()->id,
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
+                'user_id'    => user()->id,
+                'error'      => $e->getMessage(),
+                'trace'      => $e->getTraceAsString(),
             ]);
 
             $this->addError('order', __('Failed to initialize order. Please try again.'));
+        }
+    }
 
+    // ------------------------------------------------------------------
+    // STEP 2 — DeliveryInfo dispatches 'delivery-info-saved'.
+    //   • Pulls the stashed payload.
+    //   • Creates the Order with delivery_info_id.
+    //   • Stores checkout session and redirects.
+    // ------------------------------------------------------------------
+    #[On('delivery-info-saved')]
+    public function finalizeOrder(int $deliveryInfoId, int $productId): mixed
+    {
+        $payload = Session::pull("pending_order_{$productId}");
+
+        if (! $payload) {
+            $this->addError('order', __('Order session expired. Please try again.'));
+            return null;
+        }
+
+        // Guard: only handle events belonging to this component's product.
+        if ((int) $payload['source_id'] !== (int) $productId) {
+            return null;
+        }
+
+        try {
+            $order = $this->orderService->createData(array_merge($payload, [
+                'delivery_info_id' => $deliveryInfoId,
+            ]));
+
+            Session::driver('database')->put("checkout_{$payload['token']}", [
+                'order_id'         => $order->id,
+                'subtotal_locked'  => $payload['default_total_amount'],
+                'price_locked'     => $payload['default_total_amount'],
+                'display_subtotal' => $payload['total_amount'],
+                'display_currency' => $payload['display_currency'],
+                'exchange_rate'    => $payload['exchange_rate'],
+                'expires_at'       => now()->addMinutes((int) env('ORDER_CHECKOUT_TIMEOUT_MINUTES', 10))->timestamp,
+            ]);
+
+            Log::info('Order finalized with delivery info (ListLayout)', [
+                'order_id'         => $payload['order_id'],
+                'delivery_info_id' => $deliveryInfoId,
+                'user_id'          => user()->id,
+                'product_id'       => $productId,
+            ]);
+
+            return $this->redirect(
+                route('user.checkout', ['slug' => encrypt($productId), 'token' => $payload['token']]),
+                navigate: true
+            );
+        } catch (\Exception $e) {
+            Log::error('Order finalization failed (ListLayout)', [
+                'product_id'       => $productId,
+                'delivery_info_id' => $deliveryInfoId,
+                'user_id'          => user()->id,
+                'error'            => $e->getMessage(),
+                'trace'            => $e->getTraceAsString(),
+            ]);
+
+            $this->addError('order', __('Failed to create order. Please try again.'));
             return null;
         }
     }
 
     public function render()
     {
-        // filter datas lowest price and highest price
         $this->datas = $this->productService->getPaginatedData($this->perPage, [
-
-            'gameSlug' => $this->gameSlug,
-            'categorySlug' => $this->categorySlug,
-            'skipSelf' => true,
+            'gameSlug'         => $this->gameSlug,
+            'categorySlug'     => $this->categorySlug,
+            'skipSelf'         => true,
             'filter_by_config' => $this->filter_by_config,
-            'sort_field' => $this->sortBy,
-            'sort_direction' => $this->sortDirection,
-            'platform_id' => $this->platform_id != null ? decrypt($this->platform_id) : '',
-            'game_tag' => $this->game_tag,
-            'status' => ActiveInactiveEnum::ACTIVE->value,
+            'sort_field'       => $this->sortBy,
+            'sort_direction'   => $this->sortDirection,
+            'platform_id'      => $this->platform_id != null ? decrypt($this->platform_id) : '',
+            'game_tag'         => $this->game_tag,
+            'status'           => ActiveInactiveEnum::ACTIVE->value,
         ]);
-        $this->datas->load('user.feedbacksReceived', 'game', 'category', 'platform', 'user.wallet');
 
+        $this->datas->load('user.feedbacksReceived', 'game', 'category', 'platform', 'user.wallet');
         $this->paginationData($this->datas);
 
-        $filters = [];
+        $filters = ['skipSelf' => true, 'status' => ActiveInactiveEnum::ACTIVE->value];
 
-        if ($this->sellerFilter === 'positive_reviews') {
-            $filters['positive_reviews'] = true;
-        }
-        // Handle other filters
+        if ($this->sellerFilter === 'positive_reviews') $filters['positive_reviews'] = true;
         if ($this->sellerFilter === 'lowest_price') {
             $filters['sort_field'] = 'price';
             $filters['sort_direction'] = 'asc';
@@ -325,26 +296,17 @@ class ListLayout extends Component
             $filters['sort_field'] = 'quantity';
             $filters['sort_direction'] = 'desc';
         }
-        if ($this->sellerFilter === 'top_sold') {
-            $filters['top_sold'] = true;
-        }
-
-        // Add online filter
-        if ($this->onlineOnly) {
-            $filters['online_only'] = true;
-        }
-
-        $filters['skipSelf'] = true;
-        $filters['status'] = ActiveInactiveEnum::ACTIVE->value;
+        if ($this->sellerFilter === 'top_sold')         $filters['top_sold'] = true;
+        if ($this->onlineOnly)                          $filters['online_only'] = true;
 
         $otherSellers = $this->productService->getSellers(11, $filters);
         $otherSellers->load('user.feedbacksReceived');
 
         return view('livewire.frontend.product.list-layout', [
-            'gameSlug' => $this->gameSlug,
+            'gameSlug'     => $this->gameSlug,
             'categorySlug' => $this->categorySlug,
-            'game' => $this->game,
-            'datas' => $this->datas,
+            'game'         => $this->game,
+            'datas'        => $this->datas,
             'otherSellers' => $otherSellers,
         ]);
     }
