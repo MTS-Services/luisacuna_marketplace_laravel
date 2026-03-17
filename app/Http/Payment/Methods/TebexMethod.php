@@ -157,8 +157,8 @@ class TebexMethod extends PaymentMethod
                 // ── URLs ──────────────────────────────────────────────────────
                 $cancelUrl    = route('user.payment.failed') . '?order_id=' . $order->order_id;
                 $successRoute = $isTopUp ? 'user.payment.topup.success' : 'user.payment.success';
-                $description  = $isTopUp ? "Wallet top-up for {$order->source?->name} (Order ID: #{$order->order_id})" : "Top-up for {$order->source?->name} (Order ID: #{$order->order_id})";
-                $productName  = $isTopUp ? 'Wallet top-up' : 'Top-up for ' . $order->source?->name;
+                $description  = $isTopUp ? "Wallet top-up for (Order ID: #{$order->order_id})" : "Top-up for (Order ID: #{$order->order_id})";
+                $productName  = $isTopUp ? 'Wallet top-up' : 'Top-up';
 
                 // Temporary complete_url — we update it in STEP 2 once we have the ident
                 $tempSuccessUrl = route($successRoute) . '?order_id=' . $order->order_id;
