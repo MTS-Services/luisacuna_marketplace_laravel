@@ -184,9 +184,9 @@ class Product extends BaseModel implements Auditable
             $query->where('status', $filters['status']);
         }
 
-        $query->when($filters['skipSelf'] ?? null, function ($query, $skipSelf) {
-            $query->where('user_id', '!=', user()->id ?? 0);
-        });
+        // $query->when($filters['skipSelf'] ?? null, function ($query, $skipSelf) {
+        //     $query->where('user_id', '!=', user()->id ?? 0);
+        // });
         // Platform is slug of Platform table
         $query->when($filters['platform_id'] ?? null, function ($query, $platform_id) {
             $query->where('platform_id', $platform_id);

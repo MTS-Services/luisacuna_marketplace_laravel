@@ -171,19 +171,36 @@
                         </div>
 
                         <div class="space-y-4 mt-8">
+                            {{-- AFTER --}}
                             @auth('web')
-                                <x-ui.button wire:click="submit" wire:loading.attr="disabled" :disabled="!isset($product)"
-                                    class="w-full py-2!">
-                                    <span wire:loading.remove wire:target="submit, finalizeOrder"
-                                        class="text-text-btn-primary group-hover:text-text-btn-secondary">
-                                        {{ currency_code() }} {{ currency_exchange($product->price ?? 00) }}
-                                        {{ __('Buy Now') }}
-                                    </span>
-                                    <span wire:loading wire:target="submit, finalizeOrder"
-                                        class="text-text-btn-primary group-hover:text-text-btn-secondary">
-                                        {{ __('Processing...') }}
-                                    </span>
-                                </x-ui.button>
+                                @php
+                                    $isSelfProduct =
+                                        isset($product) && user() && (int) $product->user_id === (int) user()->id;
+                                @endphp
+
+                                @if ($isSelfProduct)
+                                    <div
+                                        class="w-full py-2 text-center text-sm text-zinc-400 bg-zinc-800 rounded-full cursor-not-allowed">
+                                        {{ __('This is your own listing') }}
+                                    </div>
+                                @else
+                                    <x-ui.button wire:click="submit" wire:loading.attr="disabled" :disabled="!isset($product)"
+                                        class="w-full py-2!">
+                                        <span wire:loading.remove wire:target="submit, finalizeOrder"
+                                            class="text-text-btn-primary group-hover:text-text-btn-secondary">
+                                            {{ currency_code() }} {{ currency_exchange($product->price ?? 00) }}
+                                            {{ __('Buy Now') }}
+                                        </span>
+                                        <span wire:loading wire:target="submit, finalizeOrder"
+                                            class="text-text-btn-primary group-hover:text-text-btn-secondary">
+                                            {{ __('Processing...') }}
+                                        </span>
+                                    </x-ui.button>
+                                @endif
+
+                                @error('order')
+                                    <p class="text-red-500 text-xs mt-2 text-center">{{ $message }}</p>
+                                @enderror
                             @else
                                 {{-- Fixed duplicate text-text class typo here --}}
                                 <a href="{{ route('login') }}" wire:navigate @class([

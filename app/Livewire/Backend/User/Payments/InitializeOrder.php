@@ -107,9 +107,15 @@ class InitializeOrder extends Component
             $this->product->refresh();
         }
 
-        if (! $this->product || $this->product->status?->value !== ActiveInactiveEnum::ACTIVE->value) {
+        // AFTER
+        if (!$this->product || $this->product->status?->value !== ActiveInactiveEnum::ACTIVE->value) {
             $this->addError('order', __('This product is no longer available.'));
+            return null;
+        }
 
+        // Backend guard — prevent purchasing own product even if frontend is bypassed
+        if ((int) $this->product->user_id === (int) user()->id) {
+            $this->addError('order', __('You cannot purchase your own product.'));
             return null;
         }
 

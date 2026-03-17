@@ -44,10 +44,10 @@ class BuyComponent extends Component
         $this->game = $this->product->games;
         $this->user = $this->product->user;
 
-        if (Auth::check() && (int) $this->product->user_id === (int) Auth::id()) {
-            session()->flash('message', __('You cannot purchase your own product.'));
-            $this->redirect(route('game.index', ['gameSlug' => $this->gameSlug, 'categorySlug' => $this->categorySlug]), navigate: true);
-        }
+        // if (Auth::check() && (int) $this->product->user_id === (int) Auth::id()) {
+        //     session()->flash('message', __('You cannot purchase your own product.'));
+        //     $this->redirect(route('game.index', ['gameSlug' => $this->gameSlug, 'categorySlug' => $this->categorySlug]), navigate: true);
+        // }
     }
 
     public function render()

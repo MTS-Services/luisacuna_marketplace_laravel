@@ -84,20 +84,36 @@
             </div> --}}
             <!-- Buy Button -->
             {{-- @dd(currency_symbol()) --}}
+            {{-- AFTER --}}
             @auth('web')
-                <x-ui.button class="w-full py-2!" type="submit" wire:loading.attr="disabled"
-                    wire:target="submit, finalizeOrder">
-                    <span wire:loading.remove wire:target="submit, finalizeOrder"
-                        class="text-text-btn-primary group-hover:text-text-btn-secondary">
-                        {{ strtoupper(currency_code()) }}
-                        <span x-text="(quantity * price).toFixed(2)"
-                            class="text-text-btn-primary group-hover:text-text-btn-secondary"></span>
-                        {{ __(' | Buy Now') }}
-                    </span>
-                    <span wire:loading wire:target="submit, finalizeOrder">
-                        {{ __('Processing…') }}
-                    </span>
-                </x-ui.button>
+                @php
+                    $isSelfProduct = user() && (int) $product->user_id === (int) user()->id;
+                @endphp
+
+                @if ($isSelfProduct)
+                    <div
+                        class="w-full py-2 text-center text-sm text-zinc-400 bg-zinc-800 rounded-full cursor-not-allowed mb-6">
+                        {{ __('This is your own listing') }}
+                    </div>
+                @else
+                    <x-ui.button class="w-full py-2!" type="submit" wire:loading.attr="disabled"
+                        wire:target="submit, finalizeOrder">
+                        <span wire:loading.remove wire:target="submit, finalizeOrder"
+                            class="text-text-btn-primary group-hover:text-text-btn-secondary">
+                            {{ strtoupper(currency_code()) }}
+                            <span x-text="(quantity * price).toFixed(2)"
+                                class="text-text-btn-primary group-hover:text-text-btn-secondary"></span>
+                            {{ __(' | Buy Now') }}
+                        </span>
+                        <span wire:loading wire:target="submit, finalizeOrder">
+                            {{ __('Processing…') }}
+                        </span>
+                    </x-ui.button>
+                @endif
+
+                @error('order')
+                    <p class="text-red-500 text-xs mt-2 text-center">{{ $message }}</p>
+                @enderror
             @else
                 <a href="{{ route('login') }}" wire:navigate
                     class="bg-zinc-500 px-4  py-2!  text-text-btn-primary hover:text-text-btn-secondary hover:bg-zinc-50 border border-zinc-500 focus:outline-none focus:ring focus:ring-pink-500 font-medium text-base w-full rounded-full flex items-center justify-center gap-2 disabled:opacity-50 transition duration-150 ease-in-out group text-nowrap cursor-pointer w-full mb-6">
