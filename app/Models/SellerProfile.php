@@ -42,6 +42,8 @@ class SellerProfile extends AuditBaseModel implements Auditable
         'seller_verified_at',
         'commission_rate',
         'minimum_payout',
+        'rejected_at',
+        'rejected_reason',
         'created_at',
         'updated_at',
     ];
@@ -56,6 +58,7 @@ class SellerProfile extends AuditBaseModel implements Auditable
         'commission_rate' => 'decimal:2',
         'minimum_payout' => 'decimal:2',
         'seller_level' => SellerLevel::class,
+        'rejected_at' => 'datetime',
     ];
 
     /* ================================================================
